@@ -19,7 +19,8 @@ jobs:
           submodules: recursive
 
       - name: Guard against submodule writes
-        run: git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
+        run: |
+          git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
