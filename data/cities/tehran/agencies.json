@@ -1,0 +1,10 @@
+[
+  {
+    "id": "tehran:agency:tehran-metro",
+    "cityId": "tehran",
+    "names": {
+      "fa": "متروی تهران",
+      "en": "Tehran Metro"
+    }
+  }
+]

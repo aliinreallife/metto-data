@@ -103,6 +103,7 @@ export interface Connection {
 export type TransferConfidence = "verified" | "estimated";
 
 export interface TransferRule {
+  id: string;
   stationId: string;
   fromLineId: string;
   toLineId: string;
@@ -121,9 +122,20 @@ export interface CityGraph {
 
 export interface CityMeta {
   cityId: string;
+  /** Manually-maintained dataset version (CalVer `YYYY.MM.N`), set per city in sources.json. Never auto-incremented. */
+  datasetVersion: string;
   generatedAt: string;
   importer: string;
   upstream: { repository: string; commit: string; file: string };
-  counts: { stations: number; lines: number; routes: number; segments: number };
+  counts: {
+    stations: number;
+    lines: number;
+    routes: number;
+    segments: number;
+    transfers: number;
+    cities: number;
+    agencies: number;
+    networks: number;
+  };
   contributorIds: string[];
 }

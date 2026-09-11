@@ -1,0 +1,18 @@
+[
+  {
+    "id": "tehran:transfer:eram-e-sabz:4:5",
+    "stationId": "tehran:station:eram-e-sabz",
+    "fromLineId": "tehran:line:4",
+    "toLineId": "tehran:line:5",
+    "walkSeconds": 480,
+    "confidence": "estimated"
+  },
+  {
+    "id": "tehran:transfer:eram-e-sabz:5:4",
+    "stationId": "tehran:station:eram-e-sabz",
+    "fromLineId": "tehran:line:5",
+    "toLineId": "tehran:line:4",
+    "walkSeconds": 480,
+    "confidence": "estimated"
+  }
+]

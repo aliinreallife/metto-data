@@ -12,5 +12,5 @@
     "noEmit": true,
     "esModuleInterop": true
   },
-  "include": ["schema/**/*.ts", "importers/**/*.ts", "validators/**/*.ts", "scripts/**/*.ts"]
+  "include": ["schema/**/*.ts", "importers/**/*.ts", "validators/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
 }

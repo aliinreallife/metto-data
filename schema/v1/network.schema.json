@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/v1/network.json",
+  "title": "Network (metto-data schema v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cityId", "agencyId", "mode"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+:network:.+$" },
+    "cityId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "agencyId": { "type": "string", "pattern": "^[a-z0-9-]+:agency:.+$" },
+    "mode": { "type": "string", "enum": ["metro", "bus", "tram", "rail"] }
+  }
+}

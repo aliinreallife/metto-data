@@ -24,7 +24,7 @@ overrides/ + contributions/approved/   (Metto corrections + reviewed community f
 validators/              (fail-closed checks)
         |
         v
-data/cities/tehran/{stations.json, lines.json, graph.json, meta.json}  (the product)
+data/cities/tehran/{city.json, agencies.json, networks.json, stations.json, lines.json, graph.json, meta.json}  (the product)
         |
         v
 Metto app                (consumes normalized data only)
@@ -39,7 +39,7 @@ metto-data/
   importers/               # tehran.ts + lib/ (slug, coords) + future-city-importers
   overrides/               # Metto-maintained corrections per city
   topology/                # canonical ordered routes / segments / transfers per city
-  data/cities/<city>/      # GENERATED product: stations.json, lines.json, graph.json, meta.json
+  data/cities/<city>/      # GENERATED product: city.json, agencies.json, networks.json, stations.json, lines.json, graph.json, meta.json
   schema/v1/               # canonical TypeScript types + JSON Schemas
   validators/              # dataset integrity checks
   contributions/           # community proposals + review queue (pending/approved/rejected)
@@ -84,6 +84,7 @@ tehran:station:tajrish
 tehran:line:1
 tehran:route:line-1-main
 tehran:segment:line-1-tajrish-gheytariyeh
+tehran:transfer:eram-e-sabz:4:5
 mashhad:station:...
 ```
 
@@ -94,6 +95,12 @@ Modes supported from day one: `metro`, `bus`, `tram`, `rail`.
 | city   | repository | path | license | type |
 |--------|-----------|------|---------|------|
 | tehran | https://github.com/mostafa-kheibary/tehran-metro-data | `upstream-tehran-metro` (`data/stations.json`, 150 stations @ `bcf474e`) | ODbL-1.0 | git-submodule |
+
+## Supported cities
+
+| city   | modes | stations | lines | datasetVersion | status |
+|--------|-------|----------|-------|----------------|--------|
+| tehran | metro | 151 | 7 | 2026.09.11 | stable (built + validated by CI) |
 
 Full provenance (pinned commit, sync date) lives in [`sources.json`](sources.json)
 and per-build in `data/cities/<city>/meta.json`. License details in

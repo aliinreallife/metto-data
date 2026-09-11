@@ -44,6 +44,7 @@ and the future https://data.metto.ir editor.
 ## Files
 
 * `types.ts` — canonical TypeScript types (source of truth for code).
-* `city.schema.json`, `line.schema.json`, `station.schema.json`,
-  `graph.schema.json` — JSON Schemas for generated `data/cities/*` files.
+* `city.schema.json`, `agency.schema.json`, `network.schema.json`,
+  `line.schema.json`, `station.schema.json`, `graph.schema.json` — JSON Schemas
+  for generated `data/cities/*` files.
 * `../../contributions/schema.json` — proposal envelope (not dataset shape).

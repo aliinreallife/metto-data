@@ -1,0 +1,43 @@
+# Release validation: typecheck + build + validate the canonical dataset.
+# Fails on schema breaks (typecheck), build failures, or validation errors.
+# Submodules are required: upstream datasets live in upstream-*/ gitlinks.
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Guard against submodule writes
+        run: git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Validate
+        run: pnpm validate

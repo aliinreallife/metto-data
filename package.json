@@ -13,6 +13,7 @@
     "build": "tsx scripts/build.ts",
     "build:tehran": "tsx scripts/build.ts --city tehran",
     "validate": "tsx scripts/validate.ts",
+    "check-release": "tsx scripts/check-release.ts",
     "contributions:validate": "tsx scripts/contributions-validate.ts",
     "contributions:new": "tsx scripts/new-contribution.ts",
     "typecheck": "tsc --noEmit",

@@ -30,3 +30,74 @@ Maintainers run `pnpm contributions:validate` (schema + references, no dataset
 mutation), review `pending/` proposals, move them to `approved/` (with
 `review.*`) or `rejected/` (with `review.reason`), then rebuild. Rejections are
 kept for history. Spam, PII, or copyrighted third-party content is rejected.
+
+## Developer workflow
+
+```bash
+pnpm install
+pnpm typecheck   # TypeScript must pass
+pnpm build       # regenerate all supported cities (or: pnpm build --city tehran)
+pnpm validate    # dataset + pending-contribution checks must pass
+pnpm test        # unit tests must pass
+```
+
+Generated data must pass validation before commit — `pnpm build` already
+refuses to write when validators fail, and `pnpm validate` re-checks what is
+on disk. If you only need one city while iterating, use
+`pnpm build --city <city>`; CI always builds everything.
+
+## How to add a new city
+
+1. Scaffold: `pnpm tsx scripts/add-city.ts --city mashhad --mode metro`
+   (creates `data/cities/mashhad/`, `overrides/mashhad.overrides.json`,
+   an importer stub, and topology placeholders).
+2. Add the source (see "How to add an upstream source" below).
+3. Write `importers/mashhad.ts` following `importers/tehran.ts`: read only
+   from the upstream path, map to `schema/v1`, apply overrides, fold
+   `contributions/approved/`.
+4. Add ordered topology in `topology/mashhad.{routes,segments,transfers,aliases}.json`
+   (adjacency lists alone are not enough — routes need verified station order).
+5. Register the city in `sources.json` (including `datasetVersion`), then
+   `pnpm build --city mashhad && pnpm validate`, and commit the generated
+   `data/cities/mashhad/*` in the same PR.
+
+## How to add an upstream source
+
+1. Prefer a git submodule: `git submodule add <repo-url> upstream-<city>-<source>`
+   (keeps provenance reviewable and CI-verifiable).
+2. Register it in `sources.json`: `name`, `repository`, `path`, `upstreamFile`,
+   `license`, `licenseFile`, `type: "git-submodule"`, `pinnedCommit`,
+   `lastSyncedAt`, `stationCount` (or equivalent count), and
+   `datasetVersion` (CalVer `YYYY.MM.N`, bumped manually per release).
+3. Ensure the license allows derived ODbL use; record it in `ATTRIBUTION.md`
+   and `DATA_LICENSE.md` if it is a new license.
+4. Non-git sources are a last resort: document them in `sources.json` with
+   `type` and retrieval details instead of a submodule path.
+
+## How to update a submodule source
+
+Submodules are pinned — updates are deliberate, reviewable commits:
+
+```bash
+cd upstream-tehran-metro
+git fetch origin
+git checkout <new-sha>          # or: git pull origin main
+cd ..
+git add upstream-tehran-metro   # records the new gitlink
+# update sources.json pinnedCommit/lastSyncedAt/stationCount in the same commit
+pnpm build --city tehran        # regenerate normalized data
+pnpm validate                   # must pass before commit
+git commit -m "chore(data): bump upstream-tehran-metro to <short-sha>"
+```
+
+## Rules
+
+* **Never edit upstream submodules.** No Metto files inside `upstream-*/`,
+  no fixes there — upstream fixes go upstream as PRs; Metto corrections go
+  in `overrides/`; community fixes go through contribution proposals.
+* **Generated data must pass validation.** Do not commit `data/cities/*`
+  output from a failing build; do not hand-edit generated files.
+* **Contributors should use contribution proposals.** Data fixes belong in
+  `contributions/pending/<uuid>.json` (one proposal per file, see
+  `contributions/examples/`), not in direct dataset edits — approved
+  proposals are folded into the next build with attribution.

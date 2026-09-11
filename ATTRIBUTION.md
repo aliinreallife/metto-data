@@ -42,8 +42,9 @@ Approved community proposals (`contributions/approved/`) become part of the
 normalized dataset. Contributors are credited in:
 
 * `contributors.json` (id → name, profile URL, contribution uuids, entities,
-  first/last timestamps), updated automatically on approval;
-* `data/cities/<city>/meta.json` (`contributorIds` for that build).
+  first/last timestamps), updated by maintainers when a proposal is approved;
+* `data/cities/<city>/meta.json` (`contributorIds` for that build, derived
+  automatically from the `submittedBy` fields of `contributions/approved/`).
 
 Contributor submissions are proposals under the same ODbL-1.0 data license once
 merged — by submitting, contributors agree their accepted changes are published

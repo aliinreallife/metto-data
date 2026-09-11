@@ -57,11 +57,12 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["stationId", "fromLineId", "toLineId", "walkSeconds"],
+        "required": ["id", "stationId", "fromLineId", "toLineId", "walkSeconds"],
         "properties": {
-          "stationId": { "type": "string" },
-          "fromLineId": { "type": "string" },
-          "toLineId": { "type": "string" },
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+:transfer:.+$" },
+          "stationId": { "type": "string", "pattern": "^[a-z0-9-]+:station:.+$" },
+          "fromLineId": { "type": "string", "pattern": "^[a-z0-9-]+:line:.+$" },
+          "toLineId": { "type": "string", "pattern": "^[a-z0-9-]+:line:.+$" },
           "walkSeconds": { "type": "integer", "minimum": 1 },
           "confidence": { "type": "string", "enum": ["verified", "estimated"] },
           "fromRouteId": { "type": "string" },

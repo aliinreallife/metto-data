@@ -1,0 +1,8 @@
+[
+  {
+    "id": "tehran:network:metro",
+    "cityId": "tehran",
+    "agencyId": "tehran:agency:tehran-metro",
+    "mode": "metro"
+  }
+]

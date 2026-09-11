@@ -1,0 +1,33 @@
+# Pre-commit: fast local mistake-catchers only.
+#
+# All hooks are `repo: local`, so installing/running them never downloads
+# anything (hook environments from remote repos would). They assume
+# `pnpm install` has been run once in the clone.
+#
+# Deliberately NOT here (they stay CI/release checks):
+# - `pnpm build` (rewrites `data/cities/*`; slow and noisy for a commit hook)
+# - upstream submodule operations (pinned bumps are deliberate release commits)
+#
+# No formatting/linting hooks: the repo has no formatter or linter
+# configured (no prettier/eslint). Add the config first, then a hook for it.
+repos:
+  - repo: local
+    hooks:
+      - id: typecheck
+        name: typecheck (tsc --noEmit)
+        entry: pnpm typecheck
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: contributions-validate
+        name: contributions proposals (pending/approved/rejected)
+        entry: pnpm contributions:validate
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: validate
+        name: validate built dataset
+        entry: pnpm validate
+        language: system
+        pass_filenames: false
+        always_run: true
