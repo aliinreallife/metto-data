@@ -1,0 +1,19 @@
+{
+  "id": "b2f1c56a-9c4d-4f1e-8a3b-7d2e5c9a0f11",
+  "city": "tehran",
+  "entityType": "transfer",
+  "entityId": "tehran:transfer:eram-e-sabz:4:5",
+  "changeType": "update",
+  "operations": [
+    {
+      "op": "set",
+      "path": "/walkSeconds",
+      "value": 360,
+      "note": "Timed interchange at off-peak: ~6 min platform to platform.",
+      "evidence": "https://example.org/notes/eram-transfer-timing.md"
+    }
+  ],
+  "submittedBy": "github_username",
+  "submittedAt": "2026-09-11T12:00:00Z",
+  "status": "pending"
+}

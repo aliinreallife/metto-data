@@ -1,0 +1,14 @@
+{
+  "tehran": {
+    "name": "Tehran Metro Data",
+    "repository": "https://github.com/mostafa-kheibary/tehran-metro-data",
+    "path": "upstream-tehran-metro",
+    "upstreamFile": "data/stations.json",
+    "license": "ODbL-1.0",
+    "licenseFile": "LICENSES/ODbL-1.0.txt",
+    "type": "git-submodule",
+    "pinnedCommit": "bcf474e17f29a53684bd02229e73bcaa06c4f37d",
+    "lastSyncedAt": "2026-09-11",
+    "stationCount": 150
+  }
+}

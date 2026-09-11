@@ -1,0 +1,18 @@
+{
+  "id": "a3bb189e-8bf9-3888-9912-ace4e6543002",
+  "city": "tehran",
+  "entityType": "station",
+  "entityId": "tehran:station:saadi",
+  "changeType": "update",
+  "operations": [
+    {
+      "op": "set",
+      "path": "/name/fa",
+      "value": "سعدی",
+      "note": "Correct Persian spelling per station signage."
+    }
+  ],
+  "submittedBy": "github_username",
+  "submittedAt": "2026-09-11T12:00:00Z",
+  "status": "pending"
+}

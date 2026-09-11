@@ -1,0 +1,35 @@
+{
+  "$comment": "Hand-maintained Metto-only overrides for Tehran. Canonical coordinates and amenities always come from upstream-tehran-metro/data/stations.json. Do NOT add canonical coordinate overrides here except soleimaniOverride (intentional Metto pin). Ported from metto/scripts/metto-overrides.json.",
+  "soleimaniOverride": {
+    "en": "Shahid Sepahbod Qasem Soleimani",
+    "location": { "lat": 35.95882966952798, "lng": 50.71920151458703 }
+  },
+  "statusOverrides": {
+    "tehran:station:vavan": "under_construction",
+    "tehran:station:chaharbagh": "under_construction",
+    "tehran:station:haram-e-hazrat-e-abdol-azim": "under_construction",
+    "tehran:station:meydan-e-hazrat-e-abdol-azim": "under_construction",
+    "tehran:station:ebn-e-babviyeh": "under_construction",
+    "tehran:station:cheshmeh-ali": "under_construction"
+  },
+  "fakhrizadeh": {
+    "id": "tehran:station:shahid-fakhrizadeh",
+    "name": { "fa": "شهید فخری‌زاده", "en": "Shahid Fakhrizadeh" },
+    "location": { "lat": 35.91758, "lng": 50.7911 },
+    "amenities": {
+      "wc": false,
+      "elevator": false,
+      "atm": false,
+      "coffeeShop": false,
+      "fastFood": false,
+      "groceryStore": false,
+      "freeWifi": false,
+      "prayerRoom": false,
+      "parking": false,
+      "police": false
+    },
+    "amenitiesVerified": false,
+    "status": "operational",
+    "insertAfterUpstreamKey": "Golshahr"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/v1/city.json",
+  "title": "City (metto-data schema v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "names", "country", "timezone"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "names": {
+      "type": "object",
+      "required": ["fa", "en"],
+      "properties": { "fa": { "type": "string", "minLength": 1 }, "en": { "type": "string", "minLength": 1 } }
+    },
+    "country": { "type": "string", "minLength": 2 },
+    "timezone": { "type": "string", "minLength": 1 },
+    "bbox": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4 },
+    "center": {
+      "type": "object",
+      "required": ["lat", "lng"],
+      "properties": { "lat": { "type": "number" }, "lng": { "type": "number" } }
+    }
+  }
+}

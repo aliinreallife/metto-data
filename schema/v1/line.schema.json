@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/v1/line.json",
+  "title": "Line (metto-data schema v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cityId", "agencyId", "networkId", "mode", "code", "names", "color"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+:line:.+$" },
+    "cityId": { "type": "string" },
+    "agencyId": { "type": "string" },
+    "networkId": { "type": "string" },
+    "mode": { "type": "string", "enum": ["metro", "bus", "tram", "rail"] },
+    "code": { "type": "string", "minLength": 1 },
+    "names": {
+      "type": "object",
+      "required": ["fa", "en"],
+      "properties": { "fa": { "type": "string" }, "en": { "type": "string" } }
+    },
+    "color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+  }
+}

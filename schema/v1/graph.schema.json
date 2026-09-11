@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/v1/graph.json",
+  "title": "City graph (metto-data schema v1)",
+  "description": "Ordered routes + track segments + transfer rules + legacy aliases for one city.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["routes", "segments", "transfers", "aliases"],
+  "properties": {
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "cityId", "lineId", "stops"],
+        "properties": {
+          "id": { "type": "string" },
+          "cityId": { "type": "string" },
+          "lineId": { "type": "string" },
+          "branchId": { "type": "string" },
+          "stops": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["stationId", "status"],
+              "properties": {
+                "stationId": { "type": "string" },
+                "status": { "type": "string", "enum": ["operational", "under_construction", "planned"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "cityId", "lineId", "routeId", "from", "to", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "cityId": { "type": "string" },
+          "lineId": { "type": "string" },
+          "routeId": { "type": "string" },
+          "branchId": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "status": { "type": "string", "enum": ["operational", "under_construction", "planned", "temporarily_closed"] }
+        }
+      }
+    },
+    "transfers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stationId", "fromLineId", "toLineId", "walkSeconds"],
+        "properties": {
+          "stationId": { "type": "string" },
+          "fromLineId": { "type": "string" },
+          "toLineId": { "type": "string" },
+          "walkSeconds": { "type": "integer", "minimum": 1 },
+          "confidence": { "type": "string", "enum": ["verified", "estimated"] },
+          "fromRouteId": { "type": "string" },
+          "toRouteId": { "type": "string" }
+        }
+      }
+    },
+    "aliases": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}

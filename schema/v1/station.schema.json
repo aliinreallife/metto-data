@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/v1/station.json",
+  "title": "Station (metto-data schema v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "cityId", "names", "location", "amenities", "status", "sourceKeys"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+:station:.+$" },
+    "cityId": { "type": "string" },
+    "names": {
+      "type": "object",
+      "required": ["fa", "en"],
+      "properties": { "fa": { "type": "string" }, "en": { "type": "string", "minLength": 1 } }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lat", "lng"],
+      "properties": { "lat": { "type": "number", "minimum": 25, "maximum": 40 }, "lng": { "type": "number", "minimum": 44, "maximum": 64 } }
+    },
+    "amenities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wc", "elevator", "atm", "coffeeShop", "fastFood", "groceryStore", "freeWifi", "prayerRoom", "parking", "police"],
+      "properties": {
+        "wc": { "type": ["boolean", "null"] },
+        "elevator": { "type": ["boolean", "null"] },
+        "atm": { "type": ["boolean", "null"] },
+        "coffeeShop": { "type": ["boolean", "null"] },
+        "fastFood": { "type": ["boolean", "null"] },
+        "groceryStore": { "type": ["boolean", "null"] },
+        "freeWifi": { "type": ["boolean", "null"] },
+        "prayerRoom": { "type": ["boolean", "null"] },
+        "parking": { "type": ["boolean", "null"] },
+        "police": { "type": ["boolean", "null"] }
+      }
+    },
+    "amenitiesVerified": { "type": "boolean" },
+    "status": { "type": "string", "enum": ["operational", "under_construction", "planned", "temporarily_closed", "permanently_closed"] },
+    "sourceKeys": {
+      "type": "object",
+      "required": ["upstreamKey"],
+      "properties": { "upstreamKey": { "type": "string", "minLength": 1 } }
+    }
+  }
+}

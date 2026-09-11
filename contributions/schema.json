@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://data.metto.ir/schemas/contribution-v1.json",
+  "title": "Metto data contribution (proposal, v1)",
+  "description": "A community proposal. Never edits generated data directly; approved proposals are folded into the next build.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "city", "entityType", "entityId", "changeType", "operations", "submittedBy", "submittedAt", "status"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid", "description": "Proposal UUID. Also the filename: contributions/pending/<id>.json" },
+    "city": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "City id, must exist in sources.json (e.g. tehran)" },
+    "entityType": { "type": "string", "enum": ["station", "line", "connection", "transfer"] },
+    "entityId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+:(station|line|segment|route|transfer):.+",
+      "description": "Namespaced id, e.g. tehran:station:tajrish. Never a display name."
+    },
+    "changeType": { "type": "string", "enum": ["update", "add", "remove"] },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["op", "path", "value"],
+        "properties": {
+          "op": { "type": "string", "enum": ["set", "add", "remove"] },
+          "path": {
+            "type": "string",
+            "description": "Allowlisted field path. Station: /amenities/*, /location/lat|lng, /name/fa|en, /status. Line: /color, /name/fa|en. Connection: /status. Transfer: /walkSeconds."
+          },
+          "value": { "description": "New value. Amenities: true|false|null (null = unknown)." },
+          "note": { "type": "string", "description": "Why this change is correct." },
+          "evidence": { "type": "string", "description": "Photo/info URL (never a local file path)." }
+        }
+      }
+    },
+    "submittedBy": { "type": "string", "description": "Contributor id (matches contributors.json key, e.g. github username)." },
+    "submittedAt": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["pending", "approved", "rejected", "needs-info"] },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "decidedBy": { "type": "string" },
+        "decidedAt": { "type": "string", "format": "date-time" },
+        "reason": { "type": "string" },
+        "appliedInBuild": { "type": "string", "description": "metto-data commit that first shipped this change." }
+      }
+    }
+  }
+}

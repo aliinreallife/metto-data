@@ -1,0 +1,13 @@
+# Normalize line endings to LF on checkout (upstream submodule keeps its own settings).
+* text=auto eol=lf
+
+# JSON datasets: text, diffable.
+*.json text eol=lf diff=json
+*.schema.json text eol=lf diff=json
+
+# Docs / code.
+*.md text eol=lf
+*.ts text eol=lf diff=ts
+
+# Submodule content is vendored source material, not Metto code.
+upstream-*/** linguist-vendored

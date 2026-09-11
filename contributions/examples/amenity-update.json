@@ -1,0 +1,19 @@
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "city": "tehran",
+  "entityType": "station",
+  "entityId": "tehran:station:tajrish",
+  "changeType": "update",
+  "operations": [
+    {
+      "op": "set",
+      "path": "/amenities/elevator",
+      "value": true,
+      "note": "Elevator observed in service at the south entrance, Aug 2026.",
+      "evidence": "https://example.org/photos/tajrish-elevator.jpg"
+    }
+  ],
+  "submittedBy": "github_username",
+  "submittedAt": "2026-09-11T12:00:00Z",
+  "status": "pending"
+}

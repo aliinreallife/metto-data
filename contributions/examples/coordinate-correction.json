@@ -1,0 +1,24 @@
+{
+  "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  "city": "tehran",
+  "entityType": "station",
+  "entityId": "tehran:station:gheytariyeh",
+  "changeType": "update",
+  "operations": [
+    {
+      "op": "set",
+      "path": "/location/lat",
+      "value": 35.79305,
+      "note": "Pin moved to station entrance per GPS survey; was ~120m off."
+    },
+    {
+      "op": "set",
+      "path": "/location/lng",
+      "value": 51.43501,
+      "note": "Pin moved to station entrance per GPS survey; was ~120m off."
+    }
+  ],
+  "submittedBy": "github_username",
+  "submittedAt": "2026-09-11T12:00:00Z",
+  "status": "pending"
+}

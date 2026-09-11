@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/*
+!.vscode/extensions.json
+
+# Env (no secrets in this repo; contributions carry no credentials)
+.env
+.env*.local
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Test / coverage
+coverage/
+test-results/
+
+# Local scratch (never commit generated previews here)
+.tmp/
