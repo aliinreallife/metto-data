@@ -57,3 +57,12 @@ Metto transit data (https://github.com/<org>/metto-data), derived from
 Tehran Metro Data by mostafa-kheibary (ODbL-1.0), plus community contributions
 listed in contributors.json. Data build: see data/cities/tehran/meta.json.
 ```
+
+## Mashhad Metro Data
+
+* Upstream database: [Mashhad Metro Station Graph by shahriaarrr](https://github.com/shahriaarrr/mashhad-metro-data).
+* License: Open Database License (ODbL) v1.0; submodule `upstream-mashhad-metro/`, pinned to `f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0`.
+* OSM station position used for correction to Fajr: [OpenStreetMap node 14133541209](https://www.openstreetmap.org/node/14133541209), © OpenStreetMap contributors (ODbL); see `overrides/mashhad.overrides.json`.
+* Data provenance and draft review: [docs/mashhad-source-review.md](docs/mashhad-source-review.md).
+
+Mashhad output is derived from these ODbL sources and is published under the same database license. Other pages used for service verification are reference-only and are NOT copied or relicensed.

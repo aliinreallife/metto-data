@@ -22,7 +22,12 @@ function validateContributions(): string[] {
 
 function main(): void {
   const { values } = parseArgs({ options: { city: { type: "string" } } });
-  const cities: string[] = values.city ? [values.city] : ["tehran"];
+  const registered = Object.keys(JSON.parse(readFileSync(join(repoRoot, "sources.json"), "utf8")) as Record<string, unknown>).sort();
+  const cities: string[] = values.city ? [values.city] : registered;
+  if (cities.some(c => !registered.includes(c))) {
+    console.error(`validate: unknown city ${values.city}`);
+    process.exit(2);
+  }
   let errors: string[] = [];
   for (const city of cities) {
     errors.push(...validateCityDir(join(repoRoot, "data", "cities", city), city));

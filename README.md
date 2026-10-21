@@ -98,9 +98,12 @@ Modes supported from day one: `metro`, `bus`, `tram`, `rail`.
 
 ## Supported cities
 
-| city   | modes | stations | lines | datasetVersion | status |
-|--------|-------|----------|-------|----------------|--------|
-| tehran | metro | 151 | 7 | 2026.09.11 | stable (built + validated by CI) |
+| city | modes | stations | lines | datasetVersion | status |
+|------|-------|----------|-------|----------------|--------|
+| tehran | metro | 151 | 7 | 2026.09.11 | existing validated baseline |
+| mashhad | metro | 38 | 3 | 2026.10.1 | **DRAFT / verification required** — see [source review](docs/mashhad-source-review.md) |
+
+Mashhad is a candidate dataset with unverified entrances, timetable, transfer walks and line colors; never treat it as service-ready merely because the JSON passes schema validation. Run `pnpm build` to build all registered cities, or `pnpm build --city mashhad` to build only Mashhad.
 
 Full provenance (pinned commit, sync date) lives in [`sources.json`](sources.json)
 and per-build in `data/cities/<city>/meta.json`. License details in
@@ -179,3 +182,7 @@ and runs in CI.
   `LICENSES/ODbL-1.0.txt`.
 * **Upstream datasets:** their own licenses (Tehran: ODbL-1.0) — see
   `ATTRIBUTION.md`. Files inside `upstream-*/` are never modified.
+
+## Mashhad candidate source review
+
+Mashhad uses an immutable [ODbL-licensed upstream dataset](https://github.com/shahriaarrr/mashhad-metro-data) pinned as a git submodule, explicit ordered service routes, and an OSM-referenced Fajr coordinate correction. See [the audit](docs/mashhad-source-review.md) and [machine-readable review record](sources/mashhad/review.json). Current generated JSON is **not yet approved for production routing** (pending transfers, entrance mapping, official color and station confirmation). No timetable is bundled.
