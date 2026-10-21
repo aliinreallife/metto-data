@@ -1,43 +1,38 @@
-# Core CI: validate data + contributions (no build artifacts committed by CI).
-# Submodules are required: upstream datasets live in upstream-*/ gitlinks.
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
+permissions:
+  contents: read
+concurrency:
+  group: core-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout (with submodules)
+      - name: Checkout pinned inputs
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           submodules: recursive
-
-      - name: Guard against submodule writes
-        run: |
-          git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
-      - name: Install dependencies
+      - name: Install
         run: pnpm install --frozen-lockfile
-
+      - name: Check source provenance
+        run: pnpm provenance:check
       - name: Typecheck
         run: pnpm typecheck
-
       - name: Validate contributions
         run: pnpm contributions:validate
-
-      - name: Validate dataset
+      - name: Validate committed datasets
         run: pnpm validate

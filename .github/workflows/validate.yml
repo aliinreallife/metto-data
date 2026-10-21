@@ -1,47 +1,60 @@
-# Release validation: typecheck + build + validate the canonical dataset.
-# Fails on schema breaks (typecheck), build failures, or validation errors.
-# Submodules are required: upstream datasets live in upstream-*/ gitlinks.
 name: Validate
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: full-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout (with submodules)
+      - name: Checkout pinned inputs
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           submodules: recursive
-
-      - name: Guard against submodule writes
-        run: |
-          git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
-      - name: Install dependencies
+      - name: Install
         run: pnpm install --frozen-lockfile
-
+      - name: Check source provenance
+        run: pnpm provenance:check
       - name: Typecheck
         run: pnpm typecheck
-
-      - name: Build
+      - name: Build all registered cities
         run: pnpm build
-
-      - name: Validate
+      - name: Check committed dataset reproducibility
+        run: pnpm generated:check
+      - name: Validate all cities
         run: pnpm validate
-
       - name: Regression tests
         run: pnpm test
+      - name: Produce evidence and quality report
+        if: always()
+        run: pnpm quality:report
+      - name: Add quality report to job summary
+        if: always()
+        run: |
+          if [ -f .quality-report/quality-report.md ]; then
+            cat .quality-report/quality-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload quality evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: metto-data-quality-${{ github.run_id }}
+          path: .quality-report/
+          if-no-files-found: ignore
+          retention-days: 30

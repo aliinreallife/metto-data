@@ -53,3 +53,15 @@ the public JSON or forgotten regeneration.
 `pnpm check-release` remains a stricter publishing gate: it **rejects** all
 cities with `releaseStatus: candidate`. Candidate builds are allowed in pull
 request CI, but they are not permission to release production routing data.
+
+## Automated integrity and quality checks
+
+`CI` checks all pinned upstream submodules, licensing metadata, TypeScript and
+committed datasets. `Validate` regenerates every city, rejects any committed
+JSON changes except `meta.generatedAt`, executes regression tests, and uploads
+a 30-day quality audit (including an isolated, **unverified** source-facility
+candidate dataset). Both workflows have read-only repository permissions,
+timeouts and PR concurrency cancellation.
+
+`pnpm check-release` remains deliberately stricter than PR validation:
+cities marked `candidate` cannot pass the production release gate.

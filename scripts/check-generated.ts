@@ -9,12 +9,21 @@ import { fileURLToPath } from "node:url";
 import { readFileSync } from "node:fs";
 const files = ["city.json","agencies.json","networks.json","stations.json","lines.json","graph.json","meta.json"] as const;
 
+function canonical(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonical);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value as Record<string,unknown>)
+      .sort(([a],[b]) => a.localeCompare(b,"en"))
+      .map(([key,item]) => [key,canonical(item)]));
+  }
+  return value;
+}
 export function normalizeGenerated(name: string, value: unknown): string {
   const clone = structuredClone(value) as Record<string,unknown>;
   if (name === "meta.json" && clone && typeof clone === "object" && !Array.isArray(clone)) {
     delete clone.generatedAt;
   }
-  return JSON.stringify(clone);
+  return JSON.stringify(canonical(clone));
 }
 
 export function checkGenerated(root: string): string[] {

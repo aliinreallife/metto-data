@@ -27,3 +27,7 @@ test-results/
 
 # Local scratch (never commit generated previews here)
 .tmp/
+
+# Generated review evidence; only CI artifacts should contain these files.
+.quality-report/
+source-status.json
