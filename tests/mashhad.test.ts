@@ -61,6 +61,7 @@ describe("mashhad candidate importer", () => {
   it("validates the generated machine-readable release candidate", () => {
     expect(validateCityDir(join(root,"data","cities","mashhad"),"mashhad")).toEqual([]);
     const m = JSON.parse(readFileSync(join(root,"data","cities","mashhad","meta.json"),"utf8"));
+    expect(m.releaseStatus).toBe("candidate");
     expect(m.upstream.commit).toBe("f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0");
   });
 });

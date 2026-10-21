@@ -49,6 +49,7 @@ export function validateCityDir(cityDir: string, cityId: string): string[] {
   let meta: {
     cityId?: string;
     datasetVersion?: unknown;
+    releaseStatus?: unknown;
     counts?: Record<string, number>;
     upstream?: { commit?: string };
     contributorIds?: unknown;
@@ -90,6 +91,7 @@ export function validateCityDir(cityDir: string, cityId: string): string[] {
   for (const [k, v] of Object.entries(expect)) {
     if (counts[k] !== v) errors.push(`${cityId}/meta.json: counts.${k}=${counts[k]} but built ${v}`);
   }
+  if (meta.releaseStatus !== undefined && meta.releaseStatus !== "candidate" && meta.releaseStatus !== "verified") errors.push(`${cityId}/meta.json: invalid releaseStatus`);
   if (meta.cityId !== cityId) errors.push(`${cityId}/meta.json: cityId=${JSON.stringify(meta.cityId)}`);
   if (typeof meta.datasetVersion !== "string" || !/^\d{4}\.\d{2}\.\d+$/.test(meta.datasetVersion)) {
     errors.push(`${cityId}/meta.json: datasetVersion=${JSON.stringify(meta.datasetVersion)} (expected CalVer YYYY.MM.N)`);

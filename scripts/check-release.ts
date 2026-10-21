@@ -65,6 +65,7 @@ function main(): void {
 
   for (const city of cities) {
     const entry = sources[city] ?? {};
+    if (entry.releaseStatus === "candidate") errors.push(`city ${city}: candidate dataset is not approved for release`);
     for (const field of SOURCE_FIELDS) {
       if (entry[field] === undefined || entry[field] === "") {
         errors.push(`sources.json: city ${city} is missing ${field}`);

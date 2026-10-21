@@ -23,6 +23,7 @@
     "pinnedCommit": "f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0",
     "lastSyncedAt": "2026-10-21",
     "stationCount": 38,
-    "datasetVersion": "2026.10.1"
+    "datasetVersion": "2026.10.1",
+    "releaseStatus": "candidate"
   }
 }

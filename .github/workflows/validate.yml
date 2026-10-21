@@ -42,3 +42,6 @@ jobs:
 
       - name: Validate
         run: pnpm validate
+
+      - name: Regression tests
+        run: pnpm test

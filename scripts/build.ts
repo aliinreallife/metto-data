@@ -63,7 +63,7 @@ function writeAtomic(path: string, data: string): void {
 function main(): void {
   const { values } = parseArgs({ options: { city: { type: "string" } } });
   const sources = JSON.parse(readFileSync(join(repoRoot, "sources.json"), "utf8")) as Record<
-    string, { repository: string; upstreamFile: string; path: string; datasetVersion: string }
+    string, { repository: string; upstreamFile: string; path: string; datasetVersion: string; releaseStatus?: "candidate" | "verified" }
   >;
   const cities = values.city ? [values.city] : Object.keys(sources).sort();
   const builders = { tehran: buildTehran, mashhad: buildMashhad } as Record<string, (root: string) => ReturnType<typeof buildTehran>>;
@@ -87,7 +87,7 @@ function main(): void {
     }
     const meta = {
       cityId: city, datasetVersion: source.datasetVersion,
-      generatedAt: new Date().toISOString(), importer: `importers/${city}.ts`,
+      generatedAt: new Date().toISOString(), releaseStatus: source.releaseStatus ?? "verified", importer: `importers/${city}.ts`,
       upstream: {
         repository: source.repository,
         commit: upstreamCommit(city),
