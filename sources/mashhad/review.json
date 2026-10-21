@@ -39,9 +39,12 @@
     "coordinateDuplicatesAfter": 0,
     "verifiedTimetableFeeds": 0,
     "verifiedTransferDurations": 0,
-    "verifiedEntrances": 0
+    "verifiedEntrances": 0,
+    "duplicatedEnglishNamesBefore": 1,
+    "duplicatedEnglishNamesAfter": 0
   },
   "caveats": [
+    "Upstream Shahid Mofatteh erroneously has the English display name Nabovvat; a cited override fixes it and prevents alias corruption.",
     "Only 38 stations from the pinned upstream snapshot, not a claim of exhaustive future or unlisted station coverage.",
     "Some other applications show additional Line 3 construction/intermediate stops. Source licenses and passenger boarding status are not verified; do not ingest without evidence.",
     "Line 3 route includes operational boarding points; physical intermediate non-boarding infrastructure is not modeled.",

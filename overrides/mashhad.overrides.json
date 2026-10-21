@@ -13,6 +13,19 @@
         "checkedAt": "2026-10-21",
         "note": "OpenStreetMap station position; upstream duplicated Velayat coordinates. Positional accuracy/entrances still require survey."
       }
+    },
+    {
+      "upstreamKey": "shahid mofatteh",
+      "names": {
+        "en": "Shahid Mofatteh"
+      },
+      "source": {
+        "id": "station-list-2026-10",
+        "url": "https://www.saadatrent.com/mag/iran/mashhad-metro-map/",
+        "license": "reference-only",
+        "checkedAt": "2026-10-21",
+        "note": "The upstream English name duplicates Nabovvat; its separate Persian name شهید مفتح and Line 2 listing establish Shahid Mofatteh. Source used to corroborate name, not to copy a dataset."
+      }
     }
   ]
 }

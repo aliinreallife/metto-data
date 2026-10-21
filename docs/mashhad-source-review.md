@@ -10,6 +10,7 @@ The initial snapshot is `shahriaarrr/mashhad-metro-data@f5d5c78816a8cc360bb9ae00
 - Source metadata is pinned in `sources.json`. Station coordinates are WGS84 representative points, NOT train-platform doors.
 - Source `relations[]` is directional and insufficient; curated order lives in `topology/mashhad.routes.json`.
 - Original `Fajr` source coordinate duplicates `Velayat`. The reviewed corrective representative point `36.31281,59.65543` comes from [OpenStreetMap node 14133541209](https://www.openstreetmap.org/node/14133541209), cross-referenced with [Mapcarta's OSM-derived station object](https://mapcarta.com/N14133541209). This is not an entrance survey.
+- Upstream `shahid mofatteh.name` incorrectly equals `Nabovvat` (a distinct station). We correct its canonical English name to `Shahid Mofatteh` with the cited [October 1405 station list](https://www.saadatrent.com/mag/iran/mashhad-metro-map/); the inaccurate upstream string must never become an alias.
 - Upstream amenities are **not independently verified**. Canonical output uses `null` for unknown facilities; never turn unknown into `false`.
 - Line colors are **provisional upstream values**, not a verified official palette.
 - Line 3 operating station list checked against [October 1405 Mashhad metro guide](https://www.saadatrent.com/mag/iran/mashhad-metro-map/) for the 4 boarding nodes. Other accounts differ; see review items.

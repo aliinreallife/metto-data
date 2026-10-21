@@ -17,7 +17,8 @@ type RawStation = {
 };
 type Correction = {
   upstreamKey: string;
-  location: { lat: number; lng: number };
+  location?: { lat: number; lng: number };
+  names?: { fa?: string; en?: string };
   source: { id: string; url: string; license: string; checkedAt: string; note: string };
 };
 const AMENITIES: Amenities = {
@@ -55,12 +56,12 @@ export function buildMashhad(repoRoot: string) {
       lineColors.set(n, color);
     });
     const fix = corrected.get(key);
-    const en = s.name || key;
-    const lat = toCoordinate(fix?.location.lat ?? s.latitude, "lat");
-    const lng = toCoordinate(fix?.location.lng ?? s.longitude, "lng");
+    const en = fix?.names?.en ?? s.name ?? key;
+    const lat = toCoordinate(fix?.location?.lat ?? s.latitude, "lat");
+    const lng = toCoordinate(fix?.location?.lng ?? s.longitude, "lng");
     return {
       id: namespacedId(CITY, "station", slugifyEnglishName(key)), cityId: CITY,
-      names: { fa: s.translations?.fa ?? "", en },
+      names: { fa: fix?.names?.fa ?? s.translations?.fa ?? "", en },
       location: { lat, lng }, amenities: { ...AMENITIES }, amenitiesVerified: false,
       status: "operational" as const, sourceKeys: { upstreamKey: key },
     };
@@ -68,11 +69,15 @@ export function buildMashhad(repoRoot: string) {
   const byId = new Map(stations.map(s => [s.id, s]));
   if (byId.size !== stations.length) throw new Error("mashhad: station ID collisions");
   const seenCoordinates = new Map<string, string>();
+  const englishNames = new Map<string, string>();
   for (const s of stations) {
     if (s.location.lat < 36.2 || s.location.lat > 36.4 || s.location.lng < 59.4 || s.location.lng > 59.8) throw new Error(`mashhad: implausible station location ${s.id}`);
     const xy = `${s.location.lat.toFixed(5)}:${s.location.lng.toFixed(5)}`;
     if (seenCoordinates.has(xy)) throw new Error(`mashhad: duplicate station coordinates ${seenCoordinates.get(xy)} and ${s.id}`);
     seenCoordinates.set(xy, s.id);
+    const english = s.names.en.trim().toLowerCase();
+    if (englishNames.has(english)) throw new Error(`mashhad: duplicate English station name ${english}: ${englishNames.get(english)} and ${s.id}`);
+    englishNames.set(english, s.id);
   }
   const routes = JSON.parse(readFileSync(join(repoRoot, "topology", "mashhad.routes.json"), "utf8")) as Route[];
   const segments: Connection[] = [];
@@ -111,7 +116,9 @@ export function buildMashhad(repoRoot: string) {
   for (const key of upstreamKeys) {
     const id = namespacedId(CITY,"station",slugifyEnglishName(key));
     aliases[key] = id;
-    if (raw[key].name && raw[key].name !== key) aliases[raw[key].name!] = id;
+    // Do not use a demonstrably incorrect upstream display name as an alias.
+    const canonicalName = byId.get(id)!.names.en;
+    if (canonicalName !== key) aliases[canonicalName] = id;
   }
   // Review gate: exact walk times are unknown; never invent transfer times.
   const graph: CityGraph = { routes, segments, transfers: [], aliases };

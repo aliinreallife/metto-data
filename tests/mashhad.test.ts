@@ -25,6 +25,14 @@ describe("mashhad candidate importer", () => {
     const raw = JSON.parse(readFileSync(join(root,"upstream-mashhad-metro","data","stations.json"),"utf8"));
     expect(raw.Fajr.latitude).toEqual(raw.Velayat.latitude); // Provenance stays untouched.
   });
+  it("repairs a duplicated upstream English name without hijacking Nabovvat alias", () => {
+    const result = built();
+    const names = new Map(result.stations.map(s => [s.id, s.names.en]));
+    expect(names.get("mashhad:station:shahid-mofatteh")).toBe("Shahid Mofatteh");
+    expect(names.get("mashhad:station:nabovvat")).toBe("Nabovvat");
+    expect(result.graph.aliases["Nabovvat"]).toBe("mashhad:station:nabovvat");
+    expect(new Set(result.stations.map(s => s.names.en.toLowerCase())).size).toBe(38);
+  });
   it("does not advertise unsupported facilities or invented transfer times", () => {
     const result = built();
     for (const s of result.stations) {
