@@ -76,3 +76,11 @@ cause it to reopen next week, and new revisions get a new review issue.
 No fetched source content is executed, no submodules are auto-updated, and
 PRs never receive the issue-writing token. If the network fails, the workflow
 fails rather than claiming that the source is current.
+
+## Secure workflow dependencies
+
+Every third-party `uses:` reference is pinned to a 40-character commit SHA.
+The refs were resolved from the original action repositories and are checked by
+`pnpm workflows:check`. Dependabot proposes updates to actions and npm
+dependencies weekly; **no dependency updates are merged automatically**.
+Do not use privileged pull-request trigger events for source-monitoring code.

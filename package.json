@@ -20,7 +20,8 @@
     "test": "vitest run",
     "provenance:check": "tsx scripts/check-provenance.ts",
     "generated:check": "tsx scripts/check-generated.ts",
-    "quality:report": "tsx scripts/quality-report.ts"
+    "quality:report": "tsx scripts/quality-report.ts",
+    "workflows:check": "tsx scripts/check-workflows.ts"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",
