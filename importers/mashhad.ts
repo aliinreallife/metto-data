@@ -8,6 +8,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { slugifyEnglishName, namespacedId } from "./lib/slug.js";
 import { toCoordinate } from "./lib/coords.js";
+import { applyApprovedContributions } from "./lib/contributions.js";
 import type { Agency, Amenities, City, CityGraph, Connection, Line, Network, Route, Station } from "../schema/v1/types.js";
 
 type RawStation = {
@@ -122,6 +123,7 @@ export function buildMashhad(repoRoot: string) {
   }
   // Review gate: exact walk times are unknown; never invent transfer times.
   const graph: CityGraph = { routes, segments, transfers: [], aliases };
+  applyApprovedContributions(repoRoot, CITY, { stations, lines, graph });
   return { city, agencies, networks, stations, lines, graph, warnings: [
     "Mashhad: timetable, entrance points and line colors not independently verified",
     "Mashhad: transfer walking seconds require measurement before routing release",

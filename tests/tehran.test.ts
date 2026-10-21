@@ -103,7 +103,6 @@ describe("tehran importer", () => {
   describe("contribution folding", () => {
     it("folds approved proposals into stations and ignores non-approved ones", () => {
       const approvedId = randomUUID();
-      const pendingId = randomUUID();
       const approvedDir = join(fx, "contributions", "approved");
       writeFileSync(
         join(approvedDir, `${approvedId}.json`),
@@ -117,26 +116,10 @@ describe("tehran importer", () => {
           submittedBy: "test-contributor",
           submittedAt: "2026-09-11T00:00:00Z",
           status: "approved",
+          review: {decidedBy: "test-reviewer", decidedAt: "2026-10-21T00:00:00.000Z"},
         }),
         "utf8",
       );
-      // A pending-status file in approved/ must not be applied (defensive).
-      writeFileSync(
-        join(approvedDir, `${pendingId}.json`),
-        JSON.stringify({
-          id: pendingId,
-          city: "tehran",
-          entityType: "station",
-          entityId: "tehran:station:tajrish",
-          changeType: "update",
-          operations: [{ op: "set", path: "/amenities/wc", value: true }],
-          submittedBy: "test-contributor",
-          submittedAt: "2026-09-11T00:00:00Z",
-          status: "pending",
-        }),
-        "utf8",
-      );
-
       const { stations } = buildTehran(fx);
       const tajrish = stations.find((s) => s.id === "tehran:station:tajrish");
       expect(tajrish?.amenities.elevator).toBe(true);

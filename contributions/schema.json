@@ -5,48 +5,127 @@
   "description": "A community proposal. Never edits generated data directly; approved proposals are folded into the next build.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "city", "entityType", "entityId", "changeType", "operations", "submittedBy", "submittedAt", "status"],
+  "required": [
+    "id",
+    "city",
+    "entityType",
+    "entityId",
+    "changeType",
+    "operations",
+    "submittedBy",
+    "submittedAt",
+    "status"
+  ],
   "properties": {
-    "id": { "type": "string", "format": "uuid", "description": "Proposal UUID. Also the filename: contributions/pending/<id>.json" },
-    "city": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "City id, must exist in sources.json (e.g. tehran)" },
-    "entityType": { "type": "string", "enum": ["station", "line", "connection", "transfer"] },
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Proposal UUID. Also the filename: contributions/pending/<id>.json"
+    },
+    "city": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "City id, must exist in sources.json (e.g. tehran)"
+    },
+    "entityType": {
+      "type": "string",
+      "enum": [
+        "station",
+        "line",
+        "connection",
+        "transfer"
+      ]
+    },
     "entityId": {
       "type": "string",
       "pattern": "^[a-z0-9-]+:(station|line|segment|route|transfer):.+",
       "description": "Namespaced id, e.g. tehran:station:tajrish. Never a display name."
     },
-    "changeType": { "type": "string", "enum": ["update", "add", "remove"] },
+    "changeType": {
+      "type": "string",
+      "enum": [
+        "update",
+        "add",
+        "remove"
+      ],
+      "description": "Reserved add/remove formats are currently rejected by runtime validation until entity add/remove support is implemented. Only update is currently publishable."
+    },
     "operations": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["op", "path", "value"],
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
         "properties": {
-          "op": { "type": "string", "enum": ["set", "add", "remove"] },
+          "op": {
+            "type": "string",
+            "enum": [
+              "set",
+              "add",
+              "remove"
+            ],
+            "description": "Only set/add to allowlisted fields are currently applied. Remove is rejected by runtime validation until implemented."
+          },
           "path": {
             "type": "string",
             "description": "Allowlisted field path. Station: /amenities/*, /location/lat|lng, /name/fa|en, /status. Line: /color, /name/fa|en. Connection: /status. Transfer: /walkSeconds."
           },
-          "value": { "description": "New value. Amenities: true|false|null (null = unknown)." },
-          "note": { "type": "string", "description": "Why this change is correct." },
-          "evidence": { "type": "string", "description": "Photo/info URL (never a local file path)." }
+          "value": {
+            "description": "New value. Amenities: true|false|null (null = unknown)."
+          },
+          "note": {
+            "type": "string",
+            "description": "Why this change is correct."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Photo/info URL (never a local file path)."
+          }
         }
       }
     },
-    "submittedBy": { "type": "string", "description": "Contributor id (matches contributors.json key, e.g. github username)." },
-    "submittedAt": { "type": "string", "format": "date-time" },
-    "status": { "type": "string", "enum": ["pending", "approved", "rejected", "needs-info"] },
+    "submittedBy": {
+      "type": "string",
+      "description": "Contributor id (matches contributors.json key, e.g. github username)."
+    },
+    "submittedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "needs-info"
+      ]
+    },
     "review": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "decidedBy": { "type": "string" },
-        "decidedAt": { "type": "string", "format": "date-time" },
-        "reason": { "type": "string" },
-        "appliedInBuild": { "type": "string", "description": "metto-data commit that first shipped this change." }
-      }
+        "decidedBy": {
+          "type": "string"
+        },
+        "decidedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "appliedInBuild": {
+          "type": "string",
+          "description": "metto-data commit that first shipped this change."
+        }
+      },
+      "description": "Mandatory decidedBy and decidedAt for approved status (enforced at runtime)."
     }
   }
 }

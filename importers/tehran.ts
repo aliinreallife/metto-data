@@ -18,11 +18,12 @@
  * LINES table): distinct line numbers, one consistent color per line (abort on
  * conflict), names synthesized as `Line N` / `خط N`.
  */
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { slugifyEnglishName, namespacedId } from "./lib/slug.js";
 import { toCoordinate } from "./lib/coords.js";
+import { applyApprovedContributions } from "./lib/contributions.js";
 import type {
   Agency,
   Amenities,
@@ -308,119 +309,7 @@ export function buildTehran(repoRoot: string = repoRootFromHere()): TehranBuildR
   }
   const graph: CityGraph = { routes: routesRaw, segments: segmentsRaw, transfers: transfersRaw, aliases };
 
-  // --- 5. fold approved contributions ---
-  const stationsById = new Map(stations.map((s) => [s.id, s]));
-  const linesById = new Map(lines.map((l) => [l.id, l]));
-  const transfersById = new Map(transfersRaw.map((t) => [t.id, t]));
-  const segmentsById = new Map(segmentsRaw.map((s) => [s.id, s]));
-  let approved: Array<{
-    id?: string;
-    city?: string;
-    entityType?: string;
-    entityId?: string;
-    status?: string;
-    operations?: Array<{ op?: string; path?: string; value?: unknown }>;
-  }> = [];
-  try {
-    const files = readdirSync(join(repoRoot, "contributions", "approved"));
-    for (const file of files) {
-      if (!file.endsWith(".json")) continue;
-      const doc = JSON.parse(readFileSync(join(repoRoot, "contributions", "approved", file), "utf8"));
-      approved.push(doc);
-    }
-  } catch {
-    approved = [];
-  }
-  approved.sort((a, b) => String(a.id ?? "").localeCompare(String(b.id ?? "")));
-  for (const doc of approved) {
-    if (doc.city !== CITY_ID || doc.status !== "approved") continue;
-    if (!doc.entityId || !Array.isArray(doc.operations)) continue;
-    for (const op of doc.operations) {
-      if (!op.path) continue;
-      applyOperation(
-        { stationsById, linesById, transfersById, segmentsById },
-        doc.entityType ?? "",
-        doc.entityId,
-        op.op ?? "set",
-        op.path,
-        op.value,
-      );
-    }
-  }
-
+  // --- 5. fold independently reviewed community corrections ---
+  applyApprovedContributions(repoRoot, CITY_ID, { stations, lines, graph });
   return { city, agencies, networks, stations, lines, graph, warnings };
-}
-
-function applyOperation(
-  idx: {
-    stationsById: Map<string, Station>;
-    linesById: Map<string, Line>;
-    transfersById: Map<string, TransferRule>;
-    segmentsById: Map<string, Connection>;
-  },
-  entityType: string,
-  entityId: string,
-  op: string,
-  path: string,
-  value: unknown,
-): void {
-  if (op !== "set" && op !== "add") return;
-  if (entityType === "station") {
-    const st = idx.stationsById.get(entityId);
-    if (!st) throw new Error(`tehran importer: contribution targets unknown station ${entityId}`);
-    applyStationPath(st, path, value);
-    return;
-  }
-  if (entityType === "line") {
-    const line = idx.linesById.get(entityId);
-    if (!line) throw new Error(`tehran importer: contribution targets unknown line ${entityId}`);
-    if (path === "/color" && typeof value === "string") line.color = value;
-    else if ((path === "/name/en" || path === "/names/en") && typeof value === "string") line.names.en = value;
-    else if ((path === "/name/fa" || path === "/names/fa") && typeof value === "string") line.names.fa = value;
-    return;
-  }
-  if (entityType === "transfer") {
-    const t = idx.transfersById.get(entityId);
-    if (!t) throw new Error(`tehran importer: contribution targets unknown transfer ${entityId}`);
-    if (path === "/walkSeconds" && typeof value === "number") t.walkSeconds = value;
-    return;
-  }
-  if (entityType === "connection") {
-    const c = idx.segmentsById.get(entityId);
-    if (!c) throw new Error(`tehran importer: contribution targets unknown connection ${entityId}`);
-    if (path === "/status" && typeof value === "string") c.status = value as Connection["status"];
-  }
-}
-
-function applyStationPath(st: Station, path: string, value: unknown): void {
-  if (path.startsWith("/amenities/")) {
-    const key = path.slice("/amenities/".length) as AmenityKey;
-    if (!(["wc", "elevator", "atm", "coffeeShop", "fastFood", "groceryStore", "freeWifi", "prayerRoom", "parking", "police"] as string[]).includes(key)) {
-      throw new Error(`tehran importer: contribution has disallowed amenity path ${path}`);
-    }
-    if (value !== true && value !== false && value !== null) {
-      throw new Error(`tehran importer: contribution amenity value must be true|false|null (${path})`);
-    }
-    st.amenities[key] = value;
-    return;
-  }
-  if (path === "/location/lat" && typeof value === "number") {
-    st.location.lat = value;
-    return;
-  }
-  if (path === "/location/lng" && typeof value === "number") {
-    st.location.lng = value;
-    return;
-  }
-  if ((path === "/name/fa" || path === "/names/fa") && typeof value === "string") {
-    st.names.fa = value;
-    return;
-  }
-  if ((path === "/name/en" || path === "/names/en") && typeof value === "string") {
-    st.names.en = value;
-    return;
-  }
-  if (path === "/status" && typeof value === "string") {
-    st.status = value as InfrastructureStatus;
-  }
 }

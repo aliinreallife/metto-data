@@ -75,4 +75,19 @@ describe("contribution proposals", () => {
       /filename must be/,
     );
   });
+
+  it("rejects remove operations and entity-level add/remove until implemented", () => {
+    const label = `contributions/pending/${valid.id}.json`;
+    expect(validateContributionDoc({...valid, changeType: "remove"}, label, cityIds).join("\n")).toMatch(/not implemented/);
+    expect(validateContributionDoc({...valid, changeType: "add"}, label, cityIds).join("\n")).toMatch(/not implemented/);
+    const invalid = {...valid, operations:[{op:"remove", path:"/amenities/elevator", value: null}]};
+    expect(validateContributionDoc(invalid, label, cityIds).join("\n")).toMatch(/remove operation is not implemented/);
+  });
+
+  it("requires reviewer identity and timestamp before an approved proposal can publish", () => {
+    const label = `contributions/approved/${valid.id}.json`;
+    expect(validateContributionDoc({...valid, status:"approved"},label,cityIds).join("\n")).toMatch(/review.decidedBy/);
+    const ok = {...valid, status:"approved", review:{decidedBy:"maintainer", decidedAt:"2026-10-21T00:00:00Z"}};
+    expect(validateContributionDoc(ok,label,cityIds)).toEqual([]);
+  });
 });
