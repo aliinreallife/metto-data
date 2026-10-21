@@ -65,3 +65,14 @@ timeouts and PR concurrency cancellation.
 
 `pnpm check-release` remains deliberately stricter than PR validation:
 cities marked `candidate` cannot pass the production release gate.
+
+## Scheduled source monitoring
+
+`.github/workflows/upstream-watch.yml` runs every Monday (and supports manual
+dispatch on the default branch). A read-only `git ls-remote` comparison detects
+whether the pinned Git SHA differs from the current upstream HEAD, then opens
+an issue only once for that *specific* revision. Closing an issue does not
+cause it to reopen next week, and new revisions get a new review issue.
+No fetched source content is executed, no submodules are auto-updated, and
+PRs never receive the issue-writing token. If the network fails, the workflow
+fails rather than claiming that the source is current.

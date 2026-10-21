@@ -1,0 +1,64 @@
+name: Watch upstream datasets
+
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+# Only schedule/default-branch/manual; NEVER pull_request_target or PR input.
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout source registry
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Compare upstream HEAD with pinned revisions
+        run: node scripts/check-upstream-heads.mjs --output=source-status.json
+      - name: Open deduplicated manual-review issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('source-status.json','utf8'));
+            const previous = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'all', per_page: 100
+            });
+            for (const source of report.sources) {
+              if (!source.changed) continue;
+              const title = `[upstream:${source.city}] review source revision ${source.remote.slice(0,12)}`;
+              if (previous.some(issue => !issue.pull_request && issue.title === title)) continue;
+              const body = [
+                `Detected upstream default-branch revision: \`${source.remote}\``,
+                `Currently pinned revision: \`${source.pinned}\``,
+                `Repository: ${source.repository}`,
+                '',
+                'This is an **alert**, not authorization to update canonical data.',
+                'Review changelog, license, source differences, station locations,',
+                'facilities, statuses, topology, accessibility, and attribution.',
+                'Pin a new commit only in a reviewed PR. Never auto-merge or publish.',
+                '',
+                'Related platform task: #8'
+              ].join('\n');
+              await github.rest.issues.create({...context.repo,title,body});
+            }
+      - name: Retain upstream comparison evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-status-${{ github.run_id }}
+          path: source-status.json
+          retention-days: 30
