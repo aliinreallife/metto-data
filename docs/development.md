@@ -41,3 +41,15 @@ pnpm check-release            # full release readiness
 After cloning, `pnpm install` then `pre-commit run --all-files` must pass
 with no extra setup. The hooks are `repo: local`, so pre-commit downloads
 nothing; the checked-in `.pre-commit-config.yaml` is the whole configuration.
+
+## Quality gates and data safety
+
+CI runs `pnpm provenance:check` against the checked-out submodule Git links, pinned
+revision, expected station count and license location. The full build then runs
+`pnpm generated:check`: committed generated JSON must match regenerated output
+(excluding **only** `meta.generatedAt`). This prevents accidental edits to
+the public JSON or forgotten regeneration.
+
+`pnpm check-release` remains a stricter publishing gate: it **rejects** all
+cities with `releaseStatus: candidate`. Candidate builds are allowed in pull
+request CI, but they are not permission to release production routing data.

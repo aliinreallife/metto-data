@@ -90,7 +90,7 @@ function main(): void {
     }
     const meta = {
       cityId: city, datasetVersion: source.datasetVersion,
-      generatedAt: new Date().toISOString(), releaseStatus: source.releaseStatus ?? "verified", importer: `importers/${city}.ts`,
+      generatedAt: new Date().toISOString(), ...(source.releaseStatus ? { releaseStatus: source.releaseStatus } : {}), importer: `importers/${city}.ts`,
       upstream: {
         repository: source.repository,
         commit: upstreamCommit(city),
