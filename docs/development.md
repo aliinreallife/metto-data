@@ -84,3 +84,10 @@ The refs were resolved from the original action repositories and are checked by
 `pnpm workflows:check`. Dependabot proposes updates to actions and npm
 dependencies weekly; **no dependency updates are merged automatically**.
 Do not use privileged pull-request trigger events for source-monitoring code.
+
+## Per-city release gate
+
+`pnpm check-release --city tehran` confirms Tehran can ship without waiting
+for a different city's candidate review. `pnpm check-release --city mashhad`
+correctly fails while Mashhad remains a candidate. Omitting `--city` is the
+stricter full-repository gate.

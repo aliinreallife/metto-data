@@ -39,3 +39,15 @@ stripped when checking reproducibility.
 - [ ] Tag it: `git tag v<datasetVersion>` (e.g. `git tag v2026.09.11`).
 - [ ] Publish: push the commit and the tag so the versioned dataset
   (`data/cities/*` at that tag) is publicly fetchable.
+
+## Releasing one verified city while other cities remain candidates
+
+Run `pnpm check-release --city tehran` (or the desired city) before a
+**city-specific** dataset tag/release. This still rejects the selected city
+if it has `releaseStatus: candidate`. The unqualified `pnpm check-release`
+validates **every** registered city and intentionally fails if *any* candidate
+is present. This separation prevents an unfinished Mashhad dataset from
+blocking maintenance of the already-released Tehran dataset.
+
+Before shipping a tagged release, also run `pnpm build`,
+`pnpm generated:check`, `pnpm validate`, and `pnpm test` on a clean checkout.

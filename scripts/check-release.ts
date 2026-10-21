@@ -6,6 +6,7 @@
 // - submodule gitlinks match sources.json pinned commits
 // - validators pass for every city
 import { execSync } from "node:child_process";
+import { parseArgs } from "node:util";
 import { readFileSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -60,8 +61,14 @@ function main(): void {
     console.error(`check-release error: cannot read sources.json (${(e as Error).message})`);
     process.exit(1);
   }
-  const cities = Object.keys(sources);
-  if (cities.length === 0) errors.push("sources.json: no supported cities");
+  const { values } = parseArgs({options:{city:{type:"string"}}});
+  const registeredCities = Object.keys(sources);
+  const cities = values.city ? [values.city] : registeredCities;
+  if (registeredCities.length === 0) errors.push("sources.json: no supported cities");
+  if (values.city && !registeredCities.includes(values.city)) {
+    console.error(`check-release: unknown registered city ${values.city}`);
+    process.exit(2);
+  }
 
   for (const city of cities) {
     const entry = sources[city] ?? {};
