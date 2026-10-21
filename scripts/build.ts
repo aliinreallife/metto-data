@@ -67,6 +67,9 @@ function main(): void {
   >;
   const cities = values.city ? [values.city] : Object.keys(sources).sort();
   const builders = { tehran: buildTehran, mashhad: buildMashhad } as Record<string, (root: string) => ReturnType<typeof buildTehran>>;
+  const staged: Array<{city: string; files: Record<string, unknown>; message: string}> = [];
+  // Validate every city before writing any output, avoiding a partially rebuilt
+  // workspace if a later city fails its integrity checks.
   for (const city of cities) {
     const source = sources[city];
     const importer = builders[city];
@@ -102,16 +105,27 @@ function main(): void {
       contributorIds: contributorIds(city),
     };
 
+    staged.push({
+      city,
+      files: {
+        "city.json": result.city,
+        "agencies.json": result.agencies,
+        "networks.json": result.networks,
+        "stations.json": result.stations,
+        "lines.json": result.lines,
+        "graph.json": result.graph,
+        "meta.json": meta,
+      },
+      message: `build: ${city} ok — stations=${meta.counts.stations} lines=${meta.counts.lines} routes=${meta.counts.routes} segments=${meta.counts.segments} transfers=${meta.counts.transfers}`,
+    });
+  }
+  for (const { city, files, message } of staged) {
     const outDir = join(repoRoot, "data", "cities", city);
     mkdirSync(outDir, { recursive: true });
-    writeAtomic(join(outDir, "city.json"), JSON.stringify(result.city, null, 2) + "\n");
-    writeAtomic(join(outDir, "agencies.json"), JSON.stringify(result.agencies, null, 2) + "\n");
-    writeAtomic(join(outDir, "networks.json"), JSON.stringify(result.networks, null, 2) + "\n");
-    writeAtomic(join(outDir, "stations.json"), JSON.stringify(result.stations, null, 2) + "\n");
-    writeAtomic(join(outDir, "lines.json"), JSON.stringify(result.lines, null, 2) + "\n");
-    writeAtomic(join(outDir, "graph.json"), JSON.stringify(result.graph, null, 2) + "\n");
-    writeAtomic(join(outDir, "meta.json"), JSON.stringify(meta, null, 2) + "\n");
-    console.log(`build: ${city} ok — stations=${meta.counts.stations} lines=${meta.counts.lines} routes=${meta.counts.routes} segments=${meta.counts.segments} transfers=${meta.counts.transfers}`);
+    for (const [filename, data] of Object.entries(files)) {
+      writeAtomic(join(outDir, filename), JSON.stringify(data, null, 2) + "\n");
+    }
+    console.log(message);
   }
 }
 

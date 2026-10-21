@@ -58,6 +58,21 @@ describe("mashhad candidate importer", () => {
       expect(() => buildMashhad(temp)).toThrow(/duplicate station coordinates/);
     } finally { rmSync(temp,{recursive:true,force:true}); }
   });
+  it("matches every generated file to current pinned source normalization", () => {
+    const result = built();
+    const expected = {
+      "city.json": result.city,
+      "agencies.json": result.agencies,
+      "networks.json": result.networks,
+      "stations.json": result.stations,
+      "lines.json": result.lines,
+      "graph.json": result.graph,
+    };
+    for (const [name, value] of Object.entries(expected)) {
+      const actual = JSON.parse(readFileSync(join(root, "data", "cities", "mashhad", name), "utf8"));
+      expect(actual, `generated ${name} drifted from pinned upstream`).toEqual(value);
+    }
+  });
   it("validates the generated machine-readable release candidate", () => {
     expect(validateCityDir(join(root,"data","cities","mashhad"),"mashhad")).toEqual([]);
     const m = JSON.parse(readFileSync(join(root,"data","cities","mashhad","meta.json"),"utf8"));
