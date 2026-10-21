@@ -1,0 +1,61 @@
+{
+  "reviewStatus": "needs-verification",
+  "city": "mashhad",
+  "sourceCheckedAt": "2026-10-21",
+  "sources": [
+    {
+      "id": "mashhad-metro-data",
+      "url": "https://github.com/shahriaarrr/mashhad-metro-data",
+      "pinnedCommit": "f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0",
+      "license": "ODbL-1.0",
+      "role": "initial 38-station names, coordinate candidates and membership"
+    },
+    {
+      "id": "osm-fajr",
+      "url": "https://www.openstreetmap.org/node/14133541209",
+      "license": "ODbL-1.0",
+      "role": "Fajr station coordinate correction"
+    },
+    {
+      "id": "operator",
+      "url": "https://metro.mashhad.ir/",
+      "license": "reference-only",
+      "role": "operational notices, not redistributed"
+    },
+    {
+      "id": "published-2026-10",
+      "url": "https://www.saadatrent.com/mag/iran/mashhad-metro-map/",
+      "license": "reference-only",
+      "role": "corroborate 4 served stations on Line 3"
+    }
+  ],
+  "checks": {
+    "upstreamStations": 38,
+    "routeMemberships": 41,
+    "lines": 3,
+    "operationalRouteStationKeys": 38,
+    "orderedTrackEdges": 38,
+    "coordinateDuplicatesBefore": 1,
+    "coordinateDuplicatesAfter": 0,
+    "verifiedTimetableFeeds": 0,
+    "verifiedTransferDurations": 0,
+    "verifiedEntrances": 0
+  },
+  "caveats": [
+    "Only 38 stations from the pinned upstream snapshot, not a claim of exhaustive future or unlisted station coverage.",
+    "Some other applications show additional Line 3 construction/intermediate stops. Source licenses and passenger boarding status are not verified; do not ingest without evidence.",
+    "Line 3 route includes operational boarding points; physical intermediate non-boarding infrastructure is not modeled.",
+    "Official line colors are NOT verified; current colors copied as provisional from upstream.",
+    "All amenity values are unknown (null) until independently verified. Raw upstream assertions are not published as facts.",
+    "Transfer walkthrough times are not independently measured; no transfer-time rules are published in this initial dataset.",
+    "Coordinates are station representative points, not entrances/platforms; walking directions must not treat them as doorway GPS.",
+    "No verified Mashhad GTFS schedule or train headway is included. Never invent a timetable.",
+    "Review and test station IDs/route order against dated operator map before production adoption."
+  ],
+  "criticalOutstanding": [
+    "Validate precise route/service pattern for Line 3 and any intermediate pass-through stations.",
+    "Independently verify line colors, entrances and transfer pathways.",
+    "Add platform-specific route interchange handling without inventing walkSeconds.",
+    "Review possible missing station records across independent sources."
+  ]
+}
