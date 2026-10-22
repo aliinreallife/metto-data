@@ -76,6 +76,15 @@ type UpstreamStation = {
 type Overrides = {
   soleimaniOverride: { en: string; location: { lat: number; lng: number } };
   statusOverrides: Record<string, string>;
+  /** Metto's source-of-truth exception for a route's boarding status. */
+  routeStopStatusOverrides: Array<{
+    routeId: string;
+    stationId: string;
+    expectedStatus: "operational" | "under_construction" | "planned";
+    status: "operational" | "under_construction" | "planned";
+    source: string;
+    reason: string;
+  }>;
   fakhrizadeh: {
     id: string;
     name: { fa: string; en: string };
@@ -311,5 +320,30 @@ export function buildTehran(repoRoot: string = repoRootFromHere()): TehranBuildR
 
   // --- 5. fold independently reviewed community corrections ---
   applyApprovedContributions(repoRoot, CITY_ID, { stations, lines, graph });
+
+  // --- final: protect the one explicitly approved Metto boarding override ---
+  // Station/track statuses and other line stops are intentionally untouched.
+  const seenOverrides = new Set<string>();
+  for (const rule of overrides.routeStopStatusOverrides ?? []) {
+    if (typeof rule.routeId !== "string" || typeof rule.stationId !== "string" ||
+        !["operational", "under_construction", "planned"].includes(rule.status) ||
+        !["operational", "under_construction", "planned"].includes(rule.expectedStatus) ||
+        typeof rule.source !== "string" || !rule.source.startsWith("metto/") ||
+        typeof rule.reason !== "string" || !rule.reason.trim()) {
+      throw new Error("tehran importer: malformed Metto route stop override");
+    }
+    const key = `${rule.routeId}:${rule.stationId}`;
+    if (seenOverrides.has(key)) throw new Error(`tehran importer: duplicate route stop override ${key}`);
+    seenOverrides.add(key);
+    const route = graph.routes.find((r) => r.id === rule.routeId);
+    const stop = route?.stops.find((s) => s.stationId === rule.stationId);
+    if (!stop) throw new Error(`tehran importer: missing route stop override target ${key}`);
+    // A changed topology or a new review of the canonical status must cause
+    // a visible failed build instead of applying a stale instruction blindly.
+    if (stop.status !== rule.expectedStatus && stop.status !== rule.status) {
+      throw new Error(`tehran importer: route stop override ${key} expected ${rule.expectedStatus}, got ${stop.status}`);
+    }
+    stop.status = rule.status;
+  }
   return { city, agencies, networks, stations, lines, graph, warnings };
 }
