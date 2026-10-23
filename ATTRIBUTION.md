@@ -66,3 +66,10 @@ listed in contributors.json. Data build: see data/cities/tehran/meta.json.
 * Data provenance and draft review: [docs/mashhad-source-review.md](docs/mashhad-source-review.md).
 
 Mashhad output is derived from these ODbL sources and is published under the same database license. Other pages used for service verification are reference-only and are NOT copied or relicensed.
+
+`sources/mashhad/osm-review-snapshot.json` is an ODbL-1.0 review extract,
+© OpenStreetMap contributors (<https://www.openstreetmap.org/copyright>).
+It retains the versions/timestamps and ordered stop members of relations
+154407, 5623319 and 5692274, plus their referenced stop positions and the
+versioned Fajr representative node. These facts are review evidence, not a
+certification of current service, entrances, accessibility or transfer times.

@@ -13,6 +13,17 @@
         "https://en.wikipedia.org/wiki/Mashhad_Urban_Railway"
       ],
       "note": "HTTPS proxy CONNECT requests returned 403. No page content was retrieved and no service fact was independently verified by this attempt. Required hosts were added to the environment draft; runtime access requires applying the settings. Existing source evidence and candidate status are unchanged."
+    },
+    {
+      "date": "2026-10-23",
+      "result": "partial-source-review-completed",
+      "responses": {
+        "operator": 503,
+        "guide": 200,
+        "openstreetmap": 200,
+        "wikipedia": 200
+      },
+      "note": "The operator response reports an upstream connection timeout. The other three sources were read. Successful retrieval is not production approval."
     }
   ],
   "sources": [
@@ -39,7 +50,7 @@
       "id": "published-2026-10",
       "url": "https://www.saadatrent.com/mag/iran/mashhad-metro-map/",
       "license": "reference-only",
-      "role": "corroborate 4 served stations on Line 3"
+      "role": "secondary Line 1/2 station lists and a disputed four-stop Line 3 claim; not operator confirmation"
     }
   ],
   "checks": {
@@ -60,7 +71,7 @@
     "Upstream Shahid Mofatteh erroneously has the English display name Nabovvat; a cited override fixes it and prevents alias corruption.",
     "Only 38 stations from the pinned upstream snapshot, not a claim of exhaustive future or unlisted station coverage.",
     "Some other applications show additional Line 3 construction/intermediate stops. Source licenses and passenger boarding status are not verified; do not ingest without evidence.",
-    "Line 3 route includes operational boarding points; physical intermediate non-boarding infrastructure is not modeled.",
+    "Line 3 route encodes candidate boarding claims that remain disputed; physical intermediate non-boarding infrastructure is not modeled.",
     "Official line colors are NOT verified; current colors copied as provisional from upstream.",
     "All amenity values are unknown (null) until independently verified. Raw upstream assertions are not published as facts.",
     "Transfer walkthrough times are not independently measured; no transfer-time rules are published in this initial dataset.",
@@ -73,5 +84,70 @@
     "Independently verify line colors, entrances and transfer pathways.",
     "Add platform-specific route interchange handling without inventing walkSeconds.",
     "Review possible missing station records across independent sources."
+  ],
+  "deliveryPlan": {
+    "scope": "stations-and-route-paths",
+    "arrivalEstimates": false,
+    "travelTimeEstimates": false,
+    "timetablesRequiredForThisScope": false,
+    "initialLinesUnderReview": [
+      "mashhad:line:1",
+      "mashhad:line:2"
+    ],
+    "line3": "withheld-from-initial-routing-scope-pending-conflict-resolution",
+    "approval": "not-granted"
+  },
+  "evidenceArtifacts": [
+    {
+      "path": "sources/mashhad/osm-review-snapshot.json",
+      "sha256": "c001f26b47f74b8a82a0f992094a2e9e653c50064fd98effb261e801578ce1b1",
+      "license": "ODbL-1.0",
+      "retrievedOn": "2026-10-23"
+    }
+  ],
+  "observations": [
+    {
+      "id": "fajr-position",
+      "status": "corroborated-coordinate",
+      "source": "OpenStreetMap node 14133541209 version 2",
+      "note": "Pinned node is 36.3128066,59.6554285. Existing rounded correction 36.31281,59.65543 is consistent; coordinates were not changed."
+    },
+    {
+      "id": "line1-order",
+      "status": "corroborated-osm",
+      "source": "OpenStreetMap relation 154407 version 35",
+      "note": "All 24 candidate Line 1 stops occur in matching order. This does not establish current boarding or entrances."
+    },
+    {
+      "id": "line2-order",
+      "status": "corroborated-osm",
+      "source": "OpenStreetMap relation 5623319 version 29",
+      "note": "All 13 candidate Line 2 stops occur in matching order; relation to/from labels still say Shahid Kaveh despite containing Shahid Fakouri."
+    },
+    {
+      "id": "line3-basij",
+      "status": "conflict-unresolved",
+      "sources": [
+        "OpenStreetMap relation 5692274 version 15",
+        "OpenStreetMap node 667355736",
+        "Saadatrent article modified 2026-10-21"
+      ],
+      "note": "OSM has three stop members and marks the Line 3 Basij node proposed. The guide text lists four active stops including Basij; its embedded map depicts three. Neither observation alone resolves current boardability."
+    },
+    {
+      "id": "line1-ghaem-name",
+      "status": "retain-existing-name",
+      "sources": [
+        "OpenStreetMap Line 1 stop nodes",
+        "Saadatrent article modified 2026-10-21"
+      ],
+      "note": "Guide says Qiyam (قیام); OSM and the pinned candidate say Ghaem (قائم). Do not rename from the guide alone."
+    },
+    {
+      "id": "station-count",
+      "status": "secondary-summary-inconsistent",
+      "source": "Wikipedia oldid 1338460161",
+      "note": "Infobox claims 40 active stations while enumerated line lists imply 38 unique records. Do not create missing stations from the aggregate count."
+    }
   ]
 }

@@ -13,7 +13,7 @@ The initial snapshot is `shahriaarrr/mashhad-metro-data@f5d5c78816a8cc360bb9ae00
 - Upstream `shahid mofatteh.name` incorrectly equals `Nabovvat` (a distinct station). We correct its canonical English name to `Shahid Mofatteh` with the cited [October 1405 station list](https://www.saadatrent.com/mag/iran/mashhad-metro-map/); the inaccurate upstream string must never become an alias.
 - Upstream amenities are **not independently verified**. Canonical output uses `null` for unknown facilities; never turn unknown into `false`.
 - Line colors are **provisional upstream values**, not a verified official palette.
-- Line 3 operating station list checked against [October 1405 Mashhad metro guide](https://www.saadatrent.com/mag/iran/mashhad-metro-map/) for the 4 boarding nodes. Other accounts differ; see review items.
+- Line 3 candidate list follows a four-stop claim in the [October 1405 Mashhad metro guide](https://www.saadatrent.com/mag/iran/mashhad-metro-map/). Its embedded map and OSM disagree; see the retrieved evidence below. This is not verified boardability.
 - A second app [Istgah](https://github.com/MohsenDastaran/istgah-rn) lists extra intermediate Line 3 station records, but its LICENSE is not declared. It is comparison context only; do NOT copy its coordinates, names or records.
 
 ## Blockers for service-ready release
@@ -68,3 +68,41 @@ candidate. Approval requires an approved city review, an explicit empty blocker
 list, the correct upstream pin, and a maintainer identity/time bound to the
 current dataset SHA-256. That record documents human review; it does not perform
 independent verification or cryptographically authenticate the reviewer.
+
+## Retrieved evidence and first-release scope (2026-10-23)
+
+After the network change, the guide, Wikipedia and OSM returned HTTP 200.
+The operator returned HTTP 503 with an upstream connection timeout; no operator
+content was read. Primary articles linked by Wikipedia on `shahraranews.ir`
+and `www.isna.ir` remain blocked by the proxy, and their domains are saved in
+the next network draft.
+
+The user chose **stations and route paths first, without arrival estimates**.
+The initial scope under review is Lines 1/2 (36 unique stations); Line 3 remains
+withheld while boarding evidence conflicts. Exact departures, travel-time
+estimates, street entrances and amenities are not promises of this scope.
+This is a delivery plan, not production approval.
+
+The retrieved OSM evidence is archived in `sources/mashhad/osm-review-snapshot.json`
+with its SHA-256 recorded in `review.json`:
+
+- Fajr node 14133541209 v2: 36.3128066, 59.6554285, consistent with our existing
+  rounded correction. No coordinate change was necessary.
+- Line 1 relation 154407 v35: 24 stops match the candidate's ordered route.
+- Line 2 relation 5623319 v29: 13 stops match, including Shahid Fakouri.
+  Its `to` label still says Shahid Kaveh; use actual members as evidence,
+  and do not infer a truncation from that stale label.
+- Line 3 relation 5692274 v15 (October 1, 2026) has three stop members and
+  omits Basij. Basij's Line 3 stop node is still tagged proposed.
+  The guide's October 21 text claims four active stops and a Basij opening
+  in Mordad 1405, while its embedded network map shows three active Line 3
+  stops. These observations conflict; neither establishes current boardability.
+- The guide writes «قیام» where the candidate and OSM say «قائم». The existing
+  Ghaem name is retained. Wikipedia oldid 1338460161 also has an inconsistent
+  active-station aggregate; do not add records from that number alone.
+
+OSM stop-position coordinates differ from candidate representative points by up
+to about 125 m on Lines 1/2. These are different kinds of points, not verified
+entrances; no walking directions or correction was inferred from those offsets.
+No third-party map image, article body, station database from an unlicensed app,
+or supposed timetable was copied into the dataset. Canonical data is unchanged.

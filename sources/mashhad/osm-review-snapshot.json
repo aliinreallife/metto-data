@@ -1,0 +1,1008 @@
+{
+  "schemaVersion": 1,
+  "retrievedOn": "2026-10-23",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "attributionUrl": "https://www.openstreetmap.org/copyright",
+  "scope": "Review evidence only. Stop positions are not entrances, live service confirmation, or transfer timings.",
+  "routes": [
+    {
+      "lineId": "mashhad:line:1",
+      "url": "https://www.openstreetmap.org/relation/154407",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/relation/154407/full.json",
+      "relation": {
+        "type": "relation",
+        "id": 154407,
+        "version": 35,
+        "timestamp": "2023-10-17T13:09:54Z",
+        "tags": {
+          "colour": "#0026FF",
+          "from": "وکیل آباد",
+          "network": "قطار شهری مشهد",
+          "note": "Line 1 from Vakilabad -> Airport",
+          "public_transport:version": "2",
+          "ref": "1",
+          "route": "light_rail",
+          "to": "فرودگاه",
+          "type": "route",
+          "wikidata": "Q104222652"
+        }
+      },
+      "stopMembers": [
+        {
+          "type": "node",
+          "ref": 287251086,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352264,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352261,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352260,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352259,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352258,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352280,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352283,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352257,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352253,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352252,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848352236,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848782907,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5848782897,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418890,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418884,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418877,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418875,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418872,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418871,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5849418870,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 626965817,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 3872397257,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 3872397458,
+          "role": "stop"
+        }
+      ],
+      "nodes": [
+        {
+          "type": "node",
+          "id": 287251086,
+          "version": 14,
+          "timestamp": "2026-09-28T10:41:35Z",
+          "lat": 36.3451637,
+          "lon": 59.442178,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو وکیل آباد",
+            "name:en": "Vakilabad metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "ref": "22"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352264,
+          "version": 6,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3426481,
+          "lon": 59.4526689,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو کوهستان پارک",
+            "name:en": "Kuhestan Park metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "21"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352261,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3393706,
+          "lon": 59.4631261,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو نمایشگاه",
+            "name:en": "Exhibition Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "20"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352260,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3358833,
+          "lon": 59.4742298,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو اقبال لاهوری",
+            "name:en": "Eghbal Lahuri metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "19"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352259,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.332572,
+          "lon": 59.4848071,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو صیاد شیرازی",
+            "name:en": "Sayyad Shirazi metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "18"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352258,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3300612,
+          "lon": 59.492894,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو صدف",
+            "name:en": "Sadaf metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "17"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352280,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3277177,
+          "lon": 59.5003907,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو هفت تیر",
+            "name:en": "Haft-e Tir metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "16"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352283,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3251635,
+          "lon": 59.5085956,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو دانش آموز",
+            "name:en": "Danesh Amouz metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "15"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352257,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3225325,
+          "lon": 59.5170204,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو سید رضی",
+            "name:en": "Seyyed Razi metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "14"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352253,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3198506,
+          "lon": 59.5256343,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو کوثر",
+            "name:en": "Kowsar metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "13"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352252,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3172918,
+          "lon": 59.5338754,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو پارک ملت",
+            "name:en": "Mellat Park metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "station_number": "12"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848352236,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3125327,
+          "lon": 59.5444997,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو آزادی",
+            "name:en": "Azadi metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848782907,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3071076,
+          "lon": 59.5526563,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو خیام",
+            "name:en": "Khayyam metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5848782897,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.30017,
+          "lon": 59.5632711,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو فلسطین",
+            "name:en": "Felestin metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418890,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2971403,
+          "lon": 59.5729983,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو طالقانی",
+            "name:en": "Taleghani metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418884,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2942491,
+          "lon": 59.5787881,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو قائم",
+            "name:en": "Ghaem metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418877,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2910581,
+          "lon": 59.5860772,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو شریعتی",
+            "name:en": "Shariati metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418875,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2811862,
+          "lon": 59.5958626,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو امام خمینی",
+            "name:en": "Imam Khomeini metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418872,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2735439,
+          "lon": 59.6035341,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو بسیج",
+            "name:en": "Basij metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418871,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2677096,
+          "lon": 59.6091939,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو هفده شهریور",
+            "name:en": "Hefdah-e Shahrivar metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5849418870,
+          "version": 4,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2627666,
+          "lon": 59.6141632,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو پروین اعتصامی",
+            "name:en": "Parvin-e Etessami metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 626965817,
+          "version": 17,
+          "timestamp": "2026-09-28T10:45:24Z",
+          "lat": 36.2566346,
+          "lon": 59.6203466,
+          "tags": {
+            "light_rail": "yes",
+            "local_ref": "1",
+            "name": "ایستگاه مترو غدیر",
+            "name:en": "Ghadir metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 3872397257,
+          "version": 13,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2433636,
+          "lon": 59.6235501,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو بوستان ریحانه",
+            "name:en": "Bustan-e Reyhaneh metro station",
+            "public_transport": "stop_position",
+            "railway": "stop"
+          }
+        },
+        {
+          "type": "node",
+          "id": 3872397458,
+          "version": 5,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.228297,
+          "lon": 59.6405533,
+          "tags": {
+            "light_rail": "yes",
+            "name": "ایستگاه مترو فرودگاه",
+            "name:en": "Airport metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "wheelchair": "yes"
+          }
+        }
+      ],
+      "reviewedCandidateStationIds": [
+        "mashhad:station:vakilabad",
+        "mashhad:station:koohestan-park",
+        "mashhad:station:namayeshgah",
+        "mashhad:station:eghbal-e-lahouri",
+        "mashhad:station:sayyad-e-shirazi",
+        "mashhad:station:sadaf",
+        "mashhad:station:haft-e-tir",
+        "mashhad:station:danesh-amooz",
+        "mashhad:station:seyyed-razi",
+        "mashhad:station:kowsar",
+        "mashhad:station:park-e-mellat",
+        "mashhad:station:azadi",
+        "mashhad:station:khayyam",
+        "mashhad:station:palestine",
+        "mashhad:station:taleghani",
+        "mashhad:station:ghaem",
+        "mashhad:station:shariati",
+        "mashhad:station:imam-khomeini",
+        "mashhad:station:basij",
+        "mashhad:station:hefdah-e-shahrivar",
+        "mashhad:station:parvin-etesami",
+        "mashhad:station:ghadir",
+        "mashhad:station:bustan-e-reyhaneh",
+        "mashhad:station:airport"
+      ]
+    },
+    {
+      "lineId": "mashhad:line:2",
+      "url": "https://www.openstreetmap.org/relation/5623319",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/relation/5623319/full.json",
+      "relation": {
+        "type": "relation",
+        "id": 5623319,
+        "version": 29,
+        "timestamp": "2025-05-19T14:00:36Z",
+        "tags": {
+          "colour": "#66CC00",
+          "from": "مترو طبرسی",
+          "network": "قطار شهری مشهد",
+          "note": "Line 2 from North Tabarsi Street → Shahid Fakouri",
+          "public_transport:version": "2",
+          "ref": "2",
+          "route": "subway",
+          "to": "مترو شهید کاوه",
+          "type": "route",
+          "wikidata": "Q56911095",
+          "wikipedia": "ru:Вторая линия (Мешхед)"
+        }
+      },
+      "stopMembers": [
+        {
+          "type": "node",
+          "ref": 3808291107,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578079,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578059,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578063,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1245398735,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578065,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578080,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578075,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 5162991969,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578067,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 3808279928,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 1229578061,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 3808279927,
+          "role": "stop"
+        }
+      ],
+      "nodes": [
+        {
+          "type": "node",
+          "id": 3808291107,
+          "version": 12,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3250926,
+          "lon": 59.6752419,
+          "tags": {
+            "name": "ایستگاه مترو طبرسی",
+            "name:ar": "الطبرسي",
+            "name:en": "Tabarsi Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q30599970"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578079,
+          "version": 9,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3170531,
+          "lon": 59.6622094,
+          "tags": {
+            "name": "ایستگاه مترو ولایت",
+            "name:en": "Velayat Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578059,
+          "version": 12,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3128258,
+          "lon": 59.6553982,
+          "tags": {
+            "name": "ایستگاه مترو فجر",
+            "name:ar": "الفجر",
+            "name:en": "Fajr Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q30599976"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578063,
+          "version": 11,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3060154,
+          "lon": 59.6446516,
+          "tags": {
+            "name": "ایستگاه مترو نبوت",
+            "name:ar": "نبوت",
+            "name:en": "Nabovvat Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q30599975"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1245398735,
+          "version": 13,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3017247,
+          "lon": 59.6377121,
+          "tags": {
+            "name": "ایستگاه مترو مفتح",
+            "name:ar": "مفتح",
+            "name:en": "Mofatteh Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q48816796",
+            "wikipedia": "fa:ایستگاه قطار شهری شهید مفتح"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578065,
+          "version": 12,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.3034236,
+          "lon": 59.6229181,
+          "tags": {
+            "name": "ایستگاه مترو راه آهن",
+            "name:ar": "السكك الحديدية",
+            "name:en": "Raah Ahan Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578080,
+          "version": 10,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2982511,
+          "lon": 59.6065623,
+          "tags": {
+            "name": "ایستگاه مترو شهدا",
+            "name:en": "Shohada metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578075,
+          "version": 14,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2953477,
+          "lon": 59.5982227,
+          "tags": {
+            "name": "ایستگاه مترو سعدی",
+            "name:ar": "سعدي",
+            "name:en": "Sa'di Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 5162991969,
+          "version": 8,
+          "timestamp": "2026-09-28T10:43:53Z",
+          "lat": 36.2911,
+          "lon": 59.5860036,
+          "tags": {
+            "name": "ایستگاه مترو شریعتی",
+            "name:en": "Shariati metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q20718132"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578067,
+          "version": 17,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2877086,
+          "lon": 59.5761299,
+          "tags": {
+            "name": "ایستگاه مترو الندشت",
+            "name:ar": "الندشت",
+            "name:en": "Alandasht Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 3808279928,
+          "version": 12,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2837736,
+          "lon": 59.5639834,
+          "tags": {
+            "name": "ایستگاه مترو کوهسنگی",
+            "name:ar": "كوهسنكي",
+            "name:en": "Kouh Sangi Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 1229578061,
+          "version": 14,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2845386,
+          "lon": 59.5500407,
+          "tags": {
+            "name": "ایستگاه مترو شهید کاوه",
+            "name:ar": "شهيد كافه",
+            "name:en": "Shahid Kaveh Metro Station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q51846729"
+          }
+        },
+        {
+          "type": "node",
+          "id": 3808279927,
+          "version": 11,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2828001,
+          "lon": 59.5423852,
+          "tags": {
+            "alt_name": "سلامت",
+            "alt_name:en": "Salamat",
+            "name": "ایستگاه مترو شهید فکوری",
+            "name:ar": "شهيد فكوري",
+            "name:en": "Shahid Fakouri metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes",
+            "wikidata": "Q51847348"
+          }
+        }
+      ],
+      "reviewedCandidateStationIds": [
+        "mashhad:station:tabarsi",
+        "mashhad:station:velayat",
+        "mashhad:station:fajr",
+        "mashhad:station:nabovvat",
+        "mashhad:station:shahid-mofatteh",
+        "mashhad:station:railway",
+        "mashhad:station:shohada",
+        "mashhad:station:saadi",
+        "mashhad:station:shariati",
+        "mashhad:station:alandasht",
+        "mashhad:station:kouhsangi",
+        "mashhad:station:shahid-kaveh",
+        "mashhad:station:shahid-fakouri"
+      ]
+    },
+    {
+      "lineId": "mashhad:line:3",
+      "url": "https://www.openstreetmap.org/relation/5692274",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/relation/5692274/full.json",
+      "relation": {
+        "type": "relation",
+        "id": 5692274,
+        "version": 15,
+        "timestamp": "2026-10-01T10:25:18Z",
+        "tags": {
+          "from": "شهدا",
+          "name": "خط ۳",
+          "name:en": "Line 3",
+          "network": "قطار شهری مشهد",
+          "public_transport:version": "2",
+          "ref": "3",
+          "route": "subway",
+          "to": "پایانه امام رضا",
+          "type": "route",
+          "wikidata": "Q117406330"
+        }
+      },
+      "stopMembers": [
+        {
+          "type": "node",
+          "ref": 3867928459,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 2810462314,
+          "role": "stop"
+        },
+        {
+          "type": "node",
+          "ref": 2810462167,
+          "role": "stop"
+        }
+      ],
+      "nodes": [
+        {
+          "type": "node",
+          "id": 3867928459,
+          "version": 11,
+          "timestamp": "2025-05-22T11:28:35Z",
+          "lat": 36.2968572,
+          "lon": 59.6070714,
+          "tags": {
+            "name": "شهدا",
+            "name:en": "Shohada",
+            "public_transport": "stop_position",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 2810462314,
+          "version": 13,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2856915,
+          "lon": 59.6110648,
+          "tags": {
+            "name": "ایستگاه مترو باب‌الجواد",
+            "name:en": "Bab Ol-Javad metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        },
+        {
+          "type": "node",
+          "id": 2810462167,
+          "version": 15,
+          "timestamp": "2026-09-07T09:29:22Z",
+          "lat": 36.2601343,
+          "lon": 59.5933452,
+          "tags": {
+            "name": "ایستگاه مترو امام رضا",
+            "name:ar": "محطة الإمام الرضا",
+            "name:en": "Imam Reza metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
+        }
+      ],
+      "reviewedCandidateStationIds": [
+        "mashhad:station:shohada",
+        "mashhad:station:bab-al-javad",
+        "mashhad:station:imam-reza-terminal"
+      ]
+    }
+  ],
+  "fajrRepresentativePoint": {
+    "apiUrl": "https://www.openstreetmap.org/api/0.6/node/14133541209/2.json",
+    "node": {
+      "type": "node",
+      "id": 14133541209,
+      "version": 2,
+      "timestamp": "2026-09-01T08:31:43Z",
+      "lat": 36.3128066,
+      "lon": 59.6554285,
+      "tags": {
+        "name": "ایستگاه مترو فجر",
+        "name:ar": "الفجر",
+        "name:en": "Fajr Metro Station",
+        "public_transport": "station",
+        "railway": "station",
+        "station": "subway",
+        "subway": "yes",
+        "wikidata": "Q30599976"
+      }
+    }
+  },
+  "basijLine3Stop": {
+    "type": "node",
+    "id": 667355736,
+    "version": 10,
+    "timestamp": "2026-08-29T13:38:29Z",
+    "lat": 36.2736315,
+    "lon": 59.603463,
+    "tags": {
+      "name": "ایستگاه مترو بسیج",
+      "name:en": "Basij metro station",
+      "proposed": "stop_position",
+      "public_transport": "stop_position",
+      "railway": "proposed",
+      "subway": "yes"
+    }
+  }
+}
