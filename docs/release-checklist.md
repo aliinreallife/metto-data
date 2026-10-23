@@ -15,6 +15,16 @@ pnpm check-release
 
 Each step must pass. Then confirm:
 
+For any new city, run `pnpm quality:report` and inspect its review packet before
+approval. `check-release` requires matching source/generated release status,
+an approved `sources/<city>/review.json`, an explicit empty `criticalOutstanding`
+list, and the pinned source listed in that review. Record `approval.reviewedBy`,
+`approval.reviewedAt` (ISO timestamp), and `approval.datasetSha256` from the current
+dataset. The SHA-256 covers all seven city JSON files except `meta.generatedAt`;
+any other generated change invalidates the approval. Do not enter approval data
+until the underlying evidence has been reviewed. Tehran retains its legacy
+release policy and remains independently releasable.
+
 - [ ] `git submodule status` shows every `upstream-*/` submodule clean and
   matching the `pinnedCommit` in `sources.json`
   (`git submodule foreach --quiet 'git status --porcelain'` prints nothing).

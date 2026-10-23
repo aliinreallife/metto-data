@@ -2,6 +2,19 @@
   "reviewStatus": "needs-verification",
   "city": "mashhad",
   "sourceCheckedAt": "2026-10-21",
+  "verificationAttempts": [
+    {
+      "date": "2026-10-23",
+      "result": "blocked-by-environment-network-policy",
+      "urls": [
+        "https://metro.mashhad.ir/",
+        "https://www.saadatrent.com/mag/iran/mashhad-metro-map/",
+        "https://www.openstreetmap.org/api/0.6/node/14133541209.json",
+        "https://en.wikipedia.org/wiki/Mashhad_Urban_Railway"
+      ],
+      "note": "HTTPS proxy CONNECT requests returned 403. No page content was retrieved and no service fact was independently verified by this attempt. Required hosts were added to the environment draft; runtime access requires applying the settings. Existing source evidence and candidate status are unchanged."
+    }
+  ],
   "sources": [
     {
       "id": "mashhad-metro-data",
