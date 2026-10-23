@@ -11,6 +11,7 @@ import { readFileSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateCityDir } from "../validators/validate.js";
+import { checkReleaseReview, datasetFingerprint, readCityReview } from "../validators/release-review.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, "..");
@@ -72,7 +73,6 @@ function main(): void {
 
   for (const city of cities) {
     const entry = sources[city] ?? {};
-    if (entry.releaseStatus === "candidate") errors.push(`city ${city}: candidate dataset is not approved for release`);
     for (const field of SOURCE_FIELDS) {
       if (entry[field] === undefined || entry[field] === "") {
         errors.push(`sources.json: city ${city} is missing ${field}`);
@@ -149,6 +149,14 @@ function main(): void {
 
     // Validators pass.
     errors.push(...validateCityDir(cityDir, city));
+    try {
+      const meta = JSON.parse(readFileSync(join(cityDir, "meta.json"), "utf8"));
+      errors.push(...checkReleaseReview(city, entry, meta.releaseStatus,
+        city === "tehran" ? null : readCityReview(repoRoot, city),
+        city === "tehran" ? "" : datasetFingerprint(repoRoot, city)));
+    } catch (error) {
+      errors.push(`${city}: could not verify release review (${(error as Error).message})`);
+    }
   }
 
   if (errors.length > 0) {

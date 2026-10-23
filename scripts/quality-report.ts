@@ -6,10 +6,16 @@
 import {readFileSync,mkdirSync,writeFileSync} from "node:fs";
 import {join,dirname} from "node:path";
 import {fileURLToPath} from "node:url";
+import {createHash} from "node:crypto";
+import type {CityGraph, Station as CityStation} from "../schema/v1/types.js";
+import {buildMashhadPathReview} from "./mashhad-path-review.js";
+import serviceEvidence from "../sources/mashhad/service-evidence.json" with {type:"json"};
+import osmEvidence from "../sources/mashhad/osm-review-snapshot.json" with {type:"json"};
+import {checkReleaseReview,datasetFingerprint,readCityReview} from "../validators/release-review.js";
 
 type Station = {id:string;names:{en:string;fa:string};location:{lat:number;lng:number};
  amenities:Record<string,boolean|null>;amenitiesVerified?:boolean};
-type Graph = {routes:{lineId:string;stops:{stationId:string}[]}[];segments:unknown[];transfers:unknown[]};
+type Graph = {routes:{lineId:string;stops:{stationId:string;status?:string}[]}[];segments:unknown[];transfers:unknown[]};
 type Source = {path:string;upstreamFile:string;repository:string;pinnedCommit:string;releaseStatus?:string};
 export type Findings = {errors:string[];warnings:string[];unknownAmenities:number;interchanges:number};
 function distance(a:{lat:number;lng:number},b:{lat:number;lng:number}):number{
@@ -80,11 +86,40 @@ export function generateReport(root:string,out:string){
        warning:"UNVERIFIED upstream claims - not canonical facts; must not be shown as confirmed amenities",
        city,sourceLicense:"ODbL-1.0",stations:items
      },null,2)+"\n");
-     const review=JSON.parse(readFileSync(join(root,"sources","mashhad","review.json"),"utf8")) as {
-       reviewStatus:string;criticalOutstanding:string[]
-     };
-     if(status==="verified"&&(review.reviewStatus!=="approved"||review.criticalOutstanding.length>0))
-       errors.push("mashhad: rejected release; source review remains unapproved or has critical blockers");
+     const serviceBytes=readFileSync(join(root,"sources/mashhad/service-evidence.json"));
+     const osmBytes=readFileSync(join(root,"sources/mashhad/osm-review-snapshot.json"));
+     const pathReview=buildMashhadPathReview({
+       graph:graph as CityGraph,stations:stations as CityStation[],
+       datasetSha256:datasetFingerprint(root,city),
+       service:JSON.parse(serviceBytes.toString()) as typeof serviceEvidence,
+       osm:JSON.parse(osmBytes.toString()) as typeof osmEvidence,
+       serviceEvidenceSha256:createHash("sha256").update(serviceBytes).digest("hex"),
+       osmEvidenceSha256:createHash("sha256").update(osmBytes).digest("hex"),
+     });
+     writeFileSync(join(out,"mashhad-path-review.json"),JSON.stringify(pathReview,null,2)+"\n");
+     errors.push(...pathReview.integrityGaps);
+     const reviewErrors=checkReleaseReview(city,source,meta.releaseStatus,
+       readCityReview(root,city),datasetFingerprint(root,city));
+     // Candidate CI stays useful; publishing remains blocked by these same
+     // errors even if only sources.json's candidate flag is changed or removed.
+     if(status==="verified") errors.push(...reviewErrors);
+     writeFileSync(join(out,"mashhad-release-review.json"),JSON.stringify({
+       city,sourcePinnedCommit:source.pinnedCommit,
+       datasetSha256:datasetFingerprint(root,city),
+       releaseReady:reviewErrors.length===0,blockers:reviewErrors,
+       warning:"Structural checks and a digest do not independently verify passenger service. Maintainer review is required.",
+       boardingClaims:graph.routes.flatMap(route=>route.stops.map(stop=>({
+         stationId:stop.stationId,lineId:route.lineId,
+         assertedStatus:stop.status??"unknown",
+       }))),
+       interchangeStations:stations.filter(station=>{
+         const lines=new Set(graph.routes.filter(route=>route.stops.some(stop=>stop.stationId===station.id)).map(route=>route.lineId));
+         return lines.size>1;
+       }).map(station=>({stationId:station.id,names:station.names,
+         lines:graph.routes.filter(route=>route.stops.some(stop=>stop.stationId===station.id)).map(route=>route.lineId),
+         note:"Confirm interchange access and directional walking durations with evidence; no default time is approval.",
+       })),
+     },null,2)+"\n");
    }
    table.push(`| ${city} | ${status} | ${stations.length} | ${lines.length} | ${graph.segments.length} | ${inspected.unknownAmenities} | ${claimsCount} |`);
  }
@@ -97,6 +132,7 @@ export function generateReport(root:string,out:string){
    ...table,"","## Blocking errors",...(errors.length?errors.map(x=>"- "+x):["None"]),
    "","## Manual-review warnings",...warnings.map(x=>"- "+x),
    "","Mashhad facility claims are saved **only as unverified candidate evidence**, never merged into canonical station amenities.",
+   "The separate mashhad-path-review.json covers only the first Lines 1/2 path scope (36 stations). It distinguishes dated line-level reports from station-specific evidence, excludes timing and Line 3, and never grants release approval.",
    ""
  ].join("\n");
  writeFileSync(join(out,"quality-report.md"),markdown);

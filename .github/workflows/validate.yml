@@ -60,5 +60,8 @@ jobs:
         with:
           name: metto-data-quality-${{ github.run_id }}
           path: .quality-report/
-          if-no-files-found: ignore
+          # The report directory is hidden; upload-artifact v4 excludes it
+          # by default. Keep the opt-in scoped to this generated directory.
+          include-hidden-files: true
+          if-no-files-found: error
           retention-days: 30

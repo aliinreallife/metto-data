@@ -185,4 +185,13 @@ and runs in CI.
 
 ## Mashhad candidate source review
 
-Mashhad uses an immutable [ODbL-licensed upstream dataset](https://github.com/shahriaarrr/mashhad-metro-data) pinned as a git submodule, explicit ordered service routes, and an OSM-referenced Fajr coordinate correction. See [the audit](docs/mashhad-source-review.md) and [machine-readable review record](sources/mashhad/review.json). Current generated JSON is **not yet approved for production routing** (pending transfers, entrance mapping, official color and station confirmation). No timetable is bundled.
+Mashhad uses an immutable [ODbL-licensed upstream dataset](https://github.com/shahriaarrr/mashhad-metro-data) pinned as a git submodule, explicit ordered service routes, and an OSM-referenced Fajr coordinate correction. See [the audit](docs/mashhad-source-review.md) and [machine-readable review record](sources/mashhad/review.json). Current generated JSON is **not yet approved for production routing**. No timetable is bundled.
+
+The first delivery scope under review is **Lines 1/2: stations and route paths,
+without arrival or travel-time estimates**. `pnpm quality:report` produces
+`.quality-report/mashhad-path-review.json` for its 36 stations, 37 boarding
+assertions and two untimed Shariati directions. [Dated service evidence](sources/mashhad/service-evidence.json)
+corroborates line operation, terminal reopenings and interchange connectivity;
+station-level operator review and approval of the exact projection remain
+outstanding. Line 3, measured walking times, official colors, entrances and
+amenities are separate scope. The packet never grants release approval.
