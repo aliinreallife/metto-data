@@ -25,6 +25,15 @@ any other generated change invalidates the approval. Do not enter approval data
 until the underlying evidence has been reviewed. Tehran retains its legacy
 release policy and remains independently releasable.
 
+Mashhad's first delivery scope is stations and route paths on Lines 1/2,
+without timing. Inspect `.quality-report/mashhad-path-review.json` as well as
+the full-city review packet. Its 37 boarding claims distinguish line-level
+reports from station-specific evidence; its two directed Shariati links have
+no walking duration. The packet cannot approve publication or replace the
+existing release check. Departures, travel-time estimates, measured transfer
+duration, colors, entrances, amenities and Line 3 are separate future scope;
+do not demand or fabricate those facts to review the initial projection.
+
 - [ ] `git submodule status` shows every `upstream-*/` submodule clean and
   matching the `pinnedCommit` in `sources.json`
   (`git submodule foreach --quiet 'git status --porcelain'` prints nothing).

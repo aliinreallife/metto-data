@@ -73,13 +73,13 @@ independent verification or cryptographically authenticate the reviewer.
 
 After the network change, the guide, Wikipedia and OSM returned HTTP 200.
 The operator returned HTTP 503 with an upstream connection timeout; no operator
-content was read. Primary articles linked by Wikipedia on `shahraranews.ir`
-and `www.isna.ir` remain blocked by the proxy, and their domains are saved in
-the next network draft.
+content was read. At this stage, primary articles linked by Wikipedia on
+`shahraranews.ir` and `www.isna.ir` were still blocked by the proxy; the
+continuation below records the later successful access and content checks.
 
 The user chose **stations and route paths first, without arrival estimates**.
 The initial scope under review is Lines 1/2 (36 unique stations); Line 3 remains
-withheld while boarding evidence conflicts. Exact departures, travel-time
+withheld pending a separate complete service-pattern review. Exact departures, travel-time
 estimates, street entrances and amenities are not promises of this scope.
 This is a delivery plan, not production approval.
 
@@ -106,3 +106,56 @@ to about 125 m on Lines 1/2. These are different kinds of points, not verified
 entrances; no walking directions or correction was inferred from those offsets.
 No third-party map image, article body, station database from an unlicensed app,
 or supposed timetable was copied into the dataset. Canonical data is unchanged.
+
+## Dated service and interchange evidence retrieved (2026-10-23)
+
+Shahrara article content is now accessible. Ten selected reports, their exact
+publication metadata and response hashes are recorded in
+`sources/mashhad/service-evidence.json`, with independently written factual
+notes. Several quote the operator's directors or city council chair; field
+reporting also describes passengers using the services. They are reports from
+one publisher, not ten independent publishers. No article body, photograph,
+video, map or purported timetable is redistributed. Response hashes record
+the fetched bytes; news sidebars can change, so these are not immutable archives
+or cryptographic authentication of the speakers.
+
+| Question | Dated evidence | Interpretation for the first scope |
+|---|---|---|
+| Line 1 service | [October 19 operator interview](https://shahraranews.ir/fa/news/453536/), [October 11 operating-company response and field report](https://shahraranews.ir/fa/news/451549/) | Current service and 24-station line corroborated; not a live audit of each platform |
+| Airport endpoint | [June 9 resumption notice](https://shahraranews.ir/fa/news/420784/) | Explicitly resumes Reyhaneh/Airport service after a temporary suspension; keep the candidate endpoint |
+| Line 2/Fakouri endpoint | [October 19 interview](https://shahraranews.ir/fa/news/453536/), [August 4 reopening notice](https://shahraranews.ir/fa/news/435635/) | 13-station Tabarsi–Fakouri line and terminal service corroborated; the stale OSM `to` label must not remove Fakouri |
+| Shariati interchange | [December 29, 2025 passenger report](https://shahraranews.ir/fa/news/382219/), [January 19, 2026 field report](https://shahraranews.ir/fa/news/386944/) | Both Line 2→1 and Line 1→2 passenger movement described; untimed connectivity supported, without platform/walking/accessibility claims |
+| Basij Line 3 boarding | [August 9 opening report](https://shahraranews.ir/fa/news/436562/), [August 26 operator statement/field report](https://shahraranews.ir/fa/news/440642/), [October 22 council statement](https://shahraranews.ir/fa/news/454293/) | Passenger boarding and the Line 1/3 connection have stronger dated support than OSM's `proposed` tag; the initial scope still excludes Line 3 |
+| Other Line 3 stops | [October 22 council statement](https://shahraranews.ir/fa/news/454293/) | 15 Khordad, Mesbah Yazdi and Sharestan are described as future additions; do not mark them operational or import new records from that statement |
+
+The May 2025 three-stop launch report is historical. Its single-train pattern,
+hours and headways must not be reused as current operating data. Similarly,
+the 2026 news reports' generic hours/headways are not a licensed, verified
+departures feed and are excluded from this scope.
+
+ISNA returned HTTP 200 containing only a browser-check/transfer page, so its
+article remains unread. The operator website still returned an origin
+connection-timeout response. Neither response was counted as content evidence.
+
+`pnpm quality:report` additionally produces
+`.quality-report/mashhad-path-review.json`: **36 stations, 37 line-specific
+boarding claims, 35 route edges, two directed untimed Shariati links**, dated
+supporting claims and the remaining review items. It excludes Line 3 and
+timing capabilities. Its fingerprint binds the candidate dataset, exact
+evidence bytes, projection and directed links. Invalid references, timing
+claims or an expanded scope fail; changed OSM order and missing line-service
+support are reported as integrity gaps. This packet always says
+`releaseReady: false`: evidence compilation does not grant approval.
+
+Remaining work for public Lines 1/2 activation is the station-level boarding
+review and approval of the exact projection/untimed links. A timetable,
+measured walking duration, official palette, entrances and amenities are
+separate capabilities and are **not required** for this first scope. Full-city
+release checks remain blocked; no canonical data or public app scope changed.
+
+Local validation of this continuation passed: 70 tests in 12 files, typecheck,
+both city validators, pinned-source provenance, generated-data reproducibility,
+and quality reporting (zero integrity errors, three existing manual-review
+warnings). Tehran's release check passes; Mashhad's five review/approval
+failures are expected. News retrieval and audit generation do not alter the
+candidate's canonical dataset fingerprint.

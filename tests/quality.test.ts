@@ -38,6 +38,11 @@ describe("quality gates on candidate records",()=>{
     "mashhad:station:basij","mashhad:station:shariati","mashhad:station:shohada",
    ]);
    expect(report.datasetSha256).toMatch(/^[a-f0-9]{64}$/);
+   const firstScope=JSON.parse(readFileSync(join(out,"mashhad-path-review.json"),"utf8"));
+   expect(firstScope.counts.stations).toBe(36);
+   expect(firstScope.counts.boardingClaims).toBe(37);
+   expect(firstScope.integrityGaps).toEqual([]);
+   expect(firstScope.releaseReady).toBe(false);
   }finally{rmSync(out,{recursive:true,force:true});}
  });
 });

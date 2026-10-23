@@ -73,3 +73,12 @@ It retains the versions/timestamps and ordered stop members of relations
 154407, 5623319 and 5692274, plus their referenced stop positions and the
 versioned Fajr representative node. These facts are review evidence, not a
 certification of current service, entrances, accessibility or transfer times.
+
+## Mashhad service-review references
+
+`sources/mashhad/service-evidence.json` contains independently written factual
+review notes referring to dated Shahrara News reports and statements attributed
+to metro/city officials. Source URLs and publication metadata are retained for
+review. Article bodies, photography, videos and maps are not redistributed;
+those publications retain their own rights. These references do not supply a
+timetable, media license, live operating guarantee or public-release approval.

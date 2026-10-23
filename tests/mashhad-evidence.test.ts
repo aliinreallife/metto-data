@@ -31,11 +31,13 @@ describe("Mashhad independently retrieved OSM evidence", () => {
     expect(evidence.nodes).toHaveLength(line === 1 ? 24 : 13);
   });
 
-  it("keeps conflicting Line 3 evidence unresolved and out of the initial route scope", () => {
+  it("preserves the older OSM conflict while recording newer boarding evidence outside the initial scope", () => {
     const line3 = snapshot.routes.find((r) => r.lineId === "mashhad:line:3")!;
     expect(line3.nodes).toHaveLength(3);
     expect(snapshot.basijLine3Stop.tags.railway).toBe("proposed");
-    expect(review.observations.find((o) => o.id === "line3-basij")?.status).toBe("conflict-unresolved");
+    const basij = review.observations.find((o) => o.id === "line3-basij");
+    expect(basij?.status).toBe("corroborated-dated-report");
+    expect(basij?.sources).toContain("Shahrara report 436562, published 2026-08-09");
     expect(review.deliveryPlan.initialLinesUnderReview).not.toContain("mashhad:line:3");
     expect(review.deliveryPlan.arrivalEstimates).toBe(false);
     expect(review.deliveryPlan.travelTimeEstimates).toBe(false);

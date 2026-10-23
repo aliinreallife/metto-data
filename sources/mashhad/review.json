@@ -1,7 +1,7 @@
 {
   "reviewStatus": "needs-verification",
   "city": "mashhad",
-  "sourceCheckedAt": "2026-10-21",
+  "sourceCheckedAt": "2026-10-23",
   "verificationAttempts": [
     {
       "date": "2026-10-23",
@@ -24,6 +24,21 @@
         "wikipedia": 200
       },
       "note": "The operator response reports an upstream connection timeout. The other three sources were read. Successful retrieval is not production approval."
+    },
+    {
+      "date": "2026-10-23",
+      "result": "dated-operator-statements-and-field-reports-retrieved",
+      "responses": {
+        "shahrara": 200,
+        "isna": 200,
+        "operator": 503
+      },
+      "contentResults": {
+        "shahrara": "read-article-bodies-and-publication-metadata",
+        "isna": "browser-challenge-only-no-article-content",
+        "operator": "upstream-connection-timeout"
+      },
+      "note": "Ten selected Shahrara reports are summarized as independently written factual notes in service-evidence.json. They include operator/council statements and field reporting; multiple reports from one publisher are not independent publishers. The HTTP 200 ISNA challenge is not evidence retrieval. No article bodies, imagery, video or timetable data are redistributed."
     }
   ],
   "sources": [
@@ -77,13 +92,13 @@
     "Transfer walkthrough times are not independently measured; no transfer-time rules are published in this initial dataset.",
     "Coordinates are station representative points, not entrances/platforms; walking directions must not treat them as doorway GPS.",
     "No verified Mashhad GTFS schedule or train headway is included. Never invent a timetable.",
-    "Review and test station IDs/route order against dated operator map before production adoption."
+    "Ordered stops match retrieved OSM evidence and dated reports corroborate service; station-level operator review and an exact scoped approval remain outstanding before production adoption."
   ],
   "criticalOutstanding": [
-    "Validate precise route/service pattern for Line 3 and any intermediate pass-through stations.",
-    "Independently verify line colors, entrances and transfer pathways.",
-    "Add platform-specific route interchange handling without inventing walkSeconds.",
-    "Review possible missing station records across independent sources."
+    "Review a complete, dated Line 3 service pattern, including non-boarding intermediate infrastructure; Basij opening is now corroborated separately.",
+    "Review the 37 initial Lines 1/2 boarding assertions individually against dated operator evidence; line-level reports and OSM ordered stops provide corroboration, not a station-by-station current audit.",
+    "Review an exact Lines 1/2 dataset projection and the untimed Shariati interchange facts before public activation.",
+    "For later capabilities, verify official line colors, entrances, physical platform paths, transfer durations and amenities independently. They are excluded from the first path-only scope."
   ],
   "deliveryPlan": {
     "scope": "stations-and-route-paths",
@@ -94,7 +109,7 @@
       "mashhad:line:1",
       "mashhad:line:2"
     ],
-    "line3": "withheld-from-initial-routing-scope-pending-conflict-resolution",
+    "line3": "withheld-from-initial-routing-scope-pending-separate-service-pattern-review",
     "approval": "not-granted"
   },
   "evidenceArtifacts": [
@@ -102,6 +117,12 @@
       "path": "sources/mashhad/osm-review-snapshot.json",
       "sha256": "c001f26b47f74b8a82a0f992094a2e9e653c50064fd98effb261e801578ce1b1",
       "license": "ODbL-1.0",
+      "retrievedOn": "2026-10-23"
+    },
+    {
+      "path": "sources/mashhad/service-evidence.json",
+      "sha256": "0d5da4b195421bc58f5742363fda1cdee7fffa51d528573fc17370b8a566a0a6",
+      "license": "original-factual-review-notes-with-reference-only-source-links",
       "retrievedOn": "2026-10-23"
     }
   ],
@@ -126,13 +147,16 @@
     },
     {
       "id": "line3-basij",
-      "status": "conflict-unresolved",
+      "status": "corroborated-dated-report",
       "sources": [
         "OpenStreetMap relation 5692274 version 15",
         "OpenStreetMap node 667355736",
-        "Saadatrent article modified 2026-10-21"
+        "Saadatrent article modified 2026-10-21",
+        "Shahrara report 436562, published 2026-08-09",
+        "Shahrara report 440642, published 2026-08-26",
+        "Shahrara report 454293, published 2026-10-22"
       ],
-      "note": "OSM has three stop members and marks the Line 3 Basij node proposed. The guide text lists four active stops including Basij; its embedded map depicts three. Neither observation alone resolves current boardability."
+      "note": "Retrieved reports describe Basij passenger boarding starting on August 9, 2026 and confirm the Line 1/3 connection in August and October. This is stronger boarding evidence than the OSM proposed tag and three-member relation. The earlier OSM conflict is retained in its snapshot; Line 3 still needs a separate complete service-pattern review and is outside the initial scope."
     },
     {
       "id": "line1-ghaem-name",
@@ -148,6 +172,24 @@
       "status": "secondary-summary-inconsistent",
       "source": "Wikipedia oldid 1338460161",
       "note": "Infobox claims 40 active stations while enumerated line lists imply 38 unique records. Do not create missing stations from the aggregate count."
+    },
+    {
+      "id": "line1-service-and-airport",
+      "status": "corroborated-dated-report",
+      "source": "service-evidence.json claims line1-service and airport-branch-resumed",
+      "note": "October reports describe current Line 1 service and its 24-station inventory. A June 9, 2026 notice explicitly resumes Reyhaneh and Airport service after a temporary airport-related suspension. These are dated reports, not a live boarding or departures feed."
+    },
+    {
+      "id": "line2-fakouri-service",
+      "status": "corroborated-dated-report",
+      "source": "service-evidence.json claims line2-service and fakouri-resumed",
+      "note": "The October 19 operator interview describes the 13-station Tabarsi–Fakouri line and the terminal entering service in 1404. An August 4 notice says Fakouri reopened after repairs. The existing candidate endpoint is supported; no 12-stop truncation is inferred from stale OSM labels."
+    },
+    {
+      "id": "shariati-untimed-connectivity",
+      "status": "corroborated-dated-report",
+      "source": "service-evidence.json claim shariati-connectivity",
+      "note": "December 2025 reporting describes Line 2 passengers changing to Line 1 at Shariati. January 2026 field reporting observes the reverse movement. Both directed links are review evidence only, with no inferred walkSeconds, exact platform route, step-free access or verified amenities."
     }
   ]
 }
