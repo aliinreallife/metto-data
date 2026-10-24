@@ -34,8 +34,8 @@
     "rootDirectory": "apps/data-portal",
     "privateIntakeStorage": "Existing Neon/Postgres integration; optional private Vercel Blob fallback",
     "automation": "GitHub Actions with OIDC and temporary repository-scoped job credentials",
-    "status": "prepared; account configuration and live delivery check required",
+    "status": "live; anonymous photo intake and GitHub Actions issue publication verified",
     "projectName": "novus",
-    "publicOrigin": "https://novus-peach-seven.vercel.app"
+    "publicOrigin": "https://data.metto.ir"
   }
 }

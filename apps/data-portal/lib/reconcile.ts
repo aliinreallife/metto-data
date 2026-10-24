@@ -31,7 +31,7 @@ export async function reconcile(config: IntakeConfig, cursor?: string) {
     if (report.state === "publishing") {
       // Search can reconcile a lost successful response. An empty search never
       // authorizes another POST because indexing can be delayed.
-      const query = `repo:${REPOSITORY} in:body "Submission reference: ${id}"`;
+      const query = `repo:${REPOSITORY} is:issue in:body "Submission reference: ${id}"`;
       const response = await (config.fetch ?? fetch)(
         `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&per_page=10`,
         {

@@ -30,10 +30,11 @@ host in the browser. Pages: `/`, `/stations`, `/map`, `/contribute`, `/reports`.
 
 ## Hosting configuration
 
-The migration uses the existing Vercel project and public alias
-`https://novus-peach-seven.vercel.app`. Root Directory is `apps/data-portal`,
+The portal is live at **https://data.metto.ir**, on the existing Vercel project
+`novus`. The previous `novus-peach-seven.vercel.app` address redirects there.
+Root Directory is `apps/data-portal`,
 Framework Next.js, Node 22, with workspace files outside the root enabled.
-The connected Git repository becomes `aliinreallife/metto-data`, branch `main`.
+The connected Git repository is `aliinreallife/metto-data`, branch `main`.
 The old repository remains available as migration history. If continuing to use
 v0, confirm it edits the combined repository under `apps/data-portal/`.
 
@@ -74,8 +75,9 @@ The action supplies its repository-scoped, short-lived `GITHUB_TOKEN` to the
 trusted publishing function for that invocation only. It is never saved in
 report storage or server environment variables. This avoids another permanent
 API key. The workflow needs only `contents: read`, `issues: write`, and
-`id-token: write`. No Actions secret is required. Its public origin can be
-changed with the repository variable `DATA_PORTAL_ORIGIN`.
+`id-token: write`. No Actions secret is required. Its public origin is configured
+in `.github/workflows/portal-maintenance.yml`; keep it aligned with Vercel's
+`DATA_PORTAL_ORIGIN` when changing domains, including the OIDC audience.
 
 Matching retries reuse IDs. Atomic updates prevent double publication and quota
 overruns. Explicit GitHub client/rate errors can be retried. Ambiguous network
@@ -97,7 +99,7 @@ up to 8 MiB into metadata-free JPEGs up to 2048 pixels / 512 KiB. Public
 2. Dispatch **Publish saved portal reports**; confirm its issue contains only
    public fields and the photo. Check FA/EN, shared station names and city filters.
 3. Set Metto's `NEXT_PUBLIC_DATA_CONTRIBUTIONS_URL` to
-   `https://novus-peach-seven.vercel.app/contribute` and redeploy the relevant app
+   `https://data.metto.ir/contribute` and redeploy the relevant app
    environment. Its inline link passes city, timetable type and language.
 
 Maintain the private store: clear contact fields after follow-up, remove old
