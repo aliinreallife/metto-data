@@ -381,6 +381,13 @@ describe("Vercel anonymous intake", () => {
     const summary = await reconcile(f.config);
     expect(summary.published).toBe(1);
     expect(f.calls.filter((call) => call.method === "POST")).toHaveLength(1);
+    const search = f.calls.find((call) => call.url.includes("/search/issues"));
+    expect(search).toBeDefined();
+    const query = new URL(search!.url).searchParams.get("q");
+    // GitHub rejects this endpoint with 422 without an explicit issue/PR type.
+    expect(query).toBe(
+      `repo:aliinreallife/metto-data is:issue in:body "Submission reference: ${ID}"`,
+    );
   });
   it("keeps ambiguous HTTP 5xx and empty searches for human review", async () => {
     const f = fixture();

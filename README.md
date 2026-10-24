@@ -1,6 +1,6 @@
 # metto-data — canonical transit data layer for Metto
 
-> **Help improve Metto transit data:** [send a source report](https://github.com/aliinreallife/metto-data/issues/new).
+> **Help improve Metto transit data:** [send a source report](https://data.metto.ir/contribute) — no account needed.
 >
 > Non-developers welcome — fix facilities, names, locations, and transfers.
 > Start at [`contributions/README.md`](contributions/README.md), or read
@@ -15,7 +15,8 @@ The contribution UI from `metto-data-prev` now lives in
 [`apps/data-portal/`](apps/data-portal/README.md). The combined repository uses
 Vercel for the UI/API and the existing Neon database for private intake, with GitHub Actions for data
 validation, upstream checks and queued issue publication. See its guide for the
-existing Vercel project. Hosting configuration and live delivery remain pending.
+existing Vercel project. The portal is live at [data.metto.ir](https://data.metto.ir);
+anonymous photo intake and automated issue publication have been verified.
 
 ```text
 upstream-tehran-metro/   (git submodule — source material only, never edited)

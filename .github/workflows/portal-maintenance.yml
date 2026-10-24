@@ -23,6 +23,6 @@ jobs:
           node-version-file: .nvmrc
       - name: Publish private outbox (summary only)
         env:
-          DATA_PORTAL_ORIGIN: ${{ vars.DATA_PORTAL_ORIGIN || 'https://novus-peach-seven.vercel.app' }}
+          DATA_PORTAL_ORIGIN: https://data.metto.ir
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/reconcile-portal.mjs
