@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "ui": {
+    "repository": "https://github.com/aliinreallife/metto-data-prev",
+    "commit": "c75b7bf1dea6afea848303b136881869dc6c22ce",
+    "imported": "Layout, visual language and contribution flow; prototype records and simulated social features were not imported."
+  },
+  "data": {
+    "repository": "https://github.com/aliinreallife/metto",
+    "commit": "fd5be604e8d38463f90d06998b43127008577b7f",
+    "sourceDataCommit": "af057821dee7cbd5fcd2bf9ebde079070d8ac20c",
+    "tehranFiles": {
+      "stations.json": {
+        "gitBlobSha1": "ae8e0dc489728f9bcfff010471469a3bfdadf1f2"
+      },
+      "lines.json": {
+        "gitBlobSha1": "da687ea48c12c64c88d37117c837bc6519d67eb7"
+      },
+      "graph.json": {
+        "gitBlobSha1": "8d24868fdf39b0009e5160768fdb20fbd040b258"
+      },
+      "meta.json": {
+        "gitBlobSha1": "0292ba44a8f92b1020f300c12ebcb210faa5cf9a"
+      }
+    },
+    "scope": {
+      "tehran": 151,
+      "mashhadLines1And2": 36
+    },
+    "policy": "Canonical root datasets remain authoritative. Tehran station/line/graph files match the cleaned Metto baseline. Mashhad remains candidate; no amenities are certified by this migration."
+  },
+  "deployment": {
+    "platform": "Vercel",
+    "rootDirectory": "apps/data-portal",
+    "privateIntakeStorage": "Vercel Blob (private)",
+    "automation": "GitHub Actions",
+    "status": "prepared; account configuration and live delivery check required"
+  }
+}

@@ -1,6 +1,6 @@
 # metto-data — canonical transit data layer for Metto
 
-> **Help improve Metto transit data: https://data.metto.ir**
+> **Help improve Metto transit data:** [send a source report](https://github.com/aliinreallife/metto-data/issues/new).
 >
 > Non-developers welcome — fix facilities, names, locations, and transfers.
 > Start at [`contributions/README.md`](contributions/README.md), or read
@@ -10,6 +10,12 @@
 datasets (kept as **untouched git submodules**) into a normalized,
 versioned, validated dataset that the Metto app consumes. Metto never reads
 upstream repositories directly.
+
+The contribution UI from `metto-data-prev` now lives in
+[`apps/data-portal/`](apps/data-portal/README.md). The combined repository uses
+Vercel for the UI/API and private intake storage, with GitHub Actions for data
+validation, upstream checks and report retries. See its guide to move the
+existing Vercel project. Hosting configuration and live delivery remain pending.
 
 ```text
 upstream-tehran-metro/   (git submodule — source material only, never edited)
@@ -46,7 +52,7 @@ metto-data/
   contributors.json        # contributor attribution registry
   sources.json             # provenance: repo URL, submodule path, license, pinned commit
   scripts/                 # build.ts, validate.ts, contributions-*.ts, new-contribution.ts
-  apps/data-portal/        # placeholder for https://data.metto.ir
+  apps/data-portal/        # Vercel contribution UI/API, backed by the same data
   docs/data-platform.md    # future platform API contract
 ```
 
@@ -144,10 +150,15 @@ CI fails if the submodule is dirty or `sources.json` disagrees with the gitlink.
 
 ## Contributing Data
 
-**Normal users:** go to **https://data.metto.ir** (or, until it is live, open a
-PR adding one JSON file to `contributions/pending/` — copy an example from
-`contributions/examples/`, generate the template with
-`pnpm contributions:new --city tehran --entity tehran:station:tajrish`).
+**Riders:** use the contribution portal once its
+[Vercel setup](apps/data-portal/README.md) is complete, or
+[open an issue](https://github.com/aliinreallife/metto-data/issues/new) with your
+information and evidence. No-login form submissions create source reports for
+maintainer review; optional contact fields stay private.
+
+**Structured edits:** add one JSON file to `contributions/pending/` in a PR.
+Copy an example from `contributions/examples/`, or generate a template with
+`pnpm contributions:new --city tehran --entity tehran:station:tajrish`.
 
 You can propose: facility toggles (elevator, toilets, parking, prayer room,
 Wi-Fi, shops, accessibility), coordinate fixes, name/translation fixes, status

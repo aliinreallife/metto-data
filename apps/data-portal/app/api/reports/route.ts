@@ -1,0 +1,13 @@
+import { intakeConfig } from "../../../lib/config";
+import { createIntakeHandler } from "../../../lib/intake";
+export const runtime = "nodejs";
+export const maxDuration = 60;
+export async function POST(request: Request) {
+  const config = intakeConfig();
+  return config
+    ? createIntakeHandler(config)(request)
+    : Response.json(
+        { error: "unavailable" },
+        { status: 503, headers: { "Cache-Control": "no-store" } },
+      );
+}

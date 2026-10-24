@@ -21,7 +21,11 @@
     "provenance:check": "tsx scripts/check-provenance.ts",
     "generated:check": "tsx scripts/check-generated.ts",
     "quality:report": "tsx scripts/quality-report.ts",
-    "workflows:check": "tsx scripts/check-workflows.ts"
+    "workflows:check": "tsx scripts/check-workflows.ts",
+    "dev": "pnpm --filter @metto/data-portal dev",
+    "portal:build": "pnpm --filter @metto/data-portal build",
+    "portal:typecheck": "pnpm --filter @metto/data-portal typecheck",
+    "portal:start": "pnpm --filter @metto/data-portal start"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",

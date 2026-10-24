@@ -43,6 +43,10 @@ jobs:
         run: pnpm validate
       - name: Regression tests
         run: pnpm test
+      - name: Build Vercel portal from the same canonical data
+        run: pnpm portal:build
+      - name: Portal typecheck
+        run: pnpm portal:typecheck
       - name: Verify Tehran remains independently release-ready
         run: pnpm check-release --city tehran
       - name: Produce evidence and quality report

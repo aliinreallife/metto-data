@@ -1,5 +1,16 @@
 # Attribution
 
+## Contribution portal
+
+The portal layout and visual language are adapted from Metto's
+`aliinreallife/metto-data-prev` at `c75b7bf1dea6afea848303b136881869dc6c22ce`.
+Prototype records are not transit sources. Migration provenance is in
+[`docs/portal-migration.json`](docs/portal-migration.json).
+
+Vazirmatn fonts by the Vazirmatn Project Authors are bundled from Metto's existing
+font assets under the SIL Open Font License 1.1; the license is included in
+[`apps/data-portal/app/fonts/OFL.txt`](apps/data-portal/app/fonts/OFL.txt).
+
 ## Upstream sources
 
 Metto's normalized data is derived from third-party transit datasets kept as

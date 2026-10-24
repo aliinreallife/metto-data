@@ -31,3 +31,8 @@ test-results/
 # Generated review evidence; only CI artifacts should contain these files.
 .quality-report/
 source-status.json
+
+# Vercel application build and local connection metadata
+.next/
+.vercel/
+next-env.d.ts
