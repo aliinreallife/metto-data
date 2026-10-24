@@ -70,9 +70,7 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
               href={`/contribute?city=${city.id}&station=${encodeURIComponent(station.id)}&lang=${lang}`}
               aria-label={`${station.names[lang]} · ${city.names[lang]}`}
             >
-              <title>
-                {station.names[lang]} · {city.names[lang]}
-              </title>
+              <title>{`${station.names[lang]} · ${city.names[lang]}`}</title>
               <circle
                 cx={p.x}
                 cy={p.y}
