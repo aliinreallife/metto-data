@@ -17,7 +17,9 @@
     "contributions:validate": "tsx scripts/contributions-validate.ts",
     "contributions:new": "tsx scripts/new-contribution.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "portal:build": "node scripts/build-portal.mjs",
+    "portal:check": "node --check apps/data-portal/public/form.js && node --check scripts/build-portal.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.2",

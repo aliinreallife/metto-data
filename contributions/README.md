@@ -1,8 +1,10 @@
 # Contributing data (no coding needed)
 
-> Prefer the web platform: **https://data.metto.ir** — search a station, toggle
-> facilities on a map, submit. Until your city is live there, follow the file
-> flow below (it produces exactly what the platform will send).
+> Send information or a timetable photo through a
+> [GitHub issue](https://github.com/aliinreallife/metto-data/issues/new).
+> A [no-login form](../apps/data-portal/README.md) is implemented and awaiting
+> its one-time Supabase/Pages setup. These are source reports for review;
+> structured data edits use the file flow below.
 
 ## What you can fix
 
@@ -15,7 +17,7 @@
 * **Topology:** missing connection, wrong transfer walk time. These need a note
   + evidence and take longer to review.
 
-What *not* to submit here: timetables, live disruptions, photos as files
+What *not* to submit in these JSON files: timetables, live disruptions, photos as files
 (send URLs), anything with personal data, or content copied from sources you
 don't have the right to share.
 

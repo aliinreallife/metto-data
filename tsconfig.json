@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["schema/**/*.ts", "importers/**/*.ts", "validators/**/*.ts", "scripts/**/*.ts", "tests/**/*.ts"]
 }

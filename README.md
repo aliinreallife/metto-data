@@ -1,6 +1,6 @@
 # metto-data — canonical transit data layer for Metto
 
-> **Help improve Metto transit data: https://data.metto.ir**
+> **Help improve Metto transit data:** send a [source report](https://github.com/aliinreallife/metto-data/issues/new).
 >
 > Non-developers welcome — fix facilities, names, locations, and transfers.
 > Start at [`contributions/README.md`](contributions/README.md), or read
@@ -46,7 +46,8 @@ metto-data/
   contributors.json        # contributor attribution registry
   sources.json             # provenance: repo URL, submodule path, license, pinned commit
   scripts/                 # build.ts, validate.ts, contributions-*.ts, new-contribution.ts
-  apps/data-portal/        # placeholder for https://data.metto.ir
+  apps/data-portal/        # anonymous FA/EN GitHub Pages form + setup guide
+  supabase/               # private intake storage + issue-creation function
   docs/data-platform.md    # future platform API contract
 ```
 
@@ -141,10 +142,14 @@ CI fails if the submodule is dirty or `sources.json` disagrees with the gitlink.
 
 ## Contributing Data
 
-**Normal users:** go to **https://data.metto.ir** (or, until it is live, open a
-PR adding one JSON file to `contributions/pending/` — copy an example from
-`contributions/examples/`, generate the template with
-`pnpm contributions:new --city tehran --entity tehran:station:tajrish`).
+**Riders:** [open an issue](https://github.com/aliinreallife/metto-data/issues/new)
+with your information and evidence. An anonymous form with optional private
+contact fields is implemented in [`apps/data-portal/`](apps/data-portal/README.md);
+it needs the one-time Supabase/Pages setup there before it is live.
+
+**Structured edits:** open a PR adding one JSON file to `contributions/pending/`.
+Copy an example from `contributions/examples/`, or generate a template with
+`pnpm contributions:new --city tehran --entity tehran:station:tajrish`.
 
 You can propose: facility toggles (elevator, toilets, parking, prayer room,
 Wi-Fi, shops, accessibility), coordinate fixes, name/translation fixes, status

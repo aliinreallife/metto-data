@@ -36,6 +36,16 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Unit tests (including anonymous intake)
+        run: pnpm test
+
+      - name: Check and build contribution form
+        env:
+          CONTRIBUTIONS_ENDPOINT: https://example.supabase.co/functions/v1/data-contributions
+        run: |
+          pnpm portal:check
+          pnpm portal:build
+
       - name: Validate contributions
         run: pnpm contributions:validate
 

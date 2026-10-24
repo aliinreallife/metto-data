@@ -4,8 +4,9 @@
 
 1. **Data contributions (no coding needed):** fix facilities, coordinates,
    names, statuses, connections, transfers. See
-   [`contributions/README.md`](contributions/README.md) and
-   **https://data.metto.ir**. One JSON file per proposal in
+   [`contributions/README.md`](contributions/README.md). The
+   [anonymous source-report form](apps/data-portal/README.md) has a one-time
+   hosting setup; GitHub issues work in the meantime. One JSON file per structured proposal in
    `contributions/pending/`.
 2. **Code contributions:** importers, validators, scripts, schemas. TypeScript,
    `pnpm typecheck`, `pnpm validate`, `pnpm test` must pass.

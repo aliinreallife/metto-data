@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="به کامل شدن اطلاعات مترو کمک کن؛ بدون ساختن حساب، اطلاعات یا عکس ایستگاهت را برای متو بفرست."
+    />
+    <meta name="color-scheme" content="light" />
+    <title>کمک به اطلاعات مترو | متو</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./config.js"></script>
+    <script type="module" src="./form.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main" data-i18n="skip">رفتن به فرم</a>
+    <header>
+      <a href="https://metto.ir" class="brand"
+        ><img src="./icon.svg" width="36" height="36" alt="" /><span
+          data-i18n="brand"
+          >متو</span
+        ></a
+      ><button id="language" type="button" lang="en">English</button>
+    </header>
+    <main id="main">
+      <h1 data-i18n="title">به کامل شدن اطلاعات مترو کمک کن</h1>
+      <p class="intro" data-i18n="intro">
+        برنامهٔ حرکت، عکس تابلو یا اطلاعات ایستگاهت رو بفرست. نیازی به ساختن
+        حساب نیست.
+      </p>
+    <form id="contribution" method="post" novalidate>
+        <div class="row">
+          <label
+            ><span data-i18n="city">شهر</span
+            ><select name="city" required>
+              <option value="mashhad" data-i18n="mashhad">مشهد</option>
+              <option value="tehran" data-i18n="tehran">تهران</option>
+              <option value="other" data-i18n="other">شهر دیگر</option>
+            </select></label
+          >
+          <label
+            ><span data-i18n="kind">نوع اطلاعات</span
+            ><select name="kind">
+              <option value="timetable" data-i18n="timetable">
+                زمان حرکت قطارها
+              </option>
+              <option value="amenities" data-i18n="amenities">
+                امکانات ایستگاه
+              </option>
+              <option value="station" data-i18n="station">
+                نام، مکان یا وضعیت ایستگاه
+              </option>
+              <option value="other" data-i18n="otherInfo">اطلاعات دیگر</option>
+            </select></label
+          >
+        </div>
+        <label
+          ><span data-i18n="line">خط یا ایستگاه (اختیاری)</span
+          ><input name="station" maxlength="160" autocomplete="off"
+        /></label>
+        <label
+          ><span data-i18n="details">اطلاعاتت</span
+          ><textarea
+            name="details"
+            rows="5"
+            maxlength="4000"
+            aria-describedby="details-hint"
+          ></textarea
+          ><small id="details-hint" data-i18n="hint"
+            >مثلاً جهت حرکت، روزها و ساعت‌ها، تاریخ اطلاعات و پیوند منبع.
+            می‌تونی به‌جای نوشتن، عکس بفرستی.</small
+          ></label
+        >
+        <label
+          ><span data-i18n="photo">عکس تابلو یا ایستگاه (اختیاری)</span
+          ><input
+            name="photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            aria-describedby="photo-hint"
+          /><small id="photo-hint" data-i18n="photoHint"
+            >یک عکس تا ۸ مگابایت. می‌تونی پیوند عکس رو هم در بخش اطلاعات
+            بنویسی.</small
+          ></label
+        >
+        <img id="photo-preview" alt="" hidden />
+        <details>
+          <summary data-i18n="contactHeading">
+            راه تماس برای پیگیری (اختیاری)
+          </summary>
+          <p class="muted" data-i18n="contactNote">
+            اگه دوست داری دربارهٔ اطلاعاتت باهات تماس بگیریم، این بخش رو پر کن.
+            نام و راه تماست عمومی نمی‌شه.
+          </p>
+          <div class="row">
+            <label
+              ><span data-i18n="name">نام (اختیاری)</span
+              ><input name="name" maxlength="80" autocomplete="name" /></label
+            ><label
+              ><span data-i18n="contact">ایمیل یا شناسهٔ تماس (اختیاری)</span
+              ><input
+                name="contact"
+                maxlength="200"
+                dir="auto"
+                autocomplete="off"
+            /></label>
+          </div>
+        </details>
+        <div class="trap" aria-hidden="true">
+          <label
+            >Website<input name="website" tabindex="-1" autocomplete="off"
+          /></label>
+        </div>
+        <p class="muted" data-i18n="review">
+          اطلاعات و عکست برای بررسی در یک گزارش عمومی گیت‌هاب ثبت می‌شه؛ نام و
+          راه تماست خصوصی می‌مونه. حساب لازم نیست.
+        </p>
+        <p id="status" role="status" aria-live="polite" tabindex="-1"></p>
+        <button class="primary" id="send" type="submit" data-i18n="send">
+          فرستادن اطلاعات
+        </button>
+      </form>
+      <section id="success" hidden tabindex="-1">
+        <h2 data-i18n="thanks">ممنون! اطلاعاتت برای بررسی فرستاده شد.</h2>
+        <p id="receipt"></p>
+        <button type="button" id="another" data-i18n="another">
+          فرستادن اطلاعات دیگر
+        </button>
+      </section>
+      <footer>
+        <a href="https://metto.ir" data-i18n="back">برگشت به متو</a
+        ><a
+          href="https://github.com/aliinreallife/metto-data"
+          data-i18n="github"
+          >پروژه در گیت‌هاب</a
+        >
+      </footer>
+      <noscript
+        >برای فرستادن فرم، جاوااسکریپت مرورگرت را فعال کن. / Enable JavaScript
+        to submit this form.</noscript
+      >
+    </main>
+  </body>
+</html>
