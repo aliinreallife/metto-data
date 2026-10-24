@@ -5,7 +5,8 @@
 1. **Data contributions (no coding needed):** fix facilities, coordinates,
    names, statuses, connections, transfers. See
    [`contributions/README.md`](contributions/README.md) and
-   **https://data.metto.ir**. One JSON file per proposal in
+   the [contribution portal](apps/data-portal/README.md) once its Vercel setup
+   is complete (GitHub issues work meanwhile). One JSON file per structured proposal in
    `contributions/pending/`.
 2. **Code contributions:** importers, validators, scripts, schemas. TypeScript,
    `pnpm typecheck`, `pnpm validate`, `pnpm test` must pass.

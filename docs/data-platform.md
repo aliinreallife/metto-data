@@ -1,5 +1,9 @@
 # data.metto.ir — platform API contract (future)
 
+The implemented first step is the [Vercel contribution portal](../apps/data-portal/README.md):
+it receives source reports through `/api/reports` and opens review issues.
+The richer structured-edit API below remains a future contract.
+
 Base URL: `https://data.metto.ir`. All payloads conform to
 `contributions/schema.json`; ids are `uuid`, entities are namespaced
 (`tehran:station:tajrish`).

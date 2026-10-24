@@ -10,6 +10,20 @@
     "pinnedCommit": "bcf474e17f29a53684bd02229e73bcaa06c4f37d",
     "lastSyncedAt": "2026-09-11",
     "stationCount": 150,
-    "datasetVersion": "2026.09.11"
+    "datasetVersion": "2026.10.22"
+  },
+  "mashhad": {
+    "name": "Mashhad Metro Data",
+    "repository": "https://github.com/shahriaarrr/mashhad-metro-data",
+    "path": "upstream-mashhad-metro",
+    "upstreamFile": "data/stations.json",
+    "license": "ODbL-1.0",
+    "licenseFile": "LICENSES/ODbL-1.0.txt",
+    "type": "git-submodule",
+    "pinnedCommit": "f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0",
+    "lastSyncedAt": "2026-10-21",
+    "stationCount": 38,
+    "datasetVersion": "2026.10.1",
+    "releaseStatus": "candidate"
   }
 }

@@ -1,0 +1,31 @@
+{
+  "corrections": [
+    {
+      "upstreamKey": "Fajr",
+      "location": {
+        "lat": 36.31281,
+        "lng": 59.65543
+      },
+      "source": {
+        "id": "osm:node:14133541209",
+        "url": "https://www.openstreetmap.org/node/14133541209",
+        "license": "ODbL-1.0",
+        "checkedAt": "2026-10-21",
+        "note": "OpenStreetMap station position; upstream duplicated Velayat coordinates. Positional accuracy/entrances still require survey."
+      }
+    },
+    {
+      "upstreamKey": "shahid mofatteh",
+      "names": {
+        "en": "Shahid Mofatteh"
+      },
+      "source": {
+        "id": "station-list-2026-10",
+        "url": "https://www.saadatrent.com/mag/iran/mashhad-metro-map/",
+        "license": "reference-only",
+        "checkedAt": "2026-10-21",
+        "note": "The upstream English name duplicates Nabovvat; its separate Persian name شهید مفتح and Line 2 listing establish Shahid Mofatteh. Source used to corroborate name, not to copy a dataset."
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "cityId": "tehran",
-  "datasetVersion": "2026.09.11",
+  "datasetVersion": "2026.10.22",
   "generatedAt": "2026-09-11T14:35:21.093Z",
   "importer": "importers/tehran.ts",
   "upstream": {

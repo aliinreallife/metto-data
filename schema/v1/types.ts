@@ -125,6 +125,7 @@ export interface CityMeta {
   /** Manually-maintained dataset version (CalVer `YYYY.MM.N`), set per city in sources.json. Never auto-incremented. */
   datasetVersion: string;
   generatedAt: string;
+  releaseStatus?: "candidate" | "verified";
   importer: string;
   upstream: { repository: string; commit: string; file: string };
   counts: {

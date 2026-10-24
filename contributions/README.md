@@ -1,8 +1,10 @@
 # Contributing data (no coding needed)
 
-> Prefer the web platform: **https://data.metto.ir** — search a station, toggle
-> facilities on a map, submit. Until your city is live there, follow the file
-> flow below (it produces exactly what the platform will send).
+> Send source information or timetable photos through the
+> [contribution portal](../apps/data-portal/README.md) once configured, or
+> [open an issue](https://github.com/aliinreallife/metto-data/issues/new).
+> Source reports are reviewed before becoming structured edits. The file flow
+> below remains the way to propose canonical data changes.
 
 ## What you can fix
 
@@ -15,7 +17,7 @@
 * **Topology:** missing connection, wrong transfer walk time. These need a note
   + evidence and take longer to review.
 
-What *not* to submit here: timetables, live disruptions, photos as files
+What *not* to submit in these JSON files: timetables, live disruptions, photos as files
 (send URLs), anything with personal data, or content copied from sources you
 don't have the right to share.
 
@@ -49,3 +51,7 @@ folds approved proposals into `data/cities/*` and credits you in
 Accepted changes become part of the ODbL-1.0 normalized dataset with credit to
 you (see `../contributors.json` and `../ATTRIBUTION.md`). Rejected proposals
 stay in `rejected/` for history but never reach the dataset.
+
+## Safety: approved-proposal rules (October 2026)
+
+Only reviewed **field updates** can be published. Every approved proposal must include `review.decidedBy` and a valid `review.decidedAt` timestamp and live in `approved/`. A pending document accidentally placed there fails the build. Entity creation/removal and `remove` operations are explicitly rejected until implemented; they cannot silently no-op. Conflicting approved changes to the same entity path fail the build. All cities use the same approved-patch merge procedure. No approved change is applied directly to an upstream submodule.

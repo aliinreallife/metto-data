@@ -1,5 +1,16 @@
 # Attribution
 
+## Contribution portal
+
+The portal layout and visual language are adapted from Metto's
+`aliinreallife/metto-data-prev` at `c75b7bf1dea6afea848303b136881869dc6c22ce`.
+Prototype records are not transit sources. Migration provenance is in
+[`docs/portal-migration.json`](docs/portal-migration.json).
+
+Vazirmatn fonts by the Vazirmatn Project Authors are bundled from Metto's existing
+font assets under the SIL Open Font License 1.1; the license is included in
+[`apps/data-portal/app/fonts/OFL.txt`](apps/data-portal/app/fonts/OFL.txt).
+
 ## Upstream sources
 
 Metto's normalized data is derived from third-party transit datasets kept as
@@ -57,3 +68,28 @@ Metto transit data (https://github.com/<org>/metto-data), derived from
 Tehran Metro Data by mostafa-kheibary (ODbL-1.0), plus community contributions
 listed in contributors.json. Data build: see data/cities/tehran/meta.json.
 ```
+
+## Mashhad Metro Data
+
+* Upstream database: [Mashhad Metro Station Graph by shahriaarrr](https://github.com/shahriaarrr/mashhad-metro-data).
+* License: Open Database License (ODbL) v1.0; submodule `upstream-mashhad-metro/`, pinned to `f5d5c78816a8cc360bb9ae00db8fb8bad23a29e0`.
+* OSM station position used for correction to Fajr: [OpenStreetMap node 14133541209](https://www.openstreetmap.org/node/14133541209), © OpenStreetMap contributors (ODbL); see `overrides/mashhad.overrides.json`.
+* Data provenance and draft review: [docs/mashhad-source-review.md](docs/mashhad-source-review.md).
+
+Mashhad output is derived from these ODbL sources and is published under the same database license. Other pages used for service verification are reference-only and are NOT copied or relicensed.
+
+`sources/mashhad/osm-review-snapshot.json` is an ODbL-1.0 review extract,
+© OpenStreetMap contributors (<https://www.openstreetmap.org/copyright>).
+It retains the versions/timestamps and ordered stop members of relations
+154407, 5623319 and 5692274, plus their referenced stop positions and the
+versioned Fajr representative node. These facts are review evidence, not a
+certification of current service, entrances, accessibility or transfer times.
+
+## Mashhad service-review references
+
+`sources/mashhad/service-evidence.json` contains independently written factual
+review notes referring to dated Shahrara News reports and statements attributed
+to metro/city officials. Source URLs and publication metadata are retained for
+review. Article bodies, photography, videos and maps are not redistributed;
+those publications retain their own rights. These references do not supply a
+timetable, media license, live operating guarantee or public-release approval.

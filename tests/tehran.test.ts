@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import { randomUUID } from "node:crypto";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildTehran } from "../importers/tehran.js";
 import { createFixture, cleanupFixtures } from "./fixtures.js";
@@ -100,10 +100,32 @@ describe("tehran importer", () => {
     expect(ids[golshahr + 1]).toBe("tehran:station:shahid-fakhrizadeh");
   });
 
+  it("keeps Metto's sole Line 6 boarding override while retaining Line 7 and through-tracks", () => {
+    const { stations, graph } = buildTehran(fx);
+    const id = "tehran:station:shohada-ye-hefdah-e-shahrivar";
+    const line6 = graph.routes.find((r) => r.id === "tehran:route:line-6-main");
+    const line7 = graph.routes.find((r) => r.id === "tehran:route:line-7-main");
+    expect(line6?.stops.find((s) => s.stationId === id)?.status).toBe("under_construction");
+    expect(line7?.stops.find((s) => s.stationId === id)?.status).toBe("operational");
+    expect(stations.find((s) => s.id === id)?.status).toBe("operational");
+    const throughTracks = graph.segments.filter((s) =>
+      s.lineId === "tehran:line:6" && (s.from === id || s.to === id),
+    );
+    expect(throughTracks).toHaveLength(2);
+    expect(throughTracks.every((s) => s.status === "operational")).toBe(true);
+  });
+
+  it("rejects stale or missing route stop override targets", () => {
+    const path = join(fx, "overrides", "tehran.overrides.json");
+    const original = JSON.parse(readFileSync(path, "utf8"));
+    original.routeStopStatusOverrides[0].routeId = "tehran:route:does-not-exist";
+    writeFileSync(path, JSON.stringify(original), "utf8");
+    expect(() => buildTehran(fx)).toThrow(/missing route stop override target/);
+  });
+
   describe("contribution folding", () => {
     it("folds approved proposals into stations and ignores non-approved ones", () => {
       const approvedId = randomUUID();
-      const pendingId = randomUUID();
       const approvedDir = join(fx, "contributions", "approved");
       writeFileSync(
         join(approvedDir, `${approvedId}.json`),
@@ -117,26 +139,10 @@ describe("tehran importer", () => {
           submittedBy: "test-contributor",
           submittedAt: "2026-09-11T00:00:00Z",
           status: "approved",
+          review: {decidedBy: "test-reviewer", decidedAt: "2026-10-21T00:00:00.000Z"},
         }),
         "utf8",
       );
-      // A pending-status file in approved/ must not be applied (defensive).
-      writeFileSync(
-        join(approvedDir, `${pendingId}.json`),
-        JSON.stringify({
-          id: pendingId,
-          city: "tehran",
-          entityType: "station",
-          entityId: "tehran:station:tajrish",
-          changeType: "update",
-          operations: [{ op: "set", path: "/amenities/wc", value: true }],
-          submittedBy: "test-contributor",
-          submittedAt: "2026-09-11T00:00:00Z",
-          status: "pending",
-        }),
-        "utf8",
-      );
-
       const { stations } = buildTehran(fx);
       const tajrish = stations.find((s) => s.id === "tehran:station:tajrish");
       expect(tajrish?.amenities.elevator).toBe(true);

@@ -1,44 +1,71 @@
-# Release validation: typecheck + build + validate the canonical dataset.
-# Fails on schema breaks (typecheck), build failures, or validation errors.
-# Submodules are required: upstream datasets live in upstream-*/ gitlinks.
 name: Validate
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: full-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - name: Checkout (with submodules)
-        uses: actions/checkout@v4
+      - name: Checkout pinned inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          persist-credentials: false
           submodules: recursive
-
-      - name: Guard against submodule writes
-        run: |
-          git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
-
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
-      - name: Install dependencies
+      - name: Install
         run: pnpm install --frozen-lockfile
-
+      - name: Enforce immutable third-party action references
+        run: pnpm workflows:check
+      - name: Check source provenance
+        run: pnpm provenance:check
       - name: Typecheck
         run: pnpm typecheck
-
-      - name: Build
+      - name: Build all registered cities
         run: pnpm build
-
-      - name: Validate
+      - name: Check committed dataset reproducibility
+        run: pnpm generated:check
+      - name: Validate all cities
         run: pnpm validate
+      - name: Regression tests
+        run: pnpm test
+      - name: Build Vercel portal from the same canonical data
+        run: pnpm portal:build
+      - name: Portal typecheck
+        run: pnpm portal:typecheck
+      - name: Verify Tehran remains independently release-ready
+        run: pnpm check-release --city tehran
+      - name: Produce evidence and quality report
+        if: always()
+        run: pnpm quality:report
+      - name: Add quality report to job summary
+        if: always()
+        run: |
+          if [ -f .quality-report/quality-report.md ]; then
+            cat .quality-report/quality-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload quality evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: metto-data-quality-${{ github.run_id }}
+          path: .quality-report/
+          # The report directory is hidden; upload-artifact v4 excludes it
+          # by default. Keep the opt-in scoped to this generated directory.
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30

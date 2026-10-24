@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-vazirmatn), Tahoma, Arial, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  color-scheme: light;
+  --background: oklch(0.985 0.004 70);
+  --foreground: oklch(0.22 0.02 25);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.02 25);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.02 25);
+  --primary: oklch(0.54 0.19 25);
+  --primary-foreground: oklch(0.99 0.01 70);
+  --secondary: oklch(0.94 0.01 70);
+  --secondary-foreground: oklch(0.27 0.02 25);
+  --muted: oklch(0.95 0.008 70);
+  --muted-foreground: oklch(0.52 0.025 25);
+  --accent: oklch(0.94 0.03 25);
+  --accent-foreground: oklch(0.35 0.12 25);
+  --destructive: oklch(0.57 0.2 25);
+  --border: oklch(0.89 0.01 70);
+  --input: oklch(0.84 0.012 70);
+  --ring: oklch(0.57 0.19 25);
+  --radius: 0.75rem;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.18 0.012 25);
+  --foreground: oklch(0.96 0.01 70);
+  --card: oklch(0.22 0.014 25);
+  --card-foreground: oklch(0.96 0.01 70);
+  --popover: oklch(0.22 0.014 25);
+  --popover-foreground: oklch(0.96 0.01 70);
+  --primary: oklch(0.68 0.18 25);
+  --primary-foreground: oklch(0.15 0.01 25);
+  --secondary: oklch(0.28 0.018 25);
+  --secondary-foreground: oklch(0.96 0.01 70);
+  --muted: oklch(0.27 0.015 25);
+  --muted-foreground: oklch(0.72 0.02 70);
+  --accent: oklch(0.3 0.06 25);
+  --accent-foreground: oklch(0.9 0.08 25);
+  --destructive: oklch(0.68 0.18 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.68 0.18 25);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply bg-background;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button,
+  article {
+    transition-duration: 180ms;
+  }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+summary {
+  touch-action: manipulation;
+}
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}

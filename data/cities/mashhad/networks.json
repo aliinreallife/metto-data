@@ -1,0 +1,8 @@
+[
+  {
+    "id": "mashhad:network:metro",
+    "cityId": "mashhad",
+    "agencyId": "mashhad:agency:mashhad-metro",
+    "mode": "metro"
+  }
+]

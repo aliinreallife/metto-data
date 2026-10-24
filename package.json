@@ -17,10 +17,20 @@
     "contributions:validate": "tsx scripts/contributions-validate.ts",
     "contributions:new": "tsx scripts/new-contribution.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "provenance:check": "tsx scripts/check-provenance.ts",
+    "generated:check": "tsx scripts/check-generated.ts",
+    "quality:report": "tsx scripts/quality-report.ts",
+    "workflows:check": "tsx scripts/check-workflows.ts",
+    "dev": "pnpm --filter @metto/data-portal dev",
+    "portal:build": "pnpm --filter @metto/data-portal build",
+    "portal:typecheck": "pnpm --filter @metto/data-portal typecheck",
+    "portal:start": "pnpm --filter @metto/data-portal start"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
     "@types/node": "^22.20.2",
+    "jose": "6.2.13",
     "tsx": "^4.19.0",
     "typescript": "5.7.3",
     "vitest": "^5.0.0"

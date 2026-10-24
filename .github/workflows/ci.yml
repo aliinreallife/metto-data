@@ -1,43 +1,40 @@
-# Core CI: validate data + contributions (no build artifacts committed by CI).
-# Submodules are required: upstream datasets live in upstream-*/ gitlinks.
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
+permissions:
+  contents: read
+concurrency:
+  group: core-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout (with submodules)
-        uses: actions/checkout@v4
+      - name: Checkout pinned inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          persist-credentials: false
           submodules: recursive
-
-      - name: Guard against submodule writes
-        run: |
-          git submodule foreach --quiet 'git status --porcelain' | tee /tmp/submodule-dirty.txt | grep . && echo "ERROR: upstream submodule is dirty — never commit inside upstream-*/" && exit 1 || echo "submodules clean"
-
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: pnpm
-
-      - name: Install dependencies
+      - name: Install
         run: pnpm install --frozen-lockfile
-
+      - name: Enforce immutable third-party action references
+        run: pnpm workflows:check
+      - name: Check source provenance
+        run: pnpm provenance:check
       - name: Typecheck
         run: pnpm typecheck
-
       - name: Validate contributions
         run: pnpm contributions:validate
-
-      - name: Validate dataset
+      - name: Validate committed datasets
         run: pnpm validate

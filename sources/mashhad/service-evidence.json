@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "cityId": "mashhad",
+  "reviewOnly": true,
+  "initialScope": {
+    "lineIds": [
+      "mashhad:line:1",
+      "mashhad:line:2"
+    ],
+    "timing": "none",
+    "arrivalEstimates": false,
+    "travelTimeEstimates": false,
+    "line3": "withheld-pending-separate-service-pattern-review"
+  },
+  "sourceContentPolicy": "Only independently written factual review notes and retrieval metadata are redistributed. Article bodies, photographs, video and maps are not copied. Multiple reports from one publisher are not independent publishers. Response hashes document retrieved bytes, not immutable archives or authenticated statements.",
+  "sources": [
+    {
+      "id": "shahrara-331569",
+      "url": "https://shahraranews.ir/fa/news/331569/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2025-05-09T12:51:42+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "173ba18c08f455b8d3bee831840445bef6174886bfe7f6e590bec37cb4f1f5be",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-453536",
+      "url": "https://shahraranews.ir/fa/news/453536/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-10-19T11:38:06+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "e9f214afbcbbd44c7df0e55332da65191bf87064fd511bb7140cca8eb0ee6ec3",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-451549",
+      "url": "https://shahraranews.ir/fa/news/451549/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-10-11T11:12:34+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "13d38539e3e470a66ce42538e1b1c028f743cd9a09957ea987599acd7ca273b0",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-420784",
+      "url": "https://shahraranews.ir/fa/news/420784/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-06-09T07:59:02+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "d03c51066d8442580b7f461809cf584a9aa312aa18a1d51e7392f59fd73c4831",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-435635",
+      "url": "https://shahraranews.ir/fa/news/435635/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-08-04T17:12:38+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "b3f7c0d0c2f078cf56b278477697233360cf8f639385e5c3fd3b8496f1a50829",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-436562",
+      "url": "https://shahraranews.ir/fa/news/436562/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-08-09T09:04:00+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "e0a7ad32b39efa299e78271fbb5d12f3daaf72d715332ce55b9e889613897875",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-440642",
+      "url": "https://shahraranews.ir/fa/news/440642/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-08-26T10:00:03+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "f6a90bd51283b82972cebd0f8bdf0e94f2e4821857a0e73e839c64b4ede46097",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-454293",
+      "url": "https://shahraranews.ir/fa/news/454293/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-10-22T11:29:01+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "350a04f4d1fa6b36edac9c2a849a3d706566b03132ea24c0e678e54ccc833d04",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-386944",
+      "url": "https://shahraranews.ir/fa/news/386944/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2026-01-19T14:52:01+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "6ba73f7cdfaa2e43543511fa2b84c3b5a654b7f4b83b6814d821fa3ceaa715ff",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "id": "shahrara-382219",
+      "url": "https://shahraranews.ir/fa/news/382219/",
+      "publisher": "Shahrara News",
+      "publishedAt": "2025-12-29T09:48:32+03:30",
+      "retrievedOn": "2026-10-23",
+      "fetchedResponseSha256": "e88b9fc942dd63a1a5f6240b2d9cb4bd5316b2ab034c06a92304686b0e94625a",
+      "license": "reference-only",
+      "contentRedistributed": false
+    }
+  ],
+  "claims": [
+    {
+      "id": "line1-service",
+      "kind": "line-service",
+      "lineIds": [
+        "mashhad:line:1"
+      ],
+      "stationIds": [],
+      "sourceIds": [
+        "shahrara-453536",
+        "shahrara-451549"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "October reports describe ongoing Line 1 passenger service and the 24-station line.",
+      "limitations": "Line-level evidence and planned/current aggregate counts do not constitute a live, station-by-station boarding audit."
+    },
+    {
+      "id": "line2-service",
+      "kind": "line-service",
+      "lineIds": [
+        "mashhad:line:2"
+      ],
+      "stationIds": [],
+      "sourceIds": [
+        "shahrara-453536",
+        "shahrara-451549"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The operator development interview describes the 13-station Tabarsi–Fakouri line and Fakouri entering passenger service in 1404; October reporting describes current Line 2 passengers.",
+      "limitations": "The interview distinguishes historical build stages; it is not an operational departures feed or a dated list of every boarding platform."
+    },
+    {
+      "id": "airport-branch-resumed",
+      "kind": "station-service",
+      "lineIds": [
+        "mashhad:line:1"
+      ],
+      "stationIds": [
+        "mashhad:station:ghadir",
+        "mashhad:station:bustan-e-reyhaneh",
+        "mashhad:station:airport"
+      ],
+      "sourceIds": [
+        "shahrara-420784"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The June 9, 2026 report says service to Reyhaneh and Airport resumed after the airport reopened, following a temporary Ghadir–Airport suspension.",
+      "limitations": "Resumption on that date is not a guarantee of live operation or future airport access."
+    },
+    {
+      "id": "fakouri-resumed",
+      "kind": "station-service",
+      "lineIds": [
+        "mashhad:line:2"
+      ],
+      "stationIds": [
+        "mashhad:station:shahid-fakouri"
+      ],
+      "sourceIds": [
+        "shahrara-435635",
+        "shahrara-453536"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The August 4, 2026 report says Fakouri returned to passenger service after repairs; the October interview confirms its 1404 opening.",
+      "limitations": "Temporary closures can recur; no live alerts or timetable were supplied."
+    },
+    {
+      "id": "shariati-connectivity",
+      "kind": "interchange-connectivity",
+      "lineIds": [
+        "mashhad:line:1",
+        "mashhad:line:2"
+      ],
+      "stationIds": [
+        "mashhad:station:shariati"
+      ],
+      "sourceIds": [
+        "shahrara-382219",
+        "shahrara-386944"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The December 2025 report describes changing between Lines 1/2 at Shariati, including passengers from Line 2 entering Line 1. January 2026 field reporting observes passengers moving from Line 1 toward Line 2.",
+      "limitations": "Evidence supports connectivity in both directions, not measured walking duration, exact platforms, step-free access, or current escalator/elevator availability."
+    },
+    {
+      "id": "line3-initial-three",
+      "kind": "historical-service-pattern",
+      "lineIds": [
+        "mashhad:line:3"
+      ],
+      "stationIds": [
+        "mashhad:station:shohada",
+        "mashhad:station:bab-al-javad",
+        "mashhad:station:imam-reza-terminal"
+      ],
+      "sourceIds": [
+        "shahrara-331569"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The May 9, 2025 operator-director report describes the initial Shohada–Bab Al-javad–terminal service.",
+      "limitations": "Historical launch pattern only. Do not treat its three-stop count, single-train arrangement, opening hours or headways as current."
+    },
+    {
+      "id": "basij-passenger-opening",
+      "kind": "station-service",
+      "lineIds": [
+        "mashhad:line:3"
+      ],
+      "stationIds": [
+        "mashhad:station:basij"
+      ],
+      "sourceIds": [
+        "shahrara-436562",
+        "shahrara-440642",
+        "shahrara-454293"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The August 9, 2026 report records Basij passenger boarding starting. August field reporting and an October 22 council statement corroborate its use and connection between Lines 1/3.",
+      "limitations": "This supersedes the proposed-stop inference from OSM for boarding evidence; it does not establish the complete Line 3 service pattern or authorize adding the line to the initial scope."
+    },
+    {
+      "id": "basij-connectivity",
+      "kind": "interchange-connectivity",
+      "lineIds": [
+        "mashhad:line:1",
+        "mashhad:line:3"
+      ],
+      "stationIds": [
+        "mashhad:station:basij"
+      ],
+      "sourceIds": [
+        "shahrara-440642",
+        "shahrara-454293"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "Reporting describes passenger interchange between Lines 1/3 at Basij, including the operating-company director discussing the completed rail connection.",
+      "limitations": "Outside the Lines 1/2 initial scope. No transfer duration, accessibility or platform-path claim."
+    },
+    {
+      "id": "line3-next-phase",
+      "kind": "future-development",
+      "lineIds": [
+        "mashhad:line:3"
+      ],
+      "stationIds": [],
+      "sourceIds": [
+        "shahrara-454293"
+      ],
+      "status": "corroborated-dated-report",
+      "summary": "The October 22 council statement describes adding 15 Khordad, Ayatollah Mesbah Yazdi and Sharestan in a future phase.",
+      "limitations": "Future construction plans are not operational boarding assertions. No station coordinates, records or routes are imported from this statement."
+    }
+  ],
+  "untimedInterchanges": [
+    {
+      "stationId": "mashhad:station:shariati",
+      "fromLineId": "mashhad:line:1",
+      "toLineId": "mashhad:line:2",
+      "claimIds": [
+        "shariati-connectivity"
+      ]
+    },
+    {
+      "stationId": "mashhad:station:shariati",
+      "fromLineId": "mashhad:line:2",
+      "toLineId": "mashhad:line:1",
+      "claimIds": [
+        "shariati-connectivity"
+      ]
+    }
+  ],
+  "remainingReview": [
+    "Review the 37 line-specific boarding assertions against dated station-level operator evidence; the current service reports are mostly line-level.",
+    "Review the representative station points and aliases; no entrance or physical platform survey is claimed.",
+    "Approve an exact Lines 1/2 dataset projection and the untimed interchange facts before public activation."
+  ],
+  "notRequiredForThisScope": [
+    "Departures, headways, arrival estimates and travel-time estimates",
+    "Measured interchange walking duration",
+    "Official color palette, entrance directions and amenity/accessibility claims",
+    "Line 3 and future construction coverage"
+  ]
+}

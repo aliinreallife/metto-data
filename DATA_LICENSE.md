@@ -42,3 +42,7 @@ derivative database (or the alterations) be offered in machine-readable form
 (see ODbL §§ 4.2–4.6). This repository satisfies the machine-readable offer by
 publishing `data/cities/*` (derivative), `overrides/*` (alterations), and the
 importer source. Read the full license text in `LICENSES/ODbL-1.0.txt`.
+
+## Mashhad source
+
+Mashhad's normalized data is also adapted from `shahriaarrr/mashhad-metro-data` (ODbL-1.0), with a cited OpenStreetMap station-location correction (© OpenStreetMap contributors, ODbL-1.0). This draft dataset is covered by the same ODbL-1.0, with details in `ATTRIBUTION.md` and `docs/mashhad-source-review.md`.

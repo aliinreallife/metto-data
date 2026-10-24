@@ -1,6 +1,6 @@
 # metto-data — canonical transit data layer for Metto
 
-> **Help improve Metto transit data: https://data.metto.ir**
+> **Help improve Metto transit data:** [send a source report](https://github.com/aliinreallife/metto-data/issues/new).
 >
 > Non-developers welcome — fix facilities, names, locations, and transfers.
 > Start at [`contributions/README.md`](contributions/README.md), or read
@@ -10,6 +10,12 @@
 datasets (kept as **untouched git submodules**) into a normalized,
 versioned, validated dataset that the Metto app consumes. Metto never reads
 upstream repositories directly.
+
+The contribution UI from `metto-data-prev` now lives in
+[`apps/data-portal/`](apps/data-portal/README.md). The combined repository uses
+Vercel for the UI/API and the existing Neon database for private intake, with GitHub Actions for data
+validation, upstream checks and queued issue publication. See its guide for the
+existing Vercel project. Hosting configuration and live delivery remain pending.
 
 ```text
 upstream-tehran-metro/   (git submodule — source material only, never edited)
@@ -46,7 +52,7 @@ metto-data/
   contributors.json        # contributor attribution registry
   sources.json             # provenance: repo URL, submodule path, license, pinned commit
   scripts/                 # build.ts, validate.ts, contributions-*.ts, new-contribution.ts
-  apps/data-portal/        # placeholder for https://data.metto.ir
+  apps/data-portal/        # Vercel contribution UI/API, backed by the same data
   docs/data-platform.md    # future platform API contract
 ```
 
@@ -98,9 +104,12 @@ Modes supported from day one: `metro`, `bus`, `tram`, `rail`.
 
 ## Supported cities
 
-| city   | modes | stations | lines | datasetVersion | status |
-|--------|-------|----------|-------|----------------|--------|
-| tehran | metro | 151 | 7 | 2026.09.11 | stable (built + validated by CI) |
+| city | modes | stations | lines | datasetVersion | status |
+|------|-------|----------|-------|----------------|--------|
+| tehran | metro | 151 | 7 | 2026.09.11 | existing validated baseline |
+| mashhad | metro | 38 | 3 | 2026.10.1 | **DRAFT / verification required** — see [source review](docs/mashhad-source-review.md) |
+
+Mashhad is a candidate dataset with unverified entrances, timetable, transfer walks and line colors; never treat it as service-ready merely because the JSON passes schema validation. Run `pnpm build` to build all registered cities, or `pnpm build --city mashhad` to build only Mashhad.
 
 Full provenance (pinned commit, sync date) lives in [`sources.json`](sources.json)
 and per-build in `data/cities/<city>/meta.json`. License details in
@@ -141,10 +150,15 @@ CI fails if the submodule is dirty or `sources.json` disagrees with the gitlink.
 
 ## Contributing Data
 
-**Normal users:** go to **https://data.metto.ir** (or, until it is live, open a
-PR adding one JSON file to `contributions/pending/` — copy an example from
-`contributions/examples/`, generate the template with
-`pnpm contributions:new --city tehran --entity tehran:station:tajrish`).
+**Riders:** use the contribution portal once its
+[Vercel setup](apps/data-portal/README.md) is complete, or
+[open an issue](https://github.com/aliinreallife/metto-data/issues/new) with your
+information and evidence. No-login form submissions create source reports for
+maintainer review; optional contact fields stay private.
+
+**Structured edits:** add one JSON file to `contributions/pending/` in a PR.
+Copy an example from `contributions/examples/`, or generate a template with
+`pnpm contributions:new --city tehran --entity tehran:station:tajrish`.
 
 You can propose: facility toggles (elevator, toilets, parking, prayer room,
 Wi-Fi, shops, accessibility), coordinate fixes, name/translation fixes, status
@@ -179,3 +193,16 @@ and runs in CI.
   `LICENSES/ODbL-1.0.txt`.
 * **Upstream datasets:** their own licenses (Tehran: ODbL-1.0) — see
   `ATTRIBUTION.md`. Files inside `upstream-*/` are never modified.
+
+## Mashhad candidate source review
+
+Mashhad uses an immutable [ODbL-licensed upstream dataset](https://github.com/shahriaarrr/mashhad-metro-data) pinned as a git submodule, explicit ordered service routes, and an OSM-referenced Fajr coordinate correction. See [the audit](docs/mashhad-source-review.md) and [machine-readable review record](sources/mashhad/review.json). Current generated JSON is **not yet approved for production routing**. No timetable is bundled.
+
+The first delivery scope under review is **Lines 1/2: stations and route paths,
+without arrival or travel-time estimates**. `pnpm quality:report` produces
+`.quality-report/mashhad-path-review.json` for its 36 stations, 37 boarding
+assertions and two untimed Shariati directions. [Dated service evidence](sources/mashhad/service-evidence.json)
+corroborates line operation, terminal reopenings and interchange connectivity;
+station-level operator review and approval of the exact projection remain
+outstanding. Line 3, measured walking times, official colors, entrances and
+amenities are separate scope. The packet never grants release approval.

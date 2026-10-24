@@ -1,2 +1,6 @@
+packages:
+  - apps/data-portal
+
 allowBuilds:
   esbuild: true
+  sharp: true

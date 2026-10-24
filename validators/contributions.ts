@@ -92,6 +92,8 @@ export function validateContributionDoc(
   }
   if (d.changeType !== "update" && d.changeType !== "add" && d.changeType !== "remove") {
     errors.push(`${label}: invalid changeType ${JSON.stringify(d.changeType)}`);
+  } else if (d.changeType !== "update") {
+    errors.push(`${label}: entity-level ${d.changeType} is not implemented; do not silently publish it`);
   }
   if (typeof d.submittedBy !== "string" || d.submittedBy.length === 0) {
     errors.push(`${label}: missing contributor submittedBy`);
@@ -116,6 +118,8 @@ export function validateContributionDoc(
       const o = op as Record<string, unknown>;
       if (o.op !== "set" && o.op !== "add" && o.op !== "remove") {
         errors.push(`${where}: unknown operation ${JSON.stringify(o.op)}`);
+      } else if (o.op === "remove") {
+        errors.push(`${where}: remove operation is not implemented; refusing a silent no-op`);
       }
       if (typeof o.path !== "string" || !isAllowedPath(entityType, o.path)) {
         errors.push(`${where}: path ${JSON.stringify(o.path)} is not allowlisted for ${entityType || "unknown entity"}`);
@@ -148,6 +152,17 @@ export function validateContributionDoc(
       }
     }
   }
+  if (d.status === "approved") {
+    const review = d.review;
+    const record = review && typeof review === "object" && !Array.isArray(review)
+      ? review as Record<string, unknown> : null;
+    if (typeof record?.decidedBy !== "string" || !record.decidedBy.trim()) {
+      errors.push(`${label}: approved contribution requires review.decidedBy`);
+    }
+    if (typeof record?.decidedAt !== "string" || Number.isNaN(Date.parse(record.decidedAt))) {
+      errors.push(`${label}: approved contribution requires valid review.decidedAt`);
+    }
+  }
   return errors;
 }
 
@@ -174,6 +189,10 @@ export function validateContributionsDir(
       continue;
     }
     errors.push(...validateContributionDoc(doc, label, cityIds));
+    const actualStatus = (doc && typeof doc === "object" && !Array.isArray(doc)) ? (doc as Record<string, unknown>).status : undefined;
+    if (queue === "approved" && actualStatus !== "approved") errors.push(`${label}: only approved status permitted in approved/`);
+    if (queue === "rejected" && actualStatus !== "rejected") errors.push(`${label}: only rejected status permitted in rejected/`);
+    if (queue === "pending" && actualStatus !== "pending" && actualStatus !== "needs-info") errors.push(`${label}: status does not belong in pending/`);
   }
   return errors;
 }

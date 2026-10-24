@@ -1,3 +1,6 @@
 [submodule "upstream-tehran-metro"]
 	path = upstream-tehran-metro
 	url = https://github.com/mostafa-kheibary/tehran-metro-data.git
+[submodule "upstream-mashhad-metro"]
+	path = upstream-mashhad-metro
+	url = https://github.com/shahriaarrr/mashhad-metro-data.git

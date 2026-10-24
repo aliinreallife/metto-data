@@ -1,0 +1,10 @@
+[
+  {
+    "id": "mashhad:agency:mashhad-metro",
+    "cityId": "mashhad",
+    "names": {
+      "fa": "قطار شهری مشهد",
+      "en": "Mashhad Urban Railway"
+    }
+  }
+]
