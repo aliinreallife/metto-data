@@ -28,7 +28,9 @@
     "portal:start": "pnpm --filter @metto/data-portal start"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
     "@types/node": "^22.20.2",
+    "jose": "6.2.13",
     "tsx": "^4.19.0",
     "typescript": "5.7.3",
     "vitest": "^5.0.0"

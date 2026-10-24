@@ -58,6 +58,7 @@ export interface PrivateStore {
 export type IntakeConfig = {
   store: PrivateStore;
   githubToken: string;
+  quotaSecret?: string;
   publicOrigin: string;
   cityStations: Record<string, string[]>;
   fetch?: typeof fetch;
@@ -214,7 +215,9 @@ export async function reserveQuota(
   const now = (config.now?.() ?? new Date()).toISOString(),
     day = now.slice(0, 10),
     hour = now.slice(0, 13);
-  const key = createHmac("sha256", config.githubToken).update(ip).digest("hex"),
+  const key = createHmac("sha256", config.quotaSecret ?? config.githubToken)
+      .update(ip)
+      .digest("hex"),
     path = `limits/${day}.json`;
   for (let attempt = 0; attempt < 12; attempt++) {
     const previous = await config.store.read<Limits>(path);
@@ -369,6 +372,7 @@ export function createIntakeHandler(config: IntakeConfig) {
           : reply(409, { error: "changed" });
       }
       durable = true;
+      if (!config.githubToken) return reply(202, { id: report.id });
       const result = await publish(config, report.id);
       return reply(result?.state === "published" ? 201 : 202, {
         id: report.id,

@@ -1,16 +1,15 @@
-# Metto Data — one repository for data and the contribution UI
+# Metto Data — data and the contribution UI together
 
-The existing `metto-data-prev` design now lives here as a Next.js application.
-The canonical data, importers, review rules and GitHub Actions stay at the
-repository root. Vercel hosts this UI and its server functions. GitHub Pages and
-Supabase are not required for this approach.
+The existing `metto-data-prev` design lives here as a Next.js application.
+Canonical data, importers, review rules and GitHub Actions stay at the root.
+Vercel hosts this UI/API. The existing portal project (`novus`) already has a
+Neon/Postgres connection, which is reused for private report storage.
 
-The portal reads committed `data/cities/*` files directly. It shows **151 Tehran
-stations and 36 Mashhad stations on Lines 1/2**, using city-qualified IDs.
-Mashhad remains a candidate; Line 3 is withheld and no timetable is invented.
-Tehran's network files match the cleaned Metto baseline. Amenities are retained
-as recorded information that needs review. Demo stations, votes, profiles and
-contribution totals from the prototype are replaced by real catalog and issue data.
+The portal reads committed `data/cities/*` files: **151 Tehran stations and 36
+Mashhad stations on Lines 1/2**, with city-qualified IDs. Tehran matches the
+cleaned Metto baseline. Mashhad remains a candidate, Line 3 stays withheld, and
+no train times or certified amenities are invented. Prototype records and
+simulated social activity are replaced with real catalog and issue data.
 
 ## Run locally
 
@@ -24,90 +23,87 @@ pnpm portal:typecheck
 pnpm test
 ```
 
-The UI works without secrets. Direct submission remains disabled with a working
-GitHub issue link until private storage and issue creation are configured.
-Copy `.env.example` to `.env.local` inside this app for local intake testing;
-use `DATA_PORTAL_ORIGIN=http://localhost:3007` and open that same address.
+Without secrets, browsing works and the form offers a GitHub fallback. For local
+intake, copy `.env.example` to `.env.local`, use a development database, set a
+random quota key and `DATA_PORTAL_ORIGIN=http://localhost:3007`. Use that same
+host in the browser. Pages: `/`, `/stations`, `/map`, `/contribute`, `/reports`.
 
-Pages: `/`, `/stations`, `/map`, `/contribute`, `/reports`. Examples:
-`/stations?city=mashhad&lang=fa` and
-`/contribute?city=mashhad&kind=timetable&lang=fa`.
+## Hosting configuration
 
-## Move the existing Vercel project
+The migration uses the existing Vercel project and public alias
+`https://novus-peach-seven.vercel.app`. Root Directory is `apps/data-portal`,
+Framework Next.js, Node 22, with workspace files outside the root enabled.
+The connected Git repository becomes `aliinreallife/metto-data`, branch `main`.
+The old repository remains available as migration history. If continuing to use
+v0, confirm it edits the combined repository under `apps/data-portal/`.
 
-The implementation is ready for review; **the Vercel project has not been
-reconnected and real intake has not been deployed from this environment**.
+Server environment:
 
-1. In the existing portal's Vercel project, change its Git repository from
-   `aliinreallife/metto-data-prev` to `aliinreallife/metto-data` (or import the
-   combined repository into a new Vercel project for a preview first).
-   Set **Root Directory: `apps/data-portal`**, Framework: **Next.js**.
-   Allow workspace files outside the root directory. The checked-in
-   `vercel.json` uses `pnpm install --frozen-lockfile` and `pnpm build` from
-   the app directory. Production branch remains `main`.
-2. In Vercel → Storage, create/connect a **private Vercel Blob store**. This
-   supplies `BLOB_READ_WRITE_TOKEN`. Do not use a public store: reports include
-   optional contact fields. No new database account is needed.
-3. Create a fine-grained GitHub token restricted to `aliinreallife/metto-data`
-   with **Issues: read and write**. Store it as server-side `GITHUB_TOKEN` in
-   Vercel. Set `DATA_PORTAL_ORIGIN` to the public HTTPS origin visitors will use,
-   such as `https://data.metto.ir`. Redirect other aliases to that domain.
-   No keys belong in any `NEXT_PUBLIC_*` variable.
-4. Generate a random maintenance secret privately, for example with
-   `openssl rand -hex 32`. Add it as `DATA_PORTAL_AUTOMATION_SECRET` in both
-   Vercel and this repository's **Actions secrets**. Set the repository Actions
-   **variable** `DATA_PORTAL_ORIGIN` to the same public origin. The daily
-   **Retry saved portal reports** action can also be run manually.
-5. Redeploy. In a signed-out browser, send a real station report with a photo
-   and optional contact. Confirm that its public GitHub issue contains the
-   information/photo, that the image URL works, and that contact fields appear
-   only in the private Blob record. Check both FA and EN.
-6. In the Metto app's Vercel project, set
-   `NEXT_PUBLIC_DATA_CONTRIBUTIONS_URL=https://data.metto.ir/contribute`
-   (using your actual domain) and redeploy. Its inline timetable link will
-   preselect Mashhad, timetable and language.
+- `DATABASE_URL` (or `POSTGRES_URL`): the existing Neon integration; no database
+  password is copied into this repository or exposed in the browser.
+- `DATA_PORTAL_ORIGIN`: the actual public HTTPS origin, with no path.
+- `DATA_PORTAL_QUOTA_SECRET`: a private random key provisioned through Vercel.
+- Optional: `BLOB_READ_WRITE_TOKEN` for a **private** Blob store when not using
+  Postgres. A public store is unsuitable for reports containing contact fields.
+- Optional: a dedicated `GITHUB_TOKEN` for immediate publication. Normal
+  production setup does **not** need a personal GitHub token.
 
-Keep the old repository/project available until this check passes. No archive,
-repository deletion, production source switch or dataset approval is performed
-by this code. Import provenance is recorded in
-[`docs/portal-migration.json`](../../docs/portal-migration.json).
+The private store creates only `metto_data_portal.objects`, inside its own
+schema, under a serialized idempotent migration. It does not alter existing
+application/auth tables. Browser roles have no schema access and the table has
+RLS enabled without public policies. The service's owning database role is the
+only writer. The same atomic version checks used by the Blob adapter are
+implemented as conditional SQL updates.
 
-If you continue using v0, also confirm its project is connected to the combined
-repository and that UI edits stay under `apps/data-portal/`.
+## Anonymous report publication
 
-## How submission works
+`Visitor → private report/outbox → GitHub Actions → public issue`
 
-`Visitor → Vercel function → private Blob report → public GitHub issue`
+Visitors need no account. Reports are acknowledged as received once durable
+storage succeeds. Information/photos become public; optional name/contact
+remains private. The form explains this before sending. A report does not
+change a canonical dataset automatically.
 
-- No visitor account or login. Text, one photo, or both. Optional name/contact
-  stays in the private report; public issue fields are explicitly selected.
-  The form explains that information/photos are public before submission.
-- The browser resizes photos to 2048 pixels and re-encodes JPEGs up to 512 KiB,
-  removing original metadata. It accepts JPG/PNG/WebP inputs up to 8 MiB.
-  `/api/evidence/<uuid>` returns only JPEG bytes, never report JSON or contact.
-- UUIDs and payload hashes deduplicate matching retries. Atomic Blob ETag
-  comparisons prevent concurrent issue publication or quota overruns. Limits:
-  4 reports/hour and 10/day per keyed IP digest, 100/day globally. Raw IPs are
-  not stored. Shared networks share limits. The global cap still applies if an
-  IP changes or forwarding headers cannot identify it reliably.
-- A private outbox survives temporary GitHub errors. Explicit client/rate-limit
-  errors can be retried by Actions. Ambiguous network/5xx responses stay
-  `publishing`; maintenance searches GitHub for the submission reference and
-  marks an existing issue published, **never blindly posting another issue**.
-  Missing matches are reported as `needsReview` for a maintainer.
-- The maintenance endpoint needs the server secret. Actions receives only
-  counts, never names, contacts, photos or report text. It processes up to
-  100 queued items per run. A long-standing backlog can be processed by another
-  manual run; resolve `needsReview` entries rather than leaving them indefinitely.
-- Maintain private storage: remove dangling outbox markers only after confirming
-  no in-flight report, remove old quota objects, and clear optional contacts
-  after follow-up is finished. Deleting public evidence is a separate decision
-  because issue references rely on it. No report data is written to Git directly.
-- Source reports do not change canonical data. Maintainers still prepare and
-  review a contribution PR; normal schema, provenance, rebuild and city-release
-  checks apply. An issue being closed is not treated as dataset approval.
+The **Publish saved portal reports** action runs every 15 minutes and supports
+manual dispatch. It authenticates to Vercel using a short-lived GitHub OIDC
+identity. The API verifies issuer, audience, expiry, repository/owner IDs,
+`refs/heads/main`, the exact workflow path, and schedule/manual event type.
+Forks, PR workflows and other workflows are rejected.
 
-The existing full validation workflow now builds/typechecks the portal alongside
-all dataset checks. The existing upstream watcher still opens review requests,
-without automatically changing pinned sources. This portal replaces the separate
-Pages/Supabase proposal in draft PR #11.
+The action supplies its repository-scoped, short-lived `GITHUB_TOKEN` to the
+trusted publishing function for that invocation only. It is never saved in
+report storage or server environment variables. This avoids another permanent
+API key. The workflow needs only `contents: read`, `issues: write`, and
+`id-token: write`. No Actions secret is required. Its public origin can be
+changed with the repository variable `DATA_PORTAL_ORIGIN`.
+
+Matching retries reuse IDs. Atomic updates prevent double publication and quota
+overruns. Explicit GitHub client/rate errors can be retried. Ambiguous network
+or 5xx responses remain `publishing`; maintenance searches by submission reference
+and never blindly creates another issue. Unmatched results require maintainer
+review. Logs and maintenance responses contain counts only, never reports,
+contacts, photos or credentials.
+
+Quotas: 4 reports/hour and 10/day per keyed IP digest, plus 100/day globally.
+Raw IPs are not stored. Shared networks share quotas; the global cap applies
+even if the forwarding address changes. The browser converts JPG/PNG/WebP inputs
+up to 8 MiB into metadata-free JPEGs up to 2048 pixels / 512 KiB. Public
+`/api/evidence/<uuid>` returns JPEG bytes only, never the report JSON/contact.
+
+## Verify delivery after deployment
+
+1. In a signed-out browser, send a timetable/station report with a photo and
+   optional contact. Confirm the receipt appears and an image endpoint works.
+2. Dispatch **Publish saved portal reports**; confirm its issue contains only
+   public fields and the photo. Check FA/EN, shared station names and city filters.
+3. Set Metto's `NEXT_PUBLIC_DATA_CONTRIBUTIONS_URL` to
+   `https://novus-peach-seven.vercel.app/contribute` and redeploy the relevant app
+   environment. Its inline link passes city, timetable type and language.
+
+Maintain the private store: clear contact fields after follow-up, remove old
+quota objects and investigate `needsReview` entries. Public evidence retention
+is separate because issue links depend on it. Approval still uses reviewed
+contribution PRs, rebuild/provenance checks and independent city release gates.
+
+Migration provenance: [`docs/portal-migration.json`](../../docs/portal-migration.json).
+The combined portal replaces the earlier Pages/Supabase draft #11.

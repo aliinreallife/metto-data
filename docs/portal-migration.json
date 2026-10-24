@@ -32,8 +32,10 @@
   "deployment": {
     "platform": "Vercel",
     "rootDirectory": "apps/data-portal",
-    "privateIntakeStorage": "Vercel Blob (private)",
-    "automation": "GitHub Actions",
-    "status": "prepared; account configuration and live delivery check required"
+    "privateIntakeStorage": "Existing Neon/Postgres integration; optional private Vercel Blob fallback",
+    "automation": "GitHub Actions with OIDC and temporary repository-scoped job credentials",
+    "status": "prepared; account configuration and live delivery check required",
+    "projectName": "novus",
+    "publicOrigin": "https://novus-peach-seven.vercel.app"
   }
 }

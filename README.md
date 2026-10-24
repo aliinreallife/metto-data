@@ -13,8 +13,8 @@ upstream repositories directly.
 
 The contribution UI from `metto-data-prev` now lives in
 [`apps/data-portal/`](apps/data-portal/README.md). The combined repository uses
-Vercel for the UI/API and private intake storage, with GitHub Actions for data
-validation, upstream checks and report retries. See its guide to move the
+Vercel for the UI/API and the existing Neon database for private intake, with GitHub Actions for data
+validation, upstream checks and queued issue publication. See its guide for the
 existing Vercel project. Hosting configuration and live delivery remain pending.
 
 ```text
