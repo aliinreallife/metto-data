@@ -10,7 +10,8 @@
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
     "start": "next start",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "test:ui": "node tests/contribution-flow.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.2.0",
@@ -22,6 +23,8 @@
     "react-dom": "^19"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^24",
     "@types/react": "^19",

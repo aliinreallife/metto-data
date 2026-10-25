@@ -1,5 +1,46 @@
 export const STRINGS = {
   fa: {
+    constructionSections: "بخش‌های در حال ساخت",
+    constructionNote:
+      "مسیرهای گزارش‌شده در نقشهٔ آزاد؛ برای سفر قابل استفاده نیستند. وضعیت نیازمند بررسی است.",
+    reportSteps: "مراحل ثبت گزارش",
+    chooseChange: "نوع تغییر",
+    changeDetails: "جزئیات",
+    changeType: "تغییر نوع گزارش",
+    chooseTitle: "چه چیزی را می‌خواهی تغییر بدهی؟",
+    chooseIntro:
+      "موضوع را انتخاب کن؛ در مرحلهٔ بعد فقط سؤال‌های مربوط به آن را می‌پرسم.",
+    findStation: "جست‌وجوی ایستگاه",
+    chooseOption: "انتخاب کن",
+    otherCityHint: "نام شهر و خط پیشنهادی را در توضیحات بنویس.",
+    lineDirection: "خط و جهت حرکت (اختیاری)",
+    stationAddress: "نشانی یا ورودی ایستگاه (اختیاری)",
+    evidenceHeading: "اضافه کردن عکس یا پیوند منبع (اختیاری)",
+    timetableChoice: "برنامهٔ حرکت یا عکس تابلوی زمان‌بندی",
+    facilityChoice: "آسانسور، سرویس بهداشتی و امکانات دیگر",
+    statusChoice: "باز بودن، تعطیلی یا ساخت‌وساز ایستگاه",
+    locationChoice: "اصلاح محل یا ورودی ایستگاه روی نقشه",
+    wagonChoice: "کدام واگن به پله‌برقی نزدیک‌تر است؟",
+    otherChoice: "پیشنهاد شهر، خط جدید یا اصلاح دیگر",
+    timetableHint:
+      "روزها، ساعت‌ها و جهت حرکت را بنویس، یا از بخش پایین فقط عکس برنامه را بفرست.",
+    facilityHint:
+      "امکان مورد نظر و چیزی را که دیدی انتخاب کن. اگر لازم است، محل و تاریخ مشاهده را هم بنویس.",
+    statusHint:
+      "وضعیت ایستگاه را انتخاب کن. اگر می‌دانی، تاریخ و ورودی مربوط را هم بنویس.",
+    locationHint:
+      "بگو محل درست ایستگاه یا ورودی کجاست. نشانی، نشانهٔ نزدیک یا پیوند نقشه کمک می‌کند؛ مختصات لازم نیست.",
+    wagonHint:
+      "تعداد واگن‌های قطاری که دیدی را وارد کن و واگن نزدیک پله‌برقی را بزن. جهت حرکت و ورودی را هم اگر می‌دانی بنویس.",
+    otherHint:
+      "بگو چه چیزی باید اضافه یا اصلاح شود. برای شهر یا خط جدید، نام و منبع اطلاعات را هم بنویس.",
+    timetablePlaceholder: "مثلاً: روزهای کاری، خط ۱ به سمت فرودگاه، از ساعت…",
+    facilityPlaceholder: "مثلاً: آسانسور ورودی شمالی را امروز دیدم…",
+    statusPlaceholder: "مثلاً: ورودی شرقی از دوشنبه موقتاً بسته است…",
+    locationPlaceholder: "مثلاً: ورودی کنار خیابان… است، نه محل فعلی روی نقشه.",
+    wagonPlaceholder: "مثلاً: در جهت…، واگن… به پله‌برقی خروجی… نزدیک‌تر بود.",
+    otherPlaceholder: "مثلاً: می‌خواهم اطلاعات متروی شهر… اضافه شود…",
+
     otherCity: "شهر دیگر",
     suggestCity: "پیشنهاد افزودن شهر خودت",
     sources: "منابع داده",
@@ -52,8 +93,7 @@ export const STRINGS = {
     mapLabel: "نقشهٔ ایستگاه‌های",
     directoryLink: "مشاهده فهرست ایستگاه‌ها",
     formTitle: "چه چیزی را مشاهده کرده‌ای؟",
-    formIntro:
-      "برنامهٔ حرکت، عکس تابلو، امکانات یا اصلاح اطلاعات ایستگاهت را بفرست.",
+    formIntro: "موضوع را انتخاب کن و اطلاعاتت را بفرست. حساب کاربری لازم نیست.",
     kind: "نوع اطلاعات",
     timetable: "زمان حرکت قطارها",
     facility: "امکانات ایستگاه",
@@ -62,9 +102,9 @@ export const STRINGS = {
     wagon: "واگن نزدیک پله‌برقی",
     other: "موضوع دیگر",
     selectStation: "ایستگاه (اختیاری)",
-    noStation: "ایستگاه یا خط را در توضیحات بنویس",
+    noStation: "ایستگاه را نمی‌دانم / مربوط به یک خط است",
     subject: "خط، جهت حرکت یا موضوع (اختیاری)",
-    details: "شرح اطلاعات",
+    details: "توضیحات",
     detailsHint:
       "آنچه دیدی، جهت حرکت، تاریخ مشاهده و منبع را بنویس. می‌توانی فقط عکس بفرستی.",
     source: "پیوند منبع (اختیاری)",
@@ -125,6 +165,52 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    constructionSections: "Construction sections",
+    constructionNote:
+      "Source-reported map sections, unavailable for travel. Status needs review.",
+    reportSteps: "Report steps",
+    chooseChange: "Change type",
+    changeDetails: "Details",
+    changeType: "Change report type",
+    chooseTitle: "What would you like to change?",
+    chooseIntro:
+      "Choose a topic. Next, you’ll only see the questions for that report.",
+    findStation: "Search stations",
+    chooseOption: "Choose an option",
+    otherCityHint: "Tell us the city and proposed line in your description.",
+    lineDirection: "Line and direction (optional)",
+    stationAddress: "Station address or entrance (optional)",
+    evidenceHeading: "Add a photo or source link (optional)",
+    timetableChoice: "A timetable or a photo of the departure board",
+    facilityChoice: "Elevators, toilets and other station facilities",
+    statusChoice: "An opening, closure or construction update",
+    locationChoice: "Correct a station or entrance on the map",
+    wagonChoice: "Which car stops closest to the escalator?",
+    otherChoice: "Suggest a city, a line or another correction",
+    timetableHint:
+      "Share the days, times and direction, or just add a timetable photo below.",
+    facilityHint:
+      "Choose the amenity and what you observed. Add its location and observation date if helpful.",
+    statusHint:
+      "Choose the station status. Add the date and affected entrance if you know them.",
+    locationHint:
+      "Describe the correct station or entrance location. An address, nearby landmark or map link helps; coordinates aren’t needed.",
+    wagonHint:
+      "Enter the number of cars on the train you saw, then choose the car closest to the escalator. Include direction and entrance if known.",
+    otherHint:
+      "Tell us what to add or correct. For a new city or line, include its name and any source you have.",
+    timetablePlaceholder:
+      "For example: Weekdays, Line 1 toward the airport, from…",
+    facilityPlaceholder:
+      "For example: I saw an elevator at the north entrance today…",
+    statusPlaceholder:
+      "For example: The east entrance has been temporarily closed since Monday…",
+    locationPlaceholder:
+      "For example: The entrance is on… Street, rather than the current map location.",
+    wagonPlaceholder:
+      "For example: Traveling toward…, car… was closest to the escalator at exit…",
+    otherPlaceholder: "For example: Please add metro information for…",
+
     otherCity: "Another city",
     suggestCity: "Suggest your city",
     sources: "Data sources",
@@ -179,8 +265,7 @@ export const STRINGS = {
     mapLabel: "Station map for",
     directoryLink: "Browse the station list",
     formTitle: "What did you observe?",
-    formIntro:
-      "Send a timetable, a board photo, station amenities or a correction.",
+    formIntro: "Choose a topic and send what you know. No account needed.",
     kind: "Information type",
     timetable: "Train times",
     facility: "Station amenities",
@@ -189,9 +274,9 @@ export const STRINGS = {
     wagon: "Car near an escalator",
     other: "Other information",
     selectStation: "Station (optional)",
-    noStation: "Describe the station or line below",
+    noStation: "Not sure / this report is about a line",
     subject: "Line, direction or subject (optional)",
-    details: "Your information",
+    details: "Description",
     detailsHint:
       "Describe what you saw, direction of travel, observation date and source. You can send just a photo.",
     source: "Source link (optional)",

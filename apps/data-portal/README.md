@@ -109,3 +109,26 @@ contribution PRs, rebuild/provenance checks and independent city release gates.
 
 Migration provenance: [`docs/portal-migration.json`](../../docs/portal-migration.json).
 The combined portal replaces the earlier Pages/Supabase draft #11.
+
+## Two-step contributions and browser checks
+
+Contributions start with a topic choice, then show city/station and only that
+topic's fields. Common text, source, contact and photo drafts survive returning
+to the topic chooser. Evidence and optional private contact are disclosures.
+Station menus support search in either station language; all menus support
+keyboard navigation, Escape and normal Tab order.
+
+After `pnpm portal:build`, run `pnpm portal:test:ui`. The smoke test starts an
+isolated production server on 127.0.0.1:3017 with dummy storage configuration,
+intercepts every report POST, and writes no reports or GitHub issues. Install
+Chromium with `pnpm --filter @metto/data-portal exec playwright install chromium`,
+or use `PLAYWRIGHT_CHROMIUM_PATH=/path/to/chromium`. The same checks run in CI.
+
+Mashhad construction sections are **map reference geometry**, not extra
+boarding stations. `data/reference/mashhad-construction.json` is generated from
+`sources/mashhad/construction-map-snapshot.json`; use `pnpm map-reference:build`
+and `pnpm map-reference:check`. OSM way versions, retrieval date and review notes
+are recorded alongside the snapshot. Main station counts, route graphs and
+candidate release status are unaffected. See `docs/mashhad-construction-map.md`.
+
+The old prototype feature comparison is in `docs/portal-feature-comparison.md`.
