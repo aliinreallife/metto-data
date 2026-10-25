@@ -4,22 +4,17 @@ export const STRINGS = {
     removeAmenity: "حذف این امکان",
     detailsTooLong: "توضیحات خیلی طولانی است. کمی کوتاه‌ترش کن.",
 
+    loginWelcome: "خوش اومدی به متو",
+    loginIntro: "وارد شو تا مشارکت‌ها به نام خودت ثبت شوند.",
+    loginProviderNote: "با یکی از حساب‌هایت ادامه بده.",
+    connectingLogin: "در حال اتصال…",
+    loginPrivacy: "نامت فقط با انتخاب خودت عمومی می‌شود.",
+    loginOptional: "برای فرستادن گزارش، حساب لازم نیست.",
+    sendReport: "فرستادن گزارش",
     continueGoogle: "ادامه با گوگل",
     continueGithub: "ادامه با گیت‌هاب",
-    orEmailCode: "یا با کد ایمیل",
-    emailCode: "کد شش‌رقمی ایمیل",
-    sendCode: "فرستادن کد ورود",
-    verifyAndLogin: "تأیید کد و ورود",
-    resendCode: "فرستادن دوبارهٔ کد",
-    changeEmail: "تغییر ایمیل",
-    moreLoginOptions: "روش‌های دیگر ورود",
-    codeSent: "کد ورود به ایمیلت فرستاده شد. پوشهٔ هرزنامه را هم بررسی کن.",
-    codeSendFailed:
-      "کد فرستاده نشد. ایمیل را بررسی کن و کمی بعد دوباره امتحان کن.",
-    codeInvalid:
-      "کد درست نیست یا اعتبارش تمام شده. دوباره بررسی کن یا کد جدید بگیر.",
     socialUnavailable:
-      "این روش ورود در حال حاضر در دسترس نیست. می‌توانی از کد ایمیل استفاده کنی یا بدون حساب گزارش بفرستی.",
+      "ورود انجام نشد. دوباره امتحان کن یا از روش دیگر وارد شو؛ می‌توانی بدون حساب هم گزارش بفرستی.",
     signedInPrivacy:
       "ورود انجام شده است. نام عمومی برای هر گزارش فقط با انتخاب خودت ثبت می‌شود.",
     acceptedContributions: "مشارکت پذیرفته‌شده",
@@ -58,31 +53,11 @@ export const STRINGS = {
     account: "حساب من",
     login: "ورود",
     logout: "خروج",
-    signup: "ساخت حساب",
-    email: "ایمیل",
-    password: "رمز عبور",
     displayName: "نام نمایشی",
-    displayNameHint:
-      "اگر برای گزارشت نام عمومی انتخاب کنی، همین نام در کنار آن دیده می‌شود.",
-    accountIntro:
-      "داشتن حساب اختیاری است. با حساب می‌توانی نامت را کنار مشارکت‌هایت ثبت کنی؛ گزارش ناشناس همچنان آزاد است.",
     accountUnavailable:
       "در حال حاضر اتصال ورود برقرار نیست. همچنان می‌توانی بدون حساب گزارش بفرستی.",
     accountFailed:
-      "انجام نشد. اطلاعات را بررسی کن و دوباره امتحان کن؛ شاید لازم باشد ابتدا ایمیلت را تأیید کنی.",
-    loginDone: "وارد شدی. می‌توانی به گزارش برگردی.",
-    signupDone:
-      "حسابت ساخته شد. اگر ایمیل تأیید دریافت کردی، آن را باز کن و بعد وارد شو.",
-    pleaseWait: "کمی صبر کن…",
-    haveAccount: "حساب دارم؛ وارد می‌شوم",
-    needAccount: "ساخت حساب جدید",
-    forgotPassword: "رمزت را فراموش کرده‌ای؟",
-    resetPassword: "بازیابی رمز عبور",
-    sendReset: "فرستادن پیوند بازیابی",
-    savePassword: "ذخیرهٔ رمز جدید",
-    resetSent:
-      "اگر این ایمیل حساب داشته باشد، پیوند بازیابی برایش فرستاده می‌شود.",
-    resetDone: "رمزت تغییر کرد. با رمز جدید وارد شو.",
+      "انجام نشد. کمی بعد دوباره امتحان کن.",
     continueAnonymous: "فرستادن گزارش بدون حساب",
     creditAs: "می‌خواهم برای این گزارش نام عمومی ثبت کنم",
     creditHint:
@@ -282,23 +257,17 @@ export const STRINGS = {
     removeAmenity: "Remove this amenity",
     detailsTooLong: "Your report is too long. Please shorten the description.",
 
+    loginWelcome: "Welcome to Metto",
+    loginIntro: "Sign in to get credit for the ways you help.",
+    loginProviderNote: "Continue with an account you already use.",
+    connectingLogin: "Connecting…",
+    loginPrivacy: "Your name is only made public when you choose.",
+    loginOptional: "You don’t need an account to send a report.",
+    sendReport: "Send a report",
     continueGoogle: "Continue with Google",
     continueGithub: "Continue with GitHub",
-    orEmailCode: "or use an email code",
-    emailCode: "Six-digit email code",
-    sendCode: "Send login code",
-    verifyAndLogin: "Verify code and log in",
-    resendCode: "Resend code",
-    changeEmail: "Change email",
-    moreLoginOptions: "More ways to log in",
-    codeSent:
-      "A login code was sent to your email. Check your spam folder too.",
-    codeSendFailed:
-      "The code was not sent. Check your email address and try again shortly.",
-    codeInvalid:
-      "The code is incorrect or expired. Check it or request a new code.",
     socialUnavailable:
-      "This sign-in method is currently unavailable. Try an email code or send your report without an account.",
+      "Sign-in did not finish. Try again or use the other method. You can also send a report without an account.",
     signedInPrivacy:
       "You are logged in. Public credit is added to a report only when you choose it.",
     acceptedContributions: "accepted contributions",
@@ -339,30 +308,11 @@ export const STRINGS = {
     account: "My account",
     login: "Log in",
     logout: "Log out",
-    signup: "Create account",
-    email: "Email",
-    password: "Password",
     displayName: "Display name",
-    displayNameHint:
-      "This is the name shown if you choose public credit for a report.",
-    accountIntro:
-      "An account is optional. Use one to put your name on contributions, or keep reporting anonymously.",
     accountUnavailable:
       "Login is currently unavailable. You can still send a report without an account.",
     accountFailed:
-      "That did not work. Check your details and try again; you may need to verify your email first.",
-    loginDone: "You are logged in. You can return to your report.",
-    signupDone:
-      "Your account was created. If you receive a verification email, open it before logging in.",
-    pleaseWait: "Please wait…",
-    haveAccount: "I have an account — log in",
-    needAccount: "Create a new account",
-    forgotPassword: "Forgot your password?",
-    resetPassword: "Reset password",
-    sendReset: "Send reset link",
-    savePassword: "Save new password",
-    resetSent: "If this email has an account, a reset link will be sent.",
-    resetDone: "Your password was changed. Log in with the new password.",
+      "That did not work. Please try again shortly.",
     continueAnonymous: "Send a report without an account",
     creditAs: "I want public credit for this report",
     creditHint:

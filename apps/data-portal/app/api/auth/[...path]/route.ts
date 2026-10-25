@@ -3,11 +3,21 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 type Context = { params: Promise<{ path: string[] }> };
 async function handle(request: Request, context: Context) {
+  const path = (await context.params).path.join("/");
+  if (!(
+    (request.method === "GET" && path === "get-session") ||
+    (request.method === "POST" && ["sign-in/social", "sign-out"].includes(path))
+  )) return new Response(null, { status: 404, headers: { "Cache-Control": "no-store" } });
   if (
     request.method === "POST" &&
     request.headers.get("origin") !== new URL(request.url).origin
   )
     return Response.json({ error: "origin" }, { status: 403 });
+  if (path === "sign-in/social") {
+    const body = await request.clone().json().catch(() => null);
+    if (!body || !["google", ...(process.env.DATA_PORTAL_GITHUB_LOGIN === "1" ? ["github"] : [])].includes(body.provider))
+      return Response.json({ error: "provider" }, { status: 400 });
+  }
   const auth = portalAuth();
   if (!auth)
     return Response.json(

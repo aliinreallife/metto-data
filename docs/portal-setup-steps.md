@@ -13,10 +13,10 @@ Use the existing Neon Auth service; do not create a replacement project.
   Both Google and GitHub redirects reach their actual provider endpoints.
   Requested scopes are basic identity only (Google email/profile/openid; GitHub
   read:user/user:email), with no repository access.
-- Email-code verification is configured and email verification is required.
+- Verified email is required for public credit. Email-code/password/magic-link
+  routes are not exposed through the portal.
   The application name is **Metto Data**. The console still uses a shared email
-  sender. Delivery to a real inbox
-  has not been tested by the agent; automated tests intercept email requests.
+  sender, which this social-only login flow does not use.
 - `NEON_AUTH_COOKIE_SECRET` and `DATA_PORTAL_CREDIT_SECRET` were securely
   provisioned in Vercel for production/preview. They are never browser values.
 
@@ -68,7 +68,7 @@ other people's Vercel apps.
 Shared Google keys can exercise the preview; they do not provide Metto's own
 production consent-screen branding.
 
-## 4. GitHub as a secondary method
+## 4. GitHub alongside Google
 
 1. Open [Create a GitHub OAuth App](https://github.com/settings/applications/new).
 2. Application name: **Metto Data**.
@@ -86,21 +86,27 @@ production consent-screen branding.
    is not shown. Its UI and failure handling are
    covered by intercepted-request browser tests.
 
-## 5. Email codes
+## 5. Complete sign-in checks
 
-1. Keep email sign-in enabled in the existing Neon Auth project and use the
-   Email OTP capability. The app calls Neon's email-code API; it does not
-   generate or store its own codes.
-2. For the preview, the existing shared sender can be used to test the flow.
-3. For production, Neon → Auth → Configuration → Email provider → Configure
-   email provider. Configure the chosen dedicated provider/sender and complete
-   that provider's domain/DNS verification. No paid provider is selected or
-   purchased automatically by this work.
-4. On the stable preview, test with your own inbox: request a code, enter it,
-   log out, request a fresh code, and test an incorrect/expired code. Check
-   sender name and spam delivery. Automated tests do not send real emails.
-5. Test Google and email-code login for the same address to confirm the intended
-   account-linking behaviour before enabling public credit for general use.
+Only Google and GitHub are offered. No email sender, OTP or password setup is
+needed for this portal. Existing Neon project email settings/accounts are not
+deleted; the application refuses the unused login endpoints.
+
+On the stable preview, sign in with your own Google account, sign out, then
+sign in with GitHub. Check that returning from the provider shows the signed-in
+account and that logging out clears it. Also try cancelling at the provider and
+retrying with the other method. Check whether using both providers with the same
+verified address links the intended account before relying on public credit.
+
+The app callback is `/auth/callback?lang=fa` (or `en`). This is different from
+the provider's registered Neon callback URLs above. The official SDK exchanges
+Neon's one-time verifier and browser challenge, sets secure session cookies and
+returns to `/account` with the verifier removed. No user-controlled return URL
+is used. A callback without a valid exchange returns a friendly retry state.
+
+Automated integration tests exercise that exchange against a local mock auth
+service. Live checks reach the actual Google/GitHub authorization endpoints;
+completing account consent still needs the owner's account.
 
 ## 6. Real public credit and leaderboard
 

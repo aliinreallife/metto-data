@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { createHmac } from "node:crypto";
 import { createNeonAuth } from "@neondatabase/auth/next/server";
 let instance: ReturnType<typeof createNeonAuth> | null = null;
-export function portalAuth() {
+export function portalAuthConfig() {
   const baseUrl = process.env.NEON_AUTH_BASE_URL;
   const quota = process.env.DATA_PORTAL_QUOTA_SECRET;
   const secret =
@@ -13,11 +13,15 @@ export function portalAuth() {
           .digest("hex")
       : "");
   if (!baseUrl || secret.length < 32) return null;
-  return (instance ??= createNeonAuth({
+  return {
     baseUrl,
     cookies: { secret },
-    logLevel: "silent",
-  }));
+    logLevel: "silent" as const,
+  };
+}
+export function portalAuth() {
+  const config = portalAuthConfig();
+  return config ? (instance ??= createNeonAuth(config)) : null;
 }
 export async function portalUser() {
   const auth = portalAuth();

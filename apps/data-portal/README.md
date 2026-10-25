@@ -142,11 +142,14 @@ See `docs/portal-setup-steps.md` for the exact Neon/provider setup and
 is a server-only session-cache signing key; a purpose-derived quota-key fallback
 supports local development. `DATA_PORTAL_CREDIT_SECRET` separately signs public
 attribution; keep it stable across deployments. `DATA_PORTAL_GITHUB_LOGIN=1`
-shows GitHub as a secondary option after its provider is configured.
+shows GitHub beside Google after its provider is configured.
 
-Google and email OTP are the main account choices. Browser tests intercept
-provider requests and report writes, exercising code entry, errors, consent and
-alias handling without sending emails or creating accounts. No management
+Google and GitHub are the only account choices. The portal rejects email-code,
+password, signup and magic-link routes. The `/auth/callback` route uses the official
+SDK to exchange the browser challenge/verifier for secure session cookies before
+returning to `/account`; failed or cancelled callbacks show a retry. Browser
+tests intercept provider requests and report writes, exercising errors, social
+redirects, consent and alias handling without creating real accounts. No management
 `NEON_API_KEY` is deployed to the application runtime.
 
 Preview requests only accept hostnames supplied by Vercel's deployment/branch

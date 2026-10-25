@@ -12,9 +12,10 @@ into the live site yet.
   You enter the number of cars actually seen; the app does not guess it.
 - One report can describe several amenities. There is also a clear choice for
   requesting a city or line.
-- Login uses the existing Neon Auth project. Google and email codes are the
-  main choices; GitHub is another option. The app does not manage passwords or
-  generate its own login codes.
+- Login uses the existing Neon Auth project. Google and GitHub are the
+  only choices, both visible on the login page. No email codes or passwords.
+  The callback exchanges the provider verifier through the official SDK before
+  returning to the account page.
 - Your name appears publicly only if you choose public credit and enter a
   public name. Private contact details and provider emails are not copied there.
 - Contributor pages show real credited reports. The leaderboard counts reports
@@ -35,20 +36,18 @@ into the live site yet.
 - GitHub uses the credentials added by the owner. It asks for identity/email
   access, not access to users' repositories.
 - The application name is **Metto Data**.
-- Email verification is required and uses codes.
+- Verified emails are required for public credit; email-code login is not offered.
 - Session and public-credit signing secrets are stored securely in Vercel.
 
 ## What still needs an owner’s real-world check
 
 Google currently uses Neon's shared development keys. GitHub now uses the owner’s
-configured OAuth app, and its login start was verified. Email currently uses
-Neon's shared sender. They can exercise the preview, but production should use
-Metto-owned Google credentials and a dedicated sender.
+configured OAuth app, and its login start was verified. The portal does not use email-code login or require an email sender.
+Production Google branding should use Metto-owned credentials.
 
-The owner should test a complete Google login, GitHub login and email-code
-login on the preview, including receiving an email in their own inbox. The
-agent checks the redirect starts and runs automated UI tests without sending
-real emails or pretending to be a user at the consent screen.
+The owner should test a complete Google and GitHub login on the preview. The
+agent checks provider redirects and tests the callback/session exchange against
+a local mock auth service. It does not pretend to be a user at the consent screen.
 
 Exact setup instructions: [portal-setup-steps.md](portal-setup-steps.md).
 

@@ -49,6 +49,10 @@ try {
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
       : {},
   );
+  for (const path of ["email-otp/send-verification-otp", "sign-in/email-otp", "sign-in/email", "sign-up/email", "sign-in/magic-link"]) {
+    const response = await fetch(origin + "/api/auth/" + path, { method: "POST", headers: { origin, "Content-Type": "application/json" }, body: "{}" });
+    expect(response.status).toBe(404);
+  }
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
   });
@@ -57,7 +61,7 @@ try {
     errors = [],
     sent = [],
     providers = [];
-  let signedIn = false;
+  let signedIn = false, socialSucceeds = false;
   page.on("pageerror", (error) =>
     errors.push(new URL(page.url()).pathname + ": " + error.message),
   );
@@ -85,25 +89,18 @@ try {
       return;
     }
     if (path.endsWith("/sign-in/social")) {
-      providers.push(route.request().postDataJSON().provider);
+      const body = route.request().postDataJSON();
+      providers.push(body.provider);
+      expect(body.callbackURL).toBe(origin + "/auth/callback?lang=en");
+      if (socialSucceeds) {
+        signedIn = true;
+        await route.fulfill({ json: { url: origin + "/account?lang=en", redirect: true } });
+        return;
+      }
       await route.fulfill({
         status: 400,
         json: { code: "PROVIDER_NOT_ENABLED" },
       });
-      return;
-    }
-    if (path.endsWith("/email-otp/send-verification-otp")) {
-      await route.fulfill({ json: { success: true } });
-      return;
-    }
-    if (path.endsWith("/sign-in/email-otp")) {
-      const data = route.request().postDataJSON();
-      if (data.otp !== "123456") {
-        await route.fulfill({ status: 400, json: { code: "INVALID_OTP" } });
-        return;
-      }
-      signedIn = true;
-      await route.fulfill({ json: { token: "mock-test-token", user } });
       return;
     }
     if (path.endsWith("/sign-out")) {
@@ -321,42 +318,21 @@ try {
     }),
   ).toBeVisible();
   expect(sent[4].kind).toBe("city_request");
-  // Provider/email flows are intercepted; no emails or third-party account changes occur.
+  // Provider requests are intercepted; no third-party account changes occur.
   await page.goto(`${origin}/account?lang=en`);
   await page
     .getByRole("button", { name: "Continue with Google", exact: true })
     .click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText(
-    "currently unavailable",
+    "Sign-in did not finish",
   );
-  await page.getByText("More ways to log in", { exact: true }).click();
   await page
     .getByRole("button", { name: "Continue with GitHub", exact: true })
     .click();
   expect(providers).toEqual(["google", "github"]);
-  await page
-    .getByRole("textbox", { name: "Email", exact: true })
-    .fill("test@example.invalid");
-  await page
-    .getByRole("button", { name: "Send login code", exact: true })
-    .click();
-  const otp = page.getByRole("textbox", {
-    name: "Six-digit email code",
-    exact: true,
-  });
-  await expect(otp).toBeFocused();
-  await otp.fill("111111");
-  await page
-    .getByRole("button", { name: "Verify code and log in", exact: true })
-    .click();
-  await expect(page.getByRole("main").getByRole("alert")).toContainText(
-    "incorrect or expired",
-  );
-  await otp.fill("۱۲۳۴۵۶");
-  await expect(otp).toHaveValue("123456");
-  await page
-    .getByRole("button", { name: "Verify code and log in", exact: true })
-    .click();
+  expect(await page.locator('input[type="email"], input[name="otp"]').count()).toBe(0);
+  socialSucceeds = true;
+  await page.getByRole("button", { name: "Continue with Google", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "Log out", exact: true }),
   ).toBeVisible();
@@ -424,7 +400,7 @@ try {
   await expect(page.getByTestId("construction-section")).toHaveCount(0);
   expect(errors).toEqual([]);
   console.log(
-    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub and email-code UI; explicit alias consent; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
+    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
   );
 } finally {
   await browser?.close();

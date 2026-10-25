@@ -8,7 +8,7 @@ and [the exact setup steps](portal-setup-steps.md) for account configuration.
 ## What we already have
 
 - The Vercel project `novus` has `NEON_AUTH_BASE_URL` configured. The existing service was checked through the Neon management API. Google,
-  GitHub and email-code configuration are present; both OAuth starts reach the
+  GitHub configuration is present; both OAuth starts reach the
   provider. The new login screen is in the unmerged portal change.
 - Neon/Postgres already stores anonymous reports. Reports are published as
   GitHub issues for review; publication does not automatically change the data.
@@ -24,21 +24,21 @@ and [the exact setup steps](portal-setup-steps.md) for account configuration.
 
 ## Neon Auth and sign-in methods are different choices
 
-Keep Neon Auth as the account/session service. Google, GitHub and OTP are ways
+Keep Neon Auth as the account/session service. Google and GitHub are ways
 to sign in **through that same service**. We do not need a second authentication
 system just to offer those methods.
 
 | Method | Best fit for Metto | Tradeoff | What it needs | Recommendation |
 | --- | --- | --- | --- | --- |
 | Google | Everyday riders who already have a Google account | External sign-in/consent screen; access should be checked on actual users’ devices | Own Google OAuth client ID/secret for production, Neon callback URI, app branding and trusted app domain | Primary option |
-| Email OTP | People who prefer a code without a social account or password | They must open email; delivery delays/spam can interrupt the flow | Enable email sign-in/OTP, configure a dedicated production email provider and sender, test expiry/resend/attempt limits | Primary fallback |
-| GitHub | Developers and open-data contributors | Many everyday riders do not have GitHub | GitHub OAuth app ID/secret and Neon callback; request only identity access, not repository permissions | Optional secondary option, under “More ways to log in” if needed |
+| Email OTP | People who prefer a code without a social account or password | They must open email; delivery delays/spam can interrupt the flow | Enable email sign-in/OTP, configure a dedicated production email provider and sender, test expiry/resend/attempt limits | Deferred: not selected |
+| GitHub | Developers and open-data contributors | Many everyday riders do not have GitHub | GitHub OAuth app ID/secret and Neon callback; request only identity access, not repository permissions | Visible alongside Google |
 | SMS OTP | Riders who prefer using a phone number | Message cost, delivery/support work, number collection and abuse controls | An SMS gateway that serves the intended users and a supported phone-auth integration; none has been verified as configured here | Defer unless users specifically prefer phone login |
 | Email/password | Existing password-account users, if any | Password creation, resets and support add steps | Email delivery and recovery UX | Do not make it the main new-user flow; preserve recovery if existing users rely on it |
 
-**OTP here means an email code. SMS OTP remains deferred.** Neon’s docs
-and SDK support email OTP. SDK support alone does not prove it is enabled on
-this project.
+**Current scope is Google and GitHub only.** Email codes, passwords, magic
+links and SMS are not part of the portal login. SDK support for those methods
+does not make them product requirements.
 
 Neon documents shared Google credentials for development/testing. Those show
 Neon’s branding. Production should use Metto-owned credentials. GitHub needs
@@ -53,7 +53,7 @@ production email provider is recommended.
 | Form | Choose topic → relevant details → review and explicitly confirm sending | Posting immediately from the details screen | Users should see what will become public before sending |
 | Wagon reporting | Clear train diagram, front/rear labels, obvious selected car, actual observed train length/direction | Assumed car count, default selected car or invented women-only sections | Reports must describe the train actually observed |
 | Preview submissions | Explicitly labelled test submission, isolated from production publication, or a clear handoff to the live form | “Not enabled” with a dead-looking primary action; silently publishing preview tests | The preview should let people understand/test the flow without creating real data reports by accident |
-| Login | Optional Google + email-code flow using the existing Neon Auth service | A custom password/OTP/session system or several separate account databases | Reuse the account provider already available |
+| Login | Optional Google + GitHub using the existing Neon Auth service | A custom password/OTP/session system or several separate account databases | Reuse the account provider already available |
 | Public credit | Explicit opt-in public display name per report, attached to a server-verified account | Publishing the private contact name/email, or trusting an account ID supplied by the browser | Privacy and trustworthy attribution |
 | Leaderboard | Real accepted contributions as the main count; any submitted-report count clearly labelled separately | Hardcoded names, invented points, or presenting submitted reports as approved corrections | Define a reliable maintainer acceptance event first; do not treat a closed issue as acceptance |
 | Profiles | A small optional public profile with display name and credited contributions | A large social network or public private-contact history | Useful credit can stay simple; public history must respect consent |
@@ -113,22 +113,22 @@ boarding catalog.
 
 ## What is needed before implementation
 
-1. Chosen methods: Google + email OTP; GitHub as a secondary method.
+1. Chosen methods: Google and GitHub only, both directly visible.
    Anonymous reporting remains available.
 2. Check the Neon console’s enabled providers, email/OTP settings, account
    linking behaviour and existing users. The management API now confirms the provider settings, trusted domains and
-   required email verification. Completing login with a real inbox and checking
+   required email verification. Completing sign-in and checking
    cross-provider account linking remain owner acceptance tests.
 3. For Google, create/configure a Metto-owned OAuth app, its branding and
-   credentials. For GitHub, do the equivalent only if selected. Register the
+   credentials. GitHub uses the owner’s configured OAuth app. Register the
    exact callback URI shown by Neon; do not guess it or use a GitHub PAT as an
    OAuth client secret.
 4. Add the app’s production domain (`data.metto.ir`) to Neon’s trusted domains
    and use an intentional preview/testing setup. Keep provider secrets server
    side.
-5. Configure production email delivery/sender and DNS verification for email
-   OTP; test delivery, code expiry, resend limits and failed attempts. Confirm
-   behaviour on the devices/networks of the intended riders.
+5. Complete Google/GitHub sign-in with a real account, test cancellation and
+   sign-out, and confirm the callback establishes the session. No OTP/email
+   delivery setup is needed.
 6. Connect the account UI/session handling to Neon. Verify that signing in by
    different enabled methods does not create unintended duplicate contributor
    identities. Preserve form drafts/photos across optional login.
@@ -138,7 +138,7 @@ boarding catalog.
 8. Finish/test the requested form, wagon and map follow-ups separately, then
    review the updated previews before merging. Implementation has now been authorized. Neon domains, Google/GitHub
    authorization starts, the Metto Data application name and required email
-   verification have been checked. Production branding/email setup still needs
+   verification have been checked. Production Google branding still needs
    the owner-controlled provider configuration described in the setup guide.
 
 ## Sources checked

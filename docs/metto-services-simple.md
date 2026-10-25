@@ -7,7 +7,7 @@ Neon management API and public DNS on 2026-10-25.
 | --- | --- |
 | Vercel | Hosts the passenger app and the data portal, runs their API functions, builds previews, and manages `metto.ir` DNS |
 | Neon Postgres | Private report/outbox storage, including uploaded report photos, for the data portal |
-| Neon Auth | The optional Google/GitHub/email-code login being added to the portal |
+| Neon Auth | The optional Google/GitHub login being added to the portal |
 | GitHub | Open transit datasets, review issues, source history and scheduled automation |
 | Upstash Redis | Passenger app holiday cache and shared walking-provider quota limits |
 | Supabase | Not configured or used in either inspected app |
