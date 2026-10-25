@@ -25,7 +25,10 @@
     "dev": "pnpm --filter @metto/data-portal dev",
     "portal:build": "pnpm --filter @metto/data-portal build",
     "portal:typecheck": "pnpm --filter @metto/data-portal typecheck",
-    "portal:start": "pnpm --filter @metto/data-portal start"
+    "portal:start": "pnpm --filter @metto/data-portal start",
+    "portal:test:ui": "pnpm --filter @metto/data-portal test:ui",
+    "map-reference:build": "tsx scripts/build-construction-map.ts",
+    "map-reference:check": "tsx scripts/build-construction-map.ts --check"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",

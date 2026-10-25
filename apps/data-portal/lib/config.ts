@@ -1,8 +1,32 @@
+import { previewStore } from "./preview-store";
+import { createHash } from "node:crypto";
 import { catalog } from "./catalog-data";
 import { privateBlobStore } from "./private-store";
 import { postgresStore } from "./postgres-store";
 import type { IntakeConfig } from "./intake";
-export function intakeConfig(): IntakeConfig | null {
+import { trainProfiles } from "./train-layouts";
+import { trainDirections } from "./train-directions";
+import { stationExits } from "./station-exits";
+export function intakeConfig(requestOrigin?: string): IntakeConfig | null {
+  const previewHosts =
+    process.env.VERCEL_ENV === "preview"
+      ? [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(
+          (host): host is string =>
+            !!host && /^[a-zA-Z0-9-]+\.vercel\.app$/.test(host),
+        )
+      : [];
+  const requestedHost = requestOrigin
+    ? (() => {
+        try {
+          return new URL(requestOrigin).host;
+        } catch {
+          return "";
+        }
+      })()
+    : "";
+  const previewHost = previewHosts.includes(requestedHost)
+    ? requestedHost
+    : previewHosts[0];
   const token = process.env.BLOB_READ_WRITE_TOKEN,
     githubToken = process.env.GITHUB_TOKEN ?? "",
     database = process.env.DATABASE_URL ?? process.env.POSTGRES_URL,
@@ -10,7 +34,10 @@ export function intakeConfig(): IntakeConfig | null {
       process.env.DATA_PORTAL_QUOTA_SECRET ??
       process.env.DATA_PORTAL_AUTOMATION_SECRET ??
       githubToken,
-    configured = process.env.DATA_PORTAL_ORIGIN;
+    configured =
+      previewHost && /^[a-zA-Z0-9-]+\.vercel\.app$/.test(previewHost)
+        ? `https://${previewHost}`
+        : process.env.DATA_PORTAL_ORIGIN;
   if ((!database && !token) || !quotaSecret || !configured) return null;
   let url: URL;
   try {
@@ -38,9 +65,18 @@ export function intakeConfig(): IntakeConfig | null {
     return null;
   }
   return {
-    store,
+    store: previewHost
+      ? previewStore(
+          store,
+          createHash("sha256")
+            .update(process.env.VERCEL_BRANCH_URL || url.origin)
+            .digest("hex")
+            .slice(0, 24),
+        )
+      : store,
     quotaSecret,
-    githubToken,
+    creditSecret: process.env.DATA_PORTAL_CREDIT_SECRET || quotaSecret,
+    githubToken: previewHost ? "" : githubToken,
     publicOrigin: url.origin,
     cityStations: Object.fromEntries([
       ["other", []],
@@ -49,5 +85,26 @@ export function intakeConfig(): IntakeConfig | null {
         city.stations.map((station) => station.id),
       ]),
     ]),
+    stationNames: Object.fromEntries(
+      catalog.stations.map((station) => [station.id, station.names]),
+    ),
+    validateWagon: (wagon, stationId, cityId) => {
+      const profile = trainProfiles.find(
+        (profile) => profile.id === wagon.profileId,
+      );
+      return trainDirections(
+        catalog.cities.find((city) => city.id === cityId),
+        profile,
+        stationId,
+      ).some(
+        (direction) =>
+          direction.routeId === wagon.routeId &&
+          direction.lineId === wagon.lineId &&
+          direction.destinationId === wagon.destinationId &&
+          stationExits(stationId, direction.id).some(
+            (exit) => exit.id === wagon.exitId,
+          ),
+      );
+    },
   };
 }

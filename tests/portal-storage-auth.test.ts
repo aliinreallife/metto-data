@@ -85,6 +85,21 @@ describe("existing Postgres private intake storage", () => {
     expect(await store.remove(first.paths[0], "999")).toBe(false);
     expect(await store.remove(first.paths[0], row!.etag)).toBe(true);
   });
+  it("expires preview uploads and old rate counters while preserving production evidence", async () => {
+    const store = createPostgresStore(query, migrate);
+    const preview = "preview/branch/submissions/test.json";
+    await store.write(preview, { photo: "test image" }, null);
+    await store.write("limits/2020-01-01.json", { total: 1 }, null);
+    await store.write("submissions/production.json", { photo: "public evidence" }, null);
+    expect((await query("SELECT expires_at IS NOT NULL AS expires FROM metto_data_portal.objects WHERE path=$1", [preview]))[0].expires).toBe(true);
+    await query("UPDATE metto_data_portal.objects SET expires_at=now()-interval '1 second' WHERE path=$1", [preview]);
+    expect(await store.read(preview)).toBeNull();
+    expect((await store.paths("preview/")).paths).toEqual([]);
+    expect(await store.cleanup!()).toBe(2);
+    expect(await store.canStorePhoto!(134217729)).toBe(false);
+    expect(await store.read("submissions/production.json")).toBeTruthy();
+    expect(await store.write(preview, { photo: "new test" }, null)).toBe(true);
+  });
   it("denies ordinary database roles even if a future integration grants SELECT", async () => {
     await db.exec(
       "CREATE ROLE portal_anonymous; GRANT USAGE ON SCHEMA metto_data_portal TO portal_anonymous; GRANT SELECT ON metto_data_portal.objects TO portal_anonymous",

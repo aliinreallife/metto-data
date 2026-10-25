@@ -109,3 +109,134 @@ contribution PRs, rebuild/provenance checks and independent city release gates.
 
 Migration provenance: [`docs/portal-migration.json`](../../docs/portal-migration.json).
 The combined portal replaces the earlier Pages/Supabase draft #11.
+
+## Three-step contributions and browser checks
+
+Contributions start with a topic choice, then show city/station and only that
+topic’s fields, then review the exact report and explicitly confirm sending. Common text, source, contact and photo drafts survive returning
+to the topic chooser. Evidence and optional private contact are disclosures.
+Station menus support search in either station language; all menus support
+keyboard navigation, Escape and normal Tab order.
+
+After `pnpm portal:build`, run `pnpm portal:test:ui`. The smoke test starts an
+isolated production server on 127.0.0.1:3017 with dummy storage configuration,
+intercepts every report POST, and writes no reports or GitHub issues. Install
+Chromium with `pnpm --filter @metto/data-portal exec playwright install chromium`,
+or use `PLAYWRIGHT_CHROMIUM_PATH=/path/to/chromium`. The same checks run in CI.
+
+Mashhad construction sections are **map reference geometry**, not extra
+boarding stations. `data/reference/mashhad-construction.json` is generated from
+`sources/mashhad/construction-map-snapshot.json`; use `pnpm map-reference:build`
+and `pnpm map-reference:check`. OSM way versions, retrieval date and review notes
+are recorded alongside the snapshot. Main station counts, route graphs and
+candidate release status are unaffected. See `docs/mashhad-construction-map.md`.
+
+The old prototype feature comparison is in `docs/portal-feature-comparison.md`.
+
+## Optional account and public credit
+
+See `docs/portal-setup-steps.md` for the exact Neon/provider setup and
+`docs/portal-progress-simple.md` for the nontechnical progress report.
+`NEON_AUTH_BASE_URL` uses the existing Neon Auth service. `NEON_AUTH_COOKIE_SECRET`
+is a server-only session-cache signing key; a purpose-derived quota-key fallback
+supports local development. `DATA_PORTAL_CREDIT_SECRET` separately signs public
+attribution; keep it stable across deployments. `DATA_PORTAL_GITHUB_LOGIN=1`
+shows GitHub beside Google after its provider is configured.
+
+Google and GitHub are the only account choices. The portal rejects email-code,
+password, signup and magic-link routes. The `/auth/callback` route uses the official
+SDK to exchange the browser challenge/verifier for secure session cookies before
+returning to `/account`; failed or cancelled callbacks show a retry. Browser
+tests intercept provider requests and report writes, exercising errors, social
+redirects, consent and alias handling without creating real accounts. No management
+`NEON_API_KEY` is deployed to the application runtime.
+
+Preview requests only accept hostnames supplied by Vercel's deployment/branch
+system variables. Preview report storage uses a separate namespace and has no
+GitHub publishing credential. The final confirmation screen labels test sends.
+The production maintenance workflow only scans the production outbox.
+
+Public aliases are explicit and per-report. The API obtains identity from a
+verified Neon session, never a client-supplied user ID. Private name/contact
+fields and provider emails are not public credit. The main leaderboard counts
+`data:accepted` labels applied by maintainers, never issue closure alone.
+Contributor history includes only signed, explicitly credited public reports.
+
+## Data and photo storage
+
+Reviewed transit data stays in GitHub; private reports/accounts stay in the
+existing Neon project. The server decodes/re-encodes uploaded JPEG evidence,
+strips source metadata and enforces 2048 pixels / 512 KiB independently of the
+browser. Evidence URLs serve only after a public report has been confirmed.
+Preview rows expire after seven days; old quota counters after three days.
+The maintenance job removes expired Postgres records in bounded batches.
+Production evidence is retained to preserve public source links. No image is
+committed into Git history. See [storage responsibilities and capacity
+plan](../../docs/data-storage.md), including the object-storage review point.
+
+## Account settings and train references
+
+The account page now separates profile editing from connected login methods.
+`/api/profile` requires a verified server session for reads/writes, checks Origin
+on writes, and uses revisions to avoid silently replacing changes from another
+tab. Optional age/gender and private name are never passed to public profile
+rendering. Public alias/bio/social links need explicit opt-in. Account connections
+use Neon's own list/link/unlink APIs; only Google/GitHub are allowed, and the last
+supported method cannot be removed. Same-email automatic linking remains Neon's
+responsibility; the app does not merge identities based on client fields.
+
+`data/reference/train-layouts.json` is a sourced reporting reference, not a change
+to boarding or routing data. It covers urban/airport/double-deck Tehran templates
+and separate Mashhad line templates. City/station defaults select a fixed count;
+users can choose a curated train type but cannot manually enter a count. Airport
+terminal stations select the four-car shuttle. The entire train fits on mobile
+and flips without renumbering the selected car. Sourced women-only markers cover
+Tehran urban trains and the outer halves of Mashhad Line 1's first/last cars.
+Other layouts do not inherit those boundaries. See `docs/train-layout-research.md`
+for source dates and limitations.
+
+Wagon reports with a selected car require a station and explicit travel direction.
+Terminal options come from canonical boarding routes, filtered by the station
+and the layout's `routeIds`; main-line and airport-shuttle directions stay
+separate at Bimeh. The head displays the chosen terminal, including after a visual
+flip. Direction, station, city or train-type changes clear stale car selections.
+The drawing has native clickable/keyboard-operated car buttons and an upward-
+escalator marker on the platform. Reviewed reports retain
+line, route and destination IDs alongside readable names, and Back preserves the
+selected direction/car. No direction or escalator location is guessed.
+
+## Report drafts, contact and exits
+
+All form fields are controlled. Step three offers anonymous submission (the
+default), optional private manual contact, or explicit signed-in public credit.
+Switching to anonymous excludes previously entered contacts from the payload.
+One report can describe multiple amenities; duplicate choices are prevented.
+
+Before sign-in, the report is saved in tab-scoped session storage. The versioned
+snapshot includes the processed photo, form values, stage and bounded retry ID.
+It expires after 24 hours and clears after successful submission. A failed/full
+storage write opens sign-in in a separate tab instead of navigating away from
+the unsaved form. No account/session tokens are stored in the draft. OAuth
+success/cancellation uses a whitelisted same-origin /contribute return path;
+external URLs and unrelated callback query parameters are discarded. Login never
+submits the saved report.
+
+lib/station-exits.ts defines the reporting targets. Only the upward escalator
+is offered today. Verified station-specific or direction-specific exit lists can
+be configured there. More than one target renders the exit switcher. Changing
+exit, direction, station or train type clears the selected car. Structured
+wagon metadata retains the car/count/profile/line/route/destination/exit IDs,
+and the server validates it against registered layouts, boardable routes and
+exit targets. Technical identifiers stay out of the human report text.
+
+Catalog station line membership remains available for corrections, while
+operationalLineIds and boardableStationIds separately identify boarding
+platforms. Travel choices use the first/last boardable stops, avoiding future
+terminals. At 17 Shahrivar, Line 7 is boardable; Line 6's through-tracks do not
+make its unfinished platform boardable. Canonical data files are unchanged.
+
+data/reference/community-contributions.json records Ali Rashidi's real reviewed
+historical correction, linked to the existing pinned override. It is a curated
+feed entry, not a fabricated OAuth submission or synthetic leaderboard score.
+New public issue titles/bodies use Persian, omit blank optional sections, keep
+contacts private and retain machine references in hidden metadata.

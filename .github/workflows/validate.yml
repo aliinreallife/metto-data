@@ -47,6 +47,12 @@ jobs:
         run: pnpm portal:build
       - name: Portal typecheck
         run: pnpm portal:typecheck
+      - name: Check construction map source snapshot
+        run: pnpm map-reference:check
+      - name: Install browser for contribution flow checks
+        run: pnpm --filter @metto/data-portal exec playwright install --with-deps chromium
+      - name: Check contribution flow and accessibility
+        run: pnpm portal:test:ui
       - name: Verify Tehran remains independently release-ready
         run: pnpm check-release --city tehran
       - name: Produce evidence and quality report

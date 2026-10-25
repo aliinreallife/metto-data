@@ -2,13 +2,22 @@ import { Portal, type PortalProps } from "../components/portal";
 import { catalog } from "./catalog-data";
 import { intakeConfig } from "./config";
 import { recentReports } from "./reports";
+import { portalAuth } from "./auth/server";
+import { leaderboard } from "./leaderboard";
 import { headers } from "next/headers";
+import { safeReportReturn } from "./auth/return-to";
+import {
+  profilePath,
+  publicMemberProfile,
+  type MemberProfile,
+} from "./profile";
 export type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 export async function renderPortal(
   view: PortalProps["view"],
   props: PageProps,
+  profileId = "",
 ) {
   const params = await props.searchParams;
   const one = (key: string) =>
@@ -30,11 +39,22 @@ export async function renderPortal(
     view === "home" || view === "reports"
       ? await recentReports()
       : { reports: [], unavailable: false };
-  const config = intakeConfig(),
-    requestHeaders = await headers();
+  const ranking =
+    view === "leaderboard" || view === "profile"
+      ? await leaderboard()
+      : { leaders: [], unavailable: false, partial: false };
+  const requestHeaders = await headers();
   const host =
     requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const config = intakeConfig(host ? `https://${host}` : undefined);
   const intakeEnabled = !!config && host === new URL(config.publicOrigin).host;
+  const publicProfile =
+    view === "profile" && config
+      ? await config.store
+          .read<MemberProfile>(profilePath(profileId))
+          .then((row) => publicMemberProfile(row?.value ?? null))
+          .catch(() => null)
+      : null;
   return (
     <Portal
       catalog={catalog}
@@ -44,6 +64,13 @@ export async function renderPortal(
       initialStation={initialStation}
       initialKind={one("kind")}
       intakeEnabled={intakeEnabled}
+      previewMode={process.env.VERCEL_ENV === "preview"}
+      authConfigured={!!portalAuth()}
+      githubEnabled={process.env.DATA_PORTAL_GITHUB_LOGIN === "1"}
+      authReturnTo={safeReportReturn(one("returnTo")) ?? ""}
+      ranking={ranking}
+      profileId={profileId}
+      publicProfile={publicProfile}
       reports={activity.reports}
       reportsUnavailable={activity.unavailable}
     />

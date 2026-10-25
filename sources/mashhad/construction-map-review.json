@@ -1,0 +1,216 @@
+{
+  "retrievedAt": "2026-10-25T06:29:20.731074+00:00",
+  "license": "ODbL-1.0",
+  "sources": [
+    {
+      "type": "way",
+      "id": 276449885,
+      "version": 58,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/way/276449885",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/way/276449885/full.json",
+      "rawSha256": "2abe5794a04a4c54c951cdc41074e94771a8efc6f611060556418008af754860",
+      "tags": {
+        "construction": "subway",
+        "construction:railway": "subway",
+        "electrified": "rail",
+        "layer": "-4",
+        "name": "خط ۳ متروی مشهد",
+        "name:en": "Line 3 Mashhad Metro",
+        "railway": "construction",
+        "tunnel": "yes",
+        "width": "7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1388754302,
+      "version": 2,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/way/1388754302",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/way/1388754302/full.json",
+      "rawSha256": "74d6f736cd988405a1aee550f48bd7908f699549f0831610acb9726d778df2c8",
+      "tags": {
+        "construction": "subway",
+        "construction:railway": "subway",
+        "electrified": "rail",
+        "layer": "-4",
+        "name": "خط ۳ متروی مشهد",
+        "name:en": "Line 3 Mashhad Metro",
+        "railway": "construction",
+        "tunnel": "yes",
+        "width": "7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564056417,
+      "version": 1,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/way/1564056417",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/way/1564056417/full.json",
+      "rawSha256": "4a750abbc84395cdf66faa07198ff55326bfd1051d8f28bb76dc31fe3597c58d",
+      "tags": {
+        "construction": "subway",
+        "construction:railway": "subway",
+        "electrified": "rail",
+        "layer": "-4",
+        "name": "خط ۳ متروی مشهد",
+        "name:en": "Line 3 Mashhad Metro",
+        "railway": "construction",
+        "tunnel": "yes",
+        "width": "7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 1564056418,
+      "version": 1,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/way/1564056418",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/way/1564056418/full.json",
+      "rawSha256": "2e8b886c1f2e6d1e967c896dbb772532068115cca4a17937b8873613cd8043ec",
+      "tags": {
+        "construction": "subway",
+        "construction:railway": "subway",
+        "electrified": "rail",
+        "layer": "-4",
+        "name": "خط ۳ متروی مشهد",
+        "name:en": "Line 3 Mashhad Metro",
+        "railway": "construction",
+        "tunnel": "yes",
+        "width": "7"
+      }
+    },
+    {
+      "type": "way",
+      "id": 381927098,
+      "version": 37,
+      "timestamp": "2026-02-04T21:35:18Z",
+      "url": "https://www.openstreetmap.org/way/381927098",
+      "apiUrl": "https://www.openstreetmap.org/api/0.6/way/381927098/full.json",
+      "rawSha256": "40b8f5faafc056bd1d9490d47512f8b026d60b338a5eef4803f3d97cb76e8f63",
+      "tags": {
+        "construction": "subway",
+        "construction:railway": "subway",
+        "layer": "-4",
+        "name": "خط ۴ متروی مشهد",
+        "name:en": "Line 4 Mashhad Metro",
+        "railway": "construction",
+        "ref": "4",
+        "tunnel": "yes"
+      }
+    },
+    {
+      "type": "relation",
+      "id": 5692274,
+      "version": 15,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/relation/5692274",
+      "rawSha256": "c2e6e50812bbe1ea74952d0e32772e27da8e0f06565ddffa6586b016cdb21d86",
+      "tags": {
+        "from": "شهدا",
+        "name": "خط ۳",
+        "name:en": "Line 3",
+        "network": "قطار شهری مشهد",
+        "public_transport:version": "2",
+        "ref": "3",
+        "route": "subway",
+        "to": "پایانه امام رضا",
+        "type": "route",
+        "wikidata": "Q117406330"
+      },
+      "ways": [
+        {
+          "type": "way",
+          "ref": 276449885,
+          "role": "inactive"
+        },
+        {
+          "type": "way",
+          "ref": 1388754301,
+          "role": ""
+        },
+        {
+          "type": "way",
+          "ref": 1388754302,
+          "role": "inactive"
+        }
+      ]
+    },
+    {
+      "type": "relation",
+      "id": 19161636,
+      "version": 3,
+      "timestamp": "2026-10-01T10:25:18Z",
+      "url": "https://www.openstreetmap.org/relation/19161636",
+      "rawSha256": "8a966f9210a2e8c8f452ea5e6aa58d5f198fa16908db97d8e0ebc428934fe9bc",
+      "tags": {
+        "from": "پایانه امام رضا",
+        "name": "خط ۳",
+        "name:en": "Line 3",
+        "network": "قطار شهری مشهد",
+        "public_transport:version": "2",
+        "ref": "3",
+        "route": "subway",
+        "to": "شهدا",
+        "type": "route",
+        "wikidata": "Q117406330"
+      },
+      "ways": [
+        {
+          "type": "way",
+          "ref": 1388754302,
+          "role": "inactive"
+        },
+        {
+          "type": "way",
+          "ref": 1388754301,
+          "role": ""
+        },
+        {
+          "type": "way",
+          "ref": 276449885,
+          "role": "inactive"
+        }
+      ]
+    },
+    {
+      "type": "relation",
+      "id": 5692275,
+      "version": 6,
+      "timestamp": "2021-04-19T13:33:29Z",
+      "url": "https://www.openstreetmap.org/relation/5692275",
+      "rawSha256": "0e5464775ba2cbd342b3a00fcab180f85c8c4d49e2c969630ae31175cee2a4cf",
+      "tags": {
+        "name": "خط ۴",
+        "name:en": "Line 4",
+        "ref": "4",
+        "route": "construction:subway",
+        "type": "route"
+      },
+      "ways": [
+        {
+          "type": "way",
+          "ref": 381927098,
+          "role": ""
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "constructionTagRequired": true,
+    "line3MainWaysMarkedInactiveInRouteRelations": true,
+    "line4RouteTaggedConstruction": true,
+    "operatingCentralWayExcluded": 1388754301,
+    "stationRecordsAdded": 0,
+    "routingEdgesAdded": 0,
+    "mapOnlyFutureStops": 30,
+    "rendering": "straight-between-mapped-stops"
+  },
+  "limitations": [
+    "Source-reported map infrastructure; not verified against the operator.",
+    "Only Lines 3/4 metro construction sections; the Golbahar regional railway, unlabelled ways and depot links are excluded.",
+    "Proposed stop nodes were not imported as boarding stations."
+  ]
+}

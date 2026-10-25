@@ -1,6 +1,9 @@
 import type { CatalogCity, Lang } from "../lib/catalog";
+import { constructionMap } from "../lib/construction-map";
 import { STRINGS } from "../lib/i18n";
 export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
+  const construction =
+    city.id === constructionMap.cityId ? constructionMap.segments : [];
   const t = STRINGS[lang],
     lat0 =
       city.stations.reduce((sum, station) => sum + station.location.lat, 0) /
@@ -10,10 +13,17 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
     x: station.location.lng * Math.cos((lat0 * Math.PI) / 180),
     y: -station.location.lat,
   }));
-  const minX = Math.min(...points.map((p) => p.x)),
-    maxX = Math.max(...points.map((p) => p.x)),
-    minY = Math.min(...points.map((p) => p.y)),
-    maxY = Math.max(...points.map((p) => p.y));
+  const constructionPoints = construction.flatMap((segment) =>
+    segment.coordinates.map(([lat, lng]) => ({
+      x: lng * Math.cos((lat0 * Math.PI) / 180),
+      y: -lat,
+    })),
+  );
+  const bounds = [...points, ...constructionPoints];
+  const minX = Math.min(...bounds.map((p) => p.x)),
+    maxX = Math.max(...bounds.map((p) => p.x)),
+    minY = Math.min(...bounds.map((p) => p.y)),
+    maxY = Math.max(...bounds.map((p) => p.y));
   const scale = Math.min(
     820 / Math.max(0.001, maxX - minX),
     520 / Math.max(0.001, maxY - minY),
@@ -42,6 +52,24 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
         className="w-full"
         style={{ direction: "ltr" }}
       >
+        {construction.map((segment) => (
+          <polyline
+            key={segment.id}
+            data-testid="construction-section"
+            points={segment.coordinates
+              .map(
+                ([lat, lng]) =>
+                  `${450 + (lng * Math.cos((lat0 * Math.PI) / 180) - (minX + maxX) / 2) * scale},${300 + (-lat - (minY + maxY) / 2) * scale}`,
+              )
+              .join(" ")}
+            fill="none"
+            stroke={segment.displayColor}
+            strokeWidth="3"
+            strokeDasharray="5 6"
+            strokeLinecap="round"
+            aria-hidden="true"
+          />
+        ))}
         {city.routes.map((route, index) => (
           <polyline
             key={`${route.lineId}-${index}`}
@@ -62,6 +90,31 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
             aria-hidden="true"
           />
         ))}
+        {city.id === constructionMap.cityId &&
+          constructionMap.futureStops.map((stop) => (
+            <circle
+              key={stop.id}
+              data-testid="future-stop"
+              cx={
+                450 +
+                (stop.location.lng * Math.cos((lat0 * Math.PI) / 180) -
+                  (minX + maxX) / 2) *
+                  scale
+              }
+              cy={300 + (-stop.location.lat - (minY + maxY) / 2) * scale}
+              r="4"
+              fill="var(--card)"
+              stroke={
+                construction.find(
+                  (section) => section.lineId === stop.lineIds[0],
+                )?.displayColor ?? "#777"
+              }
+              strokeWidth="1.5"
+              strokeDasharray="2 2"
+            >
+              <title>{`${stop.names[lang]} · ${t.planned}`}</title>
+            </circle>
+          ))}
         {city.stations.map((station) => {
           const p = xy(station.id);
           return (
@@ -97,6 +150,47 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
       >
         {t.directoryLink}
       </a>
+      {construction.length > 0 && (
+        <div
+          className="mt-4 border-t border-border pt-4 text-xs leading-6"
+          data-testid="construction-legend"
+        >
+          <p className="font-semibold">{t.constructionSections}</p>
+          <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1">
+            {[
+              ...new Map(
+                construction.map((segment) => [segment.lineId, segment]),
+              ).values(),
+            ].map((segment) => (
+              <span
+                key={segment.lineId}
+                className="inline-flex items-center gap-2"
+              >
+                <span
+                  aria-hidden
+                  className="w-6 border-t-2 border-dashed"
+                  style={{ borderColor: segment.displayColor }}
+                />
+                {segment.names[lang]}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-muted-foreground">
+            {t.constructionNote}{" "}
+            <a
+              className="text-primary underline underline-offset-4"
+              href={constructionMap.attributionUrl}
+            >
+              © OpenStreetMap
+            </a>{" "}
+            ·{" "}
+            {new Intl.DateTimeFormat(lang === "fa" ? "fa-IR" : "en", {
+              dateStyle: "medium",
+              timeZone: "UTC",
+            }).format(new Date(constructionMap.retrievedAt))}
+          </p>
+        </div>
+      )}
     </figure>
   );
 }

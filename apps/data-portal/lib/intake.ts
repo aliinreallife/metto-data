@@ -1,4 +1,8 @@
 import { createHash, createHmac, randomUUID } from "node:crypto";
+import { makeCredit, validPublicName, type PublicCredit } from "./credit.ts";
+import { sanitizePhoto } from "./photo-server.ts";
+import { trainProfiles } from "./train-layouts.ts";
+import type { WagonObservation } from "./report-observation.js";
 export const REPOSITORY = "aliinreallife/metto-data";
 export const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -9,19 +13,21 @@ export const kinds = [
   "location",
   "wagon",
   "other",
+  "city_request",
 ] as const;
 const cityLabels: Record<string, string> = {
-  tehran: "Tehran / تهران",
-  mashhad: "Mashhad / مشهد",
-  other: "Another city / شهر دیگر",
+  tehran: "تهران",
+  mashhad: "مشهد",
+  other: "شهر دیگر",
 };
 const kindLabels: Record<(typeof kinds)[number], string> = {
-  timetable: "Train times / زمان حرکت",
-  facility: "Station amenities / امکانات ایستگاه",
-  status: "Station status / وضعیت ایستگاه",
-  location: "Station location / مکان ایستگاه",
-  wagon: "Escalator car / واگن نزدیک پله‌برقی",
-  other: "Information / اطلاعات",
+  timetable: "برنامهٔ حرکت قطارها",
+  facility: "اصلاح امکانات ایستگاه",
+  status: "وضعیت ایستگاه",
+  location: "محل ایستگاه",
+  wagon: "واگن نزدیک خروجی",
+  other: "پیشنهاد یا اصلاح اطلاعات",
+  city_request: "پیشنهاد شهر یا خط",
 };
 export type Report = {
   id: string;
@@ -34,6 +40,8 @@ export type Report = {
   name: string;
   contact: string;
   photo?: string;
+  credit?: PublicCredit;
+  wagon?: WagonObservation;
 };
 export type StoredReport = {
   report: Report;
@@ -54,20 +62,38 @@ export interface PrivateStore {
     prefix: string,
     cursor?: string,
   ): Promise<{ paths: string[]; cursor?: string }>;
+  cleanup?(): Promise<number>;
+  canStorePhoto?(bytes: number): Promise<boolean>;
 }
 export type IntakeConfig = {
   store: PrivateStore;
   githubToken: string;
   quotaSecret?: string;
+  creditSecret?: string;
   publicOrigin: string;
   cityStations: Record<string, string[]>;
+  stationNames?: Record<string, { fa: string; en: string }>;
+  validateWagon?: (
+    wagon: WagonObservation,
+    stationId: string,
+    cityId: string,
+  ) => boolean;
   fetch?: typeof fetch;
   now?: () => Date;
+  resolveContributor?: () => Promise<{ id: string; name: string } | null>;
+  contributor?: { id: string; name: string };
 };
 const reportPath = (id: string) => `submissions/${id}.json`;
 function parse(raw: unknown, config: IntakeConfig): Report | null {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const data = raw as Record<string, unknown>;
+  if (data.publicCredit !== undefined && typeof data.publicCredit !== "boolean")
+    return null;
+  if (
+    data.publicCredit === true &&
+    (!config.contributor || !validPublicName(data.publicName))
+  )
+    return null;
   const text = (key: string, max: number) =>
     data[key] === undefined
       ? ""
@@ -111,6 +137,47 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
       return null;
     }
   }
+  let wagon: WagonObservation | undefined;
+  if (data.wagon !== undefined) {
+    const value = data.wagon as WagonObservation;
+    if (
+      !value ||
+      typeof value !== "object" ||
+      Array.isArray(value) ||
+      kind !== "wagon" ||
+      !stationId
+    )
+      return null;
+    const profile = trainProfiles.find(
+      (profile) => profile.id === value.profileId && profile.cityId === cityId,
+    );
+    if (
+      !profile ||
+      !Number.isInteger(value.car) ||
+      value.car < 1 ||
+      value.car > profile.cars ||
+      value.cars !== profile.cars ||
+      !profile.lineIds.includes(value.lineId) ||
+      !profile.routeIds.includes(value.routeId) ||
+      typeof value.destinationId !== "string" ||
+      !value.destinationId.startsWith(cityId + ":station:") ||
+      value.destinationId.length > 160 ||
+      typeof value.exitId !== "string" ||
+      !/^[a-z0-9:_-]{1,100}$/.test(value.exitId)
+    )
+      return null;
+    wagon = {
+      car: value.car,
+      cars: value.cars,
+      profileId: profile.id,
+      lineId: value.lineId,
+      routeId: value.routeId,
+      destinationId: value.destinationId,
+      exitId: value.exitId,
+    };
+    if (config.validateWagon && !config.validateWagon(wagon, stationId, cityId))
+      return null;
+  }
   let photo: string | undefined;
   if (data.photo !== undefined) {
     if (
@@ -143,6 +210,21 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
         name,
         contact,
         ...(photo ? { photo } : {}),
+        ...(wagon ? { wagon } : {}),
+        ...(data.publicCredit === true &&
+        config.contributor &&
+        (config.creditSecret || config.quotaSecret)
+          ? {
+              credit: makeCredit(
+                id,
+                {
+                  id: config.contributor.id,
+                  name: String(data.publicName).trim(),
+                },
+                (config.creditSecret || config.quotaSecret)!,
+              ),
+            }
+          : {}),
       }
     : null;
 }
@@ -152,41 +234,60 @@ function literal(text: string) {
     .map((line) => `    ${line}`)
     .join("\n");
 }
-export function publicBody(report: Report, origin: string) {
+export function publicBody(
+  report: Report,
+  origin: string,
+  stationNames?: IntakeConfig["stationNames"],
+) {
   const metadata = Buffer.from(
     JSON.stringify({
       id: report.id,
       cityId: report.cityId,
       stationId: report.stationId,
       kind: report.kind,
+      ...(report.credit ? { credit: report.credit } : {}),
+      ...(report.wagon ? { wagon: report.wagon } : {}),
     }),
   ).toString("base64");
+  const station = stationNames?.[report.stationId]?.fa;
   return [
-    "Rider source report (unverified)",
+    "گزارش مسافر — در انتظار بررسی",
     "",
-    `City: ${report.cityId}`,
-    `Type: ${report.kind}`,
-    "",
-    "Station ID:",
-    literal(report.stationId || "Not specified"),
-    "",
-    "Line / direction / subject:",
-    literal(report.subject || "Not specified"),
-    "",
-    "Information:",
-    literal(report.details || "See the photo."),
-    "",
-    "Source:",
-    literal(report.source || "Not specified"),
-    "",
+    "شهر: " + (cityLabels[report.cityId] ?? report.cityId),
+    ...(station ? ["ایستگاه: " + station] : []),
+    ...(report.subject ? ["", "موضوع:", literal(report.subject)] : []),
+    ...(report.details ? ["", "توضیحات:", literal(report.details)] : []),
+    ...(report.source ? ["", "منبع:", literal(report.source)] : []),
     ...(report.photo
-      ? [`![Station evidence](${origin}/api/evidence/${report.id})`, ""]
+      ? [
+          "",
+          "![عکس پیوست گزارش](" + origin + "/api/evidence/" + report.id + ")",
+        ]
       : []),
-    "Maintainer review is required before changing canonical data.",
-    `Submission reference: ${report.id}`,
-    `<!-- metto-data-report:${metadata} -->`,
+    ...(report.credit
+      ? ["", "مشارکت‌کننده:", literal(report.credit.name)]
+      : []),
+    "",
+    "این گزارش پیش از تغییر داده‌ها بررسی می‌شود.",
+    "<!-- Submission reference: " + report.id + " -->",
+    "<!-- metto-data-report:" + metadata + " -->",
   ].join("\n");
 }
+export function reportTitle(
+  report: Report,
+  stationNames?: IntakeConfig["stationNames"],
+) {
+  const station = stationNames?.[report.stationId]?.fa;
+  return (
+    kindLabels[report.kind] +
+    " · " +
+    [station, cityLabels[report.cityId] ?? report.cityId]
+      .filter(Boolean)
+      .join("، ") +
+    (report.subject ? " · " + report.subject.replace(/[\\r\\n@]/g, " ") : "")
+  );
+}
+
 async function jsonBody(request: Request) {
   const reader = request.body?.getReader();
   if (!reader) throw Error("invalid");
@@ -273,8 +374,12 @@ export async function publish(
           "User-Agent": "metto-data-portal",
         },
         body: JSON.stringify({
-          title: `${kindLabels[publishing.report.kind]} · ${cityLabels[publishing.report.cityId] ?? publishing.report.cityId}${publishing.report.subject ? ` · ${publishing.report.subject.replace(/[\r\n@]/g, " ")}` : ""}`,
-          body: publicBody(publishing.report, config.publicOrigin),
+          title: reportTitle(publishing.report, config.stationNames),
+          body: publicBody(
+            publishing.report,
+            config.publicOrigin,
+            config.stationNames,
+          ),
         }),
       },
     );
@@ -332,78 +437,148 @@ export function createIntakeHandler(config: IntakeConfig) {
     }
     if (raw && typeof raw === "object" && "website" in raw && raw.website)
       return reply(201, { id: randomUUID() });
-    const report = parse(raw, config);
-    if (!report) return reply(400, { error: "invalid" });
-    const inputHash = createHash("sha256")
-      .update(JSON.stringify(report))
-      .digest("hex");
-    const path = reportPath(report.id);
-    let durable = false;
-    try {
-      const previous = await config.store.read<StoredReport>(path);
-      if (previous)
-        return previous.value.inputHash === inputHash
-          ? reply(200, { id: report.id, issueUrl: previous.value.issueUrl })
-          : reply(409, { error: "changed" });
-      const ip = (
-        request.headers.get("x-vercel-forwarded-for") ??
-        request.headers.get("x-forwarded-for") ??
-        "unknown"
-      )
-        .split(",")[0]
-        .trim();
-      if (!(await reserveQuota(config, ip)))
-        return reply(429, { error: "rate_limit" });
-      const saved: StoredReport = {
-        report,
-        inputHash,
-        createdAt: (config.now?.() ?? new Date()).toISOString(),
-        state: "pending",
-      };
-      await config.store.write(
-        `outbox/${report.id}.json`,
-        { id: report.id },
-        null,
-      );
-      if (!(await config.store.write(path, saved, null))) {
-        const winner = await config.store.read<StoredReport>(path);
-        return winner?.value.inputHash === inputHash
-          ? reply(200, { id: report.id, issueUrl: winner.value.issueUrl })
-          : reply(409, { error: "changed" });
-      }
-      durable = true;
-      if (!config.githubToken) return reply(202, { id: report.id });
-      const result = await publish(config, report.id);
-      return reply(result?.state === "published" ? 201 : 202, {
-        id: report.id,
-        issueUrl: result?.issueUrl,
-      });
-    } catch {
-      if (durable) return reply(202, { id: report.id });
-      // A lost storage response may follow a successful write. Confirm it first.
+    if (
+      raw &&
+      typeof raw === "object" &&
+      (raw as Record<string, unknown>).publicCredit === true
+    ) {
+      let contributor;
       try {
-        const saved = await config.store.read<StoredReport>(path);
-        if (saved?.value.inputHash === inputHash)
-          return reply(202, { id: report.id, issueUrl: saved.value.issueUrl });
+        contributor = await config.resolveContributor?.();
       } catch {
-        /* Leave the visitor's form intact. */
+        return reply(503, { error: "busy" });
       }
-      return reply(503, { error: "unavailable" });
+      if (!contributor) return reply(401, { error: "login_required" });
+      raw = { ...raw, publicCredit: true };
+      const verifiedConfig = { ...config, contributor };
+      return acceptReport(raw, verifiedConfig, request);
     }
+    return acceptReport(raw, config, request);
   };
 }
+async function acceptReport(
+  raw: unknown,
+  config: IntakeConfig,
+  request: Request,
+): Promise<Response> {
+  const reply = (status: number, value: unknown) =>
+    Response.json(value, { status, headers: { "Cache-Control": "no-store" } });
+  const report = parse(raw, config);
+  if (!report) return reply(400, { error: "invalid" });
+  const inputHash = createHash("sha256")
+    .update(JSON.stringify(report))
+    .digest("hex");
+  const path = reportPath(report.id);
+  let durable = false;
+  try {
+    const previous = await config.store.read<StoredReport>(path);
+    if (previous)
+      return previous.value.inputHash === inputHash
+        ? reply(200, {
+            id: report.id,
+            ...(report.credit ? { creditId: report.credit.id } : {}),
+            issueUrl: previous.value.issueUrl,
+          })
+        : reply(409, { error: "changed" });
+    if (report.photo) {
+      if (
+        config.store.canStorePhoto &&
+        !(await config.store.canStorePhoto(report.photo.length))
+      )
+        return reply(503, { error: "photo_capacity" });
+    }
+    const ip = (
+      request.headers.get("x-vercel-forwarded-for") ??
+      request.headers.get("x-forwarded-for") ??
+      "unknown"
+    )
+      .split(",")[0]
+      .trim();
+    if (!(await reserveQuota(config, ip)))
+      return reply(429, { error: "rate_limit" });
+    // Charge the shared quota before image decoding, including malformed
+    // files, so repeated failed decodes cannot bypass the processing limit.
+    if (report.photo) {
+      try {
+        report.photo = await sanitizePhoto(report.photo);
+      } catch {
+        return reply(400, { error: "invalid_photo" });
+      }
+    }
+    const saved: StoredReport = {
+      report,
+      inputHash,
+      createdAt: (config.now?.() ?? new Date()).toISOString(),
+      state: "pending",
+    };
+    await config.store.write(
+      `outbox/${report.id}.json`,
+      {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      },
+      null,
+    );
+    if (!(await config.store.write(path, saved, null))) {
+      const winner = await config.store.read<StoredReport>(path);
+      return winner?.value.inputHash === inputHash
+        ? reply(200, {
+            id: report.id,
+            ...(report.credit ? { creditId: report.credit.id } : {}),
+            issueUrl: winner.value.issueUrl,
+          })
+        : reply(409, { error: "changed" });
+    }
+    durable = true;
+    if (!config.githubToken)
+      return reply(202, {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      });
+    const result = await publish(config, report.id);
+    return reply(result?.state === "published" ? 201 : 202, {
+      id: report.id,
+      ...(report.credit ? { creditId: report.credit.id } : {}),
+      issueUrl: result?.issueUrl,
+    });
+  } catch {
+    if (durable)
+      return reply(202, {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      });
+    // A lost storage response may follow a successful write. Confirm it first.
+    try {
+      const saved = await config.store.read<StoredReport>(path);
+      if (saved?.value.inputHash === inputHash)
+        return reply(202, {
+          id: report.id,
+          ...(report.credit ? { creditId: report.credit.id } : {}),
+          issueUrl: saved.value.issueUrl,
+        });
+    } catch {
+      /* Leave the visitor's form intact. */
+    }
+    return reply(503, { error: "unavailable" });
+  }
+}
+
 export async function evidence(
   config: IntakeConfig,
   id: string,
 ): Promise<Response> {
   if (!UUID.test(id)) return new Response(null, { status: 404 });
   const saved = await config.store.read<StoredReport>(reportPath(id));
-  if (!saved?.value.report.photo) return new Response(null, { status: 404 });
+  if (!saved?.value.report.photo || saved.value.state !== "published")
+    return new Response(null, {
+      status: 404,
+      headers: { "Cache-Control": "no-store" },
+    });
   return new Response(Buffer.from(saved.value.report.photo, "base64"), {
     headers: {
       "Content-Type": "image/jpeg",
       "X-Content-Type-Options": "nosniff",
-      "Cache-Control": "public, max-age=86400",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 }
