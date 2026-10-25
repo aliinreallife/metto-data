@@ -219,9 +219,18 @@ try {
   await expect(
     page.getByRole("img", { name: "Photo to be sent with your report" }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Remove photo and edit report", exact: true }).click();
+  expect(await page.locator("input[name=photo]").evaluate(input => input.files.length)).toBe(0);
+  await expect(page.getByRole("textbox", { name: "Description", exact: true })).toHaveValue("Weekday times observed today");
+  await review();
+  await expect(page.getByRole("img", { name: "Photo to be sent with your report" })).toHaveCount(0);
   await page
     .getByRole("button", { name: "Edit information", exact: true })
     .click();
+  await page.locator("input[name=photo]").setInputFiles({
+    name: "board.png", mimeType: "image/png",
+    buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=", "base64"),
+  });
   await expect(
     page.getByRole("textbox", { name: "Description", exact: true }),
   ).toHaveValue("Weekday times observed today");

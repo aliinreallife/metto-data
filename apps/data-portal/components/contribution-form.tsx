@@ -809,11 +809,28 @@ export function ContributionForm({
             )}
           </dl>
           {draft.photo && (
-            <img
-              src={`data:image/jpeg;base64,${draft.photo}`}
-              alt={t.reviewPhoto}
-              className="max-h-72 w-full rounded-xl border border-border object-contain"
-            />
+            <div className="space-y-2">
+              <img
+                src={`data:image/jpeg;base64,${draft.photo}`}
+                alt={t.reviewPhoto}
+                className="max-h-72 w-full rounded-xl border border-border object-contain"
+              />
+              <button
+                type="button"
+                className={secondary}
+                disabled={pending}
+                onClick={() => {
+                  const file = form.current?.querySelector<HTMLInputElement>('input[name="photo"]');
+                  if (file) file.value = "";
+                  setDraft({ ...draft, photo: undefined });
+                  setError(null);
+                  setStep(2);
+                  requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
+                }}
+              >
+                {t.removePhoto}
+              </button>
+            </div>
           )}
           {(draft.name || draft.contact) && (
             <div className="rounded-xl bg-muted/60 p-4 text-sm leading-7">
@@ -878,9 +895,11 @@ export function ContributionForm({
               </p>
             </div>
           )}
-          <p className="text-xs leading-7 text-muted-foreground">
-            {t.publicNote}
-          </p>
+          {!previewMode && (
+            <p className="text-xs leading-7 text-muted-foreground">
+              {t.publicNote}
+            </p>
+          )}
           {previewMode && (
             <p
               role="note"

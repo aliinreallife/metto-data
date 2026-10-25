@@ -219,6 +219,7 @@ export const STRINGS = {
     source: "پیوند منبع (اختیاری)",
     photo: "عکس تابلو یا ایستگاه (اختیاری)",
     photoHint: "یک عکس JPG، PNG یا WebP تا ۸ مگابایت.",
+    removePhoto: "حذف عکس و ویرایش گزارش",
     photoStorageFull:
       "فعلاً امکان دریافت عکس تازه نیست. اطلاعاتت حفظ شده؛ می‌توانی بعداً دوباره تلاش کنی یا با ویرایش گزارش، به‌جای عکس توضیح یا پیوند منبع بفرستی.",
     contactHeading: "راه تماس برای پیگیری (اختیاری)",
@@ -505,6 +506,7 @@ export const STRINGS = {
     source: "Source link (optional)",
     photo: "Station or timetable photo (optional)",
     photoHint: "One JPG, PNG or WebP photo up to 8 MB.",
+    removePhoto: "Remove photo and edit report",
     photoStorageFull:
       "We cannot receive new photos right now. Your draft is kept. Try later, or edit your report and replace the photo with details or a source link.",
     contactHeading: "Contact for follow-up (optional)",
