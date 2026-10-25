@@ -274,8 +274,10 @@ describe("Vercel anonymous intake", () => {
   });
   it("rejects files with JPEG markers that cannot actually be decoded before queueing", async () => {
     const f = fixture();
-    expect((await f.handle(request({ ...payload, photo: "/9j/2Q==" }))).status).toBe(400);
-    expect(f.store.rows.size).toBe(0);
+    for (let attempt = 0; attempt < 4; attempt++)
+      expect((await f.handle(request({ ...payload, photo: "/9j/2Q==" }))).status).toBe(400);
+    expect((await f.handle(request({ ...payload, photo: "/9j/2Q==" }))).status).toBe(429);
+    expect([...f.store.rows.keys()].every(path => path.startsWith("limits/"))).toBe(true);
     expect(f.calls).toHaveLength(0);
   });
   it("preserves text-report intake when photo capacity is unavailable", async () => {

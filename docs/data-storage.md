@@ -28,7 +28,8 @@ report rows, contacts or auth tables into the public repository.
 - The browser accepts one JPG/PNG/WebP up to 8 MiB, resizes it and sends a JPEG.
   The server independently decodes and re-encodes that JPEG, strips EXIF/GPS and
   source metadata, and enforces 2048 pixels / 512 KiB. Original files and their
-  filenames are not retained.
+  filenames are not retained. The shared request quota is reserved before image
+  decoding so failed decodes cannot bypass the processing limit.
 - Compressed evidence is stored with the private report. It is not committed
   as binary/base64 data to Git history and is not copied into public issues.
 - After the visitor explicitly confirms sending, the publisher creates a

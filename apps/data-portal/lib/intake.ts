@@ -415,11 +415,6 @@ async function acceptReport(
           })
         : reply(409, { error: "changed" });
     if (report.photo) {
-      try {
-        report.photo = await sanitizePhoto(report.photo);
-      } catch {
-        return reply(400, { error: "invalid_photo" });
-      }
       if (
         config.store.canStorePhoto &&
         !(await config.store.canStorePhoto(report.photo.length))
@@ -435,6 +430,15 @@ async function acceptReport(
       .trim();
     if (!(await reserveQuota(config, ip)))
       return reply(429, { error: "rate_limit" });
+    // Charge the shared quota before image decoding, including malformed
+    // files, so repeated failed decodes cannot bypass the processing limit.
+    if (report.photo) {
+      try {
+        report.photo = await sanitizePhoto(report.photo);
+      } catch {
+        return reply(400, { error: "invalid_photo" });
+      }
+    }
     const saved: StoredReport = {
       report,
       inputHash,
