@@ -122,11 +122,20 @@ try {
     if (path.endsWith("/sign-in/social")) {
       const body = route.request().postDataJSON();
       providers.push(body.provider);
-      expect(body.callbackURL).toBe(origin + "/auth/callback?lang=en");
+      const callback = new URL(body.callbackURL);
+      expect(callback.origin + callback.pathname).toBe(
+        origin + "/auth/callback",
+      );
+      expect(callback.searchParams.get("lang")).toBe("en");
       if (socialSucceeds) {
         signedIn = true;
         await route.fulfill({
-          json: { url: origin + "/account?lang=en", redirect: true },
+          json: {
+            url:
+              origin +
+              (callback.searchParams.get("returnTo") || "/account?lang=en"),
+            redirect: true,
+          },
         });
         return;
       }
@@ -203,6 +212,22 @@ try {
       .filter({ hasText: text })
       .click();
   }
+  async function selectDirection(destination, lang = "en") {
+    const direct = page.getByRole("button", {
+      name: (lang === "fa" ? "به سمت " : "Toward ") + destination,
+      exact: true,
+    });
+    if (await direct.isVisible()) {
+      await direct.click();
+      return;
+    }
+    await page
+      .getByRole("combobox", {
+        name: lang === "fa" ? /^جهت حرکت قطار/ : /^Direction of travel/,
+      })
+      .click();
+    await page.getByRole("option").filter({ hasText: destination }).click();
+  }
   async function review() {
     await page
       .getByRole("button", { name: "Review report", exact: true })
@@ -228,11 +253,9 @@ try {
     "mashhad:station:basij",
   );
   await page
-    .getByRole("textbox", { name: "Description", exact: true })
+    .getByRole("textbox", { name: "Description (optional)", exact: true })
     .fill("Weekday times observed today");
-  await page
-    .getByText("Add a photo or source link (optional)", { exact: true })
-    .click();
+  await expect(page.locator("input[name=contact]")).toHaveCount(0);
   await page.locator("input[name=photo]").setInputFiles({
     name: "board.png",
     mimeType: "image/png",
@@ -246,7 +269,7 @@ try {
     .click();
   await choose("Train times");
   await expect(
-    page.getByRole("textbox", { name: "Description", exact: true }),
+    page.getByRole("textbox", { name: "Description (optional)", exact: true }),
   ).toHaveValue("Weekday times observed today");
   expect(
     await page
@@ -277,16 +300,56 @@ try {
   ).toBeFocused();
   await review();
   expect(sent).toHaveLength(0);
-  const popupWait = page.waitForEvent("popup");
-  await page.getByRole("link", { name: /Optional login/ }).click();
-  const loginPopup = await popupWait;
+  await page
+    .getByRole("radio", { name: /Sign in for contributor credit/ })
+    .check();
+  await page
+    .getByRole("textbox", { name: "Name (optional)", exact: true })
+    .fill("Private reporter");
+  await page
+    .getByRole("textbox", {
+      name: "Email or contact handle (optional)",
+      exact: true,
+    })
+    .fill("private-contact@example.test");
+  await page
+    .getByRole("link", { name: "Continue to sign in", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "Sign-in did not finish",
+  );
+  await page.getByRole("link", { name: "Continue draft", exact: true }).click();
+  await expect(page.getByTestId("report-review")).toBeVisible();
   await expect(
-    loginPopup.getByRole("button", {
-      name: "Continue with Google",
+    page.getByRole("img", { name: "Photo to be sent with your report" }),
+  ).toBeVisible();
+  socialSucceeds = true;
+  await page
+    .getByRole("link", { name: "Continue to sign in", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Continue with Google", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
+  await expect(page.getByTestId("report-review")).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Name (optional)", exact: true }),
+  ).toHaveValue("Private reporter");
+  await expect(
+    page.getByRole("textbox", {
+      name: "Email or contact handle (optional)",
       exact: true,
     }),
-  ).toBeVisible();
-  await loginPopup.close();
+  ).toHaveValue("private-contact@example.test");
+  await page.reload();
+  await expect(page.getByTestId("report-review")).toBeVisible();
+  await page.getByRole("radio", { name: /Send anonymously/ }).check();
+  expect(sent).toHaveLength(0);
   await expect(page.getByTestId("report-review")).toBeVisible();
   await expect(page.getByTestId("report-review")).toContainText(
     "Weekday times observed today",
@@ -303,7 +366,7 @@ try {
       .evaluate((input) => input.files.length),
   ).toBe(0);
   await expect(
-    page.getByRole("textbox", { name: "Description", exact: true }),
+    page.getByRole("textbox", { name: "Description (optional)", exact: true }),
   ).toHaveValue("Weekday times observed today");
   await review();
   await expect(
@@ -321,7 +384,7 @@ try {
     ),
   });
   await expect(
-    page.getByRole("textbox", { name: "Description", exact: true }),
+    page.getByRole("textbox", { name: "Description (optional)", exact: true }),
   ).toHaveValue("Weekday times observed today");
   await review();
   await send();
@@ -337,6 +400,13 @@ try {
   expect(sent[0].id).toBe(sent[1].id);
   expect(sent[1].photo).toBeTruthy();
   expect(sent[1].publicCredit).toBe(false);
+  expect(sent[1].name).toBe("");
+  expect(sent[1].contact).toBe("");
+  expect(
+    await page.evaluate(() =>
+      sessionStorage.getItem("metto:contribution-draft:v1"),
+    ),
+  ).toBeNull();
   await another();
   await choose("Car near an escalator");
   await expect(page.getByRole("spinbutton")).toHaveCount(0);
@@ -349,10 +419,7 @@ try {
     page.getByTestId("report-form").getByRole("alert"),
   ).toContainText("station and direction");
   expect(sent).toHaveLength(2);
-  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
-  await page
-    .getByRole("option", { name: "Line 1 · Toward Airport", exact: true })
-    .click();
+  await selectDirection("Airport");
   await expect(
     page.getByRole("button", { name: "Car 2", exact: true }),
   ).toHaveAttribute("aria-pressed", "false");
@@ -371,7 +438,7 @@ try {
   await review();
   await expect(page.getByTestId("report-review")).toContainText("Car 2 of 3");
   await expect(page.getByTestId("report-review")).toContainText(
-    "Line 1 · Toward Airport",
+    "Line 1 toward Airport",
   );
   await page
     .getByRole("button", { name: "Edit information", exact: true })
@@ -391,10 +458,10 @@ try {
     }),
   ).toBeVisible();
   expect(sent[2].details).toContain("Car 2 of 3");
-  expect(sent[2].details).toContain("mashhad:line1:3");
-  expect(sent[2].details).toContain(
-    "direction: toward Airport (mashhad:station:airport)",
-  );
+  expect(sent[2].wagon.profileId).toBe("mashhad:line1:3");
+  expect(sent[2].wagon.destinationId).toBe("mashhad:station:airport");
+  expect(sent[2].wagon.exitId).toBe("up-escalator");
+  expect(sent[2].details).not.toContain("layout reference");
   await another();
   await choose("Station amenities");
   await page
@@ -405,9 +472,8 @@ try {
   ).toContainText("Write some information");
   await page.getByRole("combobox", { name: /^Amenity / }).click();
   await page.getByRole("option", { name: "Elevator", exact: true }).click();
-  await page.getByRole("combobox", { name: /^What you observed / }).click();
   await page
-    .getByRole("option", { name: "Not available", exact: true })
+    .getByRole("button", { name: "Not available", exact: true })
     .click();
   await page
     .getByRole("button", { name: "Add another amenity", exact: true })
@@ -415,13 +481,21 @@ try {
   await page.getByRole("combobox", { name: /^Amenity 2 / }).click();
   await page.getByRole("option", { name: "Toilets", exact: true }).click();
   await page
-    .getByRole("combobox", { name: /^What you observed / })
+    .getByRole("group", { name: "What you observed", exact: true })
     .nth(1)
+    .getByRole("button", { name: "Available", exact: true })
     .click();
-  await page.getByRole("option", { name: "Available", exact: true }).click();
+  await page.reload();
+  await expect(page.locator("input[name=amenity]").nth(0)).toHaveValue(
+    "elevator",
+  );
+  await expect(page.locator("input[name=amenity]").nth(1)).toHaveValue("wc");
   await review();
   await expect(page.getByTestId("report-review")).toContainText(
-    "Elevator: Not available · Toilets: Available",
+    "Elevator: Not available",
+  );
+  await expect(page.getByTestId("report-review")).toContainText(
+    "Toilets: Available",
   );
   await send();
   await expect(
@@ -429,7 +503,7 @@ try {
       name: "Thank you! Your report was received for review.",
     }),
   ).toBeVisible();
-  expect(sent[3].details).toContain("Amenity: wc; observed value: true");
+  expect(sent[3].details).toContain("Toilets: Available");
   await another();
   await choose("Suggest a city or line");
   await expect(page.locator("input[name=cityId]")).toHaveValue("other");
@@ -437,7 +511,7 @@ try {
     .getByRole("textbox", { name: "City and line name", exact: true })
     .fill("New city, Line 1");
   await page
-    .getByRole("textbox", { name: "Description", exact: true })
+    .getByRole("textbox", { name: "Description (optional)", exact: true })
     .fill("A source for the proposed city");
   await review();
   await send();
@@ -448,6 +522,9 @@ try {
   ).toBeVisible();
   expect(sent[4].kind).toBe("city_request");
   // Provider requests are intercepted; no third-party account changes occur.
+  signedIn = false;
+  socialSucceeds = false;
+  providers.length = 0;
   await page.goto(`${origin}/account?lang=en`);
   await page
     .getByRole("button", { name: "Continue with Google", exact: true })
@@ -551,14 +628,13 @@ try {
   await page.goto(`${origin}/contribute?city=mashhad&lang=en`);
   await choose("Other information");
   await page
-    .getByRole("textbox", { name: "Description", exact: true })
+    .getByRole("textbox", { name: "Description (optional)", exact: true })
     .fill("Credited observation");
   await review();
-  const publicCredit = page.getByRole("checkbox", {
-    name: /I want public credit/,
-  });
-  await expect(publicCredit).not.toBeChecked();
-  await publicCredit.check();
+  await expect(
+    page.getByRole("radio", { name: /Send anonymously/ }),
+  ).toBeChecked();
+  await page.getByRole("radio", { name: /Use a public name/ }).check();
   const alias = page.getByRole("textbox", {
     name: "Display name",
     exact: true,
@@ -633,10 +709,7 @@ try {
       '[data-women-zone="head-half"], [data-women-zone="rear-half"]',
     ),
   ).toHaveCount(2);
-  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
-  await page
-    .getByRole("option", { name: "Line 1 · Toward Tajrish", exact: true })
-    .click();
+  await selectDirection("Tajrish");
   await page.locator('[data-diagram-car="2"]').focus();
   await page.locator('[data-diagram-car="2"]').press("Space");
   await expect(page.getByTestId("train-head-destination")).toHaveText(
@@ -653,10 +726,7 @@ try {
   await expect(page.getByTestId("train-head-destination")).toHaveText(
     "Toward Tajrish",
   );
-  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
-  await page
-    .getByRole("option", { name: "Line 1 · Toward Kahrizak", exact: true })
-    .click();
+  await selectDirection("Kahrizak");
   await expect(
     page.getByRole("button", { name: "Car 2", exact: true }),
   ).toHaveAttribute("aria-pressed", "false");
@@ -723,15 +793,7 @@ try {
   for (const lang of ["fa", "en"]) {
     await page.goto(`${origin}/contribute?city=mashhad&lang=${lang}`);
     await choose(lang === "fa" ? "کدام واگن" : "Car near an escalator");
-    await page
-      .getByRole("combobox", {
-        name: lang === "fa" ? /^جهت حرکت قطار/ : /^Direction of travel/,
-      })
-      .click();
-    await page
-      .getByRole("option")
-      .filter({ hasText: lang === "fa" ? "فرودگاه" : "Airport" })
-      .click();
+    await selectDirection(lang === "fa" ? "فرودگاه" : "Airport", lang);
     await page.locator('[data-diagram-car="1"]').press("Enter");
     for (const mode of ["light", "dark"]) {
       await page.evaluate(async (mode) => {
@@ -750,6 +812,84 @@ try {
       ).toEqual([]);
     }
   }
+  for (const lang of ["fa", "en"]) {
+    for (const kind of [
+      "timetable",
+      "facility",
+      "status",
+      "location",
+      "wagon",
+      "other",
+      "city_request",
+    ]) {
+      await page.goto(
+        origin +
+          "/contribute?city=tehran&station=tehran:station:shohada-ye-hefdah-e-shahrivar&lang=" +
+          lang,
+      );
+      await page
+        .getByTestId("report-types")
+        .locator('[data-kind="' + kind + '"]')
+        .click();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      expect(await page.locator("input[name=contact]").count()).toBe(0);
+      const audit = await auditPage();
+      expect(
+        audit.violations.filter((v) =>
+          ["serious", "critical"].includes(v.impact ?? ""),
+        ),
+      ).toEqual([]);
+    }
+  }
+  await page.goto(origin + "/reports?lang=fa");
+  await expect(
+    page.getByRole("link", {
+      name: "۱۷ شهریور فعلاً فقط در خط ۷ فعاله.",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("علی رشیدی", { exact: true })).toBeVisible();
+  signedIn = false;
+  const fallback = await context.newPage();
+  await fallback.addInitScript(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === "metto:contribution-draft:v1")
+        throw new DOMException("Full", "QuotaExceededError");
+      return original.call(this, key, value);
+    };
+  });
+  await fallback.goto(origin + "/contribute?city=mashhad&lang=en");
+  await fallback
+    .getByTestId("report-types")
+    .locator('[data-kind="other"]')
+    .click();
+  await fallback
+    .getByRole("textbox", { name: "Description (optional)", exact: true })
+    .fill("Keep this draft when storage is blocked");
+  await fallback
+    .getByRole("button", { name: "Review report", exact: true })
+    .click();
+  await fallback
+    .getByRole("radio", { name: /Sign in for contributor credit/ })
+    .check();
+  const popupWait = fallback.waitForEvent("popup");
+  await fallback
+    .getByRole("link", { name: "Continue to sign in", exact: true })
+    .click();
+  const popup = await popupWait;
+  await expect(
+    popup.getByRole("button", { name: "Continue with Google", exact: true }),
+  ).toBeVisible();
+  await expect(fallback.getByTestId("report-review")).toContainText(
+    "Keep this draft when storage is blocked",
+  );
+  await popup.close();
+  await fallback.close();
   expect(errors).toEqual([]);
   console.log(
     "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",

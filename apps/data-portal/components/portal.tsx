@@ -74,6 +74,7 @@ export type PortalProps = {
   previewMode: boolean;
   authConfigured: boolean;
   githubEnabled: boolean;
+  authReturnTo?: string;
   ranking: { leaders: Leader[]; unavailable: boolean; partial: boolean };
   profileId: string;
   publicProfile: PublicMemberProfile | null;
@@ -169,16 +170,27 @@ export function Portal(props: PortalProps) {
               className="rounded-2xl border border-border bg-card p-5"
             >
               <div className="mb-4">
-                <Badge>{report.state === "open" ? t.pending : t.closed}</Badge>
+                <Badge>
+                  {report.verified
+                    ? t.verifiedContribution
+                    : report.state === "open"
+                      ? t.pending
+                      : t.closed}
+                </Badge>
               </div>
               <h3 className="font-bold">
                 <a
                   href={report.url}
                   className="underline-offset-4 hover:underline"
                 >
-                  {report.title}
+                  {report.names?.[lang] ?? report.title}
                 </a>
               </h3>
+              {report.contributorName && (
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {report.contributorName}
+                </p>
+              )}
             </article>
           ))}
         </div>
@@ -501,6 +513,7 @@ export function Portal(props: PortalProps) {
             lang={lang}
             configured={props.authConfigured}
             githubEnabled={props.githubEnabled}
+            returnTo={props.authReturnTo}
             user={account}
           />
         )}
@@ -712,6 +725,8 @@ function StationCard({
         {station.lines.map((line) => (
           <span
             key={line.id}
+            data-line-id={line.id}
+            data-line-boardable={station.operationalLineIds.includes(line.id)}
             className="inline-flex items-center gap-2 rounded-full border border-border px-2.5 py-1 text-xs"
           >
             <span
@@ -720,6 +735,12 @@ function StationCard({
               aria-hidden
             />
             {line.names[lang]}
+            {!station.operationalLineIds.includes(line.id) && (
+              <span className="text-muted-foreground">
+                {" "}
+                · {t.under_construction}
+              </span>
+            )}
           </span>
         ))}
       </div>

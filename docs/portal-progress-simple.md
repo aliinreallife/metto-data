@@ -8,10 +8,29 @@ into the live site yet.
 - Reporting stays open to everyone. You do not need an account.
 - The form has three steps: choose what to change, enter the details, then
   check the report and confirm sending. It does not send from step two.
-- The wagon picker shows the train, its front and rear, and the car you choose.
-  You enter the number of cars actually seen; the app does not guess it.
-- One report can describe several amenities. There is also a clear choice for
-  requesting a city or line.
+- The supplied wagon-selector reference is combined with Metto's sourced train
+  layouts. Tap a drawn car; the platform marker shows your chosen upward-escalator
+  position. Counts stay fixed for the selected train type.
+- All report topics use the same simpler layout. Optional photo/source controls
+  stay beside the report details, with a small photo preview and remove button.
+- One report can correct several amenities at one station. Duplicate amenity
+  choices are prevented, and each selected amenity has clear observed-state
+  buttons. There is also a city/line request form.
+- Step three offers anonymous sending, private manual contact, or optional
+  Google/GitHub login for contributor credit. Public names need an explicit
+  choice; provider emails are never used as public names.
+- A temporary draft in this browser tab preserves the text, photo, station,
+  direction, wagon, selected amenities and contact fields through login,
+  cancellation, Back and reload. It expires after 24 hours and clears after
+  successful submission. When draft storage is blocked, login opens in another
+  tab and the report remains on the original page. Login never submits a report.
+- The upward escalator is the only current exit target. Station/direction-specific
+  exit lists can be added later; the exit selector appears when there is a real
+  choice and switching exits clears the old car selection.
+- Ali Rashidi's reviewed 17 Shahrivar correction appears as a real credited
+  historical entry in Persian, linked to the existing canonical override.
+  The portal distinguishes Line 7 boarding from Line 6 through-tracks. No
+  synthetic popularity, votes, accounts or leaderboard points are created.
 - Login uses the existing Neon Auth project. Google and GitHub are the
   only choices, both visible on the login page. No email codes or passwords.
   The callback exchanges the provider verifier through the official SDK before
@@ -29,7 +48,7 @@ into the live site yet.
   Choose the station and terminal direction before reporting a car. The train's
   head names its destination; changing direction clears the selected car. Flipping
   only changes the picture, preserving the direction and car identity. Tap the
-  drawn wagon or its larger number button; keyboard selection works too.
+  drawn wagon; keyboard selection works too.
 - The whole train fits on mobile. Tehran's seven-car diagram shows sourced full
   and half women-only areas. Mashhad Line 1 shows the operator-confirmed outer
   half of the first and last cars. Other layouts remain unmarked until verified.

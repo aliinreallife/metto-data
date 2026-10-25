@@ -3,6 +3,7 @@ import {
   NEON_AUTH_SESSION_COOKIE_NAME,
   processAuthMiddleware,
 } from "@neondatabase/auth/server";
+import { safeReportReturn } from "./return-to.ts";
 
 /** Use the SDK's challenge/verifier exchange before returning to the account. */
 export async function completeOAuth(
@@ -16,6 +17,8 @@ export async function completeOAuth(
     "lang",
     url.searchParams.get("lang") === "en" ? "en" : "fa",
   );
+  const returnTo = safeReportReturn(url.searchParams.get("returnTo"));
+  const destination = returnTo ? new URL(returnTo, url) : account;
   const headers = new Headers({
     "Cache-Control": "no-store",
     "Referrer-Policy": "no-referrer",
@@ -25,7 +28,7 @@ export async function completeOAuth(
     !url.searchParams.has("neon_auth_session_verifier") &&
     !url.searchParams.has("error")
   ) {
-    headers.set("Location", account.toString());
+    headers.set("Location", destination.toString());
     return new Response(null, { status: 303, headers });
   }
   if (config && url.searchParams.has("neon_auth_session_verifier")) {
@@ -50,14 +53,14 @@ export async function completeOAuth(
       ) {
         for (const cookie of result.cookies)
           headers.append("Set-Cookie", cookie);
-        headers.set("Location", account.toString());
+        headers.set("Location", destination.toString());
         return new Response(null, { status: 303, headers });
       }
     } catch {
       /* Show a retry, never raw OAuth errors or verifier values. */
     }
   }
-  account.searchParams.set("error", "oauth");
-  headers.set("Location", account.toString());
+  destination.searchParams.set("error", "oauth");
+  headers.set("Location", destination.toString());
   return new Response(null, { status: 303, headers });
 }

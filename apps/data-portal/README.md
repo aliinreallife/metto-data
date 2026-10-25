@@ -200,7 +200,43 @@ Terminal options come from canonical boarding routes, filtered by the station
 and the layout's `routeIds`; main-line and airport-shuttle directions stay
 separate at Bimeh. The head displays the chosen terminal, including after a visual
 flip. Direction, station, city or train-type changes clear stale car selections.
-The drawing has native clickable/keyboard-operated car buttons, with larger
-number buttons as equivalent controls on narrow screens. Reviewed reports retain
+The drawing has native clickable/keyboard-operated car buttons and an upward-
+escalator marker on the platform. Reviewed reports retain
 line, route and destination IDs alongside readable names, and Back preserves the
 selected direction/car. No direction or escalator location is guessed.
+
+## Report drafts, contact and exits
+
+All form fields are controlled. Step three offers anonymous submission (the
+default), optional private manual contact, or explicit signed-in public credit.
+Switching to anonymous excludes previously entered contacts from the payload.
+One report can describe multiple amenities; duplicate choices are prevented.
+
+Before sign-in, the report is saved in tab-scoped session storage. The versioned
+snapshot includes the processed photo, form values, stage and bounded retry ID.
+It expires after 24 hours and clears after successful submission. A failed/full
+storage write opens sign-in in a separate tab instead of navigating away from
+the unsaved form. No account/session tokens are stored in the draft. OAuth
+success/cancellation uses a whitelisted same-origin /contribute return path;
+external URLs and unrelated callback query parameters are discarded. Login never
+submits the saved report.
+
+lib/station-exits.ts defines the reporting targets. Only the upward escalator
+is offered today. Verified station-specific or direction-specific exit lists can
+be configured there. More than one target renders the exit switcher. Changing
+exit, direction, station or train type clears the selected car. Structured
+wagon metadata retains the car/count/profile/line/route/destination/exit IDs,
+and the server validates it against registered layouts, boardable routes and
+exit targets. Technical identifiers stay out of the human report text.
+
+Catalog station line membership remains available for corrections, while
+operationalLineIds and boardableStationIds separately identify boarding
+platforms. Travel choices use the first/last boardable stops, avoiding future
+terminals. At 17 Shahrivar, Line 7 is boardable; Line 6's through-tracks do not
+make its unfinished platform boardable. Canonical data files are unchanged.
+
+data/reference/community-contributions.json records Ali Rashidi's real reviewed
+historical correction, linked to the existing pinned override. It is a curated
+feed entry, not a fabricated OAuth submission or synthetic leaderboard score.
+New public issue titles/bodies use Persian, omit blank optional sections, keep
+contacts private and retain machine references in hidden metadata.

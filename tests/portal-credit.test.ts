@@ -198,3 +198,53 @@ it("isolates preview reports and outbox records from the production publisher", 
   ]);
   expect(await isolated.read(`submissions/${id}.json`)).not.toBeNull();
 });
+
+it("keeps structured station/direction/exit wagon context with a fixed verified train count", async () => {
+  const c = config(),
+    handler = createIntakeHandler(c);
+  c.validateWagon = (wagon, station) =>
+    station === base.stationId &&
+    wagon.destinationId === "mashhad:station:airport" &&
+    wagon.exitId === "up-escalator";
+  const wagon = {
+    car: 2,
+    cars: 3,
+    profileId: "mashhad:line1:3",
+    lineId: "mashhad:line:1",
+    routeId: "mashhad:route:line-1-main",
+    destinationId: "mashhad:station:airport",
+    exitId: "up-escalator",
+  };
+  expect(
+    (
+      await handler(
+        request({
+          ...base,
+          kind: "wagon",
+          details: "واگن ۲ نزدیک پله‌برقی رو به بالاست.",
+          wagon,
+        }),
+      )
+    ).status,
+  ).toBe(202);
+  const row = await c.store.read<StoredReport>("submissions/" + id + ".json");
+  expect(row?.value.report.wagon).toEqual(wagon);
+  const body = publicBody(row!.value.report, c.publicOrigin);
+  expect(body).toContain("واگن ۲");
+  expect(body).not.toContain("Not specified");
+  expect(body).not.toContain("Source:");
+  for (const changed of [
+    { ...wagon, cars: 4 },
+    { ...wagon, car: 4 },
+    { ...wagon, profileId: "tehran:urban:7" },
+    { ...wagon, exitId: "invented-exit" },
+  ]) {
+    expect(
+      (
+        await handler(
+          request({ ...base, id: other, kind: "wagon", wagon: changed }),
+        )
+      ).status,
+    ).toBe(400);
+  }
+});

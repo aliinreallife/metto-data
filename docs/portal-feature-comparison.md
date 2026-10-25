@@ -171,3 +171,17 @@ direction clears the car so the other platform is reported separately.
 Women-only areas are sourced for Tehran urban seven-car trains and the outer
 halves of Mashhad Line 1's first/last cars; unconfirmed layouts remain unmarked. Research and
 sources: [train-layout-research.md](train-layout-research.md).
+
+The combined form follow-up uses the supplied HTML's direct train controls and
+platform marker, with the sourced layouts and travel direction handling above.
+The exit model is station/direction-specific; only the upward escalator is
+currently offered. Contact/identity choices moved to the third review step.
+Controlled fields and a bounded tab-scoped draft retain data and processed photos
+through sign-in/cancellation/reload, with a separate-tab fallback when storage is
+blocked. All form topics use compact optional evidence controls. Several
+amenities can be corrected together without duplicate choices.
+
+The activity feed includes Ali Rashidi's real reviewed 17 Shahrivar correction,
+sourced to the existing canonical override. Boarding on Line 7 is distinguished
+from non-boardable Line 6 through-tracks. Historical feed credit does not forge
+an authenticated submission or add synthetic leaderboard points.

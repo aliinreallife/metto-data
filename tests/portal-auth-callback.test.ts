@@ -158,3 +158,39 @@ it("permits a completed link callback with an already verified existing session 
   );
   expect(anonymous.headers.get("location")).toContain("error=oauth");
 });
+
+it("returns an authenticated report author to review while retaining the SDK session exchange", async () => {
+  const target = "/contribute?city=mashhad&lang=fa&resume=1";
+  const url = new URL(
+    "https://data.example.test/auth/callback?lang=fa&neon_auth_session_verifier=valid-test-verifier",
+  );
+  url.searchParams.set("returnTo", target);
+  const response = await completeOAuth(
+    new Request(url, { headers: { cookie: challenge } }),
+    config(),
+  );
+  expect(response.headers.get("location")).toBe(
+    "https://data.example.test" + target,
+  );
+  expect(
+    response.headers.getSetCookie().some((c) => c.startsWith(cookieName + "=")),
+  ).toBe(true);
+});
+it("returns a cancelled report login to its saved draft and blocks external return URLs", async () => {
+  const target = "/contribute?city=mashhad&lang=fa&resume=1";
+  const url = new URL("https://data.example.test/auth/callback?error=denied");
+  url.searchParams.set("returnTo", target);
+  const response = await completeOAuth(new Request(url), null);
+  expect(response.headers.get("location")).toBe(
+    "https://data.example.test" + target + "&error=oauth",
+  );
+  const bad = await completeOAuth(
+    new Request(
+      "https://data.example.test/auth/callback?returnTo=https://evil.test/",
+    ),
+    null,
+  );
+  expect(bad.headers.get("location")).toBe(
+    "https://data.example.test/account?lang=fa&error=oauth",
+  );
+});

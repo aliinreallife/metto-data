@@ -1,5 +1,41 @@
 export const STRINGS = {
   fa: {
+    descriptionOptional: "توضیح بیشتر (اختیاری)",
+    verifiedContribution: "تأییدشده",
+    whichExit: "کدوم خروجی؟",
+    platform: "سکو",
+    wagonQuestionStart: "کدوم واگن به ",
+    wagonQuestionEnd: " نزدیک‌تره؟",
+    submitAnonymous: "بدون نام بفرست",
+    anonymousModeNote: "نه ورود لازمه، نه راه تماس.",
+    leaveContact: "راه تماس می‌ذارم",
+    manualContactNote: "راه تماست فقط برای پیگیریه و عمومی نمی‌شه.",
+    signInForCredit: "با ورود، مشارکتم ثبت بشه",
+    withPublicCredit: "با نام دلخواهم ثبت بشه",
+    leaderboardLoginNote:
+      "بعد از تأیید گزارش، مشارکتت توی جدول مشارکت‌کننده‌ها شمرده می‌شه.",
+    howToCredit: "گزارش رو چطور بفرستیم؟",
+    continueToLogin: "ورود به حساب",
+    loginKeepsDraft:
+      "بعد از ورود به همین گزارش برمی‌گردی؛ اطلاعات و عکست حفظ می‌شن.",
+    loginNewTabDraft:
+      "ورود توی برگهٔ جدید باز شد. بعد از ورود به همین برگه برگرد؛ گزارشت اینجاست.",
+    addPhoto: "عکس اضافه کن",
+    addSource: "لینک منبع دارم",
+    photoOptionalNote: "اختیاری؛ تا ۸ مگابایت",
+    attachedPhoto: "عکس پیوست‌شده",
+    removePhotoSimple: "حذف عکس",
+    savedDraftFound: "یه گزارش نیمه‌کاره داری.",
+    resumeDraft: "ادامهٔ گزارش",
+    startFresh: "از اول",
+    receivedNote: "گزارشت رسید. بعد از بررسی، داده‌ها رو به‌روز می‌کنیم.",
+    viewIssue: "دیدن گزارش در گیت‌هاب",
+    affectedLine: "این تغییر مربوط به کدوم خطه؟",
+    wholeStation: "کل ایستگاه",
+    stationRequired: "اول ایستگاه رو انتخاب کن.",
+    amenityValueRequired:
+      "برای هر امکان، بگو هست یا نیست؛ اگه مطمئن نیستی، «مشخص نیست» رو بزن.",
+    amenityDuplicate: "هر امکان رو فقط یک بار انتخاب کن.",
     wagonDirection: "جهت حرکت قطار",
     chooseDirection: "قطار به سمت کدام ایستگاه می‌رفت؟",
     chooseStation: "ایستگاه را انتخاب کن",
@@ -89,7 +125,7 @@ export const STRINGS = {
     retry: "تلاش دوباره",
     loginLinkHelp:
       "قبلاً با روش دیگری حساب ساخته‌ای؟ با همان وارد شو و روش دوم را از «حساب من» وصل کن.",
-    addAmenity: "افزودن امکان دیگر",
+    addAmenity: "یه امکان دیگه",
     removeAmenity: "حذف این امکان",
     detailsTooLong: "توضیحات خیلی طولانی است. کمی کوتاه‌ترش کن.",
 
@@ -126,8 +162,7 @@ export const STRINGS = {
 
     reviewSend: "بررسی و ارسال",
     confirmTitle: "گزارشت را بفرستیم؟",
-    confirmIntro:
-      "اطلاعات را یک بار بررسی کن. فقط با زدن دکمهٔ ارسال، گزارش فرستاده می‌شود.",
+    confirmIntro: "یه بار اطلاعات رو چک کن؛ اگه درسته، بفرست.",
     reviewReport: "بررسی گزارش",
     editReport: "ویرایش اطلاعات",
     preparing: "در حال آماده‌سازی…",
@@ -178,8 +213,7 @@ export const STRINGS = {
     changeDetails: "جزئیات",
     changeType: "تغییر نوع گزارش",
     chooseTitle: "چه چیزی را می‌خواهی تغییر بدهی؟",
-    chooseIntro:
-      "موضوع را انتخاب کن؛ در مرحلهٔ بعد فقط سؤال‌های مربوط به آن را می‌پرسم.",
+    chooseIntro: "",
     findStation: "جست‌وجوی ایستگاه",
     chooseOption: "انتخاب کن",
     otherCityHint: "نام شهر و خط پیشنهادی را در توضیحات بنویس.",
@@ -192,18 +226,14 @@ export const STRINGS = {
     locationChoice: "اصلاح محل یا ورودی ایستگاه روی نقشه",
     wagonChoice: "کدام واگن به پله‌برقی نزدیک‌تر است؟",
     otherChoice: "پیشنهاد شهر، خط جدید یا اصلاح دیگر",
-    timetableHint:
-      "روزها، ساعت‌ها و جهت حرکت را بنویس، یا از بخش پایین فقط عکس برنامه را بفرست.",
-    facilityHint:
-      "امکان مورد نظر و چیزی را که دیدی انتخاب کن. اگر لازم است، محل و تاریخ مشاهده را هم بنویس.",
+    timetableHint: "برنامهٔ حرکت رو بنویس یا عکس تابلو رو بفرست.",
+    facilityHint: "می‌تونی چند تا امکان همین ایستگاه رو با هم اصلاح کنی.",
     statusHint:
-      "وضعیت ایستگاه را انتخاب کن. اگر می‌دانی، تاریخ و ورودی مربوط را هم بنویس.",
+      "بگو ایستگاه یا سکوی خط مورد نظر بازه، بسته است یا هنوز ساخته می‌شه.",
     locationHint:
-      "بگو محل درست ایستگاه یا ورودی کجاست. نشانی، نشانهٔ نزدیک یا پیوند نقشه کمک می‌کند؛ مختصات لازم نیست.",
-    wagonHint:
-      "ایستگاه و جهت قطاری را که از آن پیاده شدی انتخاب کن، بعد واگن نزدیک پله‌برقی را بزن. اگر چند خروجی هست، نام خروجی را در توضیحات بنویس.",
-    otherHint:
-      "بگو چه چیزی باید اضافه یا اصلاح شود. برای شهر یا خط جدید، نام و منبع اطلاعات را هم بنویس.",
+      "بگو ایستگاه یا ورودی درست کجاست؛ نشانی یا لینک نقشه هم کمک می‌کنه.",
+    wagonHint: "ایستگاه و جهت قطارت رو انتخاب کن، بعد روی واگن بزن.",
+    otherHint: "بگو چی باید اضافه یا اصلاح بشه.",
     timetablePlaceholder: "مثلاً: روزهای کاری، خط ۱ به سمت فرودگاه، از ساعت…",
     facilityPlaceholder: "مثلاً: آسانسور ورودی شمالی را امروز دیدم…",
     statusPlaceholder: "مثلاً: ورودی شرقی از دوشنبه موقتاً بسته است…",
@@ -284,8 +314,7 @@ export const STRINGS = {
     photoStorageFull:
       "فعلاً امکان دریافت عکس تازه نیست. اطلاعاتت حفظ شده؛ می‌توانی بعداً دوباره تلاش کنی یا با ویرایش گزارش، به‌جای عکس توضیح یا پیوند منبع بفرستی.",
     contactHeading: "راه تماس برای پیگیری (اختیاری)",
-    contactNote:
-      "اگر می‌خواهی دربارهٔ گزارش با تو تماس بگیریم، این بخش را پر کن. این دو فیلد عمومی نمی‌شوند.",
+    contactNote: "نام و راه تماس فقط برای پیگیری‌اند و عمومی نمی‌شن.",
     name: "نام (اختیاری)",
     contact: "ایمیل یا شناسهٔ تماس (اختیاری)",
     publicNote:
@@ -338,6 +367,43 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    descriptionOptional: "Description (optional)",
+    verifiedContribution: "Verified",
+    whichExit: "Which exit?",
+    platform: "Platform",
+    wagonQuestionStart: "Which car is closest to ",
+    wagonQuestionEnd: "?",
+    submitAnonymous: "Send anonymously",
+    anonymousModeNote: "No login or contact details needed.",
+    leaveContact: "Leave a private contact",
+    manualContactNote: "Only used for follow-up. It stays private.",
+    signInForCredit: "Sign in for contributor credit",
+    withPublicCredit: "Use a public name",
+    leaderboardLoginNote:
+      "Accepted reports count toward your contributor history and leaderboard.",
+    howToCredit: "How would you like to send it?",
+    continueToLogin: "Continue to sign in",
+    loginKeepsDraft:
+      "You will return to this report after signing in. Your information and photo will be kept.",
+    loginNewTabDraft:
+      "Sign-in opened in a new tab. Return here afterward; your report is still here.",
+    addPhoto: "Add a photo",
+    addSource: "Add a source link",
+    photoOptionalNote: "Optional · up to 8 MB",
+    attachedPhoto: "Attached photo",
+    removePhotoSimple: "Remove photo",
+    savedDraftFound: "You have an unfinished report.",
+    resumeDraft: "Continue draft",
+    startFresh: "Start fresh",
+    receivedNote:
+      "Your report is ready for review. We will update the data after checking it.",
+    viewIssue: "View report on GitHub",
+    affectedLine: "Which line is affected?",
+    wholeStation: "The whole station",
+    stationRequired: "Choose the station first.",
+    amenityValueRequired:
+      "Choose what you observed for each amenity, or select Unknown.",
+    amenityDuplicate: "Choose each amenity only once.",
     wagonDirection: "Direction of travel",
     chooseDirection: "Which terminal was the train heading toward?",
     chooseStation: "Choose a station",
@@ -467,8 +533,7 @@ export const STRINGS = {
 
     reviewSend: "Review & send",
     confirmTitle: "Ready to send your report?",
-    confirmIntro:
-      "Check the information once more. Your report is only sent when you confirm below.",
+    confirmIntro: "Check the information, then send when you are ready.",
     reviewReport: "Review report",
     editReport: "Edit information",
     preparing: "Preparing…",
@@ -520,8 +585,7 @@ export const STRINGS = {
     changeDetails: "Details",
     changeType: "Change report type",
     chooseTitle: "What would you like to change?",
-    chooseIntro:
-      "Choose a topic. Next, you’ll only see the questions for that report.",
+    chooseIntro: "",
     findStation: "Search stations",
     chooseOption: "Choose an option",
     otherCityHint: "Tell us the city and proposed line in your description.",
@@ -534,18 +598,15 @@ export const STRINGS = {
     locationChoice: "Correct a station or entrance on the map",
     wagonChoice: "Which car stops closest to the escalator?",
     otherChoice: "Suggest a city, a line or another correction",
-    timetableHint:
-      "Share the days, times and direction, or just add a timetable photo below.",
+    timetableHint: "Share the timetable or add a photo of the board.",
     facilityHint:
-      "Choose the amenity and what you observed. Add its location and observation date if helpful.",
+      "You can correct several amenities at this station in one report.",
     statusHint:
-      "Choose the station status. Add the date and affected entrance if you know them.",
+      "Tell us whether the station or a particular line platform is open, closed or under construction.",
     locationHint:
-      "Describe the correct station or entrance location. An address, nearby landmark or map link helps; coordinates aren’t needed.",
-    wagonHint:
-      "Choose your station and the direction of the train you got off, then tap the car closest to the escalator. If there are several exits, name the exit in your description.",
-    otherHint:
-      "Tell us what to add or correct. For a new city or line, include its name and any source you have.",
+      "Describe the correct station or entrance location. An address or map link helps.",
+    wagonHint: "Choose your station and travel direction, then tap a car.",
+    otherHint: "Tell us what to add or correct.",
     timetablePlaceholder:
       "For example: Weekdays, Line 1 toward the airport, from…",
     facilityPlaceholder:
@@ -634,7 +695,7 @@ export const STRINGS = {
       "We cannot receive new photos right now. Your draft is kept. Try later, or edit your report and replace the photo with details or a source link.",
     contactHeading: "Contact for follow-up (optional)",
     contactNote:
-      "Fill this in if you want us to contact you about the report. These two fields are not public.",
+      "Your name and contact details are private and only used for follow-up.",
     name: "Name (optional)",
     contact: "Email or contact handle (optional)",
     publicNote:

@@ -11,6 +11,7 @@ import { AccountSettings } from "./account-settings";
 import { authClient } from "../lib/auth/client";
 import { STRINGS } from "../lib/i18n";
 import type { Lang } from "../lib/catalog";
+import { safeReportReturn } from "../lib/auth/return-to";
 export type AccountUser = { id: string; name: string; emailVerified: boolean };
 export function usePortalAccount(configured: boolean) {
   const [user, setUser] = useState<AccountUser | null>(null);
@@ -90,11 +91,13 @@ export function Account({
   configured,
   user,
   githubEnabled,
+  returnTo,
 }: {
   lang: Lang;
   configured: boolean;
   user: AccountUser | null;
   githubEnabled: boolean;
+  returnTo?: string;
 }) {
   const t = STRINGS[lang];
   const [pending, setPending] = useState<"google" | "github" | null>(null);
@@ -112,10 +115,16 @@ export function Account({
     setPending(provider);
     setMessage("");
     try {
+      const resume = safeReportReturn(returnTo);
+      const failure = new URL(
+        resume || `/account?lang=${lang}`,
+        location.origin,
+      );
+      failure.searchParams.set("error", "oauth");
       const result = await authClient.signIn.social({
         provider,
-        callbackURL: `${location.origin}/auth/callback?lang=${lang}`,
-        errorCallbackURL: `${location.origin}/account?lang=${lang}&error=oauth`,
+        callbackURL: `${location.origin}/auth/callback?${new URLSearchParams({ lang, ...(resume ? { returnTo: resume } : {}) })}`,
+        errorCallbackURL: failure.toString(),
       });
       if (result.error) throw Error();
     } catch {
@@ -124,10 +133,24 @@ export function Account({
       setPending(null);
     }
   }
-  const reportLink = `/contribute?lang=${lang}`;
+  const reportLink = safeReportReturn(returnTo) || `/contribute?lang=${lang}`;
   if (user)
     return (
-      <AccountSettings lang={lang} user={user} githubEnabled={githubEnabled} />
+      <>
+        {safeReportReturn(returnTo) && (
+          <a
+            href={reportLink}
+            className="mb-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
+          >
+            {t.resumeDraft}
+          </a>
+        )}
+        <AccountSettings
+          lang={lang}
+          user={user}
+          githubEnabled={githubEnabled}
+        />
+      </>
     );
   return (
     <section
@@ -226,7 +249,7 @@ export function Account({
           href={reportLink}
           className="mt-1 inline-flex min-h-11 items-center justify-center gap-2 px-2 text-sm font-semibold text-primary underline underline-offset-4"
         >
-          {t.continueAnonymous}
+          {safeReportReturn(returnTo) ? t.resumeDraft : t.continueAnonymous}
           <ArrowLeft className="size-4 ltr:rotate-180" aria-hidden />
         </a>
       </div>

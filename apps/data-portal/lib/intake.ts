@@ -1,6 +1,8 @@
 import { createHash, createHmac, randomUUID } from "node:crypto";
 import { makeCredit, validPublicName, type PublicCredit } from "./credit.ts";
 import { sanitizePhoto } from "./photo-server.ts";
+import { trainProfiles } from "./train-layouts.ts";
+import type { WagonObservation } from "./report-observation.js";
 export const REPOSITORY = "aliinreallife/metto-data";
 export const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -14,18 +16,18 @@ export const kinds = [
   "city_request",
 ] as const;
 const cityLabels: Record<string, string> = {
-  tehran: "Tehran / تهران",
-  mashhad: "Mashhad / مشهد",
-  other: "Another city / شهر دیگر",
+  tehran: "تهران",
+  mashhad: "مشهد",
+  other: "شهر دیگر",
 };
 const kindLabels: Record<(typeof kinds)[number], string> = {
-  timetable: "Train times / زمان حرکت",
-  facility: "Station amenities / امکانات ایستگاه",
-  status: "Station status / وضعیت ایستگاه",
-  location: "Station location / مکان ایستگاه",
-  wagon: "Escalator car / واگن نزدیک پله‌برقی",
-  other: "Information / اطلاعات",
-  city_request: "City or line request / درخواست شهر یا خط",
+  timetable: "برنامهٔ حرکت قطارها",
+  facility: "اصلاح امکانات ایستگاه",
+  status: "وضعیت ایستگاه",
+  location: "محل ایستگاه",
+  wagon: "واگن نزدیک خروجی",
+  other: "پیشنهاد یا اصلاح اطلاعات",
+  city_request: "پیشنهاد شهر یا خط",
 };
 export type Report = {
   id: string;
@@ -39,6 +41,7 @@ export type Report = {
   contact: string;
   photo?: string;
   credit?: PublicCredit;
+  wagon?: WagonObservation;
 };
 export type StoredReport = {
   report: Report;
@@ -69,6 +72,12 @@ export type IntakeConfig = {
   creditSecret?: string;
   publicOrigin: string;
   cityStations: Record<string, string[]>;
+  stationNames?: Record<string, { fa: string; en: string }>;
+  validateWagon?: (
+    wagon: WagonObservation,
+    stationId: string,
+    cityId: string,
+  ) => boolean;
   fetch?: typeof fetch;
   now?: () => Date;
   resolveContributor?: () => Promise<{ id: string; name: string } | null>;
@@ -128,6 +137,47 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
       return null;
     }
   }
+  let wagon: WagonObservation | undefined;
+  if (data.wagon !== undefined) {
+    const value = data.wagon as WagonObservation;
+    if (
+      !value ||
+      typeof value !== "object" ||
+      Array.isArray(value) ||
+      kind !== "wagon" ||
+      !stationId
+    )
+      return null;
+    const profile = trainProfiles.find(
+      (profile) => profile.id === value.profileId && profile.cityId === cityId,
+    );
+    if (
+      !profile ||
+      !Number.isInteger(value.car) ||
+      value.car < 1 ||
+      value.car > profile.cars ||
+      value.cars !== profile.cars ||
+      !profile.lineIds.includes(value.lineId) ||
+      !profile.routeIds.includes(value.routeId) ||
+      typeof value.destinationId !== "string" ||
+      !value.destinationId.startsWith(cityId + ":station:") ||
+      value.destinationId.length > 160 ||
+      typeof value.exitId !== "string" ||
+      !/^[a-z0-9:_-]{1,100}$/.test(value.exitId)
+    )
+      return null;
+    wagon = {
+      car: value.car,
+      cars: value.cars,
+      profileId: profile.id,
+      lineId: value.lineId,
+      routeId: value.routeId,
+      destinationId: value.destinationId,
+      exitId: value.exitId,
+    };
+    if (config.validateWagon && !config.validateWagon(wagon, stationId, cityId))
+      return null;
+  }
   let photo: string | undefined;
   if (data.photo !== undefined) {
     if (
@@ -160,6 +210,7 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
         name,
         contact,
         ...(photo ? { photo } : {}),
+        ...(wagon ? { wagon } : {}),
         ...(data.publicCredit === true &&
         config.contributor &&
         (config.creditSecret || config.quotaSecret)
@@ -183,7 +234,11 @@ function literal(text: string) {
     .map((line) => `    ${line}`)
     .join("\n");
 }
-export function publicBody(report: Report, origin: string) {
+export function publicBody(
+  report: Report,
+  origin: string,
+  stationNames?: IntakeConfig["stationNames"],
+) {
   const metadata = Buffer.from(
     JSON.stringify({
       id: report.id,
@@ -191,41 +246,48 @@ export function publicBody(report: Report, origin: string) {
       stationId: report.stationId,
       kind: report.kind,
       ...(report.credit ? { credit: report.credit } : {}),
+      ...(report.wagon ? { wagon: report.wagon } : {}),
     }),
   ).toString("base64");
+  const station = stationNames?.[report.stationId]?.fa;
   return [
-    "Rider source report (unverified)",
+    "گزارش مسافر — در انتظار بررسی",
     "",
-    `City: ${report.cityId}`,
-    `Type: ${report.kind}`,
-    "",
-    "Station ID:",
-    literal(report.stationId || "Not specified"),
-    "",
-    "Line / direction / subject:",
-    literal(report.subject || "Not specified"),
-    "",
-    "Information:",
-    literal(report.details || "See the photo."),
-    "",
-    "Source:",
-    literal(report.source || "Not specified"),
-    "",
+    "شهر: " + (cityLabels[report.cityId] ?? report.cityId),
+    ...(station ? ["ایستگاه: " + station] : []),
+    ...(report.subject ? ["", "موضوع:", literal(report.subject)] : []),
+    ...(report.details ? ["", "توضیحات:", literal(report.details)] : []),
+    ...(report.source ? ["", "منبع:", literal(report.source)] : []),
     ...(report.photo
-      ? [`![Station evidence](${origin}/api/evidence/${report.id})`, ""]
-      : []),
-    ...(report.credit
       ? [
-          "Contributor (public credit by choice):",
-          literal(report.credit.name),
           "",
+          "![عکس پیوست گزارش](" + origin + "/api/evidence/" + report.id + ")",
         ]
       : []),
-    "Maintainer review is required before changing canonical data.",
-    `Submission reference: ${report.id}`,
-    `<!-- metto-data-report:${metadata} -->`,
+    ...(report.credit
+      ? ["", "مشارکت‌کننده:", literal(report.credit.name)]
+      : []),
+    "",
+    "این گزارش پیش از تغییر داده‌ها بررسی می‌شود.",
+    "<!-- Submission reference: " + report.id + " -->",
+    "<!-- metto-data-report:" + metadata + " -->",
   ].join("\n");
 }
+export function reportTitle(
+  report: Report,
+  stationNames?: IntakeConfig["stationNames"],
+) {
+  const station = stationNames?.[report.stationId]?.fa;
+  return (
+    kindLabels[report.kind] +
+    " · " +
+    [station, cityLabels[report.cityId] ?? report.cityId]
+      .filter(Boolean)
+      .join("، ") +
+    (report.subject ? " · " + report.subject.replace(/[\\r\\n@]/g, " ") : "")
+  );
+}
+
 async function jsonBody(request: Request) {
   const reader = request.body?.getReader();
   if (!reader) throw Error("invalid");
@@ -312,8 +374,12 @@ export async function publish(
           "User-Agent": "metto-data-portal",
         },
         body: JSON.stringify({
-          title: `${kindLabels[publishing.report.kind]} · ${cityLabels[publishing.report.cityId] ?? publishing.report.cityId}${publishing.report.subject ? ` · ${publishing.report.subject.replace(/[\r\n@]/g, " ")}` : ""}`,
-          body: publicBody(publishing.report, config.publicOrigin),
+          title: reportTitle(publishing.report, config.stationNames),
+          body: publicBody(
+            publishing.report,
+            config.publicOrigin,
+            config.stationNames,
+          ),
         }),
       },
     );

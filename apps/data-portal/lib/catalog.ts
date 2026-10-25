@@ -11,10 +11,15 @@ type SourceStation = {
 };
 type SourceLine = { id: string; names: Names; color: string };
 type SourceGraph = {
-  routes: { id: string; lineId: string; stops: { stationId: string }[] }[];
+  routes: {
+    id: string;
+    lineId: string;
+    stops: { stationId: string; status?: string }[];
+  }[];
 };
 export type CatalogStation = SourceStation & {
   lines: SourceLine[];
+  operationalLineIds: string[];
   candidate: boolean;
 };
 export type CatalogCity = {
@@ -23,7 +28,12 @@ export type CatalogCity = {
   candidate: boolean;
   stations: CatalogStation[];
   lines: SourceLine[];
-  routes: { id: string; lineId: string; stationIds: string[] }[];
+  routes: {
+    id: string;
+    lineId: string;
+    stationIds: string[];
+    boardableStationIds: string[];
+  }[];
 };
 export type Catalog = {
   cities: CatalogCity[];
@@ -43,6 +53,11 @@ export function buildCatalog(
   }[],
 ): Catalog {
   const cities = inputs.map((input) => {
+    const boardable = (stop: { stationId: string; status?: string }) =>
+      (stop.status ??
+        input.stations.find((station) => station.id === stop.stationId)
+          ?.status ??
+        "operational") === "operational";
     const lines = input.lines.filter(
       (line) => !input.allowedLineIds || input.allowedLineIds.includes(line.id),
     );
@@ -57,6 +72,17 @@ export function buildCatalog(
       .map((station) => ({
         ...station,
         candidate: input.candidate,
+        operationalLineIds: lines
+          .filter((line) =>
+            routes.some(
+              (route) =>
+                route.lineId === line.id &&
+                route.stops.some(
+                  (stop) => stop.stationId === station.id && boardable(stop),
+                ),
+            ),
+          )
+          .map((line) => line.id),
         lines: lines.filter((line) =>
           routes.some(
             (route) =>
@@ -75,6 +101,9 @@ export function buildCatalog(
         id: route.id,
         lineId: route.lineId,
         stationIds: route.stops.map((stop) => stop.stationId),
+        boardableStationIds: route.stops
+          .filter(boardable)
+          .map((stop) => stop.stationId),
       })),
     };
   });

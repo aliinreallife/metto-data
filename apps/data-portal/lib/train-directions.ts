@@ -22,15 +22,15 @@ export function trainDirections(
   return city.routes.flatMap((route) => {
     if (
       !profile.routeIds.includes(route.id) ||
-      (stationId && !route.stationIds.includes(stationId))
+      (stationId && !route.boardableStationIds.includes(stationId))
     )
       return [];
     const line = city.lines.find((line) => line.id === route.lineId);
     const first = city.stations.find(
-      (station) => station.id === route.stationIds[0],
+      (station) => station.id === route.boardableStationIds[0],
     );
     const last = city.stations.find(
-      (station) => station.id === route.stationIds.at(-1),
+      (station) => station.id === route.boardableStationIds.at(-1),
     );
     if (!line || !first || !last || first.id === last.id) return [];
     return [

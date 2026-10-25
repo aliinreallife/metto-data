@@ -10,6 +10,13 @@ import {
   TrainFront,
   Accessibility,
   CircleAlert,
+  Camera,
+  Link2,
+  Plus,
+  X,
+  UserRound,
+  ShieldCheck,
+  Mail,
 } from "lucide-react";
 import type { Catalog, Lang } from "../lib/catalog";
 import { STRINGS, type StringKey } from "../lib/i18n";
@@ -19,23 +26,22 @@ import type { AccountUser } from "./account";
 import { SelectField } from "./select-field";
 import { resolveTrainProfile } from "../lib/train-layouts";
 import { trainDirections } from "../lib/train-directions";
-type Kind =
-  | "timetable"
-  | "facility"
-  | "status"
-  | "location"
-  | "wagon"
-  | "other"
-  | "city_request";
-const kinds: Kind[] = [
-  "timetable",
-  "facility",
-  "status",
-  "location",
-  "wagon",
-  "other",
-  "city_request",
-];
+import { stationExits } from "../lib/station-exits";
+import {
+  reportObservation,
+  type WagonObservation,
+} from "../lib/report-observation";
+import {
+  DRAFT_KEY,
+  amenityKeys,
+  newReportForm,
+  parseReportDraft,
+  reportKinds,
+  saveReportDraft,
+  type ReportFormState,
+  type ReportKind,
+  type SavedReportDraft,
+} from "../lib/report-draft";
 const icons = {
   timetable: Clock3,
   facility: Accessibility,
@@ -46,11 +52,17 @@ const icons = {
   city_request: MapPin,
 };
 const input =
-  "w-full min-h-12 rounded-xl border border-input bg-background px-3 py-3 text-base focus-visible:ring-2 focus-visible:ring-ring";
+  "w-full min-h-12 rounded-xl border border-input bg-card px-3 py-3 text-base";
 const primary =
-  "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring";
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground";
 const secondary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 font-semibold hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-input bg-card px-4 py-2 text-sm font-semibold hover:bg-muted";
+const statuses = [
+  "operational",
+  "under_construction",
+  "planned",
+  "temporarily_closed",
+];
 export function ContributionForm({
   catalog,
   lang,
@@ -73,221 +85,253 @@ export function ContributionForm({
   authConfigured: boolean;
 }) {
   const t = STRINGS[lang],
-    [cityId, setCityId] = useState(initialCity || "mashhad"),
-    [step, setStep] = useState<1 | 2 | 3>(1),
-    [kind, setKind] = useState<Kind>(
-      kinds.includes(initialKind as Kind) ? (initialKind as Kind) : "other",
-    ),
-    [stationId, setStationId] = useState(initialStation),
-    [trainProfileId, setTrainProfileId] = useState(""),
-    [directionId, setDirectionId] = useState(""),
-    [amenityRows, setAmenityRows] = useState([0]),
-    [car, setCar] = useState<number | null>(null),
-    [pending, setPending] = useState(false),
-    [draft, setDraft] = useState<{
-      cityId: string;
-      stationId: string;
-      kind: Kind;
-      subject: string;
-      details: string;
-      source: string;
-      name: string;
-      contact: string;
-      website: string;
-      publicCredit: boolean;
-      photo?: string;
-    } | null>(null),
-    [reviewNotes, setReviewNotes] = useState(""),
-    [reviewObservation, setReviewObservation] = useState(""),
-    [credit, setCredit] = useState(false),
-    [publicName, setPublicName] = useState(""),
-    [error, setError] = useState<StringKey | null>(null),
-    [receipt, setReceipt] = useState<{
+    [state, setState] = useState<ReportFormState>(() =>
+      newReportForm(initialCity, initialStation, initialKind),
+    );
+  const [pending, setPending] = useState(false),
+    [photoPending, setPhotoPending] = useState(false),
+    [error, setError] = useState<StringKey | null>(null);
+  const [receipt, setReceipt] = useState<{
       id: string;
       issueUrl?: string;
       creditId?: string;
-    } | null>(null);
+    } | null>(null),
+    [hydrated, setHydrated] = useState(false);
+  const [recover, setRecover] = useState<SavedReportDraft | null>(null),
+    [sourceOpen, setSourceOpen] = useState(false),
+    [loginSeparate, setLoginSeparate] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null),
-    typeButtons = useRef<HTMLDivElement>(null),
-    form = useRef<HTMLFormElement>(null),
     message = useRef<HTMLParagraphElement>(null),
-    success = useRef<HTMLDivElement>(null),
-    last = useRef<{ fingerprint: string; id: string } | null>(null);
+    fileInput = useRef<HTMLInputElement>(null),
+    form = useRef<HTMLFormElement>(null),
+    success = useRef<HTMLDivElement>(null);
+  const last = useRef<SavedReportDraft["retry"]>(undefined);
+  const city = catalog.cities.find((c) => c.id === state.cityId),
+    stations = city?.stations ?? [],
+    station = stations.find((s) => s.id === state.stationId);
+  const wagonLines = station?.operationalLineIds ?? [];
+  const profile = resolveTrainProfile(
+    state.cityId,
+    wagonLines,
+    state.trainProfileId,
+    state.stationId,
+  );
+  const directions = trainDirections(city, profile, state.stationId),
+    direction = directions.find((d) => d.id === state.directionId);
+  const exits = stationExits(state.stationId, state.directionId),
+    exit = exits.find((e) => e.id === state.exitId) ?? exits[0];
+  const observation = reportObservation(
+    state,
+    lang,
+    city,
+    direction,
+    profile,
+    exit,
+  );
+  const number = (n: number) =>
+    new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(n);
+  const kindLabel = (kind: ReportKind) =>
+    kind === "city_request" ? t.cityRequest : t[kind];
+  const patch = (value: Partial<ReportFormState>) => {
+    setState((s) => ({ ...s, ...value }));
+    setError(null);
+  };
+  const focusHeading = () =>
+    requestAnimationFrame(() => {
+      heading.current?.focus({ preventScroll: true });
+      window.scrollTo({ top: 0 });
+    });
+  const persist = (value = state) => {
+    try {
+      return saveReportDraft(window.sessionStorage, value, last.current);
+    } catch {
+      return false;
+    }
+  };
+  const clearSaved = () => {
+    try {
+      sessionStorage.removeItem(DRAFT_KEY);
+    } catch {}
+  };
+  function restoreSaved(saved: SavedReportDraft) {
+    const targets = stationExits(saved.form.stationId, saved.form.directionId);
+    setState(
+      targets.some((exit) => exit.id === saved.form.exitId)
+        ? saved.form
+        : { ...saved.form, exitId: targets[0]?.id ?? "", car: null },
+    );
+    last.current = saved.retry;
+    setSourceOpen(!!saved.form.source);
+    setRecover(null);
+  }
+  useEffect(() => {
+    let saved: SavedReportDraft | null = null;
+    try {
+      saved = parseReportDraft(sessionStorage.getItem(DRAFT_KEY));
+    } catch {}
+    const navigation = performance.getEntriesByType("navigation")[0] as
+      | PerformanceNavigationTiming
+      | undefined;
+    if (saved) {
+      if (
+        new URL(location.href).searchParams.get("resume") === "1" ||
+        ["reload", "back_forward"].includes(navigation?.type ?? "")
+      ) {
+        restoreSaved(saved);
+      } else setRecover(saved);
+    }
+    setHydrated(true);
+  }, []);
+  useEffect(() => {
+    if (hydrated && state.step > 1 && !receipt) persist();
+  }, [state, hydrated, receipt]);
   useEffect(() => {
     if (error) message.current?.focus();
   }, [error]);
   useEffect(() => {
     if (receipt) success.current?.focus();
   }, [receipt]);
-  const city = catalog.cities.find((item) => item.id === cityId),
-    stations = city?.stations ?? [];
-  const kindLabel = (value: Kind) =>
-    value === "city_request" ? t.cityRequest : t[value];
-  const chooseKind = (value: Kind) => {
-    if (value === "city_request") {
-      setCityId("other");
-      setStationId("");
-      setTrainProfileId("");
-      setDirectionId("");
-      setCar(null);
-    }
-    setKind(value);
-    setError(null);
-    setStep(2);
-    requestAnimationFrame(() => {
-      heading.current?.focus({ preventScroll: true });
-      window.scrollTo({ top: 0 });
+  const chooseKind = (kind: ReportKind) => {
+    setRecover(null);
+    patch({
+      kind,
+      step: 2,
+      ...(kind === "city_request"
+        ? {
+            cityId: "other",
+            stationId: "",
+            trainProfileId: "",
+            directionId: "",
+            exitId: "up-escalator",
+            car: null,
+            statusLineId: "",
+          }
+        : {}),
     });
+    focusHeading();
   };
-  const backToKinds = () => {
-    setStep(1);
-    setError(null);
-    requestAnimationFrame(() =>
-      typeButtons.current
-        ?.querySelector<HTMLButtonElement>(`[data-kind=${kind}]`)
-        ?.focus(),
-    );
-  };
-  const changeCity = (value: string) => {
-    setCityId(value);
-    setStationId("");
-    setTrainProfileId("");
-    setDirectionId("");
-    setCar(null);
-  };
-  const wagonLines =
-    stations
-      .find((station) => station.id === stationId)
-      ?.lines.map((line) => line.id) ?? [];
-  const selectedTrain = resolveTrainProfile(
-    cityId,
-    wagonLines,
-    trainProfileId,
-    stationId,
-  );
-  const carCount = selectedTrain?.cars ?? 0;
-  const directions = trainDirections(city, selectedTrain, stationId);
-  const direction = directions.find((item) => item.id === directionId);
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (step !== 2 || pending) return;
-    const fields = new FormData(event.currentTarget),
-      details = String(fields.get("details") ?? "").trim(),
-      file = (fields.get("photo") as File | null) ?? undefined;
-    let observation = "";
-    if (kind === "wagon" && car && (!stationId || !direction)) {
-      setError("wagonContextRequired");
-      return;
-    }
-    if (kind === "facility")
-      observation = fields
-        .getAll("amenity")
-        .map((amenity, index) =>
-          amenity && fields.getAll("value")[index]
-            ? `Amenity: ${amenity}; observed value: ${fields.getAll("value")[index]}`
-            : "",
-        )
-        .filter(Boolean)
-        .join("\n");
-    if (kind === "status" && fields.get("status"))
-      observation = `Observed status: ${fields.get("status")}`;
+  const changeCity = (cityId: string) =>
+    patch({
+      cityId,
+      stationId: "",
+      trainProfileId: "",
+      directionId: "",
+      exitId: "up-escalator",
+      car: null,
+      statusLineId: "",
+    });
+  const changeStation = (stationId: string) =>
+    patch({
+      stationId,
+      trainProfileId: "",
+      directionId: "",
+      exitId: "up-escalator",
+      car: null,
+      statusLineId: "",
+    });
+  function valid() {
     if (
-      kind === "wagon" &&
-      selectedTrain &&
-      car &&
-      car <= selectedTrain.cars &&
-      direction
-    )
-      observation = `Car ${car} of ${carCount}; line: ${direction.lineNames.en} (${direction.lineId}); direction: toward ${direction.destinationNames.en} (${direction.destinationId}); route: ${direction.routeId}; layout reference: ${selectedTrain.id}`;
-    if (!details && !observation && !file?.size) {
-      setError("required");
-      return;
+      state.kind === "wagon" &&
+      state.car &&
+      (!station || !direction || !profile || state.car > profile.cars || !exit)
+    ) {
+      setError("wagonContextRequired");
+      return false;
     }
-    if ([details, observation].filter(Boolean).join("\n\n").length > 4000) {
-      setError("detailsTooLong");
-      return;
-    }
-    setError(null);
-    setPending(true);
-    try {
-      const source = String(fields.get("source") ?? "").trim();
-      if (source) {
-        try {
-          const u = new URL(source);
-          if (
-            !["http:", "https:"].includes(u.protocol) ||
-            u.username ||
-            u.password
-          )
-            throw Error();
-        } catch {
-          throw Error("sourceError");
-        }
+    if (state.kind === "facility") {
+      const rows = state.amenities.filter((row) => row.amenity);
+      if (rows.length && !station) {
+        setError("stationRequired");
+        return false;
       }
-      const photo = await preparePhoto(file);
-      const payload = {
-        cityId,
-        stationId,
-        kind,
-        subject: String(fields.get("subject") ?? "").trim(),
-        details: [details, observation].filter(Boolean).join("\n\n"),
-        source,
-        name: String(fields.get("name") ?? "").trim(),
-        contact: String(fields.get("contact") ?? "").trim(),
-        website: String(fields.get("website") ?? ""),
-        publicCredit: credit && !!account?.emailVerified,
-        ...(photo ? { photo } : {}),
-      };
-      setDraft(payload);
-      setReviewNotes(details);
-      setReviewObservation(
-        kind === "facility"
-          ? fields
-              .getAll("amenity")
-              .map((amenity, index) => {
-                const value = fields.getAll("value")[index];
-                return amenity && value
-                  ? `${t[String(amenity) as StringKey]}: ${value === "true" ? t.available : value === "false" ? t.absent : t.unknown}`
-                  : "";
-              })
-              .filter(Boolean)
-              .join(" · ")
-          : kind === "status" && fields.get("status")
-            ? t[String(fields.get("status")) as StringKey]
-            : kind === "wagon" && car
-              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} ${t.ofCars} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${direction ? ` · ${direction.lineNames[lang]} · ${t.toward} ${direction.destinationNames[lang]}` : ""}`
-              : "",
-      );
-      setStep(3);
-      requestAnimationFrame(() => {
-        heading.current?.focus({ preventScroll: true });
-        window.scrollTo({ top: 0 });
-      });
-    } catch (caught) {
-      const key = caught instanceof Error ? caught.message : "";
-      setError(
-        ["required", "photoError", "sourceError", "limited", "busy"].includes(
-          key,
-        )
-          ? (key as StringKey)
-          : "failed",
-      );
-    } finally {
-      setPending(false);
+      if (rows.some((row) => !row.value)) {
+        setError("amenityValueRequired");
+        return false;
+      }
+      if (new Set(rows.map((row) => row.amenity)).size !== rows.length) {
+        setError("amenityDuplicate");
+        return false;
+      }
     }
-  };
-  const sendDraft = async () => {
-    if (step !== 3 || !draft || pending || !enabled) return;
+    if (!state.details.trim() && !observation && !state.photo) {
+      setError("required");
+      return false;
+    }
+    if (
+      [state.details.trim(), observation].filter(Boolean).join("\n\n").length >
+      4000
+    ) {
+      setError("detailsTooLong");
+      return false;
+    }
+    if (state.source.trim()) {
+      try {
+        const url = new URL(state.source.trim());
+        if (
+          !["http:", "https:"].includes(url.protocol) ||
+          url.username ||
+          url.password
+        )
+          throw Error();
+      } catch {
+        setError("sourceError");
+        return false;
+      }
+    }
+    return true;
+  }
+  function review(event: React.FormEvent) {
+    event.preventDefault();
+    if (pending || photoPending || !valid()) return;
+    patch({ step: 3 });
+    focusHeading();
+  }
+  async function photoChange(file: File | undefined) {
+    if (!file) return;
+    setPhotoPending(true);
+    setError(null);
+    try {
+      const photo = await preparePhoto(file);
+      patch({ photo: photo ?? "", photoName: file.name.slice(0, 180) });
+    } catch {
+      setError("photoError");
+      if (fileInput.current) fileInput.current.value = "";
+    } finally {
+      setPhotoPending(false);
+    }
+  }
+  function removePhoto() {
+    patch({ photo: "", photoName: "" });
+    if (fileInput.current) fileInput.current.value = "";
+  }
+  const params = new URLSearchParams({
+    lang,
+    city: state.cityId,
+    kind: state.kind,
+    resume: "1",
+  });
+  if (state.stationId) params.set("station", state.stationId);
+  const returnTo = "/contribute?" + params.toString(),
+    loginHref =
+      "/account?" + new URLSearchParams({ lang, returnTo }).toString();
+  function beforeLogin(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (!persist()) {
+      event.preventDefault();
+      window.open(loginHref, "_blank", "noopener,noreferrer");
+      setLoginSeparate(true);
+    }
+  }
+  async function send() {
+    if (pending || !enabled || !valid()) return;
+    const credit = state.contactMode === "credit";
     if (credit && !account?.emailVerified) {
       setError("loginRequired");
       return;
     }
     if (
       credit &&
-      account &&
-      (publicName.trim().length < 2 ||
-        publicName.trim().length > 80 ||
-        /[@\u0000-\u001f\u007f]/.test(publicName))
+      (state.publicName.trim().length < 2 ||
+        /[@\u0000-\u001f\u007f]/.test(state.publicName))
     ) {
       setError("publicNameError");
       return;
@@ -295,17 +339,47 @@ export function ContributionForm({
     setPending(true);
     setError(null);
     try {
+      const wagon: WagonObservation | undefined =
+        state.kind === "wagon" && state.car && profile && direction && exit
+          ? {
+              car: state.car,
+              cars: profile.cars,
+              profileId: profile.id,
+              lineId: direction.lineId,
+              routeId: direction.routeId,
+              destinationId: direction.destinationId,
+              exitId: exit.id,
+            }
+          : undefined;
       const payload = {
-        ...draft,
-        publicCredit: credit && !!account?.emailVerified,
-        ...(credit && account ? { publicName: publicName.trim() } : {}),
+        cityId: state.cityId,
+        stationId: state.stationId,
+        kind: state.kind,
+        subject: state.subject.trim(),
+        details: [state.details.trim(), observation]
+          .filter(Boolean)
+          .join("\n\n"),
+        source: state.source.trim(),
+        name: state.contactMode === "anonymous" ? "" : state.name.trim(),
+        contact: state.contactMode === "anonymous" ? "" : state.contact.trim(),
+        website: String(new FormData(form.current!).get("website") ?? ""),
+        publicCredit: credit,
+        ...(credit ? { publicName: state.publicName.trim() } : {}),
+        ...(state.photo ? { photo: state.photo } : {}),
+        ...(wagon ? { wagon } : {}),
       };
-      const fingerprint = JSON.stringify([
-        payload,
-        credit && account ? { id: account.id, name: account.name } : null,
-      ]);
+      const bytes = await crypto.subtle.digest(
+        "SHA-256",
+        new TextEncoder().encode(
+          JSON.stringify([payload, credit ? account?.id : null]),
+        ),
+      );
+      const fingerprint = Array.from(new Uint8Array(bytes), (byte) =>
+        byte.toString(16).padStart(2, "0"),
+      ).join("");
       if (last.current?.fingerprint !== fingerprint)
         last.current = { fingerprint, id: crypto.randomUUID() };
+      persist();
       const response = await fetch("/api/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -324,84 +398,119 @@ export function ContributionForm({
                 ? "limited"
                 : response.status === 503
                   ? "busy"
-                  : "failed",
+                  : response.status === 413
+                    ? "photoError"
+                    : "failed",
         );
       }
-      const result = (await response.json()) as {
-        id: string;
-        issueUrl?: string;
-      };
-      if (!result.id) throw Error("failed");
-      setReceipt(result);
+      setReceipt(await response.json());
+      clearSaved();
     } catch (caught) {
-      const key = caught instanceof Error ? caught.message : "";
+      const key = caught instanceof Error ? caught.message : "failed";
       setError(
-        ["loginRequired", "limited", "busy", "photoStorageFull"].includes(key)
+        [
+          "photoStorageFull",
+          "loginRequired",
+          "limited",
+          "busy",
+          "photoError",
+        ].includes(key)
           ? (key as StringKey)
           : "failed",
       );
     } finally {
       setPending(false);
     }
-  };
-  const reviewCity = catalog.cities.find((city) => city.id === draft?.cityId);
-  const reviewStation = reviewCity?.stations.find(
-    (station) => station.id === draft?.stationId,
-  );
+  }
+  const introduction =
+    state.step === 1
+      ? t.chooseIntro
+      : state.step === 2
+        ? t[
+            ((state.kind === "city_request" ? "cityRequest" : state.kind) +
+              "Hint") as StringKey
+          ]
+        : t.confirmIntro;
+  const labelClass = "flex flex-col gap-2 text-sm font-semibold";
+  const contactModes = [
+    {
+      id: "anonymous",
+      label: t.submitAnonymous,
+      description: t.anonymousModeNote,
+      Icon: ShieldCheck,
+    },
+    {
+      id: "contact",
+      label: t.leaveContact,
+      description: t.manualContactNote,
+      Icon: Mail,
+    },
+    ...(authConfigured || account
+      ? [
+          {
+            id: "credit",
+            label: account ? t.withPublicCredit : t.signInForCredit,
+            description: t.leaderboardLoginNote,
+            Icon: UserRound,
+          },
+        ]
+      : []),
+  ];
   return (
     <section className="mx-auto max-w-3xl">
       {!receipt && (
         <>
           <ol
             aria-label={t.reportSteps}
-            className="mb-7 flex items-center gap-2 text-xs sm:gap-3 sm:text-sm"
+            className="mb-6 flex items-center gap-2 text-xs sm:gap-3 sm:text-sm"
           >
-            {[1, 2, 3].map((value) => (
+            {[1, 2, 3].map((step) => (
               <li
-                key={value}
-                aria-current={step === value ? "step" : undefined}
-                className={`flex items-center gap-2 ${step === value ? "font-semibold text-primary" : "text-muted-foreground"}`}
+                key={step}
+                aria-current={state.step === step ? "step" : undefined}
+                className={
+                  "flex items-center gap-2 " +
+                  (state.step === step
+                    ? "font-semibold text-primary"
+                    : "text-muted-foreground")
+                }
               >
                 <span
-                  className={`grid size-7 place-items-center rounded-full ${step === value ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+                  className={
+                    "grid size-7 place-items-center rounded-full " +
+                    (state.step === step
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted")
+                  }
                 >
-                  {new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(
-                    value,
-                  )}
+                  {number(step)}
                 </span>
-                {value === 1
+                {step === 1
                   ? t.chooseChange
-                  : value === 2
+                  : step === 2
                     ? t.changeDetails
                     : t.reviewSend}
-                {value < 3 && (
+                {step < 3 && (
                   <span
-                    aria-hidden
                     className="ms-1 h-px w-3 bg-border sm:w-8"
+                    aria-hidden
                   />
                 )}
               </li>
             ))}
           </ol>
-          {step > 1 && (
+          {state.step > 1 && (
             <button
               type="button"
               disabled={pending}
-              onClick={
-                step === 3
-                  ? () => {
-                      setStep(2);
-                      setError(null);
-                      requestAnimationFrame(() =>
-                        heading.current?.focus({ preventScroll: true }),
-                      );
-                    }
-                  : backToKinds
-              }
-              className="mb-5 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary"
+              onClick={() => {
+                patch({ step: state.step === 3 ? 2 : 1 });
+                focusHeading();
+              }}
+              className="mb-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary"
             >
-              <ArrowLeft aria-hidden className="size-4 rtl:rotate-180" />
-              {step === 3 ? t.editReport : t.changeType}
+              <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden />
+              {state.step === 3 ? t.editReport : t.changeType}
             </button>
           )}
           <h1
@@ -409,105 +518,130 @@ export function ContributionForm({
             tabIndex={-1}
             className="scroll-mt-24 text-2xl font-bold sm:text-3xl"
           >
-            {step === 1
+            {state.step === 1
               ? t.chooseTitle
-              : step === 2
-                ? kindLabel(kind)
+              : state.step === 2
+                ? kindLabel(state.kind)
                 : t.confirmTitle}
           </h1>
-          <p className="mb-6 mt-3 text-sm leading-7 text-muted-foreground">
-            {step === 1
-              ? t.chooseIntro
-              : step === 2
-                ? t[`${kind === "city_request" ? "cityRequest" : kind}Hint`]
-                : t.confirmIntro}
-          </p>
+          {introduction && (
+            <p className="mb-6 mt-3 text-sm leading-7 text-muted-foreground">
+              {introduction}
+            </p>
+          )}
         </>
       )}
-      {!receipt && step === 1 && (
-        <div
-          ref={typeButtons}
-          className="grid gap-3 sm:grid-cols-2"
-          data-testid="report-types"
-        >
-          {kinds.map((item) => {
-            const Icon = icons[item];
-            return (
+      {!receipt && state.step === 1 && (
+        <>
+          {recover && (
+            <div className="mb-5 mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-muted/50 p-4 text-sm">
+              <p className="flex-1">{t.savedDraftFound}</p>
               <button
-                key={item}
-                data-kind={item}
                 type="button"
-                onClick={() => chooseKind(item)}
-                className="group flex min-h-28 items-start gap-3 rounded-2xl border border-border bg-card p-5 text-start hover:border-primary/50 hover:bg-primary/5 focus-visible:ring-2 focus-visible:ring-ring"
+                className={secondary}
+                onClick={() => {
+                  restoreSaved(recover);
+                  focusHeading();
+                }}
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <strong className="block text-base">{kindLabel(item)}</strong>
-                  <span className="mt-1 block text-sm leading-6 text-muted-foreground">
-                    {
-                      t[
-                        `${item === "city_request" ? "cityRequest" : item}Choice`
-                      ]
-                    }
-                  </span>
-                </span>
-                <ArrowRight
-                  aria-hidden
-                  className="mt-2 size-4 shrink-0 text-muted-foreground rtl:rotate-180"
-                />
+                {t.resumeDraft}
               </button>
-            );
-          })}
-          <p className="mt-2 text-sm leading-7 text-muted-foreground sm:col-span-2">
-            {t.openNote}
-          </p>
-        </div>
+              <button
+                type="button"
+                className="min-h-11 px-2 text-muted-foreground"
+                onClick={() => {
+                  setRecover(null);
+                  clearSaved();
+                }}
+              >
+                {t.startFresh}
+              </button>
+            </div>
+          )}
+          <div
+            className="mt-6 grid gap-3 sm:grid-cols-2"
+            data-testid="report-types"
+          >
+            {reportKinds.map((kind) => {
+              const Icon = icons[kind];
+              return (
+                <button
+                  key={kind}
+                  data-kind={kind}
+                  type="button"
+                  onClick={() => chooseKind(kind)}
+                  className="group flex min-h-24 items-start gap-3 rounded-2xl border border-border bg-card p-4 text-start hover:border-primary/50 hover:bg-primary/5"
+                >
+                  <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <strong className="block">{kindLabel(kind)}</strong>
+                    <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                      {
+                        t[
+                          ((kind === "city_request" ? "cityRequest" : kind) +
+                            "Choice") as StringKey
+                        ]
+                      }
+                    </span>
+                  </span>
+                  <ArrowRight
+                    className="mt-2 size-4 shrink-0 text-muted-foreground rtl:rotate-180"
+                    aria-hidden
+                  />
+                </button>
+              );
+            })}
+            <p className="text-sm leading-7 text-muted-foreground sm:col-span-2">
+              {t.openNote}
+            </p>
+          </div>
+        </>
       )}
       {receipt ? (
         <div
           ref={success}
           tabIndex={-1}
-          className="rounded-2xl border border-border bg-card p-7"
+          className="rounded-2xl border border-border bg-card p-6"
         >
           <Check className="mb-4 size-9 text-primary" aria-hidden />
-          <h2 className="text-xl font-bold">
-            {previewMode ? t.testThanks : t.thanks}
-          </h2>
-          <p className="mt-4 text-sm">
-            {t.reference}: <bdi>{receipt.id}</bdi>
+          <h2 className="text-xl font-bold">{t.thanks}</h2>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">
+            {t.receivedNote}
           </p>
+          {receipt.issueUrl && (
+            <a
+              href={receipt.issueUrl}
+              className="mt-4 inline-block py-2 text-primary underline"
+            >
+              {t.viewIssue}
+            </a>
+          )}
           {receipt.creditId && (
             <a
-              href={`/contributors/${receipt.creditId}?lang=${lang}`}
-              className="mt-4 inline-block py-2 text-primary underline underline-offset-4"
+              href={"/contributors/" + receipt.creditId + "?lang=" + lang}
+              className="mt-4 block text-primary underline"
             >
               {t.profile}
             </a>
           )}
-          {receipt.issueUrl && (
-            <a
-              href={receipt.issueUrl}
-              className="mt-4 inline-block py-2 text-primary underline underline-offset-4"
-            >
-              {t.seeReport}
-            </a>
-          )}
           <button
             type="button"
-            className={`${secondary} mt-5 block`}
+            className={"mt-6 " + secondary}
             onClick={() => {
+              const next = newReportForm(
+                state.cityId,
+                state.stationId,
+                "other",
+              );
+              setState(next);
               setReceipt(null);
-              last.current = null;
               setError(null);
-              setCar(null);
-              setTrainProfileId("");
-              setDirectionId("");
-              setDraft(null);
-              setCredit(false);
-              setStep(1);
-              requestAnimationFrame(() => heading.current?.focus());
+              last.current = undefined;
+              setSourceOpen(false);
+              clearSaved();
+              focusHeading();
             }}
           >
             {t.another}
@@ -516,12 +650,11 @@ export function ContributionForm({
       ) : (
         <form
           ref={form}
-          onSubmit={submit}
-          method="post"
+          onSubmit={review}
           className={
-            step !== 2
+            state.step !== 2
               ? "hidden"
-              : "flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 sm:p-7"
+              : "mt-5 flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 sm:p-7"
           }
           data-testid="report-form"
         >
@@ -529,38 +662,39 @@ export function ContributionForm({
             <SelectField
               label={t.city}
               name="cityId"
-              value={cityId}
+              value={state.cityId}
               onChange={changeCity}
               options={[
-                ...catalog.cities.map((item) => ({
-                  value: item.id,
-                  label: item.names[lang],
+                ...catalog.cities.map((c) => ({
+                  value: c.id,
+                  label: c.names[lang],
                 })),
                 { value: "other", label: t.otherCity },
               ]}
             />
-            {city && kind !== "city_request" && (
+            {city && state.kind !== "city_request" && (
               <SelectField
-                label={kind === "wagon" ? t.station : t.selectStation}
+                label={
+                  ["wagon", "facility"].includes(state.kind)
+                    ? t.station
+                    : t.selectStation
+                }
                 name="stationId"
-                value={stationId}
-                onChange={(value) => {
-                  setStationId(value);
-                  setTrainProfileId("");
-                  setDirectionId("");
-                  setCar(null);
-                }}
+                value={state.stationId}
+                onChange={changeStation}
                 searchLabel={t.findStation}
                 emptyLabel={t.empty}
                 options={[
                   {
                     value: "",
-                    label: kind === "wagon" ? t.chooseStation : t.noStation,
+                    label: ["wagon", "facility"].includes(state.kind)
+                      ? t.chooseStation
+                      : t.noStation,
                   },
-                  ...stations.map((station) => ({
-                    value: station.id,
-                    label: station.names[lang],
-                    search: `${station.names.fa} ${station.names.en} ${city.names[lang]}`,
+                  ...stations.map((s) => ({
+                    value: s.id,
+                    label: s.names[lang],
+                    search: s.names.fa + " " + s.names.en,
                   })),
                 ]}
               />
@@ -571,213 +705,307 @@ export function ContributionForm({
               {t.otherCityHint}
             </p>
           )}
-          <input type="hidden" name="kind" value={kind} />
-          {!["facility", "status", "wagon"].includes(kind) && (
-            <label className="flex flex-col gap-2 text-sm font-semibold">
-              {kind === "timetable"
+          <input type="hidden" name="kind" value={state.kind} />
+          {!["facility", "status", "wagon"].includes(state.kind) && (
+            <label className={labelClass}>
+              {state.kind === "timetable"
                 ? t.lineDirection
-                : kind === "location"
+                : state.kind === "location"
                   ? t.stationAddress
-                  : kind === "city_request"
+                  : state.kind === "city_request"
                     ? t.cityRequestSubject
                     : t.subject}
               <input
                 name="subject"
-                required={kind === "city_request"}
+                required={state.kind === "city_request"}
+                value={state.subject}
+                onChange={(e) => patch({ subject: e.target.value })}
                 maxLength={160}
                 className={input}
               />
             </label>
           )}
-          {kind === "facility" && (
-            <fieldset className="min-w-0 space-y-4">
+          {state.kind === "facility" && (
+            <fieldset className="min-w-0 space-y-3">
               <legend className="mb-3 text-sm text-muted-foreground">
                 {t.multipleAmenities}
               </legend>
-              {amenityRows.map((row, index) => (
-                <div key={row} className="rounded-xl border border-border p-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <SelectField
-                      label={
-                        t.fieldFacility +
-                        (amenityRows.length > 1
-                          ? ` ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(index + 1)}`
-                          : "")
-                      }
-                      name="amenity"
-                      options={[
-                        { value: "", label: t.chooseOption },
-                        ...[
-                          "elevator",
-                          "wc",
-                          "atm",
-                          "coffeeShop",
-                          "fastFood",
-                          "groceryStore",
-                          "freeWifi",
-                          "prayerRoom",
-                          "parking",
-                          "police",
-                        ].map((key) => ({
-                          value: key,
-                          label: t[key as StringKey],
-                        })),
-                      ]}
-                    />
-                    <SelectField
-                      label={t.observedValue}
-                      name="value"
-                      options={[
-                        { value: "", label: t.chooseOption },
-                        { value: "true", label: t.available },
-                        { value: "false", label: t.absent },
-                        { value: "null", label: t.unknown },
-                      ]}
-                    />
+              {state.amenities.map((row, index) => (
+                <div
+                  data-amenity-row={row.id}
+                  key={row.id}
+                  className="rounded-xl border border-border p-4"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      <SelectField
+                        label={
+                          t.fieldFacility +
+                          (state.amenities.length > 1
+                            ? " " + number(index + 1)
+                            : "")
+                        }
+                        name="amenity"
+                        value={row.amenity}
+                        onChange={(value) =>
+                          patch({
+                            amenities: state.amenities.map((r) =>
+                              r.id === row.id
+                                ? { ...r, amenity: value, value: "" }
+                                : r,
+                            ),
+                          })
+                        }
+                        options={[
+                          { value: "", label: t.chooseOption },
+                          ...amenityKeys
+                            .filter(
+                              (key) =>
+                                key === row.amenity ||
+                                !state.amenities.some(
+                                  (other) => other.amenity === key,
+                                ),
+                            )
+                            .map((key) => ({ value: key, label: t[key] })),
+                        ]}
+                      />
+                    </div>
+                    {state.amenities.length > 1 && (
+                      <button
+                        type="button"
+                        aria-label={t.removeAmenity + " " + (index + 1)}
+                        onClick={() =>
+                          patch({
+                            amenities: state.amenities.filter(
+                              (r) => r.id !== row.id,
+                            ),
+                          })
+                        }
+                        className="mt-6 grid size-11 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-muted"
+                      >
+                        <X className="size-4" aria-hidden />
+                      </button>
+                    )}
                   </div>
-                  {amenityRows.length > 1 && (
-                    <button
-                      className="mt-3 min-h-11 text-sm font-semibold text-primary"
-                      type="button"
-                      aria-label={`${t.removeAmenity} ${index + 1}`}
-                      onClick={() =>
-                        setAmenityRows((rows) =>
-                          rows.filter((value) => value !== row),
-                        )
-                      }
-                    >
-                      {t.removeAmenity}
-                    </button>
+                  <input type="hidden" name="value" value={row.value} />
+                  {row.amenity && (
+                    <fieldset className="mt-4">
+                      <legend className="mb-2 text-xs text-muted-foreground">
+                        {t.observedValue}
+                      </legend>
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          ["true", t.available],
+                          ["false", t.absent],
+                          ["null", t.unknown],
+                        ].map(([value, label]) => (
+                          <button
+                            key={value}
+                            type="button"
+                            aria-pressed={row.value === value}
+                            onClick={() =>
+                              patch({
+                                amenities: state.amenities.map((r) =>
+                                  r.id === row.id ? { ...r, value } : r,
+                                ),
+                              })
+                            }
+                            className={
+                              "min-h-11 flex-1 rounded-lg border px-3 py-2 text-sm " +
+                              (row.value === value
+                                ? "border-primary bg-primary/8 font-semibold text-primary"
+                                : "border-input hover:bg-muted")
+                            }
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </fieldset>
                   )}
                 </div>
               ))}
-              {amenityRows.length < 10 && (
+              {state.amenities.length < 10 && (
                 <button
                   type="button"
                   className={secondary}
                   onClick={() =>
-                    setAmenityRows((rows) => [...rows, Math.max(...rows) + 1])
+                    patch({
+                      amenities: [
+                        ...state.amenities,
+                        {
+                          id: Math.max(...state.amenities.map((r) => r.id)) + 1,
+                          amenity: "",
+                          value: "",
+                        },
+                      ],
+                    })
                   }
                 >
+                  <Plus className="size-4" aria-hidden />
                   {t.addAmenity}
                 </button>
               )}
             </fieldset>
           )}
-          {kind === "status" && (
-            <SelectField
-              label={t.status}
-              name="status"
-              options={[
-                { value: "", label: t.chooseOption },
-                ...[
-                  "operational",
-                  "under_construction",
-                  "planned",
-                  "temporarily_closed",
-                ].map((key) => ({ value: key, label: t[key as StringKey] })),
-              ]}
-            />
+          {state.kind === "status" && (
+            <div className="space-y-4">
+              {station && station.lines.length > 1 && (
+                <SelectField
+                  label={t.affectedLine}
+                  name="statusLineId"
+                  value={state.statusLineId}
+                  onChange={(value) => patch({ statusLineId: value })}
+                  options={[
+                    { value: "", label: t.wholeStation },
+                    ...station.lines.map((line) => ({
+                      value: line.id,
+                      label: line.names[lang],
+                    })),
+                  ]}
+                />
+              )}
+              <SelectField
+                label={t.status}
+                name="status"
+                value={state.status}
+                onChange={(value) => patch({ status: value })}
+                options={[
+                  { value: "", label: t.chooseOption },
+                  ...statuses.map((key) => ({
+                    value: key,
+                    label: t[key as StringKey],
+                  })),
+                ]}
+              />
+            </div>
           )}
-          {kind === "wagon" && (
+          {state.kind === "wagon" && (
             <WagonPicker
               lang={lang}
-              cityId={cityId}
-              stationId={stationId}
+              cityId={state.cityId}
+              stationId={state.stationId}
               lineIds={wagonLines}
-              profileId={selectedTrain?.id ?? ""}
+              profileId={profile?.id ?? ""}
+              onProfile={(value) =>
+                patch({
+                  trainProfileId: value,
+                  directionId: "",
+                  exitId: "up-escalator",
+                  car: null,
+                })
+              }
               directions={directions}
               direction={direction}
-              onDirection={(value) => {
-                setDirectionId(value);
-                setCar(null);
-                setError(null);
-              }}
-              onProfile={(value) => {
-                setTrainProfileId(value);
-                setDirectionId("");
-                setCar(null);
-              }}
-              selected={car}
-              onSelect={setCar}
+              onDirection={(value) =>
+                patch({
+                  directionId: value,
+                  exitId:
+                    stationExits(state.stationId, value)[0]?.id ??
+                    "up-escalator",
+                  car: null,
+                })
+              }
+              exits={exits}
+              exitId={exit?.id ?? ""}
+              onExit={(value) => patch({ exitId: value, car: null })}
+              selected={state.car}
+              onSelect={(car) => patch({ car })}
             />
           )}
-          <label className="flex flex-col gap-2 text-sm font-semibold">
-            {t.details}
+          <label className={labelClass}>
+            {t.descriptionOptional}
             <textarea
               name="details"
-              rows={4}
+              rows={3}
+              value={state.details}
+              onChange={(e) => patch({ details: e.target.value })}
               placeholder={
                 t[
-                  `${kind === "city_request" ? "cityRequest" : kind}Placeholder`
+                  ((state.kind === "city_request"
+                    ? "cityRequest"
+                    : state.kind) + "Placeholder") as StringKey
                 ]
               }
               maxLength={3600}
               className={input}
             />
           </label>
-          <details className="min-w-0 rounded-xl border border-border p-4">
-            <summary className="min-h-7 cursor-pointer text-sm font-semibold">
-              {t.evidenceHeading}
-            </summary>
-            <div className="mt-4 grid gap-5">
-              <label className="flex flex-col gap-2 text-sm font-semibold">
+          <div
+            className="space-y-3 border-t border-border pt-4"
+            data-testid="report-evidence"
+          >
+            <input
+              ref={fileInput}
+              id="report-photo"
+              name="photo"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              aria-label={t.photo}
+              aria-describedby={state.photo ? undefined : "photo-hint"}
+              onChange={(e) => void photoChange(e.target.files?.[0])}
+              className="sr-only"
+            />
+            {state.photo ? (
+              <div className="flex items-center gap-3 rounded-xl bg-muted/50 p-3">
+                <img
+                  src={"data:image/jpeg;base64," + state.photo}
+                  alt={t.attachedPhoto}
+                  className="size-14 rounded-lg object-cover"
+                />
+                <span className="min-w-0 flex-1 truncate text-sm" dir="auto">
+                  {state.photoName || t.attachedPhoto}
+                </span>
+                <button
+                  type="button"
+                  className="grid size-11 place-items-center rounded-lg hover:bg-card"
+                  aria-label={t.removePhotoSimple}
+                  onClick={removePhoto}
+                >
+                  <X className="size-4" aria-hidden />
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  disabled={photoPending}
+                  className={secondary}
+                  onClick={() => fileInput.current?.click()}
+                >
+                  <Camera className="size-4" aria-hidden />
+                  {photoPending ? t.preparing : t.addPhoto}
+                </button>
+                <span id="photo-hint" className="text-xs text-muted-foreground">
+                  {t.photoOptionalNote}
+                </span>
+              </div>
+            )}
+            {!sourceOpen && !state.source ? (
+              <button
+                type="button"
+                onClick={() => setSourceOpen(true)}
+                className="inline-flex min-h-11 items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+              >
+                <Link2 className="size-4" aria-hidden />
+                {t.addSource}
+              </button>
+            ) : (
+              <label className={labelClass}>
                 {t.source}
                 <input
                   name="source"
-                  type="text"
                   inputMode="url"
+                  dir="auto"
+                  value={state.source}
+                  onChange={(e) => patch({ source: e.target.value })}
                   maxLength={500}
-                  dir="auto"
+                  placeholder="https://"
                   className={input}
                 />
               </label>
-              <label className="flex flex-col gap-2 text-sm font-semibold">
-                {t.photo}
-                <input
-                  name="photo"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  aria-describedby="photo-hint"
-                  className={input}
-                />
-                <small
-                  id="photo-hint"
-                  className="text-xs font-normal text-muted-foreground"
-                >
-                  {t.photoHint}
-                </small>
-              </label>
-            </div>
-          </details>
-          <details className="border-t border-border pt-3">
-            <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold">
-              {t.contactHeading}
-            </summary>
-            <p className="my-3 text-xs leading-7 text-muted-foreground">
-              {t.contactNote}
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="flex flex-col gap-2 text-sm">
-                {t.name}
-                <input
-                  name="name"
-                  autoComplete="name"
-                  maxLength={80}
-                  className={input}
-                />
-              </label>
-              <label className="flex flex-col gap-2 text-sm">
-                {t.contact}
-                <input
-                  name="contact"
-                  maxLength={200}
-                  dir="auto"
-                  className={input}
-                />
-              </label>
-            </div>
-          </details>
+            )}
+          </div>
           <div className="sr-only" aria-hidden>
             <label>
               Website
@@ -785,194 +1013,233 @@ export function ContributionForm({
             </label>
           </div>
           <p
-            ref={step === 2 ? message : undefined}
-            role={error && step === 2 ? "alert" : "status"}
+            ref={state.step === 2 ? message : undefined}
+            role={error && state.step === 2 ? "alert" : "status"}
             tabIndex={-1}
             aria-live="polite"
             className="text-sm leading-7 text-destructive"
           >
-            {step === 2 && error
+            {state.step === 2 && error
               ? t[error]
-              : pending && step === 2
+              : pending && state.step === 2
                 ? t.preparing
                 : ""}
           </p>
-          <button type="submit" disabled={pending} className={primary}>
-            {pending ? t.preparing : t.reviewReport}
-            <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
+          <button
+            type="submit"
+            disabled={pending || photoPending}
+            className={primary}
+          >
+            {photoPending ? t.preparing : t.reviewReport}
+            <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
           </button>
         </form>
       )}
-      {!receipt && step === 3 && draft && (
+      {!receipt && state.step === 3 && (
         <div
-          className="space-y-5 rounded-2xl border border-border bg-card p-5 sm:p-7"
+          className="mt-5 space-y-6 rounded-2xl border border-border bg-card p-5 sm:p-7"
           data-testid="report-review"
         >
-          <dl className="grid gap-5 sm:grid-cols-2">
+          <dl className="grid gap-4 sm:grid-cols-2">
             <div>
               <dt className="text-xs text-muted-foreground">{t.kind}</dt>
-              <dd className="mt-1 font-semibold">{kindLabel(draft.kind)}</dd>
+              <dd className="mt-1 font-semibold">{kindLabel(state.kind)}</dd>
             </div>
             <div>
               <dt className="text-xs text-muted-foreground">{t.city}</dt>
               <dd className="mt-1 font-semibold">
-                {reviewCity?.names[lang] ?? t.otherCity}
+                {city?.names[lang] ?? t.otherCity}
               </dd>
             </div>
-            {draft.stationId && (
+            {station && (
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">{t.station}</dt>
-                <dd className="mt-1 font-semibold">
-                  {reviewStation?.names[lang]}
-                </dd>
+                <dd className="mt-1 font-semibold">{station.names[lang]}</dd>
               </div>
             )}
-            {draft.subject && (
+            {state.subject && (
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">{t.subject}</dt>
-                <dd className="mt-1 whitespace-pre-wrap break-words">
-                  {draft.subject}
+                <dd className="mt-1 whitespace-pre-wrap break-words text-sm leading-7">
+                  {state.subject}
                 </dd>
               </div>
             )}
-            {reviewObservation && (
+            {observation && (
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">
                   {t.observedValue}
                 </dt>
-                <dd className="mt-1 font-semibold">{reviewObservation}</dd>
-              </div>
-            )}
-            {reviewNotes && (
-              <div className="sm:col-span-2">
-                <dt className="text-xs text-muted-foreground">{t.details}</dt>
-                <dd className="mt-1 whitespace-pre-wrap break-words text-sm leading-7">
-                  {reviewNotes}
+                <dd className="mt-1 whitespace-pre-wrap text-sm font-semibold leading-7">
+                  {observation}
                 </dd>
               </div>
             )}
-            {draft.source && (
+            {state.details && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">{t.details}</dt>
+                <dd className="mt-1 whitespace-pre-wrap break-words text-sm leading-7">
+                  {state.details}
+                </dd>
+              </div>
+            )}
+            {state.source && (
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">{t.source}</dt>
-                <dd dir="auto" className="mt-1 break-all text-sm">
-                  {draft.source}
+                <dd className="mt-1 break-all text-sm" dir="auto">
+                  {state.source}
                 </dd>
               </div>
             )}
           </dl>
-          {draft.photo && (
+          {state.photo && (
             <div className="space-y-2">
               <img
-                src={`data:image/jpeg;base64,${draft.photo}`}
+                src={"data:image/jpeg;base64," + state.photo}
                 alt={t.reviewPhoto}
-                className="max-h-72 w-full rounded-xl border border-border object-contain"
+                className="max-h-64 w-full rounded-xl border border-border object-contain"
               />
               <button
                 type="button"
-                className={secondary}
                 disabled={pending}
+                className={secondary}
                 onClick={() => {
-                  const file = form.current?.querySelector<HTMLInputElement>(
-                    'input[name="photo"]',
-                  );
-                  if (file) file.value = "";
-                  setDraft({ ...draft, photo: undefined });
-                  setError(null);
-                  setStep(2);
-                  requestAnimationFrame(() =>
-                    heading.current?.focus({ preventScroll: true }),
-                  );
+                  removePhoto();
+                  patch({ step: 2 });
+                  focusHeading();
                 }}
               >
                 {t.removePhoto}
               </button>
             </div>
           )}
-          {(draft.name || draft.contact) && (
-            <div className="rounded-xl bg-muted/60 p-4 text-sm leading-7">
-              <p className="font-semibold">{t.privateContact}</p>
-              <p>{draft.name}</p>
-              <p dir="auto">{draft.contact}</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {t.contactNote}
+          <fieldset className="space-y-3 border-t border-border pt-5">
+            <legend className="mb-2 pt-5 text-base font-semibold">
+              {t.howToCredit}
+            </legend>
+            {contactModes.map(({ id, label, description, Icon }) => (
+              <label
+                key={id}
+                className={
+                  "flex cursor-pointer items-start gap-3 rounded-xl border p-4 " +
+                  (state.contactMode === id
+                    ? "border-primary bg-primary/5"
+                    : "border-border")
+                }
+              >
+                <input
+                  type="radio"
+                  name="contactMode"
+                  value={id}
+                  checked={state.contactMode === id}
+                  disabled={pending}
+                  onChange={() =>
+                    patch({ contactMode: id as ReportFormState["contactMode"] })
+                  }
+                  className="mt-1 size-4 shrink-0 accent-primary"
+                />
+                <Icon
+                  className="mt-0.5 size-5 shrink-0 text-muted-foreground"
+                  aria-hidden
+                />
+                <span>
+                  <strong className="block text-sm">{label}</strong>
+                  <span className="mt-1 block text-xs leading-6 text-muted-foreground">
+                    {description}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </fieldset>
+          {state.contactMode === "credit" && !account?.emailVerified && (
+            <div className="rounded-xl bg-muted/50 p-4">
+              <a href={loginHref} onClick={beforeLogin} className={primary}>
+                {t.continueToLogin}
+                <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
+              </a>
+              <p className="mt-3 text-xs leading-6 text-muted-foreground">
+                {loginSeparate ? t.loginNewTabDraft : t.loginKeepsDraft}
               </p>
             </div>
           )}
-          {account?.emailVerified || credit ? (
-            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border p-4 text-sm leading-7">
-              <input
-                className="mt-1.5 size-4 shrink-0 accent-primary"
-                type="checkbox"
-                checked={credit}
-                disabled={pending}
-                onChange={(event) => setCredit(event.target.checked)}
-              />
-              <span>
-                <strong className="block">{t.creditAs}</strong>
-                <span className="text-muted-foreground">{t.creditHint}</span>
-              </span>
-            </label>
-          ) : (
-            authConfigured && (
-              <p className="text-sm leading-7 text-muted-foreground">
-                {t.anonymousCredit}{" "}
-                <a
-                  href={`/account?lang=${lang}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-primary underline underline-offset-4"
-                >
-                  {t.optionalLogin}
-                </a>
-              </p>
-            )
-          )}
-          {account?.emailVerified && credit && (
-            <div className="flex flex-col gap-2 text-sm">
-              <label htmlFor="report-public-name" className="font-semibold">
-                {t.displayName}
-              </label>
+          {state.contactMode === "credit" && account?.emailVerified && (
+            <div className={labelClass}>
+              <label htmlFor="report-public-name">{t.displayName}</label>
               <input
                 id="report-public-name"
+                name="publicName"
                 disabled={pending}
-                value={publicName}
-                onChange={(event) => setPublicName(event.target.value)}
+                value={state.publicName}
+                onChange={(e) => patch({ publicName: e.target.value })}
                 maxLength={80}
                 autoComplete="nickname"
-                aria-describedby="report-public-name-hint"
-                aria-invalid={error === "publicNameError" || undefined}
                 className={input}
+                aria-describedby="public-name-hint"
               />
-              <p
-                id="report-public-name-hint"
-                className="text-xs text-muted-foreground"
+              <span
+                id="public-name-hint"
+                className="text-xs font-normal leading-6 text-muted-foreground"
               >
                 {t.publicNameHint}
-              </p>
+              </span>
             </div>
           )}
-          {!previewMode && (
-            <p className="text-xs leading-7 text-muted-foreground">
-              {t.publicNote}
-            </p>
+          {state.contactMode !== "anonymous" && (
+            <div className="space-y-3" data-testid="report-contact">
+              <p className="text-xs leading-6 text-muted-foreground">
+                {t.contactNote}
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className={labelClass}>
+                  {t.name}
+                  <input
+                    name="name"
+                    autoComplete="name"
+                    disabled={pending}
+                    maxLength={80}
+                    value={state.name}
+                    onChange={(e) => patch({ name: e.target.value })}
+                    className={input}
+                  />
+                </label>
+                <label className={labelClass}>
+                  {t.contact}
+                  <input
+                    name="contact"
+                    dir="auto"
+                    autoComplete="off"
+                    disabled={pending}
+                    maxLength={200}
+                    value={state.contact}
+                    onChange={(e) => patch({ contact: e.target.value })}
+                    className={input}
+                  />
+                </label>
+              </div>
+            </div>
           )}
           {previewMode && (
             <p
               role="note"
-              className="rounded-xl bg-muted p-4 text-sm leading-7"
+              className="rounded-xl bg-muted p-3 text-xs leading-6"
             >
               {t.previewReportNote}
             </p>
           )}
+          {!previewMode && (
+            <p className="text-xs leading-6 text-muted-foreground">
+              {t.publicNote}
+            </p>
+          )}
           {!enabled && (
-            <p
-              role="status"
-              className="rounded-xl bg-muted p-4 text-sm leading-7"
-            >
+            <p className="text-sm leading-7 text-muted-foreground">
               {t.unavailable}{" "}
               <a
-                href={`https://github.com/aliinreallife/metto-data/issues/new?title=${encodeURIComponent(`[${cityId}] ${kind}`)}`}
-                className="font-semibold text-primary underline underline-offset-4"
+                className="text-primary underline"
+                href={
+                  "https://github.com/aliinreallife/metto-data/issues/new?title=" +
+                  encodeURIComponent("گزارش " + kindLabel(state.kind))
+                }
               >
                 {t.githubReport}
               </a>
@@ -990,10 +1257,10 @@ export function ContributionForm({
           <button
             type="button"
             disabled={pending || !enabled}
-            onClick={sendDraft}
-            className={`${primary} w-full`}
+            onClick={() => void send()}
+            className={primary + " w-full"}
           >
-            <Check aria-hidden className="size-4" />
+            <Check className="size-4" aria-hidden />
             {pending
               ? t.sending
               : previewMode

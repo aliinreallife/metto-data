@@ -5,6 +5,7 @@ import { recentReports } from "./reports";
 import { portalAuth } from "./auth/server";
 import { leaderboard } from "./leaderboard";
 import { headers } from "next/headers";
+import { safeReportReturn } from "./auth/return-to";
 import {
   profilePath,
   publicMemberProfile,
@@ -66,6 +67,7 @@ export async function renderPortal(
       previewMode={process.env.VERCEL_ENV === "preview"}
       authConfigured={!!portalAuth()}
       githubEnabled={process.env.DATA_PORTAL_GITHUB_LOGIN === "1"}
+      authReturnTo={safeReportReturn(one("returnTo")) ?? ""}
       ranking={ranking}
       profileId={profileId}
       publicProfile={publicProfile}

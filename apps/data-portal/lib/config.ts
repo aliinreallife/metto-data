@@ -4,6 +4,9 @@ import { catalog } from "./catalog-data";
 import { privateBlobStore } from "./private-store";
 import { postgresStore } from "./postgres-store";
 import type { IntakeConfig } from "./intake";
+import { trainProfiles } from "./train-layouts";
+import { trainDirections } from "./train-directions";
+import { stationExits } from "./station-exits";
 export function intakeConfig(requestOrigin?: string): IntakeConfig | null {
   const previewHosts =
     process.env.VERCEL_ENV === "preview"
@@ -82,5 +85,26 @@ export function intakeConfig(requestOrigin?: string): IntakeConfig | null {
         city.stations.map((station) => station.id),
       ]),
     ]),
+    stationNames: Object.fromEntries(
+      catalog.stations.map((station) => [station.id, station.names]),
+    ),
+    validateWagon: (wagon, stationId, cityId) => {
+      const profile = trainProfiles.find(
+        (profile) => profile.id === wagon.profileId,
+      );
+      return trainDirections(
+        catalog.cities.find((city) => city.id === cityId),
+        profile,
+        stationId,
+      ).some(
+        (direction) =>
+          direction.routeId === wagon.routeId &&
+          direction.lineId === wagon.lineId &&
+          direction.destinationId === wagon.destinationId &&
+          stationExits(stationId, direction.id).some(
+            (exit) => exit.id === wagon.exitId,
+          ),
+      );
+    },
   };
 }
