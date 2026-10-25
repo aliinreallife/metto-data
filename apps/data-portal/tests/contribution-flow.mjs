@@ -323,25 +323,27 @@ try {
   expect(sent[1].publicCredit).toBe(false);
   await another();
   await choose("Car near an escalator");
-  await page.getByRole("spinbutton").fill("12");
-  await page.getByRole("button", { name: "Car 4", exact: true }).click();
+  await expect(page.getByRole("spinbutton")).toHaveCount(0);
+  await expect(page.getByTestId("train-fixed-count")).toContainText("3");
+  await page.getByRole("button", { name: "Car 2", exact: true }).click();
   await expect(
     page.getByRole("status").filter({ hasText: "Selected car" }),
-  ).toContainText("4");
+  ).toContainText("2");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
   await review();
-  await expect(page.getByTestId("report-review")).toContainText("Car 4 of 12");
+  await expect(page.getByTestId("report-review")).toContainText("Car 2 of 3");
   await send();
   await expect(
     page.getByRole("heading", {
       name: "Thank you! Your report was received for review.",
     }),
   ).toBeVisible();
-  expect(sent[2].details).toContain("Observed car 4 of 12");
+  expect(sent[2].details).toContain("Car 2 of 3");
+  expect(sent[2].details).toContain("mashhad:line1:3");
   await another();
   await choose("Station amenities");
   await page
@@ -570,8 +572,9 @@ try {
     await page.getByRole("combobox", { name: /The train you saw/ }).click();
     await page.getByRole("option", { name, exact: true }).click();
   };
-  await selectLayout("Tehran urban train · 7 cars");
   const diagram = page.getByTestId("train-diagram");
+  await expect(page.getByTestId("train-fixed-count")).toContainText("7");
+  await expect(page.getByRole("spinbutton")).toHaveCount(0);
   await expect(diagram.locator("[data-car-number]")).toHaveCount(7);
   await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(2);
   await expect(
@@ -588,12 +591,14 @@ try {
   await expect(
     page.getByRole("button", { name: "Car 2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("spinbutton").fill("8");
-  await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(0);
-  await expect(diagram).toContainText("Women-only boundaries are unconfirmed");
   await selectLayout("Tehran–Karaj · double-deck, 9 cars");
   await expect(diagram.locator("[data-car-number]")).toHaveCount(9);
   await expect(diagram).toContainText("locomotives are not included");
+  await expect(diagram).toContainText("Women-only boundaries are unconfirmed");
+  await expect(diagram.locator("[data-diagram-car]")).toHaveCount(9);
+  const overview = await page.getByTestId("train-overview").boundingBox();
+  expect(overview.x).toBeGreaterThanOrEqual(0);
+  expect(overview.x + overview.width).toBeLessThanOrEqual(360);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -610,10 +615,58 @@ try {
     .getByRole("combobox", { name: /^City/ })
     .click();
   await page.getByRole("option", { name: "Mashhad", exact: true }).click();
-  await expect(page.getByRole("spinbutton")).toHaveValue("");
+  await expect(page.getByRole("spinbutton")).toHaveCount(0);
+  await expect(page.getByTestId("train-fixed-count")).toContainText("3");
+  await expect(
+    diagram.locator('[data-women-zone="head-half"]'),
+  ).toHaveAttribute("data-car-number", "1");
+  await expect(
+    diagram.locator('[data-women-zone="rear-half"]'),
+  ).toHaveAttribute("data-car-number", "3");
+  await expect(diagram.locator('[data-women-zone="general"]')).toHaveAttribute(
+    "data-car-number",
+    "2",
+  );
+  await expect(
+    diagram.locator('[aria-pressed="true"][data-car-number]'),
+  ).toHaveCount(0);
   await selectLayout("Mashhad Line 2 · 5 cars");
   await expect(diagram.locator("[data-car-number]")).toHaveCount(5);
   await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(0);
+  for (const [city, station, count] of [
+    ["mashhad", "mashhad:station:tabarsi", 5],
+    ["tehran", "tehran:station:mehrabad-airport-terminal-1-2", 4],
+  ]) {
+    await page.goto(
+      `${origin}/contribute?city=${city}&station=${station}&lang=en`,
+    );
+    await choose("Car near an escalator");
+    await expect(page.getByTestId("train-fixed-count")).toContainText(
+      String(count),
+    );
+    await expect(diagram.locator("[data-car-number]")).toHaveCount(count);
+    await expect(page.getByRole("spinbutton")).toHaveCount(0);
+  }
+  for (const lang of ["fa", "en"]) {
+    await page.goto(`${origin}/contribute?city=mashhad&lang=${lang}`);
+    await choose(lang === "fa" ? "کدام واگن" : "Car near an escalator");
+    for (const mode of ["light", "dark"]) {
+      await page.evaluate(async (mode) => {
+        document.documentElement.classList.toggle("dark", mode === "dark");
+        await Promise.all(
+          document
+            .getAnimations()
+            .map((animation) => animation.finished.catch(() => {})),
+        );
+      }, mode);
+      const audit = await new AxeBuilder({ page }).analyze();
+      expect(
+        audit.violations.filter((v) =>
+          ["serious", "critical"].includes(v.impact ?? ""),
+        ),
+      ).toEqual([]);
+    }
+  }
   expect(errors).toEqual([]);
   console.log(
     "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",

@@ -24,10 +24,12 @@ into the live site yet.
 - Social links accept a handle or direct profile URL for Instagram, Telegram, X,
   GitHub and Spotify, plus a website. Links to posts/invites are rejected.
 - Train reporting has separate reference layouts for Tehran urban trains,
-  Tehran–Karaj, the Mehrabad shuttle and Mashhad Lines 1/2. Counts stay editable.
+  Tehran–Karaj, the Mehrabad shuttle and Mashhad Lines 1/2. The city/station sets
+  a default count. You can choose a listed train type, but cannot type a count.
   The train can be flipped while the selected car number stays the same.
-- Tehran's seven-car diagram shows the sourced full and half women-only areas.
-  Boundaries for other layouts remain unconfirmed and are not invented.
+- The whole train fits on mobile. Tehran's seven-car diagram shows sourced full
+  and half women-only areas. Mashhad Line 1 shows the operator-confirmed outer
+  half of the first and last cars. Other layouts remain unmarked until verified.
 - Your name appears publicly only if you choose public credit and enter a
   public name. Private contact details and provider emails are not copied there.
 - Contributor pages show real credited reports. The leaderboard counts reports

@@ -1,21 +1,21 @@
 export const STRINGS = {
   fa: {
     trainLayout: "چیدمان قطاری که دیدی",
-    trainLayoutManual: "خودم تعداد را وارد می‌کنم",
+    carCountFixed: "تعداد واگن‌ها",
+    trainCarsUnit: "واگن",
+    trainLayoutUnavailable:
+      "برای این شهر هنوز چیدمان قطار ثبت نشده؛ مشاهده‌ات را در توضیحات بنویس.",
     trainLayoutHint:
-      "چیدمان نزدیک به قطارت را انتخاب کن؛ اگر تعداد فرق داشت، آن را تغییر بده.",
+      "تعداد واگن‌ها از نوع قطار مشخص می‌شود. اگر قطار متفاوت بود، در توضیحات بنویس.",
     countFromFront: "شماره‌گذاری از سر قطار",
     flipTrain: "برعکس نشان بده",
     trainHeadLeft: "سر قطار سمت چپ است؛ واگن ۱ نزدیک سر قطار است.",
     trainHeadRight: "سر قطار سمت راست است؛ واگن ۱ نزدیک سر قطار است.",
-    trainScroll: "واگن‌ها؛ برای دیدن بقیه به کنار بکش",
-    trainScrollHint:
-      "برای دیدن همهٔ واگن‌ها به کنار بکش. جهت را مثل قطاری که دیدی تنظیم کن.",
     womenCar: "بانوان",
     womenHalfCar: "نیمهٔ بانوان",
     generalCar: "عمومی",
     womenLayoutNote:
-      "صورتی: بخش بانوان؛ واگن اول و آخر کامل و نیمهٔ نزدیک به آن‌ها در واگن‌های ۲ و ۶. بخش‌های دیگر عمومی‌اند.",
+      "بخش‌های صورتی ویژهٔ بانوان‌اند؛ قسمت نیمه‌رنگی یعنی نیمی از واگن. بخش‌های دیگر عمومی‌اند.",
     womenLayoutUnknown:
       "مرز بخش بانوان برای این چیدمان تأیید نشده؛ نشانه‌های روی قطار و سکو را ملاک بگیر.",
     passengerCarsOnly: "فقط واگن‌های مسافری را بشمار؛ لوکوموتیو حساب نمی‌شود.",
@@ -159,8 +159,6 @@ export const STRINGS = {
     trainRear: "ته قطار",
     chooseCar: "واگن نزدیک پله‌برقی را بزن",
     selectedCar: "واگن انتخاب‌شده",
-    trainCountFirst:
-      "تعداد واگن‌های همین قطار را وارد کن تا تصویر قطار نمایش داده شود. شماره‌گذاری از سر قطار شروع می‌شود.",
     directionPlaceholder: "مثلاً: به سمت فرودگاه",
 
     constructionSections: "بخش‌های در حال ساخت",
@@ -194,7 +192,7 @@ export const STRINGS = {
     locationHint:
       "بگو محل درست ایستگاه یا ورودی کجاست. نشانی، نشانهٔ نزدیک یا پیوند نقشه کمک می‌کند؛ مختصات لازم نیست.",
     wagonHint:
-      "تعداد واگن‌های قطاری که دیدی را وارد کن و واگن نزدیک پله‌برقی را بزن. جهت حرکت و ورودی را هم اگر می‌دانی بنویس.",
+      "واگن نزدیک پله‌برقی را انتخاب کن. تعداد واگن‌ها با شهر و نوع قطار تنظیم می‌شود؛ جهت حرکت و ورودی را هم اگر می‌دانی بنویس.",
     otherHint:
       "بگو چه چیزی باید اضافه یا اصلاح شود. برای شهر یا خط جدید، نام و منبع اطلاعات را هم بنویس.",
     timetablePlaceholder: "مثلاً: روزهای کاری، خط ۱ به سمت فرودگاه، از ساعت…",
@@ -314,7 +312,6 @@ export const STRINGS = {
     observedValue: "آنچه مشاهده کردی",
     available: "وجود دارد",
     absent: "وجود ندارد",
-    carCount: "تعداد واگن‌های همین قطار (اختیاری)",
     ofCars: "از",
     carHint:
       "تعداد و جای واگن به قطار و جهت حرکت بستگی دارد؛ دادهٔ تأییدشده‌ای نداریم.",
@@ -333,21 +330,21 @@ export const STRINGS = {
   },
   en: {
     trainLayout: "The train you saw",
-    trainLayoutManual: "Enter the count myself",
+    carCountFixed: "Number of cars",
+    trainCarsUnit: "cars",
+    trainLayoutUnavailable:
+      "This city has no train layout yet. Describe what you saw in the report.",
     trainLayoutHint:
-      "Choose the closest layout. You can change the count if your train differs.",
+      "The train type sets the car count. Describe any different layout in your report.",
     countFromFront: "Numbered from the front",
     flipTrain: "Flip train",
     trainHeadLeft: "The front is on the left. Car 1 is nearest the front.",
     trainHeadRight: "The front is on the right. Car 1 is nearest the front.",
-    trainScroll: "Train cars; scroll sideways to see more",
-    trainScrollHint:
-      "Scroll sideways to see all cars. Flip the drawing to match the train you saw.",
     womenCar: "Women only",
     womenHalfCar: "Half women only",
     generalCar: "General",
     womenLayoutNote:
-      "Pink marks women-only areas: cars 1 and 7, plus the adjoining halves of 2 and 6. Other space is general.",
+      "Pink marks women-only areas. Half shading means half a car; other space is general.",
     womenLayoutUnknown:
       "Women-only boundaries are unconfirmed for this layout. Follow the signs on the train and platform.",
     passengerCarsOnly:
@@ -495,8 +492,6 @@ export const STRINGS = {
     trainRear: "Rear",
     chooseCar: "Choose the car closest to the escalator",
     selectedCar: "Selected car",
-    trainCountFirst:
-      "Enter the number of cars on this train to show the diagram. Car numbers start at the front.",
     directionPlaceholder: "For example: toward the airport",
 
     constructionSections: "Construction sections",
@@ -530,7 +525,7 @@ export const STRINGS = {
     locationHint:
       "Describe the correct station or entrance location. An address, nearby landmark or map link helps; coordinates aren’t needed.",
     wagonHint:
-      "Enter the number of cars on the train you saw, then choose the car closest to the escalator. Include direction and entrance if known.",
+      "Choose the car closest to the escalator. The city and train type set the car count. Include direction and entrance if known.",
     otherHint:
       "Tell us what to add or correct. For a new city or line, include its name and any source you have.",
     timetablePlaceholder:
@@ -657,7 +652,6 @@ export const STRINGS = {
     observedValue: "What you observed",
     available: "Available",
     absent: "Not available",
-    carCount: "Number of cars in this train (optional)",
     ofCars: "of",
     carHint:
       "Car counts and positions depend on the train and direction. We have no verified car-position data.",

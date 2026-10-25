@@ -17,7 +17,7 @@ import { preparePhoto } from "../lib/photo";
 import { WagonPicker } from "./wagon-picker";
 import type { AccountUser } from "./account";
 import { SelectField } from "./select-field";
-import { availableTrainProfiles, trainProfiles } from "../lib/train-layouts";
+import { resolveTrainProfile } from "../lib/train-layouts";
 type Kind =
   | "timetable"
   | "facility"
@@ -78,7 +78,6 @@ export function ContributionForm({
       kinds.includes(initialKind as Kind) ? (initialKind as Kind) : "other",
     ),
     [stationId, setStationId] = useState(initialStation),
-    [carCount, setCarCount] = useState(""),
     [trainProfileId, setTrainProfileId] = useState(""),
     [amenityRows, setAmenityRows] = useState([0]),
     [car, setCar] = useState<number | null>(null),
@@ -126,6 +125,8 @@ export function ContributionForm({
     if (value === "city_request") {
       setCityId("other");
       setStationId("");
+      setTrainProfileId("");
+      setCar(null);
     }
     setKind(value);
     setError(null);
@@ -148,16 +149,19 @@ export function ContributionForm({
     setCityId(value);
     setStationId("");
     setTrainProfileId("");
-    setCarCount("");
     setCar(null);
   };
   const wagonLines =
     stations
       .find((station) => station.id === stationId)
       ?.lines.map((line) => line.id) ?? [];
-  const selectedTrain = availableTrainProfiles(cityId, wagonLines).find(
-    (profile) => profile.id === trainProfileId,
+  const selectedTrain = resolveTrainProfile(
+    cityId,
+    wagonLines,
+    trainProfileId,
+    stationId,
   );
+  const carCount = selectedTrain?.cars ?? 0;
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (step !== 2 || pending) return;
@@ -177,8 +181,8 @@ export function ContributionForm({
         .join("\n");
     if (kind === "status" && fields.get("status"))
       observation = `Observed status: ${fields.get("status")}`;
-    if (kind === "wagon" && car)
-      observation = `Observed car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}${selectedTrain ? `; layout reference: ${selectedTrain.id} (observed count may differ)` : ""}`;
+    if (kind === "wagon" && selectedTrain && car && car <= selectedTrain.cars)
+      observation = `Car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}; layout reference: ${selectedTrain.id}`;
     if (!details && !observation && !file?.size) {
       setError("required");
       return;
@@ -482,7 +486,6 @@ export function ContributionForm({
               last.current = null;
               setError(null);
               setCar(null);
-              setCarCount("");
               setTrainProfileId("");
               setDraft(null);
               setCredit(false);
@@ -526,19 +529,8 @@ export function ContributionForm({
                 value={stationId}
                 onChange={(value) => {
                   setStationId(value);
-                  const lines =
-                    stations
-                      .find((station) => station.id === value)
-                      ?.lines.map((line) => line.id) ?? [];
-                  if (
-                    !availableTrainProfiles(cityId, lines).some(
-                      (profile) => profile.id === trainProfileId,
-                    )
-                  ) {
-                    setTrainProfileId("");
-                    setCarCount("");
-                    setCar(null);
-                  }
+                  setTrainProfileId("");
+                  setCar(null);
                 }}
                 searchLabel={t.findStation}
                 emptyLabel={t.empty}
@@ -670,22 +662,14 @@ export function ContributionForm({
             <WagonPicker
               lang={lang}
               cityId={cityId}
+              stationId={stationId}
               lineIds={wagonLines}
               profileId={selectedTrain?.id ?? ""}
               onProfile={(value) => {
                 setTrainProfileId(value);
-                const profile = trainProfiles.find(
-                  (item) => item.id === value && item.cityId === cityId,
-                );
-                setCarCount(profile ? String(profile.cars) : "");
                 setCar(null);
               }}
-              count={carCount}
               selected={car}
-              onCount={(value) => {
-                setCarCount(value);
-                setCar(null);
-              }}
               onSelect={setCar}
             />
           )}

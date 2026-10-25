@@ -51,7 +51,7 @@ production email provider is recommended.
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | Reporting           | Anonymous reporting remains available                                                                                                   | An account requirement before helping                                                                        | Ordinary riders should be able to send a correction quickly                                           |
 | Form                | Choose topic → relevant details → review and explicitly confirm sending                                                                 | Posting immediately from the details screen                                                                  | Users should see what will become public before sending                                               |
-| Wagon reporting     | Clear train diagram, front/rear labels, obvious selected car, actual observed train length/direction                                    | Assumed car count, default selected car or invented women-only sections                                      | Reports must describe the train actually observed                                                     |
+| Wagon reporting     | Full train diagram, front/rear labels, explicit car selection, curated city/station defaults and train types                            | Arbitrary count inputs, a default selected car or invented women-only sections                               | Counts follow sourced layouts; different formations can be described with evidence                    |
 | Preview submissions | Explicitly labelled test submission, isolated from production publication, or a clear handoff to the live form                          | “Not enabled” with a dead-looking primary action; silently publishing preview tests                          | The preview should let people understand/test the flow without creating real data reports by accident |
 | Login               | Optional Google + GitHub using the existing Neon Auth service                                                                           | A custom password/OTP/session system or several separate account databases                                   | Reuse the account provider already available                                                          |
 | Public credit       | Explicit opt-in public display name per report, attached to a server-verified account                                                   | Publishing the private contact name/email, or trusting an account ID supplied by the browser                 | Privacy and trustworthy attribution                                                                   |
@@ -162,7 +162,9 @@ private name, age and gender even when sharing is enabled. User-entered social
 links do not become login providers. Existing issue credit is not rewritten by
 editing a profile.
 
-Wagon reporting now uses source-backed, editable city/line templates and a
-reversible train drawing. Full and half women-only areas are scoped to the
-seven-car Tehran reference; unconfirmed layouts remain unmarked. Research and
+Wagon reporting now defaults to a source-backed layout for the city/station.
+Users can select a listed train type, but cannot manually enter a car count.
+The full train fits on mobile and can be flipped without changing car identity.
+Women-only areas are sourced for Tehran urban seven-car trains and the outer
+halves of Mashhad Line 1's first/last cars; unconfirmed layouts remain unmarked. Research and
 sources: [train-layout-research.md](train-layout-research.md).

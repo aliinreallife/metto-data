@@ -2,10 +2,38 @@ import reference from "../../../data/reference/train-layouts.json" with { type: 
 export type TrainProfile = (typeof reference.profiles)[number];
 export const trainProfiles = reference.profiles;
 export const trainSources = reference.sources;
-export function availableTrainProfiles(city: string, lines: string[] = []) {
+export function resolveTrainProfile(
+  city: string,
+  lines: string[] = [],
+  selected = "",
+  stationId = "",
+) {
+  const profiles = availableTrainProfiles(city, lines, stationId);
+  const override = (reference.stationOverrides as Record<string, string>)[
+    stationId
+  ];
+  return (
+    profiles.find((profile) => profile.id === selected) ??
+    profiles.find((profile) => profile.id === override) ??
+    profiles.find(
+      (profile) =>
+        profile.id === (reference.defaults as Record<string, string>)[city],
+    ) ??
+    profiles[0]
+  );
+}
+export function availableTrainProfiles(
+  city: string,
+  lines: string[] = [],
+  stationId = "",
+) {
+  const override = (reference.stationOverrides as Record<string, string>)[
+    stationId
+  ];
   return trainProfiles.filter(
     (profile) =>
       profile.cityId === city &&
+      (!override || profile.id === override) &&
       (!lines.length || profile.lineIds.some((line) => lines.includes(line))),
   );
 }

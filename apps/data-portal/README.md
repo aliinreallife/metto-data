@@ -187,7 +187,10 @@ responsibility; the app does not merge identities based on client fields.
 
 `data/reference/train-layouts.json` is a sourced reporting reference, not a change
 to boarding or routing data. It covers urban/airport/double-deck Tehran templates
-and separate Mashhad line templates. Counts are editable and the diagram can flip
-without renumbering the observed car. Only the sourced seven-car Tehran layout
-has automatic full/half women-only markers. Other layouts do not inherit those
-boundaries. See `docs/train-layout-research.md` for source dates and limitations.
+and separate Mashhad line templates. City/station defaults select a fixed count;
+users can choose a curated train type but cannot manually enter a count. Airport
+terminal stations select the four-car shuttle. The entire train fits on mobile
+and flips without renumbering the selected car. Sourced women-only markers cover
+Tehran urban trains and the outer halves of Mashhad Line 1's first/last cars.
+Other layouts do not inherit those boundaries. See `docs/train-layout-research.md`
+for source dates and limitations.

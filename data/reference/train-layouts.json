@@ -41,6 +41,14 @@
       "kind": "secondary",
       "retrievedOn": "2026-10-25",
       "snapshotSha256": "c4dedacc3d8d24e4130c3808e3a73cfa6f924d6fecf379f206e28da4099e395e"
+    },
+    {
+      "id": "mashhad-line1-women-2026",
+      "url": "https://shahraranews.ir/fa/news/444196",
+      "publishedOn": "2026-09-10",
+      "kind": "operator-interview",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "b1e919c2640793c54c76845ab9d7d008046a84f0ffa6be7e563a809e1bf8fafb"
     }
   ],
   "profiles": [
@@ -95,19 +103,6 @@
       "women": null
     },
     {
-      "id": "mashhad:line1:2",
-      "cityId": "mashhad",
-      "lineIds": ["mashhad:line:1"],
-      "names": {
-        "fa": "خط ۱ مشهد · قطار سبک ۲ واگنی",
-        "en": "Mashhad Line 1 · 2-car light rail"
-      },
-      "cars": 2,
-      "kind": "lrt",
-      "sourceIds": ["mashhad-line1"],
-      "women": null
-    },
-    {
       "id": "mashhad:line1:3",
       "cityId": "mashhad",
       "lineIds": ["mashhad:line:1"],
@@ -117,8 +112,12 @@
       },
       "cars": 3,
       "kind": "lrt",
-      "sourceIds": ["mashhad-line1"],
-      "women": null
+      "sourceIds": ["mashhad-line1-women-2026"],
+      "women": {
+        "full": [],
+        "headHalf": [1],
+        "rearHalf": [3]
+      }
     },
     {
       "id": "mashhad:line2:5",
@@ -133,5 +132,13 @@
       "sourceIds": ["mashhad-line2-project"],
       "women": null
     }
-  ]
+  ],
+  "defaults": {
+    "tehran": "tehran:urban:7",
+    "mashhad": "mashhad:line1:3"
+  },
+  "stationOverrides": {
+    "tehran:station:mehrabad-airport-terminal-1-2": "tehran:mehrabad:4",
+    "tehran:station:mehrabad-airport-terminal-4-6": "tehran:mehrabad:4"
+  }
 }
