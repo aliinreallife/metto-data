@@ -24,7 +24,13 @@
           "version": 11,
           "lat": 36.2968572,
           "lon": 59.6070714,
-          "timestamp": "2025-05-22T11:28:35Z"
+          "timestamp": "2025-05-22T11:28:35Z",
+          "tags": {
+            "name": "شهدا",
+            "name:en": "Shohada",
+            "public_transport": "stop_position",
+            "subway": "yes"
+          }
         },
         {
           "id": 8643728100,
@@ -66,14 +72,30 @@
           "version": 5,
           "lat": 36.3043955,
           "lon": 59.5989531,
-          "timestamp": "2026-08-29T13:09:10Z"
+          "timestamp": "2026-08-29T13:09:10Z",
+          "tags": {
+            "name": "توحید",
+            "name:en": "Towhid",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 3867875264,
           "version": 5,
           "lat": 36.3128449,
           "lon": 59.589734,
-          "timestamp": "2026-08-29T13:07:45Z"
+          "timestamp": "2026-08-29T13:07:45Z",
+          "tags": {
+            "name": "مجد",
+            "name:en": "Majd",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 4113836790,
@@ -101,7 +123,15 @@
           "version": 7,
           "lat": 36.3222405,
           "lon": 59.5803018,
-          "timestamp": "2026-08-29T13:05:31Z"
+          "timestamp": "2026-08-29T13:05:31Z",
+          "tags": {
+            "name": "فردوسی",
+            "name:en": "Ferdowsi",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462377,
@@ -129,7 +159,14 @@
           "version": 4,
           "lat": 36.3243283,
           "lon": 59.5667115,
-          "timestamp": "2017-10-16T09:42:40Z"
+          "timestamp": "2017-10-16T09:42:40Z",
+          "tags": {
+            "name": "جانباز",
+            "name:en": "Janbaz",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462391,
@@ -199,7 +236,15 @@
           "version": 5,
           "lat": 36.3325984,
           "lon": 59.5600383,
-          "timestamp": "2026-08-29T12:53:13Z"
+          "timestamp": "2026-08-29T12:53:13Z",
+          "tags": {
+            "name": "مترو آبکوه",
+            "name:en": "Abkooh Metro Station",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462521,
@@ -248,7 +293,14 @@
           "version": 4,
           "lat": 36.3393122,
           "lon": 59.5513667,
-          "timestamp": "2017-10-16T09:42:39Z"
+          "timestamp": "2017-10-16T09:42:39Z",
+          "tags": {
+            "name": "فرامرز عباسی",
+            "name:en": "Faramarz Abbasi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 7083070316,
@@ -290,7 +342,15 @@
           "version": 7,
           "lat": 36.3425245,
           "lon": 59.5399954,
-          "timestamp": "2026-08-29T12:55:51Z"
+          "timestamp": "2026-08-29T12:55:51Z",
+          "tags": {
+            "name": "امامت",
+            "name:en": "Emamat",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462548,
@@ -332,7 +392,15 @@
           "version": 11,
           "lat": 36.3470039,
           "lon": 59.5223366,
-          "timestamp": "2026-08-29T12:56:48Z"
+          "timestamp": "2026-08-29T12:56:48Z",
+          "tags": {
+            "name": "امام علی",
+            "name:en": "Imam Ali",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462558,
@@ -367,7 +435,15 @@
           "version": 6,
           "lat": 36.3595727,
           "lon": 59.5171091,
-          "timestamp": "2026-08-29T12:58:16Z"
+          "timestamp": "2026-08-29T12:58:16Z",
+          "tags": {
+            "name": "شاهد",
+            "name:en": "Shahed",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 6898767114,
@@ -423,28 +499,60 @@
           "version": 5,
           "lat": 36.3669802,
           "lon": 59.5062016,
-          "timestamp": "2019-10-19T19:08:06Z"
+          "timestamp": "2019-10-19T19:08:06Z",
+          "tags": {
+            "name": "حسابی",
+            "name:en": "Hesabi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462584,
           "version": 12,
           "lat": 36.372131,
           "lon": 59.4982329,
-          "timestamp": "2026-08-29T12:59:38Z"
+          "timestamp": "2026-08-29T12:59:38Z",
+          "tags": {
+            "name": "امامیه",
+            "name:en": "Emamyeh",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 3867955957,
           "version": 5,
           "lat": 36.3803977,
           "lon": 59.4852478,
-          "timestamp": "2026-08-29T13:00:46Z"
+          "timestamp": "2026-08-29T13:00:46Z",
+          "tags": {
+            "name": "عصمتیه",
+            "name:en": "Esmatyeh",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes"
+          }
         },
         {
           "id": 8943834107,
           "version": 3,
           "lat": 36.3897103,
           "lon": 59.4706993,
-          "timestamp": "2026-08-29T13:02:08Z"
+          "timestamp": "2026-08-29T13:02:08Z",
+          "tags": {
+            "name": "امیریه",
+            "name:en": "Amiriyeh",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "ref": "5211",
+            "subway": "yes"
+          }
         }
       ]
     },
@@ -469,7 +577,14 @@
           "version": 4,
           "lat": 36.2145603,
           "lon": 59.6206868,
-          "timestamp": "2021-08-02T19:06:53Z"
+          "timestamp": "2021-08-02T19:06:53Z",
+          "tags": {
+            "name": "ابوذر",
+            "name:en": "Aboozar",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 10148108215,
@@ -497,14 +612,28 @@
           "version": 4,
           "lat": 36.2325302,
           "lon": 59.6118894,
-          "timestamp": "2021-08-02T19:06:53Z"
+          "timestamp": "2021-08-02T19:06:53Z",
+          "tags": {
+            "name": "ثامن",
+            "name:en": "Samen",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 3867949163,
           "version": 4,
           "lat": 36.245687,
           "lon": 59.6052406,
-          "timestamp": "2021-08-02T19:06:53Z"
+          "timestamp": "2021-08-02T19:06:53Z",
+          "tags": {
+            "name": "مهدی",
+            "name:en": "Mahdi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462137,
@@ -532,7 +661,14 @@
           "version": 9,
           "lat": 36.2548872,
           "lon": 59.5985133,
-          "timestamp": "2019-03-06T17:57:27Z"
+          "timestamp": "2019-03-06T17:57:27Z",
+          "tags": {
+            "name": "صبا",
+            "name:en": "Saba",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 2810462148,
@@ -609,7 +745,15 @@
           "version": 15,
           "lat": 36.2601343,
           "lon": 59.5933452,
-          "timestamp": "2026-09-07T09:29:22Z"
+          "timestamp": "2026-09-07T09:29:22Z",
+          "tags": {
+            "name": "ایستگاه مترو امام رضا",
+            "name:ar": "محطة الإمام الرضا",
+            "name:en": "Imam Reza metro station",
+            "public_transport": "stop_position",
+            "railway": "stop",
+            "subway": "yes"
+          }
         }
       ]
     },
@@ -648,7 +792,14 @@
           "version": 4,
           "lat": 36.2145603,
           "lon": 59.6206868,
-          "timestamp": "2021-08-02T19:06:53Z"
+          "timestamp": "2021-08-02T19:06:53Z",
+          "tags": {
+            "name": "ابوذر",
+            "name:en": "Aboozar",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         }
       ]
     },
@@ -673,7 +824,16 @@
           "version": 3,
           "lat": 36.3897103,
           "lon": 59.4706993,
-          "timestamp": "2026-08-29T13:02:08Z"
+          "timestamp": "2026-08-29T13:02:08Z",
+          "tags": {
+            "name": "امیریه",
+            "name:en": "Amiriyeh",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "ref": "5211",
+            "subway": "yes"
+          }
         },
         {
           "id": 6407683092,
@@ -760,7 +920,14 @@
           "version": 3,
           "lat": 36.3413628,
           "lon": 59.630869,
-          "timestamp": "2021-04-14T16:37:56Z"
+          "timestamp": "2021-04-14T16:37:56Z",
+          "tags": {
+            "name": "خواجه ربیع",
+            "name:en": "Khajeh Rabi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 8629721576,
@@ -872,7 +1039,14 @@
           "version": 2,
           "lat": 36.3291228,
           "lon": 59.6243736,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "name": "امام حسین",
+            "name:en": "Imam Hossein",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 3170118310,
@@ -907,7 +1081,14 @@
           "version": 3,
           "lat": 36.3204016,
           "lon": 59.6198466,
-          "timestamp": "2020-10-25T19:59:24Z"
+          "timestamp": "2020-10-25T19:59:24Z",
+          "tags": {
+            "name": "گاز",
+            "name:en": "Gaz",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 3170118315,
@@ -928,7 +1109,14 @@
           "version": 4,
           "lat": 36.3123204,
           "lon": 59.6148724,
-          "timestamp": "2018-11-15T10:33:03Z"
+          "timestamp": "2018-11-15T10:33:03Z",
+          "tags": {
+            "name": "کامیاب",
+            "name:en": "Kamyab",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 3170118317,
@@ -977,7 +1165,14 @@
           "version": 2,
           "lat": 36.3035549,
           "lon": 59.6095099,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "name": "عبادی",
+            "name:en": "Ebadi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station",
+            "subway": "yes"
+          }
         },
         {
           "id": 3170118322,
@@ -1068,7 +1263,16 @@
           "version": 14,
           "lat": 36.2968998,
           "lon": 59.6071378,
-          "timestamp": "2026-08-29T13:22:21Z"
+          "timestamp": "2026-08-29T13:22:21Z",
+          "tags": {
+            "name": "شهدا",
+            "name:en": "Shohada",
+            "proposed": "stop_position",
+            "public_transport": "stop_position",
+            "railway": "proposed",
+            "subway": "yes",
+            "wikidata": "Q30599982"
+          }
         },
         {
           "id": 3170118332,
@@ -1152,7 +1356,13 @@
           "version": 8,
           "lat": 36.294056,
           "lon": 59.6167906,
-          "timestamp": "2026-02-05T07:48:11Z"
+          "timestamp": "2026-02-05T07:48:11Z",
+          "tags": {
+            "name": "شارستان شمالی",
+            "name:en": "Sharestan Shomali",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 8643673410,
@@ -1215,7 +1425,13 @@
           "version": 9,
           "lat": 36.2891942,
           "lon": 59.6240572,
-          "timestamp": "2021-04-19T13:09:22Z"
+          "timestamp": "2021-04-19T13:09:22Z",
+          "tags": {
+            "name": "شارستان شرقی",
+            "name:en": "Sharestan Sharghi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 8643673413,
@@ -1292,7 +1508,13 @@
           "version": 2,
           "lat": 36.2795575,
           "lon": 59.6254716,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "name": "عدالت",
+            "name:en": "Edalat",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3170118346,
@@ -1320,7 +1542,13 @@
           "version": 2,
           "lat": 36.26948,
           "lon": 59.6363944,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "name": "رستمی",
+            "name:en": "Rostami",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3170118349,
@@ -1341,7 +1569,13 @@
           "version": 2,
           "lat": 36.2616758,
           "lon": 59.6446943,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "name": "مصلی",
+            "name:en": "Mosalla",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3170118351,
@@ -1397,7 +1631,11 @@
           "version": 2,
           "lat": 36.2634722,
           "lon": 59.651544,
-          "timestamp": "2017-10-16T09:42:41Z"
+          "timestamp": "2017-10-16T09:42:41Z",
+          "tags": {
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3170118358,
@@ -1453,14 +1691,26 @@
           "version": 3,
           "lat": 36.2687862,
           "lon": 59.6607889,
-          "timestamp": "2024-09-03T15:04:30Z"
+          "timestamp": "2024-09-03T15:04:30Z",
+          "tags": {
+            "name": "حر",
+            "name:en": "Hor",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3873023708,
           "version": 3,
           "lat": 36.2639691,
           "lon": 59.6727235,
-          "timestamp": "2024-09-03T15:04:30Z"
+          "timestamp": "2024-09-03T15:04:30Z",
+          "tags": {
+            "name": "رجایی",
+            "name:en": "Rajayi",
+            "proposed:public_transport": "stop_position",
+            "proposed:railway": "station"
+          }
         },
         {
           "id": 3170118666,

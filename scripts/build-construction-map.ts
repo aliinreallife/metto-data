@@ -20,6 +20,8 @@ const artifact = JSON.parse(
   ),
 );
 artifact.retrievedAt = snapshot.retrievedAt;
+artifact.rendering = "straight-between-mapped-stops";
+const futureStops = new Map();
 artifact.segments = snapshot.ways.map((way: any) => {
   const source = review.sources.find(
     (entry: any) => entry.type === "way" && entry.id === way.id,
@@ -38,15 +40,39 @@ artifact.segments = snapshot.ways.map((way: any) => {
         ? "3"
         : null;
   if (!line) throw Error(`Unidentified line: ${way.id}`);
+  const stops = way.geometry.filter(
+    (point: any, index: number) =>
+      index === 0 || index === way.geometry.length - 1 || point.tags?.name,
+  );
+  for (const point of stops) {
+    const tags = point.tags ?? {};
+    if (
+      tags.name &&
+      (tags.railway === "proposed" || tags["proposed:railway"] === "station")
+    ) {
+      const id = `osm:node:${point.id}`;
+      const old = futureStops.get(id);
+      futureStops.set(id, {
+        id,
+        names: { fa: tags.name, en: tags["name:en"] || tags.name },
+        location: { lat: point.lat, lng: point.lon },
+        status: "planned",
+        lineIds: [
+          ...new Set([...(old?.lineIds ?? []), `mashhad:line:${line}`]),
+        ],
+      });
+    }
+  }
   return {
     id: `osm:way:${way.id}`,
     lineId: `mashhad:line:${line}`,
     names: { fa: `خط ${line === "4" ? "۴" : "۳"}`, en: `Line ${line}` },
     status: "under_construction",
     displayColor: line === "4" ? "#a78bfa" : "#FA9702",
-    coordinates: way.geometry.map((point: any) => [point.lat, point.lon]),
+    coordinates: stops.map((point: any) => [point.lat, point.lon]),
   };
 });
+artifact.futureStops = [...futureStops.values()];
 const result = JSON.stringify(artifact, null, 2) + "\n";
 const target = new URL("data/reference/mashhad-construction.json", root);
 if (process.argv.includes("--check")) {

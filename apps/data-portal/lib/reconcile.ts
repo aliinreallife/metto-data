@@ -6,8 +6,10 @@ import {
   type StoredReport,
 } from "./intake.ts";
 export async function reconcile(config: IntakeConfig, cursor?: string) {
+  const expired = (await config.store.cleanup?.()) ?? 0;
   const page = await config.store.paths("outbox/", cursor),
     summary = {
+      expired,
       processed: 0,
       published: 0,
       pending: 0,

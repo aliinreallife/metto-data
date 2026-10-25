@@ -69,6 +69,7 @@ class MemoryStore implements PrivateStore {
   }
 }
 const ID = "12345678-1234-4123-8123-123456789abc";
+const PHOTO = JSON.parse(readFileSync(new URL("./fixtures/report-photo.json", import.meta.url), "utf8")).jpeg as string;
 const payload = {
   id: ID,
   cityId: "mashhad",
@@ -247,16 +248,45 @@ describe("Vercel anonymous intake", () => {
       request({
         ...payload,
         details: "",
-        photo: "/9j/2Q==",
+        photo: PHOTO,
         contact: "private@example.org",
       }),
     );
     const r = await evidence(f.config, ID);
     expect(r.headers.get("content-type")).toBe("image/jpeg");
-    expect([...new Uint8Array(await r.arrayBuffer())]).toEqual([
-      255, 216, 255, 217,
-    ]);
+    const bytes = Buffer.from(await r.arrayBuffer());
+    expect([...bytes.subarray(0, 2)]).toEqual([255, 216]);
+    expect([...bytes.subarray(-2)]).toEqual([255, 217]);
+    expect(bytes.includes(Buffer.from("private-photo-metadata"))).toBe(false);
+    expect(bytes.length).toBeLessThanOrEqual(524288);
     expect(f.calls[0].body.body).toContain(`${origin}/api/evidence/${ID}`);
+  });
+  it("keeps queued and ambiguous uploads private until their public issue is confirmed", async () => {
+    const f = fixture();
+    f.config.githubToken = "";
+    expect((await f.handle(request({ ...payload, photo: PHOTO }))).status).toBe(202);
+    expect((await evidence(f.config, ID)).status).toBe(404);
+    const saved = await f.store.read<StoredReport>(`submissions/${ID}.json`);
+    await f.store.write(`submissions/${ID}.json`, { ...saved!.value, state: "publishing" }, saved!.etag);
+    const response = await evidence(f.config, ID);
+    expect(response.status).toBe(404);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+  });
+  it("rejects files with JPEG markers that cannot actually be decoded before queueing", async () => {
+    const f = fixture();
+    expect((await f.handle(request({ ...payload, photo: "/9j/2Q==" }))).status).toBe(400);
+    expect(f.store.rows.size).toBe(0);
+    expect(f.calls).toHaveLength(0);
+  });
+  it("preserves text-report intake when photo capacity is unavailable", async () => {
+    const f = fixture();
+    f.config.store.canStorePhoto = async () => false;
+    const response = await f.handle(request({ ...payload, photo: PHOTO }));
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ error: "photo_capacity" });
+    expect(f.store.rows.size).toBe(0);
+    expect(f.calls).toHaveLength(0);
+    expect((await f.handle(request())).status).toBe(201);
   });
   it("has no evidence endpoint for missing or invalid IDs", async () => {
     const f = fixture();

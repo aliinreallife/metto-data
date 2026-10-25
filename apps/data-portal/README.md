@@ -110,10 +110,10 @@ contribution PRs, rebuild/provenance checks and independent city release gates.
 Migration provenance: [`docs/portal-migration.json`](../../docs/portal-migration.json).
 The combined portal replaces the earlier Pages/Supabase draft #11.
 
-## Two-step contributions and browser checks
+## Three-step contributions and browser checks
 
 Contributions start with a topic choice, then show city/station and only that
-topic's fields. Common text, source, contact and photo drafts survive returning
+topic’s fields, then review the exact report and explicitly confirm sending. Common text, source, contact and photo drafts survive returning
 to the topic chooser. Evidence and optional private contact are disclosures.
 Station menus support search in either station language; all menus support
 keyboard navigation, Escape and normal Tab order.
@@ -132,3 +132,42 @@ are recorded alongside the snapshot. Main station counts, route graphs and
 candidate release status are unaffected. See `docs/mashhad-construction-map.md`.
 
 The old prototype feature comparison is in `docs/portal-feature-comparison.md`.
+
+
+## Optional account and public credit
+
+See `docs/portal-setup-steps.md` for the exact Neon/provider setup and
+`docs/portal-progress-simple.md` for the nontechnical progress report.
+`NEON_AUTH_BASE_URL` uses the existing Neon Auth service. `NEON_AUTH_COOKIE_SECRET`
+is a server-only session-cache signing key; a purpose-derived quota-key fallback
+supports local development. `DATA_PORTAL_CREDIT_SECRET` separately signs public
+attribution; keep it stable across deployments. `DATA_PORTAL_GITHUB_LOGIN=1`
+shows GitHub as a secondary option after its provider is configured.
+
+Google and email OTP are the main account choices. Browser tests intercept
+provider requests and report writes, exercising code entry, errors, consent and
+alias handling without sending emails or creating accounts. No management
+`NEON_API_KEY` is deployed to the application runtime.
+
+Preview requests only accept hostnames supplied by Vercel's deployment/branch
+system variables. Preview report storage uses a separate namespace and has no
+GitHub publishing credential. The final confirmation screen labels test sends.
+The production maintenance workflow only scans the production outbox.
+
+Public aliases are explicit and per-report. The API obtains identity from a
+verified Neon session, never a client-supplied user ID. Private name/contact
+fields and provider emails are not public credit. The main leaderboard counts
+`data:accepted` labels applied by maintainers, never issue closure alone.
+Contributor history includes only signed, explicitly credited public reports.
+
+## Data and photo storage
+
+Reviewed transit data stays in GitHub; private reports/accounts stay in the
+existing Neon project. The server decodes/re-encodes uploaded JPEG evidence,
+strips source metadata and enforces 2048 pixels / 512 KiB independently of the
+browser. Evidence URLs serve only after a public report has been confirmed.
+Preview rows expire after seven days; old quota counters after three days.
+The maintenance job removes expired Postgres records in bounded batches.
+Production evidence is retained to preserve public source links. No image is
+committed into Git history. See [storage responsibilities and capacity
+plan](../../docs/data-storage.md), including the object-storage review point.

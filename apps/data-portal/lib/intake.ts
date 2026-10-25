@@ -1,4 +1,6 @@
 import { createHash, createHmac, randomUUID } from "node:crypto";
+import { makeCredit, validPublicName, type PublicCredit } from "./credit.ts";
+import { sanitizePhoto } from "./photo-server.ts";
 export const REPOSITORY = "aliinreallife/metto-data";
 export const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -9,6 +11,7 @@ export const kinds = [
   "location",
   "wagon",
   "other",
+  "city_request",
 ] as const;
 const cityLabels: Record<string, string> = {
   tehran: "Tehran / تهران",
@@ -22,6 +25,7 @@ const kindLabels: Record<(typeof kinds)[number], string> = {
   location: "Station location / مکان ایستگاه",
   wagon: "Escalator car / واگن نزدیک پله‌برقی",
   other: "Information / اطلاعات",
+  city_request: "City or line request / درخواست شهر یا خط",
 };
 export type Report = {
   id: string;
@@ -34,6 +38,7 @@ export type Report = {
   name: string;
   contact: string;
   photo?: string;
+  credit?: PublicCredit;
 };
 export type StoredReport = {
   report: Report;
@@ -54,20 +59,32 @@ export interface PrivateStore {
     prefix: string,
     cursor?: string,
   ): Promise<{ paths: string[]; cursor?: string }>;
+  cleanup?(): Promise<number>;
+  canStorePhoto?(bytes: number): Promise<boolean>;
 }
 export type IntakeConfig = {
   store: PrivateStore;
   githubToken: string;
   quotaSecret?: string;
+  creditSecret?: string;
   publicOrigin: string;
   cityStations: Record<string, string[]>;
   fetch?: typeof fetch;
   now?: () => Date;
+  resolveContributor?: () => Promise<{ id: string; name: string } | null>;
+  contributor?: { id: string; name: string };
 };
 const reportPath = (id: string) => `submissions/${id}.json`;
 function parse(raw: unknown, config: IntakeConfig): Report | null {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const data = raw as Record<string, unknown>;
+  if (data.publicCredit !== undefined && typeof data.publicCredit !== "boolean")
+    return null;
+  if (
+    data.publicCredit === true &&
+    (!config.contributor || !validPublicName(data.publicName))
+  )
+    return null;
   const text = (key: string, max: number) =>
     data[key] === undefined
       ? ""
@@ -143,6 +160,20 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
         name,
         contact,
         ...(photo ? { photo } : {}),
+        ...(data.publicCredit === true &&
+        config.contributor &&
+        (config.creditSecret || config.quotaSecret)
+          ? {
+              credit: makeCredit(
+                id,
+                {
+                  id: config.contributor.id,
+                  name: String(data.publicName).trim(),
+                },
+                (config.creditSecret || config.quotaSecret)!,
+              ),
+            }
+          : {}),
       }
     : null;
 }
@@ -159,6 +190,7 @@ export function publicBody(report: Report, origin: string) {
       cityId: report.cityId,
       stationId: report.stationId,
       kind: report.kind,
+      ...(report.credit ? { credit: report.credit } : {}),
     }),
   ).toString("base64");
   return [
@@ -181,6 +213,13 @@ export function publicBody(report: Report, origin: string) {
     "",
     ...(report.photo
       ? [`![Station evidence](${origin}/api/evidence/${report.id})`, ""]
+      : []),
+    ...(report.credit
+      ? [
+          "Contributor (public credit by choice):",
+          literal(report.credit.name),
+          "",
+        ]
       : []),
     "Maintainer review is required before changing canonical data.",
     `Submission reference: ${report.id}`,
@@ -332,78 +371,144 @@ export function createIntakeHandler(config: IntakeConfig) {
     }
     if (raw && typeof raw === "object" && "website" in raw && raw.website)
       return reply(201, { id: randomUUID() });
-    const report = parse(raw, config);
-    if (!report) return reply(400, { error: "invalid" });
-    const inputHash = createHash("sha256")
-      .update(JSON.stringify(report))
-      .digest("hex");
-    const path = reportPath(report.id);
-    let durable = false;
-    try {
-      const previous = await config.store.read<StoredReport>(path);
-      if (previous)
-        return previous.value.inputHash === inputHash
-          ? reply(200, { id: report.id, issueUrl: previous.value.issueUrl })
-          : reply(409, { error: "changed" });
-      const ip = (
-        request.headers.get("x-vercel-forwarded-for") ??
-        request.headers.get("x-forwarded-for") ??
-        "unknown"
-      )
-        .split(",")[0]
-        .trim();
-      if (!(await reserveQuota(config, ip)))
-        return reply(429, { error: "rate_limit" });
-      const saved: StoredReport = {
-        report,
-        inputHash,
-        createdAt: (config.now?.() ?? new Date()).toISOString(),
-        state: "pending",
-      };
-      await config.store.write(
-        `outbox/${report.id}.json`,
-        { id: report.id },
-        null,
-      );
-      if (!(await config.store.write(path, saved, null))) {
-        const winner = await config.store.read<StoredReport>(path);
-        return winner?.value.inputHash === inputHash
-          ? reply(200, { id: report.id, issueUrl: winner.value.issueUrl })
-          : reply(409, { error: "changed" });
-      }
-      durable = true;
-      if (!config.githubToken) return reply(202, { id: report.id });
-      const result = await publish(config, report.id);
-      return reply(result?.state === "published" ? 201 : 202, {
-        id: report.id,
-        issueUrl: result?.issueUrl,
-      });
-    } catch {
-      if (durable) return reply(202, { id: report.id });
-      // A lost storage response may follow a successful write. Confirm it first.
+    if (
+      raw &&
+      typeof raw === "object" &&
+      (raw as Record<string, unknown>).publicCredit === true
+    ) {
+      let contributor;
       try {
-        const saved = await config.store.read<StoredReport>(path);
-        if (saved?.value.inputHash === inputHash)
-          return reply(202, { id: report.id, issueUrl: saved.value.issueUrl });
+        contributor = await config.resolveContributor?.();
       } catch {
-        /* Leave the visitor's form intact. */
+        return reply(503, { error: "busy" });
       }
-      return reply(503, { error: "unavailable" });
+      if (!contributor) return reply(401, { error: "login_required" });
+      raw = { ...raw, publicCredit: true };
+      const verifiedConfig = { ...config, contributor };
+      return acceptReport(raw, verifiedConfig, request);
     }
+    return acceptReport(raw, config, request);
   };
 }
+async function acceptReport(
+  raw: unknown,
+  config: IntakeConfig,
+  request: Request,
+): Promise<Response> {
+  const reply = (status: number, value: unknown) =>
+    Response.json(value, { status, headers: { "Cache-Control": "no-store" } });
+  const report = parse(raw, config);
+  if (!report) return reply(400, { error: "invalid" });
+  const inputHash = createHash("sha256")
+    .update(JSON.stringify(report))
+    .digest("hex");
+  const path = reportPath(report.id);
+  let durable = false;
+  try {
+    const previous = await config.store.read<StoredReport>(path);
+    if (previous)
+      return previous.value.inputHash === inputHash
+        ? reply(200, {
+            id: report.id,
+            ...(report.credit ? { creditId: report.credit.id } : {}),
+            issueUrl: previous.value.issueUrl,
+          })
+        : reply(409, { error: "changed" });
+    if (report.photo) {
+      try {
+        report.photo = await sanitizePhoto(report.photo);
+      } catch {
+        return reply(400, { error: "invalid_photo" });
+      }
+      if (
+        config.store.canStorePhoto &&
+        !(await config.store.canStorePhoto(report.photo.length))
+      )
+        return reply(503, { error: "photo_capacity" });
+    }
+    const ip = (
+      request.headers.get("x-vercel-forwarded-for") ??
+      request.headers.get("x-forwarded-for") ??
+      "unknown"
+    )
+      .split(",")[0]
+      .trim();
+    if (!(await reserveQuota(config, ip)))
+      return reply(429, { error: "rate_limit" });
+    const saved: StoredReport = {
+      report,
+      inputHash,
+      createdAt: (config.now?.() ?? new Date()).toISOString(),
+      state: "pending",
+    };
+    await config.store.write(
+      `outbox/${report.id}.json`,
+      {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      },
+      null,
+    );
+    if (!(await config.store.write(path, saved, null))) {
+      const winner = await config.store.read<StoredReport>(path);
+      return winner?.value.inputHash === inputHash
+        ? reply(200, {
+            id: report.id,
+            ...(report.credit ? { creditId: report.credit.id } : {}),
+            issueUrl: winner.value.issueUrl,
+          })
+        : reply(409, { error: "changed" });
+    }
+    durable = true;
+    if (!config.githubToken)
+      return reply(202, {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      });
+    const result = await publish(config, report.id);
+    return reply(result?.state === "published" ? 201 : 202, {
+      id: report.id,
+      ...(report.credit ? { creditId: report.credit.id } : {}),
+      issueUrl: result?.issueUrl,
+    });
+  } catch {
+    if (durable)
+      return reply(202, {
+        id: report.id,
+        ...(report.credit ? { creditId: report.credit.id } : {}),
+      });
+    // A lost storage response may follow a successful write. Confirm it first.
+    try {
+      const saved = await config.store.read<StoredReport>(path);
+      if (saved?.value.inputHash === inputHash)
+        return reply(202, {
+          id: report.id,
+          ...(report.credit ? { creditId: report.credit.id } : {}),
+          issueUrl: saved.value.issueUrl,
+        });
+    } catch {
+      /* Leave the visitor's form intact. */
+    }
+    return reply(503, { error: "unavailable" });
+  }
+}
+
 export async function evidence(
   config: IntakeConfig,
   id: string,
 ): Promise<Response> {
   if (!UUID.test(id)) return new Response(null, { status: 404 });
   const saved = await config.store.read<StoredReport>(reportPath(id));
-  if (!saved?.value.report.photo) return new Response(null, { status: 404 });
+  if (!saved?.value.report.photo || saved.value.state !== "published")
+    return new Response(null, {
+      status: 404,
+      headers: { "Cache-Control": "no-store" },
+    });
   return new Response(Buffer.from(saved.value.report.photo, "base64"), {
     headers: {
       "Content-Type": "image/jpeg",
       "X-Content-Type-Options": "nosniff",
-      "Cache-Control": "public, max-age=86400",
+      "Cache-Control": "public, max-age=3600",
     },
   });
 }

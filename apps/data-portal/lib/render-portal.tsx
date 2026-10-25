@@ -2,6 +2,8 @@ import { Portal, type PortalProps } from "../components/portal";
 import { catalog } from "./catalog-data";
 import { intakeConfig } from "./config";
 import { recentReports } from "./reports";
+import { portalAuth } from "./auth/server";
+import { leaderboard } from "./leaderboard";
 import { headers } from "next/headers";
 export type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -9,6 +11,7 @@ export type PageProps = {
 export async function renderPortal(
   view: PortalProps["view"],
   props: PageProps,
+  profileId = "",
 ) {
   const params = await props.searchParams;
   const one = (key: string) =>
@@ -30,10 +33,14 @@ export async function renderPortal(
     view === "home" || view === "reports"
       ? await recentReports()
       : { reports: [], unavailable: false };
-  const config = intakeConfig(),
-    requestHeaders = await headers();
+  const ranking =
+    view === "leaderboard" || view === "profile"
+      ? await leaderboard()
+      : { leaders: [], unavailable: false, partial: false };
+  const requestHeaders = await headers();
   const host =
     requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
+  const config = intakeConfig(host ? `https://${host}` : undefined);
   const intakeEnabled = !!config && host === new URL(config.publicOrigin).host;
   return (
     <Portal
@@ -44,6 +51,11 @@ export async function renderPortal(
       initialStation={initialStation}
       initialKind={one("kind")}
       intakeEnabled={intakeEnabled}
+      previewMode={process.env.VERCEL_ENV === "preview"}
+      authConfigured={!!portalAuth()}
+      githubEnabled={process.env.DATA_PORTAL_GITHUB_LOGIN === "1"}
+      ranking={ranking}
+      profileId={profileId}
       reports={activity.reports}
       reportsUnavailable={activity.unavailable}
     />

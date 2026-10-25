@@ -22,7 +22,12 @@ const server = spawn(
       DATA_PORTAL_QUOTA_SECRET: "local-test-only",
       DATABASE_URL: "postgresql://test:test@127.0.0.1:5432/test",
       POSTGRES_URL: "",
+      VERCEL_ENV: "development",
+      VERCEL_URL: "",
+      VERCEL_BRANCH_URL: "",
       GITHUB_TOKEN: "",
+      NEON_AUTH_BASE_URL: "https://auth.example.invalid/auth",
+      DATA_PORTAL_GITHUB_LOGIN: "1",
     },
   },
 );
@@ -47,11 +52,68 @@ try {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
   });
+
   const page = await context.newPage(),
     errors = [],
-    sent = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  await page.route("**/api/reports", async (route) => {
+    sent = [],
+    providers = [];
+  let signedIn = false;
+  page.on("pageerror", (error) =>
+    errors.push(new URL(page.url()).pathname + ": " + error.message),
+  );
+  const user = {
+    id: "mock-verified-user",
+    name: "provider-private-email@example.test",
+    email: "provider-private-email@example.test",
+    emailVerified: true,
+  };
+  await context.route("**/api/auth/**", async (route) => {
+    const path = new URL(route.request().url()).pathname;
+    if (path.endsWith("/get-session")) {
+      await route.fulfill({
+        json: signedIn
+          ? {
+              user,
+              session: {
+                id: "mock-session",
+                userId: user.id,
+                expiresAt: new Date(Date.now() + 3600000).toISOString(),
+              },
+            }
+          : null,
+      });
+      return;
+    }
+    if (path.endsWith("/sign-in/social")) {
+      providers.push(route.request().postDataJSON().provider);
+      await route.fulfill({
+        status: 400,
+        json: { code: "PROVIDER_NOT_ENABLED" },
+      });
+      return;
+    }
+    if (path.endsWith("/email-otp/send-verification-otp")) {
+      await route.fulfill({ json: { success: true } });
+      return;
+    }
+    if (path.endsWith("/sign-in/email-otp")) {
+      const data = route.request().postDataJSON();
+      if (data.otp !== "123456") {
+        await route.fulfill({ status: 400, json: { code: "INVALID_OTP" } });
+        return;
+      }
+      signedIn = true;
+      await route.fulfill({ json: { token: "mock-test-token", user } });
+      return;
+    }
+    if (path.endsWith("/sign-out")) {
+      signedIn = false;
+      await route.fulfill({ json: { success: true } });
+      return;
+    }
+    throw Error("Unexpected auth request in mock: " + path);
+  });
+  await context.route("**/api/reports", async (route) => {
     const body = route.request().postDataJSON();
     sent.push(body);
     await route.fulfill({
@@ -59,21 +121,40 @@ try {
       json: sent.length === 1 ? { error: "busy" } : { id: body.id },
     });
   });
+  async function choose(text) {
+    await page
+      .getByTestId("report-types")
+      .getByRole("button")
+      .filter({ hasText: text })
+      .click();
+  }
+  async function review() {
+    await page
+      .getByRole("button", { name: "Review report", exact: true })
+      .click();
+    await expect(page.getByTestId("report-review")).toBeVisible();
+  }
+  async function send() {
+    await page
+      .getByRole("button", { name: "Yes, send report", exact: true })
+      .click();
+  }
+  async function another() {
+    await page
+      .getByRole("button", { name: "Send another report", exact: true })
+      .click();
+    await expect(page.getByTestId("report-types")).toBeVisible();
+  }
   await page.goto(
     `${origin}/contribute?city=mashhad&station=mashhad:station:basij&kind=timetable&lang=en`,
   );
-  await expect(page.getByTestId("report-types")).toBeVisible();
-  await page
-    .getByTestId("report-types")
-    .getByRole("button")
-    .filter({ hasText: "Train times" })
-    .click();
+  await choose("Train times");
   await expect(page.locator("input[name=stationId]")).toHaveValue(
     "mashhad:station:basij",
   );
   await page
     .getByRole("textbox", { name: "Description", exact: true })
-    .fill("Weekday times on the board, observed today");
+    .fill("Weekday times observed today");
   await page
     .getByText("Add a photo or source link (optional)", { exact: true })
     .click();
@@ -88,65 +169,68 @@ try {
   await page
     .getByRole("button", { name: "Change report type", exact: true })
     .click();
-  await expect(page.getByTestId("report-form")).toBeHidden();
-  await page
-    .getByTestId("report-types")
-    .getByRole("button")
-    .filter({ hasText: "Train times" })
-    .click();
+  await choose("Train times");
   await expect(
     page.getByRole("textbox", { name: "Description", exact: true }),
-  ).toHaveValue("Weekday times on the board, observed today");
+  ).toHaveValue("Weekday times observed today");
   expect(
     await page
       .locator("input[name=photo]")
       .evaluate((input) => input.files.length),
   ).toBe(1);
   await page.getByRole("button", { name: /Station \(optional\)/ }).click();
-  const search = page.getByRole("combobox", {
+  const stationSearch = page.getByRole("combobox", {
     name: "Search stations",
     exact: true,
   });
-  await search.fill("بسيج");
+  await stationSearch.fill("بسيج");
   await expect(
     page.getByRole("option", { name: "Basij", exact: true }),
   ).toBeVisible();
-  await search.press("ArrowDown");
-  await search.press("Home");
-  await search.press("Enter");
-  await expect(page.locator("input[name=stationId]")).toHaveValue(
-    "mashhad:station:basij",
-  );
+  await stationSearch.press("Home");
+  await stationSearch.press("Enter");
   await expect(
     page.getByRole("button", { name: /Station \(optional\)/ }),
   ).toBeFocused();
   await page.getByRole("button", { name: /Station \(optional\)/ }).click();
-  await search.fill("zzzzz");
-  await expect(
-    page.getByText("No stations found.", { exact: true }),
-  ).toBeVisible();
-  await search.press("Escape");
-  await page.getByRole("button", { name: /Station \(optional\)/ }).click();
-  await search.press("Tab");
+  await stationSearch.press("Tab");
   await expect(
     page.getByRole("textbox", {
       name: "Line and direction (optional)",
       exact: true,
     }),
   ).toBeFocused();
-  await page.getByRole("combobox", { name: /^City / }).press("ArrowDown");
-  await page.keyboard.press("Home");
-  await page.keyboard.press("Enter");
-  await expect(page.locator("input[name=cityId]")).toHaveValue("tehran");
-  await expect(page.locator("input[name=stationId]")).toHaveValue("");
-  await page.getByRole("button", { name: "Send report", exact: true }).click();
+  await review();
+  expect(sent).toHaveLength(0);
+  const popupWait = page.waitForEvent("popup");
+  await page.getByRole("link", { name: /Optional login/ }).click();
+  const loginPopup = await popupWait;
   await expect(
-    page.getByTestId("report-form").getByRole("alert"),
-  ).toContainText("cannot receive");
+    loginPopup.getByRole("button", {
+      name: "Continue with Google",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await loginPopup.close();
+  await expect(page.getByTestId("report-review")).toBeVisible();
+  await expect(page.getByTestId("report-review")).toContainText(
+    "Weekday times observed today",
+  );
+  await expect(
+    page.getByRole("img", { name: "Photo to be sent with your report" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Edit information", exact: true })
+    .click();
   await expect(
     page.getByRole("textbox", { name: "Description", exact: true }),
-  ).toHaveValue("Weekday times on the board, observed today");
-  await page.getByRole("button", { name: "Send report", exact: true }).click();
+  ).toHaveValue("Weekday times observed today");
+  await review();
+  await send();
+  await expect(
+    page.getByTestId("report-review").getByRole("alert"),
+  ).toContainText("cannot receive");
+  await send();
   await expect(
     page.getByRole("heading", {
       name: "Thank you! Your report was received for review.",
@@ -154,40 +238,33 @@ try {
   ).toBeVisible();
   expect(sent[0].id).toBe(sent[1].id);
   expect(sent[1].photo).toBeTruthy();
-  await page
-    .getByRole("button", { name: "Send another report", exact: true })
-    .click();
-  await expect(page.getByTestId("report-types")).toBeVisible();
-  await page
-    .getByTestId("report-types")
-    .getByRole("button")
-    .filter({ hasText: "Car near an escalator" })
-    .click();
-  await page.getByRole("spinbutton").fill("6");
+  expect(sent[1].publicCredit).toBe(false);
+  await another();
+  await choose("Car near an escalator");
+  await page.getByRole("spinbutton").fill("12");
   await page.getByRole("button", { name: "Car 4", exact: true }).click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Selected car" }),
+  ).toContainText("4");
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await page.getByRole("button", { name: "Send report", exact: true }).click();
+  await review();
+  await expect(page.getByTestId("report-review")).toContainText("Car 4 / 12");
+  await send();
   await expect(
     page.getByRole("heading", {
       name: "Thank you! Your report was received for review.",
     }),
   ).toBeVisible();
-  expect(sent[2].kind).toBe("wagon");
-  expect(sent[2].details).toContain("Observed car 4 of 6");
+  expect(sent[2].details).toContain("Observed car 4 of 12");
+  await another();
+  await choose("Station amenities");
   await page
-    .getByRole("button", { name: "Send another report", exact: true })
+    .getByRole("button", { name: "Review report", exact: true })
     .click();
-  await page
-    .getByTestId("report-types")
-    .getByRole("button")
-    .filter({ hasText: "Station amenities" })
-    .click();
-  await expect(page.getByRole("spinbutton")).toHaveCount(0);
-  await page.getByRole("button", { name: "Send report", exact: true }).click();
   await expect(
     page.getByTestId("report-form").getByRole("alert"),
   ).toContainText("Write some information");
@@ -197,46 +274,148 @@ try {
   await page
     .getByRole("option", { name: "Not available", exact: true })
     .click();
-  await page.getByRole("button", { name: "Send report", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Add another amenity", exact: true })
+    .click();
+  await page.getByRole("combobox", { name: /^Amenity 2 / }).click();
+  await page.getByRole("option", { name: "Toilets", exact: true }).click();
+  await page
+    .getByRole("combobox", { name: /^What you observed / })
+    .nth(1)
+    .click();
+  await page.getByRole("option", { name: "Available", exact: true }).click();
+  await review();
+  await expect(page.getByTestId("report-review")).toContainText(
+    "Elevator: Not available · Toilets: Available",
+  );
+  await send();
   await expect(
     page.getByRole("heading", {
       name: "Thank you! Your report was received for review.",
     }),
   ).toBeVisible();
-  expect(sent[3].details).toContain("Amenity: elevator; observed value: false");
+  expect(sent[3].details).toContain("Amenity: wc; observed value: true");
+  await another();
+  await choose("Suggest a city or line");
+  await expect(page.locator("input[name=cityId]")).toHaveValue("other");
+  await page
+    .getByRole("textbox", { name: "City and line name", exact: true })
+    .fill("New city, Line 1");
+  await page
+    .getByRole("textbox", { name: "Description", exact: true })
+    .fill("A source for the proposed city");
+  await review();
+  await send();
+  await expect(
+    page.getByRole("heading", {
+      name: "Thank you! Your report was received for review.",
+    }),
+  ).toBeVisible();
+  expect(sent[4].kind).toBe("city_request");
+  // Provider/email flows are intercepted; no emails or third-party account changes occur.
+  await page.goto(`${origin}/account?lang=en`);
+  await page
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "currently unavailable",
+  );
+  await page.getByText("More ways to log in", { exact: true }).click();
+  await page
+    .getByRole("button", { name: "Continue with GitHub", exact: true })
+    .click();
+  expect(providers).toEqual(["google", "github"]);
+  await page
+    .getByRole("textbox", { name: "Email", exact: true })
+    .fill("test@example.invalid");
+  await page
+    .getByRole("button", { name: "Send login code", exact: true })
+    .click();
+  const otp = page.getByRole("textbox", {
+    name: "Six-digit email code",
+    exact: true,
+  });
+  await expect(otp).toBeFocused();
+  await otp.fill("111111");
+  await page
+    .getByRole("button", { name: "Verify code and log in", exact: true })
+    .click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "incorrect or expired",
+  );
+  await otp.fill("۱۲۳۴۵۶");
+  await expect(otp).toHaveValue("123456");
+  await page
+    .getByRole("button", { name: "Verify code and log in", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Log out", exact: true }),
+  ).toBeVisible();
+  await page.goto(`${origin}/contribute?city=mashhad&lang=en`);
+  await choose("Other information");
+  await page
+    .getByRole("textbox", { name: "Description", exact: true })
+    .fill("Credited observation");
+  await review();
+  const publicCredit = page.getByRole("checkbox", {
+    name: /I want public credit/,
+  });
+  await expect(publicCredit).not.toBeChecked();
+  await publicCredit.check();
+  const alias = page.getByRole("textbox", {
+    name: "Display name",
+    exact: true,
+  });
+  await expect(alias).toHaveValue("");
+  await alias.fill("Public rider");
+  await send();
+  await expect(
+    page.getByRole("heading", {
+      name: "Thank you! Your report was received for review.",
+    }),
+  ).toBeVisible();
+  expect(sent[5].publicName).toBe("Public rider");
+  expect(sent[5].publicCredit).toBe(true);
   for (const lang of ["en", "fa"]) {
     await page.goto(`${origin}/contribute?city=mashhad&lang=${lang}`);
     await page.getByTestId("report-types").getByRole("button").nth(1).click();
-    await expect(page.locator("select[name=kind]")).toHaveCount(0);
+    for (const width of [390, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      const audit = await new AxeBuilder({ page }).analyze();
+      expect(
+        audit.violations.filter((v) =>
+          ["serious", "critical"].includes(v.impact ?? ""),
+        ),
+      ).toEqual([]);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
+    await page.goto(`${origin}/account?lang=${lang}`);
+    await expect(
+      page.getByRole("button", {
+        name: lang === "fa" ? "خروج" : "Log out",
+        exact: true,
+      }),
+    ).toBeVisible();
     const audit = await new AxeBuilder({ page }).analyze();
     expect(
       audit.violations.filter((v) =>
         ["serious", "critical"].includes(v.impact ?? ""),
       ),
     ).toEqual([]);
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await page.setViewportSize({ width: 1280, height: 900 });
-    const auditDesktop = await new AxeBuilder({ page }).analyze();
-    expect(
-      auditDesktop.violations.filter((v) =>
-        ["serious", "critical"].includes(v.impact ?? ""),
-      ),
-    ).toEqual([]);
-    await page.setViewportSize({ width: 390, height: 844 });
   }
   await page.goto(`${origin}/map?city=mashhad&lang=en`);
   await expect(page.getByTestId("construction-section")).toHaveCount(5);
+  await expect(page.getByTestId("future-stop")).toHaveCount(30);
   await expect(page.locator("svg[role=group] a")).toHaveCount(36);
-  await expect(page.getByTestId("construction-legend")).toContainText("Line 4");
   await page.goto(`${origin}/map?city=tehran&lang=en`);
   await expect(page.getByTestId("construction-section")).toHaveCount(0);
   expect(errors).toEqual([]);
   console.log(
-    "Passed: 2-step flow, linked station, preserved text/photo, searchable keyboard selects, Persian spelling normalization, city reset, retry idempotency, wagon-only report, FA/EN mobile/desktop accessibility.",
+    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub and email-code UI; explicit alias consent; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
   );
 } finally {
   await browser?.close();

@@ -53,7 +53,7 @@ for (let page = 0; page < 10; page++) {
   console.log(
     JSON.stringify(
       Object.fromEntries(
-        ["processed", "published", "pending", "needsReview"].map((key) => [
+        ["processed", "published", "pending", "needsReview", "expired"].map((key) => [
           key,
           Number(result[key]) || 0,
         ]),

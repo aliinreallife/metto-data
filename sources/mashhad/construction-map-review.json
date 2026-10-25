@@ -204,7 +204,9 @@
     "line4RouteTaggedConstruction": true,
     "operatingCentralWayExcluded": 1388754301,
     "stationRecordsAdded": 0,
-    "routingEdgesAdded": 0
+    "routingEdgesAdded": 0,
+    "mapOnlyFutureStops": 30,
+    "rendering": "straight-between-mapped-stops"
   },
   "limitations": [
     "Source-reported map infrastructure; not verified against the operator.",

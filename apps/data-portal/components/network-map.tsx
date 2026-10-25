@@ -90,6 +90,31 @@ export function NetworkMap({ city, lang }: { city: CatalogCity; lang: Lang }) {
             aria-hidden="true"
           />
         ))}
+        {city.id === constructionMap.cityId &&
+          constructionMap.futureStops.map((stop) => (
+            <circle
+              key={stop.id}
+              data-testid="future-stop"
+              cx={
+                450 +
+                (stop.location.lng * Math.cos((lat0 * Math.PI) / 180) -
+                  (minX + maxX) / 2) *
+                  scale
+              }
+              cy={300 + (-stop.location.lat - (minY + maxY) / 2) * scale}
+              r="4"
+              fill="var(--card)"
+              stroke={
+                construction.find(
+                  (section) => section.lineId === stop.lineIds[0],
+                )?.displayColor ?? "#777"
+              }
+              strokeWidth="1.5"
+              strokeDasharray="2 2"
+            >
+              <title>{`${stop.names[lang]} · ${t.planned}`}</title>
+            </circle>
+          ))}
         {city.stations.map((station) => {
           const p = xy(station.id);
           return (

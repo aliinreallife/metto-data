@@ -1,8 +1,117 @@
 export const STRINGS = {
   fa: {
+    addAmenity: "افزودن امکان دیگر",
+    removeAmenity: "حذف این امکان",
+    detailsTooLong: "توضیحات خیلی طولانی است. کمی کوتاه‌ترش کن.",
+
+    continueGoogle: "ادامه با گوگل",
+    continueGithub: "ادامه با گیت‌هاب",
+    orEmailCode: "یا با کد ایمیل",
+    emailCode: "کد شش‌رقمی ایمیل",
+    sendCode: "فرستادن کد ورود",
+    verifyAndLogin: "تأیید کد و ورود",
+    resendCode: "فرستادن دوبارهٔ کد",
+    changeEmail: "تغییر ایمیل",
+    moreLoginOptions: "روش‌های دیگر ورود",
+    codeSent: "کد ورود به ایمیلت فرستاده شد. پوشهٔ هرزنامه را هم بررسی کن.",
+    codeSendFailed:
+      "کد فرستاده نشد. ایمیل را بررسی کن و کمی بعد دوباره امتحان کن.",
+    codeInvalid:
+      "کد درست نیست یا اعتبارش تمام شده. دوباره بررسی کن یا کد جدید بگیر.",
+    socialUnavailable:
+      "این روش ورود در حال حاضر در دسترس نیست. می‌توانی از کد ایمیل استفاده کنی یا بدون حساب گزارش بفرستی.",
+    signedInPrivacy:
+      "ورود انجام شده است. نام عمومی برای هر گزارش فقط با انتخاب خودت ثبت می‌شود.",
+    acceptedContributions: "مشارکت پذیرفته‌شده",
+    publicNameHint:
+      "یک نام یا نام مستعار عمومی انتخاب کن؛ ایمیل یا راه تماس ننویس.",
+    publicNameError:
+      "نام عمومی باید بین ۲ تا ۸۰ نویسه باشد و ایمیل یا نشانهٔ @ نداشته باشد.",
+    profile: "سابقهٔ مشارکت",
+    accepted: "پذیرفته‌شده",
+    submitted: "در حال بررسی",
+    profileEmpty: "گزارش عمومی‌ای برای این مشارکت‌کننده پیدا نشد.",
+    opensNewTab: "در برگهٔ جدید باز می‌شود",
+    multipleAmenities: "هر امکانی را که مشاهده کردی انتخاب کن.",
+    cityRequest: "پیشنهاد شهر یا خط جدید",
+    cityRequestChoice: "برای اضافه شدن شهر یا خطت اطلاعات بفرست",
+    cityRequestHint: "نام شهر و خط و هر منبع یا نقشه‌ای که داری را بنویس.",
+    cityRequestPlaceholder:
+      "مثلاً: اطلاعات متروی شهر…، خط… را از این منبع داریم…",
+    cityRequestSubject: "نام شهر و خط",
+
+    reviewSend: "بررسی و ارسال",
+    confirmTitle: "گزارشت را بفرستیم؟",
+    confirmIntro:
+      "اطلاعات را یک بار بررسی کن. فقط با زدن دکمهٔ ارسال، گزارش فرستاده می‌شود.",
+    reviewReport: "بررسی گزارش",
+    editReport: "ویرایش اطلاعات",
+    preparing: "در حال آماده‌سازی…",
+    confirmSend: "بله، گزارش را بفرست",
+    confirmTestSend: "بله، آزمایشی بفرست",
+    reviewPhoto: "عکسی که همراه گزارش فرستاده می‌شود",
+    privateContact: "فقط برای پیگیری؛ خصوصی می‌ماند",
+    previewReportNote:
+      "این صفحه پیش‌نمایش است. ارسال در اینجا آزمایشی است و به گزارش‌های عمومی یا داده‌های متو اضافه نمی‌شود.",
+    testThanks: "گزارش آزمایشی دریافت شد. در داده‌های عمومی منتشر نمی‌شود.",
+    station: "ایستگاه",
+    account: "حساب من",
+    login: "ورود",
+    logout: "خروج",
+    signup: "ساخت حساب",
+    email: "ایمیل",
+    password: "رمز عبور",
+    displayName: "نام نمایشی",
+    displayNameHint:
+      "اگر برای گزارشت نام عمومی انتخاب کنی، همین نام در کنار آن دیده می‌شود.",
+    accountIntro:
+      "داشتن حساب اختیاری است. با حساب می‌توانی نامت را کنار مشارکت‌هایت ثبت کنی؛ گزارش ناشناس همچنان آزاد است.",
+    accountUnavailable:
+      "در حال حاضر اتصال ورود برقرار نیست. همچنان می‌توانی بدون حساب گزارش بفرستی.",
+    accountFailed:
+      "انجام نشد. اطلاعات را بررسی کن و دوباره امتحان کن؛ شاید لازم باشد ابتدا ایمیلت را تأیید کنی.",
+    loginDone: "وارد شدی. می‌توانی به گزارش برگردی.",
+    signupDone:
+      "حسابت ساخته شد. اگر ایمیل تأیید دریافت کردی، آن را باز کن و بعد وارد شو.",
+    pleaseWait: "کمی صبر کن…",
+    haveAccount: "حساب دارم؛ وارد می‌شوم",
+    needAccount: "ساخت حساب جدید",
+    forgotPassword: "رمزت را فراموش کرده‌ای؟",
+    resetPassword: "بازیابی رمز عبور",
+    sendReset: "فرستادن پیوند بازیابی",
+    savePassword: "ذخیرهٔ رمز جدید",
+    resetSent:
+      "اگر این ایمیل حساب داشته باشد، پیوند بازیابی برایش فرستاده می‌شود.",
+    resetDone: "رمزت تغییر کرد. با رمز جدید وارد شو.",
+    continueAnonymous: "فرستادن گزارش بدون حساب",
+    creditAs: "می‌خواهم برای این گزارش نام عمومی ثبت کنم",
+    creditHint:
+      "نامی که انتخاب می‌کنی کنار همین گزارش و در سابقه و جدول مشارکت‌ها عمومی می‌شود. ایمیل و راه تماس خصوصی می‌مانند.",
+    anonymousCredit: "این گزارش بدون نام عمومی فرستاده می‌شود.",
+    optionalLogin: "ورود اختیاری — در برگهٔ جدید",
+    loginRequired:
+      "برای ثبت نام عمومی دوباره وارد شو، یا گزارش را بدون نام بفرست.",
+    leaderboard: "مشارکت‌کنندگان",
+    leaderboardIntro:
+      "این جدول فقط مشارکت‌هایی را می‌شمارد که بازبینی و پذیرفته شده‌اند و فرستنده ثبت نام عمومی را انتخاب کرده است. ارسال یا بسته شدن گزارش به‌تنهایی امتیاز ندارد.",
+    leaderboardEmpty:
+      "هنوز مشارکت پذیرفته‌شده‌ای با نام عمومی برای نمایش نداریم. می‌توانی گزارش بفرستی؛ ناشناس یا با نام انتخابی خودت.",
+    leaderboardUnavailable:
+      "جدول مشارکت‌ها فعلاً بارگیری نشد. کمی بعد دوباره امتحان کن.",
+    leaderboardPartial:
+      "این فهرست بخشی از گزارش‌های موجود را پوشش می‌دهد؛ شمارش ممکن است کامل نباشد.",
+    publicReports: "گزارش عمومی",
+    trainFront: "سر قطار",
+    trainRear: "ته قطار",
+    chooseCar: "واگن نزدیک پله‌برقی را بزن",
+    selectedCar: "واگن انتخاب‌شده",
+    trainCountFirst:
+      "تعداد واگن‌های همین قطار را وارد کن تا تصویر قطار نمایش داده شود. شماره‌گذاری از سر قطار شروع می‌شود.",
+    directionPlaceholder: "مثلاً: به سمت فرودگاه",
+
     constructionSections: "بخش‌های در حال ساخت",
     constructionNote:
-      "مسیرهای گزارش‌شده در نقشهٔ آزاد؛ برای سفر قابل استفاده نیستند. وضعیت نیازمند بررسی است.",
+      "خط‌چین‌ها اتصال سادهٔ نقاط ایستگاه‌های آینده‌اند، مثل نقشهٔ تهران؛ شکل دقیق تونل یا مسیر پیاده نیستند. وضعیت از نقشهٔ آزاد گزارش شده و نیازمند بررسی است.",
     reportSteps: "مراحل ثبت گزارش",
     chooseChange: "نوع تغییر",
     changeDetails: "جزئیات",
@@ -110,6 +219,8 @@ export const STRINGS = {
     source: "پیوند منبع (اختیاری)",
     photo: "عکس تابلو یا ایستگاه (اختیاری)",
     photoHint: "یک عکس JPG، PNG یا WebP تا ۸ مگابایت.",
+    photoStorageFull:
+      "فعلاً امکان دریافت عکس تازه نیست. اطلاعاتت حفظ شده؛ می‌توانی بعداً دوباره تلاش کنی یا با ویرایش گزارش، به‌جای عکس توضیح یا پیوند منبع بفرستی.",
     contactHeading: "راه تماس برای پیگیری (اختیاری)",
     contactNote:
       "اگر می‌خواهی دربارهٔ گزارش با تو تماس بگیریم، این بخش را پر کن. این دو فیلد عمومی نمی‌شوند.",
@@ -165,9 +276,120 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    addAmenity: "Add another amenity",
+    removeAmenity: "Remove this amenity",
+    detailsTooLong: "Your report is too long. Please shorten the description.",
+
+    continueGoogle: "Continue with Google",
+    continueGithub: "Continue with GitHub",
+    orEmailCode: "or use an email code",
+    emailCode: "Six-digit email code",
+    sendCode: "Send login code",
+    verifyAndLogin: "Verify code and log in",
+    resendCode: "Resend code",
+    changeEmail: "Change email",
+    moreLoginOptions: "More ways to log in",
+    codeSent:
+      "A login code was sent to your email. Check your spam folder too.",
+    codeSendFailed:
+      "The code was not sent. Check your email address and try again shortly.",
+    codeInvalid:
+      "The code is incorrect or expired. Check it or request a new code.",
+    socialUnavailable:
+      "This sign-in method is currently unavailable. Try an email code or send your report without an account.",
+    signedInPrivacy:
+      "You are logged in. Public credit is added to a report only when you choose it.",
+    acceptedContributions: "accepted contributions",
+    publicNameHint:
+      "Choose a public name or nickname; do not enter your email or contact details.",
+    publicNameError:
+      "Use 2–80 characters for your public name, without an email address or @ sign.",
+    profile: "Contribution history",
+    accepted: "Accepted",
+    submitted: "Awaiting review",
+    profileEmpty: "No public reports were found for this contributor.",
+    opensNewTab: "opens a new tab",
+    multipleAmenities: "Choose each amenity you observed.",
+    cityRequest: "Suggest a city or line",
+    cityRequestChoice: "Help add your city or a new line",
+    cityRequestHint:
+      "Tell us the city and line name, and share any source or map you have.",
+    cityRequestPlaceholder:
+      "For example: Information for… metro, Line…, is available from…",
+    cityRequestSubject: "City and line name",
+
+    reviewSend: "Review & send",
+    confirmTitle: "Ready to send your report?",
+    confirmIntro:
+      "Check the information once more. Your report is only sent when you confirm below.",
+    reviewReport: "Review report",
+    editReport: "Edit information",
+    preparing: "Preparing…",
+    confirmSend: "Yes, send report",
+    confirmTestSend: "Yes, send test report",
+    reviewPhoto: "Photo to be sent with your report",
+    privateContact: "For follow-up only; stays private",
+    previewReportNote:
+      "This is a preview. Submissions here are tests and are not published as public reports or added to Metto’s data.",
+    testThanks:
+      "Test report received. It will not be published in the public data.",
+    station: "Station",
+    account: "My account",
+    login: "Log in",
+    logout: "Log out",
+    signup: "Create account",
+    email: "Email",
+    password: "Password",
+    displayName: "Display name",
+    displayNameHint:
+      "This is the name shown if you choose public credit for a report.",
+    accountIntro:
+      "An account is optional. Use one to put your name on contributions, or keep reporting anonymously.",
+    accountUnavailable:
+      "Login is currently unavailable. You can still send a report without an account.",
+    accountFailed:
+      "That did not work. Check your details and try again; you may need to verify your email first.",
+    loginDone: "You are logged in. You can return to your report.",
+    signupDone:
+      "Your account was created. If you receive a verification email, open it before logging in.",
+    pleaseWait: "Please wait…",
+    haveAccount: "I have an account — log in",
+    needAccount: "Create a new account",
+    forgotPassword: "Forgot your password?",
+    resetPassword: "Reset password",
+    sendReset: "Send reset link",
+    savePassword: "Save new password",
+    resetSent: "If this email has an account, a reset link will be sent.",
+    resetDone: "Your password was changed. Log in with the new password.",
+    continueAnonymous: "Send a report without an account",
+    creditAs: "I want public credit for this report",
+    creditHint:
+      "Your chosen name becomes public on this report, its contribution history and the contributors table. Your email and contact details stay private.",
+    anonymousCredit: "This report will be sent without a public name.",
+    optionalLogin: "Optional login — opens a new tab",
+    loginRequired:
+      "Log in again for public credit, or send the report without a public name.",
+    leaderboard: "Contributors",
+    leaderboardIntro:
+      "Only reviewed, accepted contributions with optional public credit count here. Sending or closing a report alone does not earn credit.",
+    leaderboardEmpty:
+      "No accepted contributions with public credit to show yet. You can send a report anonymously or with a public name you choose.",
+    leaderboardUnavailable:
+      "The contributors table could not be loaded. Please try again later.",
+    leaderboardPartial:
+      "This list covers part of the report history; counts may be incomplete.",
+    publicReports: "public reports",
+    trainFront: "Front",
+    trainRear: "Rear",
+    chooseCar: "Choose the car closest to the escalator",
+    selectedCar: "Selected car",
+    trainCountFirst:
+      "Enter the number of cars on this train to show the diagram. Car numbers start at the front.",
+    directionPlaceholder: "For example: toward the airport",
+
     constructionSections: "Construction sections",
     constructionNote:
-      "Source-reported map sections, unavailable for travel. Status needs review.",
+      "Dashed lines connect mapped future stops with straight sections, like Tehran’s map. They are not exact tunnel or walking paths. Source-reported status needs review.",
     reportSteps: "Report steps",
     chooseChange: "Change type",
     changeDetails: "Details",
@@ -282,6 +504,8 @@ export const STRINGS = {
     source: "Source link (optional)",
     photo: "Station or timetable photo (optional)",
     photoHint: "One JPG, PNG or WebP photo up to 8 MB.",
+    photoStorageFull:
+      "We cannot receive new photos right now. Your draft is kept. Try later, or edit your report and replace the photo with details or a source link.",
     contactHeading: "Contact for follow-up (optional)",
     contactNote:
       "Fill this in if you want us to contact you about the report. These two fields are not public.",

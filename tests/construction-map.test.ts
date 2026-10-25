@@ -8,6 +8,11 @@ it("shows only reviewed source-reported construction geometry without adding pas
   const snapshot = read("sources/mashhad/construction-map-snapshot.json");
   expect(reference.purpose).toBe("map-reference-only");
   expect(reference.license).toBe("ODbL-1.0");
+  expect(reference.rendering).toBe("straight-between-mapped-stops");
+  expect(reference.futureStops).toHaveLength(30);
+  expect(
+    reference.futureStops.every((stop: any) => stop.status === "planned"),
+  ).toBe(true);
   expect(new Set(reference.segments.map((s: any) => s.lineId))).toEqual(
     new Set(["mashhad:line:3", "mashhad:line:4"]),
   );
@@ -18,7 +23,12 @@ it("shows only reviewed source-reported construction geometry without adding pas
     expect(way.tags.construction).toBe("subway");
     expect(section.status).toBe("under_construction");
     expect(section.coordinates).toEqual(
-      way.geometry.map((p: any) => [p.lat, p.lon]),
+      way.geometry
+        .filter(
+          (p: any, index: number) =>
+            index === 0 || index === way.geometry.length - 1 || p.tags?.name,
+        )
+        .map((p: any) => [p.lat, p.lon]),
     );
     for (const [lat, lng] of section.coordinates) {
       expect(lat).toBeGreaterThan(36);

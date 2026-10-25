@@ -14,6 +14,8 @@ import {
 import type { Catalog, Lang } from "../lib/catalog";
 import { STRINGS, type StringKey } from "../lib/i18n";
 import { preparePhoto } from "../lib/photo";
+import { WagonPicker } from "./wagon-picker";
+import type { AccountUser } from "./account";
 import { SelectField } from "./select-field";
 type Kind =
   | "timetable"
@@ -21,7 +23,8 @@ type Kind =
   | "status"
   | "location"
   | "wagon"
-  | "other";
+  | "other"
+  | "city_request";
 const kinds: Kind[] = [
   "timetable",
   "facility",
@@ -29,6 +32,7 @@ const kinds: Kind[] = [
   "location",
   "wagon",
   "other",
+  "city_request",
 ];
 const icons = {
   timetable: Clock3,
@@ -37,6 +41,7 @@ const icons = {
   location: MapPin,
   wagon: TrainFront,
   other: MessageSquare,
+  city_request: MapPin,
 };
 const input =
   "w-full min-h-12 rounded-xl border border-input bg-background px-3 py-3 text-base focus-visible:ring-2 focus-visible:ring-ring";
@@ -51,6 +56,9 @@ export function ContributionForm({
   initialStation,
   initialKind,
   enabled,
+  previewMode,
+  account,
+  authConfigured,
 }: {
   catalog: Catalog;
   lang: Lang;
@@ -58,21 +66,44 @@ export function ContributionForm({
   initialStation: string;
   initialKind: string;
   enabled: boolean;
+  previewMode: boolean;
+  account: AccountUser | null;
+  authConfigured: boolean;
 }) {
   const t = STRINGS[lang],
     [cityId, setCityId] = useState(initialCity || "mashhad"),
-    [step, setStep] = useState<1 | 2>(1),
+    [step, setStep] = useState<1 | 2 | 3>(1),
     [kind, setKind] = useState<Kind>(
       kinds.includes(initialKind as Kind) ? (initialKind as Kind) : "other",
     ),
     [stationId, setStationId] = useState(initialStation),
     [carCount, setCarCount] = useState(""),
+    [amenityRows, setAmenityRows] = useState([0]),
     [car, setCar] = useState<number | null>(null),
     [pending, setPending] = useState(false),
+    [draft, setDraft] = useState<{
+      cityId: string;
+      stationId: string;
+      kind: Kind;
+      subject: string;
+      details: string;
+      source: string;
+      name: string;
+      contact: string;
+      website: string;
+      publicCredit: boolean;
+      photo?: string;
+    } | null>(null),
+    [reviewNotes, setReviewNotes] = useState(""),
+    [reviewObservation, setReviewObservation] = useState(""),
+    [credit, setCredit] = useState(false),
+    [publicName, setPublicName] = useState(""),
     [error, setError] = useState<StringKey | null>(null),
-    [receipt, setReceipt] = useState<{ id: string; issueUrl?: string } | null>(
-      null,
-    );
+    [receipt, setReceipt] = useState<{
+      id: string;
+      issueUrl?: string;
+      creditId?: string;
+    } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null),
     typeButtons = useRef<HTMLDivElement>(null),
     form = useRef<HTMLFormElement>(null),
@@ -87,7 +118,13 @@ export function ContributionForm({
   }, [receipt]);
   const city = catalog.cities.find((item) => item.id === cityId),
     stations = city?.stations ?? [];
+  const kindLabel = (value: Kind) =>
+    value === "city_request" ? t.cityRequest : t[value];
   const chooseKind = (value: Kind) => {
+    if (value === "city_request") {
+      setCityId("other");
+      setStationId("");
+    }
     setKind(value);
     setError(null);
     setStep(2);
@@ -111,19 +148,31 @@ export function ContributionForm({
   };
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (step !== 2 || pending || !enabled) return;
+    if (step !== 2 || pending) return;
     const fields = new FormData(event.currentTarget),
       details = String(fields.get("details") ?? "").trim(),
       file = (fields.get("photo") as File | null) ?? undefined;
     let observation = "";
-    if (kind === "facility" && fields.get("amenity") && fields.get("value"))
-      observation = `Amenity: ${fields.get("amenity")}; observed value: ${fields.get("value")}`;
+    if (kind === "facility")
+      observation = fields
+        .getAll("amenity")
+        .map((amenity, index) =>
+          amenity && fields.getAll("value")[index]
+            ? `Amenity: ${amenity}; observed value: ${fields.getAll("value")[index]}`
+            : "",
+        )
+        .filter(Boolean)
+        .join("\n");
     if (kind === "status" && fields.get("status"))
       observation = `Observed status: ${fields.get("status")}`;
     if (kind === "wagon" && car)
       observation = `Observed car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}`;
     if (!details && !observation && !file?.size) {
       setError("required");
+      return;
+    }
+    if ([details, observation].filter(Boolean).join("\n\n").length > 4000) {
+      setError("detailsTooLong");
       return;
     }
     setError(null);
@@ -154,32 +203,34 @@ export function ContributionForm({
         name: String(fields.get("name") ?? "").trim(),
         contact: String(fields.get("contact") ?? "").trim(),
         website: String(fields.get("website") ?? ""),
+        publicCredit: credit && !!account?.emailVerified,
         ...(photo ? { photo } : {}),
       };
-      const fingerprint = JSON.stringify(payload);
-      if (last.current?.fingerprint !== fingerprint)
-        last.current = { fingerprint, id: crypto.randomUUID() };
-      const response = await fetch("/api/reports", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "omit",
-        body: JSON.stringify({ ...payload, id: last.current!.id }),
-        signal: AbortSignal.timeout(45000),
+      setDraft(payload);
+      setReviewNotes(details);
+      setReviewObservation(
+        kind === "facility"
+          ? fields
+              .getAll("amenity")
+              .map((amenity, index) => {
+                const value = fields.getAll("value")[index];
+                return amenity && value
+                  ? `${t[String(amenity) as StringKey]}: ${value === "true" ? t.available : value === "false" ? t.absent : t.unknown}`
+                  : "";
+              })
+              .filter(Boolean)
+              .join(" · ")
+          : kind === "status" && fields.get("status")
+            ? t[String(fields.get("status")) as StringKey]
+            : kind === "wagon" && car
+              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} / ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${fields.get("direction") ? ` · ${fields.get("direction")}` : ""}`
+              : "",
+      );
+      setStep(3);
+      requestAnimationFrame(() => {
+        heading.current?.focus({ preventScroll: true });
+        window.scrollTo({ top: 0 });
       });
-      if (!response.ok)
-        throw Error(
-          response.status === 429
-            ? "limited"
-            : response.status === 503
-              ? "busy"
-              : "failed",
-        );
-      const result = (await response.json()) as {
-        id: string;
-        issueUrl?: string;
-      };
-      if (!result.id) throw Error("failed");
-      setReceipt(result);
     } catch (caught) {
       const key = caught instanceof Error ? caught.message : "";
       setError(
@@ -193,15 +244,87 @@ export function ContributionForm({
       setPending(false);
     }
   };
+  const sendDraft = async () => {
+    if (step !== 3 || !draft || pending || !enabled) return;
+    if (credit && !account?.emailVerified) {
+      setError("loginRequired");
+      return;
+    }
+    if (
+      credit &&
+      account &&
+      (publicName.trim().length < 2 ||
+        publicName.trim().length > 80 ||
+        /[@\u0000-\u001f\u007f]/.test(publicName))
+    ) {
+      setError("publicNameError");
+      return;
+    }
+    setPending(true);
+    setError(null);
+    try {
+      const payload = {
+        ...draft,
+        publicCredit: credit && !!account?.emailVerified,
+        ...(credit && account ? { publicName: publicName.trim() } : {}),
+      };
+      const fingerprint = JSON.stringify([
+        payload,
+        credit && account ? { id: account.id, name: account.name } : null,
+      ]);
+      if (last.current?.fingerprint !== fingerprint)
+        last.current = { fingerprint, id: crypto.randomUUID() };
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ ...payload, id: last.current!.id }),
+        signal: AbortSignal.timeout(45000),
+      });
+      if (!response.ok) {
+        const failure = await response.json().catch(() => null);
+        throw Error(
+          failure?.error === "photo_capacity"
+            ? "photoStorageFull"
+            : response.status === 401
+            ? "loginRequired"
+            : response.status === 429
+              ? "limited"
+              : response.status === 503
+                ? "busy"
+                : "failed",
+        );
+      }
+      const result = (await response.json()) as {
+        id: string;
+        issueUrl?: string;
+      };
+      if (!result.id) throw Error("failed");
+      setReceipt(result);
+    } catch (caught) {
+      const key = caught instanceof Error ? caught.message : "";
+      setError(
+        ["loginRequired", "limited", "busy", "photoStorageFull"].includes(key)
+          ? (key as StringKey)
+          : "failed",
+      );
+    } finally {
+      setPending(false);
+    }
+  };
+  const reviewCity = catalog.cities.find((city) => city.id === draft?.cityId);
+  const reviewStation = reviewCity?.stations.find(
+    (station) => station.id === draft?.stationId,
+  );
   return (
     <section className="mx-auto max-w-3xl">
       {!receipt && (
         <>
           <ol
             aria-label={t.reportSteps}
-            className="mb-7 flex items-center gap-3 text-sm"
+            className="mb-7 flex items-center gap-2 text-xs sm:gap-3 sm:text-sm"
           >
-            {[1, 2].map((value) => (
+            {[1, 2, 3].map((value) => (
               <li
                 key={value}
                 aria-current={step === value ? "step" : undefined}
@@ -214,25 +337,39 @@ export function ContributionForm({
                     value,
                   )}
                 </span>
-                {value === 1 ? t.chooseChange : t.changeDetails}
-                {value === 1 && (
+                {value === 1
+                  ? t.chooseChange
+                  : value === 2
+                    ? t.changeDetails
+                    : t.reviewSend}
+                {value < 3 && (
                   <span
                     aria-hidden
-                    className="ms-1 h-px w-6 bg-border sm:w-12"
+                    className="ms-1 h-px w-3 bg-border sm:w-8"
                   />
                 )}
               </li>
             ))}
           </ol>
-          {step === 2 && (
+          {step > 1 && (
             <button
               type="button"
               disabled={pending}
-              onClick={backToKinds}
+              onClick={
+                step === 3
+                  ? () => {
+                      setStep(2);
+                      setError(null);
+                      requestAnimationFrame(() =>
+                        heading.current?.focus({ preventScroll: true }),
+                      );
+                    }
+                  : backToKinds
+              }
               className="mb-5 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary"
             >
               <ArrowLeft aria-hidden className="size-4 rtl:rotate-180" />
-              {t.changeType}
+              {step === 3 ? t.editReport : t.changeType}
             </button>
           )}
           <h1
@@ -240,10 +377,18 @@ export function ContributionForm({
             tabIndex={-1}
             className="scroll-mt-24 text-2xl font-bold sm:text-3xl"
           >
-            {step === 1 ? t.chooseTitle : t[kind]}
+            {step === 1
+              ? t.chooseTitle
+              : step === 2
+                ? kindLabel(kind)
+                : t.confirmTitle}
           </h1>
           <p className="mb-6 mt-3 text-sm leading-7 text-muted-foreground">
-            {step === 1 ? t.chooseIntro : t[`${kind}Hint`]}
+            {step === 1
+              ? t.chooseIntro
+              : step === 2
+                ? t[`${kind === "city_request" ? "cityRequest" : kind}Hint`]
+                : t.confirmIntro}
           </p>
         </>
       )}
@@ -267,9 +412,13 @@ export function ContributionForm({
                   <Icon className="size-5" aria-hidden />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <strong className="block text-base">{t[item]}</strong>
+                  <strong className="block text-base">{kindLabel(item)}</strong>
                   <span className="mt-1 block text-sm leading-6 text-muted-foreground">
-                    {t[`${item}Choice`]}
+                    {
+                      t[
+                        `${item === "city_request" ? "cityRequest" : item}Choice`
+                      ]
+                    }
                   </span>
                 </span>
                 <ArrowRight
@@ -291,10 +440,20 @@ export function ContributionForm({
           className="rounded-2xl border border-border bg-card p-7"
         >
           <Check className="mb-4 size-9 text-primary" aria-hidden />
-          <h2 className="text-xl font-bold">{t.thanks}</h2>
+          <h2 className="text-xl font-bold">
+            {previewMode ? t.testThanks : t.thanks}
+          </h2>
           <p className="mt-4 text-sm">
             {t.reference}: <bdi>{receipt.id}</bdi>
           </p>
+          {receipt.creditId && (
+            <a
+              href={`/contributors/${receipt.creditId}?lang=${lang}`}
+              className="mt-4 inline-block py-2 text-primary underline underline-offset-4"
+            >
+              {t.profile}
+            </a>
+          )}
           {receipt.issueUrl && (
             <a
               href={receipt.issueUrl}
@@ -312,6 +471,8 @@ export function ContributionForm({
               setError(null);
               setCar(null);
               setCarCount("");
+              setDraft(null);
+              setCredit(false);
               setStep(1);
               requestAnimationFrame(() => heading.current?.focus());
             }}
@@ -325,7 +486,7 @@ export function ContributionForm({
           onSubmit={submit}
           method="post"
           className={
-            step === 1
+            step !== 2
               ? "hidden"
               : "flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 sm:p-7"
           }
@@ -345,7 +506,7 @@ export function ContributionForm({
                 { value: "other", label: t.otherCity },
               ]}
             />
-            {city && (
+            {city && kind !== "city_request" && (
               <SelectField
                 label={t.selectStation}
                 name="stationId"
@@ -376,42 +537,91 @@ export function ContributionForm({
                 ? t.lineDirection
                 : kind === "location"
                   ? t.stationAddress
-                  : t.subject}
-              <input name="subject" maxLength={160} className={input} />
+                  : kind === "city_request"
+                    ? t.cityRequestSubject
+                    : t.subject}
+              <input
+                name="subject"
+                required={kind === "city_request"}
+                maxLength={160}
+                className={input}
+              />
             </label>
           )}
           {kind === "facility" && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              <SelectField
-                label={t.fieldFacility}
-                name="amenity"
-                options={[
-                  { value: "", label: t.chooseOption },
-                  ...[
-                    "elevator",
-                    "wc",
-                    "atm",
-                    "coffeeShop",
-                    "fastFood",
-                    "groceryStore",
-                    "freeWifi",
-                    "prayerRoom",
-                    "parking",
-                    "police",
-                  ].map((key) => ({ value: key, label: t[key as StringKey] })),
-                ]}
-              />
-              <SelectField
-                label={t.observedValue}
-                name="value"
-                options={[
-                  { value: "", label: t.chooseOption },
-                  { value: "true", label: t.available },
-                  { value: "false", label: t.absent },
-                  { value: "null", label: t.unknown },
-                ]}
-              />
-            </div>
+            <fieldset className="min-w-0 space-y-4">
+              <legend className="mb-3 text-sm text-muted-foreground">
+                {t.multipleAmenities}
+              </legend>
+              {amenityRows.map((row, index) => (
+                <div key={row} className="rounded-xl border border-border p-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <SelectField
+                      label={
+                        t.fieldFacility +
+                        (amenityRows.length > 1
+                          ? ` ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(index + 1)}`
+                          : "")
+                      }
+                      name="amenity"
+                      options={[
+                        { value: "", label: t.chooseOption },
+                        ...[
+                          "elevator",
+                          "wc",
+                          "atm",
+                          "coffeeShop",
+                          "fastFood",
+                          "groceryStore",
+                          "freeWifi",
+                          "prayerRoom",
+                          "parking",
+                          "police",
+                        ].map((key) => ({
+                          value: key,
+                          label: t[key as StringKey],
+                        })),
+                      ]}
+                    />
+                    <SelectField
+                      label={t.observedValue}
+                      name="value"
+                      options={[
+                        { value: "", label: t.chooseOption },
+                        { value: "true", label: t.available },
+                        { value: "false", label: t.absent },
+                        { value: "null", label: t.unknown },
+                      ]}
+                    />
+                  </div>
+                  {amenityRows.length > 1 && (
+                    <button
+                      className="mt-3 min-h-11 text-sm font-semibold text-primary"
+                      type="button"
+                      aria-label={`${t.removeAmenity} ${index + 1}`}
+                      onClick={() =>
+                        setAmenityRows((rows) =>
+                          rows.filter((value) => value !== row),
+                        )
+                      }
+                    >
+                      {t.removeAmenity}
+                    </button>
+                  )}
+                </div>
+              ))}
+              {amenityRows.length < 10 && (
+                <button
+                  type="button"
+                  className={secondary}
+                  onClick={() =>
+                    setAmenityRows((rows) => [...rows, Math.max(...rows) + 1])
+                  }
+                >
+                  {t.addAmenity}
+                </button>
+              )}
+            </fieldset>
           )}
           {kind === "status" && (
             <SelectField
@@ -429,59 +639,27 @@ export function ContributionForm({
             />
           )}
           {kind === "wagon" && (
-            <fieldset className="min-w-0 rounded-xl border border-border p-4">
-              <legend className="px-1 font-semibold">{t.wagon}</legend>
-              <p className="mb-4 text-sm leading-7 text-muted-foreground">
-                {t.carHint}
-              </p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="flex flex-col gap-2 text-sm">
-                  {t.carCount}
-                  <input
-                    type="number"
-                    inputMode="numeric"
-                    min={2}
-                    max={12}
-                    value={carCount}
-                    onChange={(event) => {
-                      setCarCount(event.target.value);
-                      setCar(null);
-                    }}
-                    className={input}
-                  />
-                </label>
-                <label className="flex flex-col gap-2 text-sm">
-                  {t.direction}
-                  <input name="direction" maxLength={100} className={input} />
-                </label>
-              </div>
-              {Number(carCount) >= 2 && Number(carCount) <= 12 && (
-                <div className="mt-4 flex gap-1 overflow-x-auto pb-3" dir="ltr">
-                  {Array.from(
-                    { length: Math.floor(Number(carCount)) },
-                    (_, index) => index + 1,
-                  ).map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      aria-pressed={car === value}
-                      aria-label={`${t.car} ${value}`}
-                      onClick={() => setCar(value)}
-                      className={`min-h-16 min-w-14 rounded-lg border-2 p-3 font-bold ${car === value ? "border-primary bg-primary text-primary-foreground" : "border-border"}`}
-                    >
-                      {value}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </fieldset>
+            <WagonPicker
+              lang={lang}
+              count={carCount}
+              selected={car}
+              onCount={(value) => {
+                setCarCount(value);
+                setCar(null);
+              }}
+              onSelect={setCar}
+            />
           )}
           <label className="flex flex-col gap-2 text-sm font-semibold">
             {t.details}
             <textarea
               name="details"
               rows={4}
-              placeholder={t[`${kind}Placeholder`]}
+              placeholder={
+                t[
+                  `${kind === "city_request" ? "cityRequest" : kind}Placeholder`
+                ]
+              }
               maxLength={3600}
               className={input}
             />
@@ -554,9 +732,163 @@ export function ContributionForm({
               <input name="website" tabIndex={-1} autoComplete="off" />
             </label>
           </div>
+          <p
+            ref={step === 2 ? message : undefined}
+            role={error && step === 2 ? "alert" : "status"}
+            tabIndex={-1}
+            aria-live="polite"
+            className="text-sm leading-7 text-destructive"
+          >
+            {step === 2 && error
+              ? t[error]
+              : pending && step === 2
+                ? t.preparing
+                : ""}
+          </p>
+          <button type="submit" disabled={pending} className={primary}>
+            {pending ? t.preparing : t.reviewReport}
+            <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
+          </button>
+        </form>
+      )}
+      {!receipt && step === 3 && draft && (
+        <div
+          className="space-y-5 rounded-2xl border border-border bg-card p-5 sm:p-7"
+          data-testid="report-review"
+        >
+          <dl className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <dt className="text-xs text-muted-foreground">{t.kind}</dt>
+              <dd className="mt-1 font-semibold">{kindLabel(draft.kind)}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted-foreground">{t.city}</dt>
+              <dd className="mt-1 font-semibold">
+                {reviewCity?.names[lang] ?? t.otherCity}
+              </dd>
+            </div>
+            {draft.stationId && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">{t.station}</dt>
+                <dd className="mt-1 font-semibold">
+                  {reviewStation?.names[lang]}
+                </dd>
+              </div>
+            )}
+            {draft.subject && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">{t.subject}</dt>
+                <dd className="mt-1 whitespace-pre-wrap break-words">
+                  {draft.subject}
+                </dd>
+              </div>
+            )}
+            {reviewObservation && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">
+                  {t.observedValue}
+                </dt>
+                <dd className="mt-1 font-semibold">{reviewObservation}</dd>
+              </div>
+            )}
+            {reviewNotes && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">{t.details}</dt>
+                <dd className="mt-1 whitespace-pre-wrap break-words text-sm leading-7">
+                  {reviewNotes}
+                </dd>
+              </div>
+            )}
+            {draft.source && (
+              <div className="sm:col-span-2">
+                <dt className="text-xs text-muted-foreground">{t.source}</dt>
+                <dd dir="auto" className="mt-1 break-all text-sm">
+                  {draft.source}
+                </dd>
+              </div>
+            )}
+          </dl>
+          {draft.photo && (
+            <img
+              src={`data:image/jpeg;base64,${draft.photo}`}
+              alt={t.reviewPhoto}
+              className="max-h-72 w-full rounded-xl border border-border object-contain"
+            />
+          )}
+          {(draft.name || draft.contact) && (
+            <div className="rounded-xl bg-muted/60 p-4 text-sm leading-7">
+              <p className="font-semibold">{t.privateContact}</p>
+              <p>{draft.name}</p>
+              <p dir="auto">{draft.contact}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t.contactNote}
+              </p>
+            </div>
+          )}
+          {account?.emailVerified || credit ? (
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border p-4 text-sm leading-7">
+              <input
+                className="mt-1.5 size-4 shrink-0 accent-primary"
+                type="checkbox"
+                checked={credit}
+                disabled={pending}
+                onChange={(event) => setCredit(event.target.checked)}
+              />
+              <span>
+                <strong className="block">{t.creditAs}</strong>
+                <span className="text-muted-foreground">{t.creditHint}</span>
+              </span>
+            </label>
+          ) : (
+            authConfigured && (
+              <p className="text-sm leading-7 text-muted-foreground">
+                {t.anonymousCredit}{" "}
+                <a
+                  href={`/account?lang=${lang}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary underline underline-offset-4"
+                >
+                  {t.optionalLogin}
+                </a>
+              </p>
+            )
+          )}
+          {account?.emailVerified && credit && (
+            <div className="flex flex-col gap-2 text-sm">
+              <label htmlFor="report-public-name" className="font-semibold">
+                {t.displayName}
+              </label>
+              <input
+                id="report-public-name"
+                disabled={pending}
+                value={publicName}
+                onChange={(event) => setPublicName(event.target.value)}
+                maxLength={80}
+                autoComplete="nickname"
+                aria-describedby="report-public-name-hint"
+                aria-invalid={error === "publicNameError" || undefined}
+                className={input}
+              />
+              <p
+                id="report-public-name-hint"
+                className="text-xs text-muted-foreground"
+              >
+                {t.publicNameHint}
+              </p>
+            </div>
+          )}
           <p className="text-xs leading-7 text-muted-foreground">
             {t.publicNote}
           </p>
+          {previewMode && (
+            <p
+              role="note"
+              className="rounded-xl bg-muted p-4 text-sm leading-7"
+            >
+              {t.previewReportNote}
+            </p>
+          )}
           {!enabled && (
             <p
               role="status"
@@ -581,13 +913,19 @@ export function ContributionForm({
             {error ? t[error] : pending ? t.sending : ""}
           </p>
           <button
-            type="submit"
+            type="button"
             disabled={pending || !enabled}
-            className={primary}
+            onClick={sendDraft}
+            className={`${primary} w-full`}
           >
-            {pending ? t.sending : t.send}
+            <Check aria-hidden className="size-4" />
+            {pending
+              ? t.sending
+              : previewMode
+                ? t.confirmTestSend
+                : t.confirmSend}
           </button>
-        </form>
+        </div>
       )}
     </section>
   );

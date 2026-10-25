@@ -14,6 +14,8 @@ import {
   Plus,
   Search,
   TrainFront,
+  Trophy,
+  UserRound,
   X,
 } from "lucide-react";
 import {
@@ -26,8 +28,18 @@ import { STRINGS, type StringKey } from "../lib/i18n";
 import { ContributionForm } from "./contribution-form";
 import { SelectField } from "./select-field";
 import type { PublicReport } from "../lib/reports";
+import { Account, usePortalAccount } from "./account";
+import type { Leader } from "../lib/leaderboard";
 import { NetworkMap } from "./network-map";
-type View = "home" | "stations" | "map" | "contribute" | "reports";
+type View =
+  | "home"
+  | "stations"
+  | "map"
+  | "contribute"
+  | "reports"
+  | "account"
+  | "leaderboard"
+  | "profile";
 const input =
   "w-full rounded-xl border border-input bg-background px-3 py-3 text-base focus-visible:ring-2 focus-visible:ring-ring";
 const primary =
@@ -57,11 +69,20 @@ export type PortalProps = {
   initialStation: string;
   initialKind: string;
   intakeEnabled: boolean;
+  previewMode: boolean;
+  authConfigured: boolean;
+  githubEnabled: boolean;
+  ranking: { leaders: Leader[]; unavailable: boolean; partial: boolean };
+  profileId: string;
   reports: PublicReport[];
   reportsUnavailable: boolean;
 };
 export function Portal(props: PortalProps) {
   const { catalog, view } = props;
+  const account = usePortalAccount(props.authConfigured);
+  const profile = props.ranking.leaders.find(
+    (person) => person.id === props.profileId,
+  );
   const [lang, setLang] = useState<Lang>(props.initialLang),
     [city, setCity] = useState(props.initialCity),
     [query, setQuery] = useState(""),
@@ -101,6 +122,8 @@ export function Portal(props: PortalProps) {
     ["stations", t.stations, TrainFront],
     ["map", t.map, MapIcon],
     ["reports", t.reports, GitBranch],
+    ["leaderboard", t.leaderboard, Trophy],
+    ["account", account ? t.account : t.login, UserRound],
   ] as const;
   const citySelect = (
     <div className="min-w-44">
@@ -193,17 +216,30 @@ export function Portal(props: PortalProps) {
           </Link>
           <nav
             aria-label={t.menu}
-            className="hidden items-center gap-1 md:flex"
+            className="hidden items-center gap-1 lg:flex"
           >
             {navItems.map(([id, label, Icon]) => (
               <Link
                 key={id}
                 href={href(id)}
+                target={
+                  id === "account" && view === "contribute"
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  id === "account" && view === "contribute"
+                    ? "noopener noreferrer"
+                    : undefined
+                }
                 aria-current={view === id ? "page" : undefined}
                 className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-muted ${view === id ? "bg-muted font-semibold text-primary" : "text-muted-foreground"}`}
               >
                 <Icon className="size-4" aria-hidden />
                 {label}
+                {id === "account" && view === "contribute" && (
+                  <span className="sr-only"> — {t.opensNewTab}</span>
+                )}
               </Link>
             ))}
           </nav>
@@ -231,7 +267,7 @@ export function Portal(props: PortalProps) {
               aria-label={t.menu}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              className="grid size-11 place-items-center rounded-lg md:hidden"
+              className="grid size-11 place-items-center rounded-lg lg:hidden"
             >
               {menuOpen ? (
                 <X className="size-5" aria-hidden />
@@ -245,17 +281,30 @@ export function Portal(props: PortalProps) {
           <nav
             id="mobile-menu"
             aria-label={t.menu}
-            className="flex flex-col gap-1 border-t border-border px-4 py-3 md:hidden"
+            className="flex flex-col gap-1 border-t border-border px-4 py-3 lg:hidden"
           >
             {navItems.map(([id, label]) => (
               <Link
                 key={id}
                 href={href(id)}
+                target={
+                  id === "account" && view === "contribute"
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  id === "account" && view === "contribute"
+                    ? "noopener noreferrer"
+                    : undefined
+                }
                 onClick={() => setMenuOpen(false)}
                 aria-current={view === id ? "page" : undefined}
                 className="rounded-lg p-3 hover:bg-muted"
               >
                 {label}
+                {id === "account" && view === "contribute" && (
+                  <span className="sr-only"> — {t.opensNewTab}</span>
+                )}
               </Link>
             ))}
           </nav>
@@ -444,6 +493,116 @@ export function Portal(props: PortalProps) {
             {reports}
           </>
         )}
+        {view === "account" && (
+          <Account
+            lang={lang}
+            configured={props.authConfigured}
+            githubEnabled={props.githubEnabled}
+            user={account}
+          />
+        )}
+        {view === "leaderboard" && (
+          <section className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold">{t.leaderboard}</h1>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">
+              {t.leaderboardIntro}
+            </p>
+            {props.ranking.unavailable ? (
+              <p
+                role="status"
+                className="mt-7 rounded-xl border border-border bg-card p-5"
+              >
+                {t.leaderboardUnavailable}
+              </p>
+            ) : props.ranking.leaders.some((person) => person.accepted > 0) ? (
+              <ol className="mt-7 flex flex-col gap-3">
+                {props.ranking.leaders
+                  .filter((person) => person.accepted > 0)
+                  .map((person, index) => (
+                    <li
+                      key={person.id}
+                      className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5"
+                    >
+                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 font-bold text-primary">
+                        {number(index + 1)}
+                      </span>
+                      <a
+                        href={`/contributors/${person.id}?lang=${lang}`}
+                        className="min-w-0 flex-1 break-words font-semibold text-primary underline-offset-4 hover:underline"
+                      >
+                        {person.name}
+                      </a>
+                      <span className="shrink-0 text-sm text-muted-foreground">
+                        {number(person.accepted)} {t.acceptedContributions}
+                      </span>
+                    </li>
+                  ))}
+              </ol>
+            ) : (
+              <p
+                role="status"
+                className="mt-7 rounded-2xl border border-border bg-card p-6 text-sm leading-7"
+              >
+                {t.leaderboardEmpty}
+              </p>
+            )}
+            {props.ranking.partial && (
+              <p role="status" className="mt-4 text-sm">
+                {t.leaderboardPartial}
+              </p>
+            )}
+            <a href={href("contribute")} className={`${primary} mt-6`}>
+              {t.contribute}
+            </a>
+          </section>
+        )}
+        {view === "profile" && (
+          <section className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold">{profile?.name ?? t.profile}</h1>
+            <p className="mt-3 text-sm text-muted-foreground">{t.profile}</p>
+            {props.ranking.unavailable ? (
+              <p role="status" className="mt-6">
+                {t.leaderboardUnavailable}
+              </p>
+            ) : !profile ? (
+              <p role="status" className="mt-6">
+                {t.profileEmpty}
+              </p>
+            ) : (
+              <>
+                <p className="mt-5 text-sm font-semibold">
+                  {number(profile.accepted)} {t.acceptedContributions}
+                </p>
+                <ul className="mt-6 grid gap-3">
+                  {profile.reports.map((report) => (
+                    <li
+                      key={report.id}
+                      className="rounded-2xl border border-border bg-card p-5"
+                    >
+                      <span
+                        className={`inline-block rounded-full px-3 py-1 text-xs ${report.accepted ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+                      >
+                        {report.accepted ? t.accepted : t.submitted}
+                      </span>
+                      <a
+                        className="mt-3 block font-semibold underline-offset-4 hover:underline"
+                        href={report.url}
+                      >
+                        {report.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <a
+              className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4"
+              href={href("leaderboard")}
+            >
+              {t.leaderboard}
+            </a>
+          </section>
+        )}
         {view === "contribute" && (
           <ContributionForm
             catalog={catalog}
@@ -452,6 +611,9 @@ export function Portal(props: PortalProps) {
             initialStation={props.initialStation}
             initialKind={props.initialKind}
             enabled={props.intakeEnabled}
+            previewMode={props.previewMode}
+            account={account}
+            authConfigured={props.authConfigured}
           />
         )}
       </main>
