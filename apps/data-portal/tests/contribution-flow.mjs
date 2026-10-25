@@ -252,7 +252,7 @@ try {
     ),
   ).toBe(true);
   await review();
-  await expect(page.getByTestId("report-review")).toContainText("Car 4 / 12");
+  await expect(page.getByTestId("report-review")).toContainText("Car 4 of 12");
   await send();
   await expect(
     page.getByRole("heading", {
