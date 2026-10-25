@@ -8,14 +8,17 @@ export function validPublicName(value: unknown): value is string {
   );
 }
 export type PublicCredit = { id: string; name: string; signature: string };
+export function contributorId(userId: string, secret: string): string {
+  return createHmac("sha256", secret)
+    .update(`metto-public-contributor:${userId}`)
+    .digest("hex");
+}
 export function makeCredit(
   reportId: string,
   user: { id: string; name: string },
   secret: string,
 ): PublicCredit {
-  const id = createHmac("sha256", secret)
-    .update(`metto-public-contributor:${user.id}`)
-    .digest("hex");
+  const id = contributorId(user.id, secret);
   const name = user.name.trim().slice(0, 80);
   const signature = createHmac("sha256", secret)
     .update(JSON.stringify([reportId, id, name]))

@@ -5,6 +5,11 @@ import { recentReports } from "./reports";
 import { portalAuth } from "./auth/server";
 import { leaderboard } from "./leaderboard";
 import { headers } from "next/headers";
+import {
+  profilePath,
+  publicMemberProfile,
+  type MemberProfile,
+} from "./profile";
 export type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
@@ -42,6 +47,13 @@ export async function renderPortal(
     requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
   const config = intakeConfig(host ? `https://${host}` : undefined);
   const intakeEnabled = !!config && host === new URL(config.publicOrigin).host;
+  const publicProfile =
+    view === "profile" && config
+      ? await config.store
+          .read<MemberProfile>(profilePath(profileId))
+          .then((row) => publicMemberProfile(row?.value ?? null))
+          .catch(() => null)
+      : null;
   return (
     <Portal
       catalog={catalog}
@@ -56,6 +68,7 @@ export async function renderPortal(
       githubEnabled={process.env.DATA_PORTAL_GITHUB_LOGIN === "1"}
       ranking={ranking}
       profileId={profileId}
+      publicProfile={publicProfile}
       reports={activity.reports}
       reportsUnavailable={activity.unavailable}
     />

@@ -17,6 +17,7 @@ import { preparePhoto } from "../lib/photo";
 import { WagonPicker } from "./wagon-picker";
 import type { AccountUser } from "./account";
 import { SelectField } from "./select-field";
+import { availableTrainProfiles, trainProfiles } from "../lib/train-layouts";
 type Kind =
   | "timetable"
   | "facility"
@@ -78,6 +79,7 @@ export function ContributionForm({
     ),
     [stationId, setStationId] = useState(initialStation),
     [carCount, setCarCount] = useState(""),
+    [trainProfileId, setTrainProfileId] = useState(""),
     [amenityRows, setAmenityRows] = useState([0]),
     [car, setCar] = useState<number | null>(null),
     [pending, setPending] = useState(false),
@@ -145,7 +147,17 @@ export function ContributionForm({
   const changeCity = (value: string) => {
     setCityId(value);
     setStationId("");
+    setTrainProfileId("");
+    setCarCount("");
+    setCar(null);
   };
+  const wagonLines =
+    stations
+      .find((station) => station.id === stationId)
+      ?.lines.map((line) => line.id) ?? [];
+  const selectedTrain = availableTrainProfiles(cityId, wagonLines).find(
+    (profile) => profile.id === trainProfileId,
+  );
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (step !== 2 || pending) return;
@@ -166,7 +178,7 @@ export function ContributionForm({
     if (kind === "status" && fields.get("status"))
       observation = `Observed status: ${fields.get("status")}`;
     if (kind === "wagon" && car)
-      observation = `Observed car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}`;
+      observation = `Observed car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}${selectedTrain ? `; layout reference: ${selectedTrain.id} (observed count may differ)` : ""}`;
     if (!details && !observation && !file?.size) {
       setError("required");
       return;
@@ -287,12 +299,12 @@ export function ContributionForm({
           failure?.error === "photo_capacity"
             ? "photoStorageFull"
             : response.status === 401
-            ? "loginRequired"
-            : response.status === 429
-              ? "limited"
-              : response.status === 503
-                ? "busy"
-                : "failed",
+              ? "loginRequired"
+              : response.status === 429
+                ? "limited"
+                : response.status === 503
+                  ? "busy"
+                  : "failed",
         );
       }
       const result = (await response.json()) as {
@@ -471,6 +483,7 @@ export function ContributionForm({
               setError(null);
               setCar(null);
               setCarCount("");
+              setTrainProfileId("");
               setDraft(null);
               setCredit(false);
               setStep(1);
@@ -511,7 +524,22 @@ export function ContributionForm({
                 label={t.selectStation}
                 name="stationId"
                 value={stationId}
-                onChange={setStationId}
+                onChange={(value) => {
+                  setStationId(value);
+                  const lines =
+                    stations
+                      .find((station) => station.id === value)
+                      ?.lines.map((line) => line.id) ?? [];
+                  if (
+                    !availableTrainProfiles(cityId, lines).some(
+                      (profile) => profile.id === trainProfileId,
+                    )
+                  ) {
+                    setTrainProfileId("");
+                    setCarCount("");
+                    setCar(null);
+                  }
+                }}
                 searchLabel={t.findStation}
                 emptyLabel={t.empty}
                 options={[
@@ -641,6 +669,17 @@ export function ContributionForm({
           {kind === "wagon" && (
             <WagonPicker
               lang={lang}
+              cityId={cityId}
+              lineIds={wagonLines}
+              profileId={selectedTrain?.id ?? ""}
+              onProfile={(value) => {
+                setTrainProfileId(value);
+                const profile = trainProfiles.find(
+                  (item) => item.id === value && item.cityId === cityId,
+                );
+                setCarCount(profile ? String(profile.cars) : "");
+                setCar(null);
+              }}
               count={carCount}
               selected={car}
               onCount={(value) => {
@@ -820,12 +859,16 @@ export function ContributionForm({
                 className={secondary}
                 disabled={pending}
                 onClick={() => {
-                  const file = form.current?.querySelector<HTMLInputElement>('input[name="photo"]');
+                  const file = form.current?.querySelector<HTMLInputElement>(
+                    'input[name="photo"]',
+                  );
                   if (file) file.value = "";
                   setDraft({ ...draft, photo: undefined });
                   setError(null);
                   setStep(2);
-                  requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
+                  requestAnimationFrame(() =>
+                    heading.current?.focus({ preventScroll: true }),
+                  );
                 }}
               >
                 {t.removePhoto}

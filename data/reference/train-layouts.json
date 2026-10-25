@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "purpose": "reporting-reference-only",
+  "sources": [
+    {
+      "id": "tehran-women-2026",
+      "url": "https://www.mizanonline.ir/fa/news/4910431",
+      "publishedOn": "2026-08-26",
+      "kind": "operator-interview",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "899ce0ec324ce8300c3d6a557481c1a4558447bdd26ab60062bc807b5c44a406"
+    },
+    {
+      "id": "tehran-line5-2017",
+      "url": "https://www.mehrnews.com/news/4154230",
+      "publishedOn": "2017-11-25",
+      "kind": "operator-announcement",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "07fc05ec7150b738f32ff9cd6d7a577475b338db4975f6769921ed53c81c805a"
+    },
+    {
+      "id": "mashhad-line2-project",
+      "url": "https://www.farab.com/fa/portfolio/mashhad-urban-railway-line-2/",
+      "publishedOn": null,
+      "kind": "contractor-equipment-list",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "c0ff454c8a81469a433c55a535905c7faca2cd9ea7bad59879b44ba499bef2d6"
+    },
+    {
+      "id": "tehran-technical",
+      "url": "https://fa.wikipedia.org/wiki/متروی_تهران",
+      "publishedOn": null,
+      "kind": "secondary",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "1696e09914110221bf74f5fa6ebc2e5576aeaa7e9b93d627d895b967168f2fb0"
+    },
+    {
+      "id": "mashhad-line1",
+      "url": "https://fa.wikipedia.org/wiki/قطار_شهری_مشهد",
+      "publishedOn": null,
+      "kind": "secondary",
+      "retrievedOn": "2026-10-25",
+      "snapshotSha256": "c4dedacc3d8d24e4130c3808e3a73cfa6f924d6fecf379f206e28da4099e395e"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "tehran:urban:7",
+      "cityId": "tehran",
+      "lineIds": [
+        "tehran:line:1",
+        "tehran:line:2",
+        "tehran:line:3",
+        "tehran:line:4",
+        "tehran:line:6",
+        "tehran:line:7"
+      ],
+      "names": {
+        "fa": "قطار شهری تهران · ۷ واگن",
+        "en": "Tehran urban train · 7 cars"
+      },
+      "cars": 7,
+      "kind": "metro",
+      "sourceIds": ["tehran-women-2026"],
+      "women": {
+        "full": [1, 7],
+        "headHalf": [2],
+        "rearHalf": [6]
+      }
+    },
+    {
+      "id": "tehran:line5:9",
+      "cityId": "tehran",
+      "lineIds": ["tehran:line:5"],
+      "names": {
+        "fa": "تهران–کرج · دوطبقه، ۹ واگن",
+        "en": "Tehran–Karaj · double-deck, 9 cars"
+      },
+      "cars": 9,
+      "kind": "double_deck",
+      "sourceIds": ["tehran-line5-2017"],
+      "women": null
+    },
+    {
+      "id": "tehran:mehrabad:4",
+      "cityId": "tehran",
+      "lineIds": ["tehran:line:4"],
+      "names": {
+        "fa": "قطار فرودگاه مهرآباد · ۴ واگن",
+        "en": "Mehrabad airport shuttle · 4 cars"
+      },
+      "cars": 4,
+      "kind": "metro",
+      "sourceIds": ["tehran-technical"],
+      "women": null
+    },
+    {
+      "id": "mashhad:line1:2",
+      "cityId": "mashhad",
+      "lineIds": ["mashhad:line:1"],
+      "names": {
+        "fa": "خط ۱ مشهد · قطار سبک ۲ واگنی",
+        "en": "Mashhad Line 1 · 2-car light rail"
+      },
+      "cars": 2,
+      "kind": "lrt",
+      "sourceIds": ["mashhad-line1"],
+      "women": null
+    },
+    {
+      "id": "mashhad:line1:3",
+      "cityId": "mashhad",
+      "lineIds": ["mashhad:line:1"],
+      "names": {
+        "fa": "خط ۱ مشهد · قطار سبک ۳ واگنی",
+        "en": "Mashhad Line 1 · 3-car light rail"
+      },
+      "cars": 3,
+      "kind": "lrt",
+      "sourceIds": ["mashhad-line1"],
+      "women": null
+    },
+    {
+      "id": "mashhad:line2:5",
+      "cityId": "mashhad",
+      "lineIds": ["mashhad:line:2"],
+      "names": {
+        "fa": "خط ۲ مشهد · ۵ واگن",
+        "en": "Mashhad Line 2 · 5 cars"
+      },
+      "cars": 5,
+      "kind": "metro",
+      "sourceIds": ["mashhad-line2-project"],
+      "women": null
+    }
+  ]
+}

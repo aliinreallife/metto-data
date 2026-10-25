@@ -133,7 +133,6 @@ candidate release status are unaffected. See `docs/mashhad-construction-map.md`.
 
 The old prototype feature comparison is in `docs/portal-feature-comparison.md`.
 
-
 ## Optional account and public credit
 
 See `docs/portal-setup-steps.md` for the exact Neon/provider setup and
@@ -174,3 +173,21 @@ The maintenance job removes expired Postgres records in bounded batches.
 Production evidence is retained to preserve public source links. No image is
 committed into Git history. See [storage responsibilities and capacity
 plan](../../docs/data-storage.md), including the object-storage review point.
+
+## Account settings and train references
+
+The account page now separates profile editing from connected login methods.
+`/api/profile` requires a verified server session for reads/writes, checks Origin
+on writes, and uses revisions to avoid silently replacing changes from another
+tab. Optional age/gender and private name are never passed to public profile
+rendering. Public alias/bio/social links need explicit opt-in. Account connections
+use Neon's own list/link/unlink APIs; only Google/GitHub are allowed, and the last
+supported method cannot be removed. Same-email automatic linking remains Neon's
+responsibility; the app does not merge identities based on client fields.
+
+`data/reference/train-layouts.json` is a sourced reporting reference, not a change
+to boarding or routing data. It covers urban/airport/double-deck Tehran templates
+and separate Mashhad line templates. Counts are editable and the diagram can flip
+without renumbering the observed car. Only the sourced seven-car Tehran layout
+has automatic full/half women-only markers. Other layouts do not inherit those
+boundaries. See `docs/train-layout-research.md` for source dates and limitations.

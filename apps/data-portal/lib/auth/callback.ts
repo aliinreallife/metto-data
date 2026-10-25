@@ -8,14 +8,26 @@ import {
 export async function completeOAuth(
   request: Request,
   config: { baseUrl: string; cookieSecret: string } | null,
+  linkedSession = false,
 ): Promise<Response> {
   const url = new URL(request.url);
   const account = new URL("/account", url);
-  account.searchParams.set("lang", url.searchParams.get("lang") === "en" ? "en" : "fa");
+  account.searchParams.set(
+    "lang",
+    url.searchParams.get("lang") === "en" ? "en" : "fa",
+  );
   const headers = new Headers({
     "Cache-Control": "no-store",
     "Referrer-Policy": "no-referrer",
   });
+  if (
+    linkedSession &&
+    !url.searchParams.has("neon_auth_session_verifier") &&
+    !url.searchParams.has("error")
+  ) {
+    headers.set("Location", account.toString());
+    return new Response(null, { status: 303, headers });
+  }
   if (config && url.searchParams.has("neon_auth_session_verifier")) {
     try {
       const result = await processAuthMiddleware({
@@ -28,17 +40,22 @@ export async function completeOAuth(
       });
       if (
         result.action === "redirect_oauth" &&
-        result.cookies.some(cookie =>
-          cookie.startsWith(`${NEON_AUTH_SESSION_COOKIE_NAME}=`) &&
-          !cookie.startsWith(`${NEON_AUTH_SESSION_COOKIE_NAME}=;`) &&
-          !/max-age=0(?:;|$)/i.test(cookie)
-        )
+        (linkedSession ||
+          result.cookies.some(
+            (cookie) =>
+              cookie.startsWith(`${NEON_AUTH_SESSION_COOKIE_NAME}=`) &&
+              !cookie.startsWith(`${NEON_AUTH_SESSION_COOKIE_NAME}=;`) &&
+              !/max-age=0(?:;|$)/i.test(cookie),
+          ))
       ) {
-        for (const cookie of result.cookies) headers.append("Set-Cookie", cookie);
+        for (const cookie of result.cookies)
+          headers.append("Set-Cookie", cookie);
         headers.set("Location", account.toString());
         return new Response(null, { status: 303, headers });
       }
-    } catch { /* Show a retry, never raw OAuth errors or verifier values. */ }
+    } catch {
+      /* Show a retry, never raw OAuth errors or verifier values. */
+    }
   }
   account.searchParams.set("error", "oauth");
   headers.set("Location", account.toString());

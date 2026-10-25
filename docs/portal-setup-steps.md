@@ -88,6 +88,10 @@ production consent-screen branding.
 
 ## 5. Complete sign-in checks
 
+The owner has confirmed full Google and GitHub login on the preview. A read-only
+aggregate query also confirmed that a Neon identity already has both providers
+attached; no identities or emails were returned.
+
 Only Google and GitHub are offered. No email sender, OTP or password setup is
 needed for this portal. Existing Neon project email settings/accounts are not
 deleted; the application refuses the unused login endpoints.
@@ -145,3 +149,36 @@ Sources: [Neon OAuth](https://neon.com/docs/auth/guides/setup-oauth),
 [trusted domains](https://neon.com/docs/auth/guides/configure-domains),
 [email OTP](https://neon.com/docs/auth/guides/plugins/email-otp),
 [email customization](https://neon.com/docs/auth/guides/customize-emails).
+
+## Connected providers and profile settings
+
+Account → Login accounts shows the Google/GitHub connections returned by Neon.
+To use a second provider with the same Metto identity, connect it while signed
+in to the existing account. The provider's consent/challenge flow proves control;
+the app never creates an identity link from a client-supplied email or user ID.
+A callback for linking is accepted without issuing a new session only when the
+server has already verified the existing session. Disconnecting requires another
+supported provider and the account ID must belong to the signed-in user.
+
+Neon owns same-email implicit linking and different-email policy. Its current
+managed configuration is not exposed by the available configuration-update API
+(which supports the application name). Use the same verified email on both
+providers for the expected flow. If linking is refused because the provider
+already belongs to a separate Metto account, do not silently merge database rows,
+public credit or histories. Review ownership and supported Neon migration options.
+
+Profiles are stored in the existing private portal store, keyed by the server's
+opaque contributor ID. Name changes use Neon's authenticated update-user API.
+Age/gender stay private. Public profile projection contains only an explicitly
+chosen public alias, bio and normalized social links after opting in. Existing
+public GitHub reports retain the alias signed when they were submitted.
+
+Profile links follow the handle-or-direct-profile behaviour reviewed in Jishoo:
+Instagram, Telegram, X, GitHub, Spotify user/artist and a public website. The
+validator checks syntax/platform, not ownership or account existence. External
+links use noreferrer/noopener/nofollow; the server never fetches those links.
+
+Preview profile records use the preview namespace and expiry, like other test
+records. Auth identities, provider links and the account name belong to the
+existing shared Neon Auth service. No auth users or provider records were deleted
+or merged by the agent's checks. Full provider consent was confirmed by the owner.

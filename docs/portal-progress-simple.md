@@ -16,6 +16,18 @@ into the live site yet.
   only choices, both visible on the login page. No email codes or passwords.
   The callback exchanges the provider verifier through the official SDK before
   returning to the account page.
+- Account settings show connected Google/GitHub methods and let you connect the
+  other provider. The only remaining supported login method cannot be removed.
+- You can edit your name, optional age/gender, bio and social links. Age and gender
+  stay private. Publishing a profile requires a separate public alias and an
+  explicit switch. Public profile data excludes private name/age/gender.
+- Social links accept a handle or direct profile URL for Instagram, Telegram, X,
+  GitHub and Spotify, plus a website. Links to posts/invites are rejected.
+- Train reporting has separate reference layouts for Tehran urban trains,
+  Tehran–Karaj, the Mehrabad shuttle and Mashhad Lines 1/2. Counts stay editable.
+  The train can be flipped while the selected car number stays the same.
+- Tehran's seven-car diagram shows the sourced full and half women-only areas.
+  Boundaries for other layouts remain unconfirmed and are not invented.
 - Your name appears publicly only if you choose public credit and enter a
   public name. Private contact details and provider emails are not copied there.
 - Contributor pages show real credited reports. The leaderboard counts reports
@@ -39,15 +51,18 @@ into the live site yet.
 - Verified emails are required for public credit; email-code login is not offered.
 - Session and public-credit signing secrets are stored securely in Vercel.
 
-## What still needs an owner’s real-world check
+## Real login checks
 
 Google currently uses Neon's shared development keys. GitHub now uses the owner’s
 configured OAuth app, and its login start was verified. The portal does not use email-code login or require an email sender.
 Production Google branding should use Metto-owned credentials.
 
-The owner should test a complete Google and GitHub login on the preview. The
-agent checks provider redirects and tests the callback/session exchange against
-a local mock auth service. It does not pretend to be a user at the consent screen.
+The owner confirmed that complete Google and GitHub login both work. A read-only
+aggregate check also found a Neon identity with both providers connected; no
+emails, tokens or individual identity details were returned. The new management
+screen makes connected providers visible. Provider connection/removal UI is
+covered by intercepted browser tests; the provider continues to own the actual
+linking and verified-email rules.
 
 Exact setup instructions: [portal-setup-steps.md](portal-setup-steps.md).
 
@@ -79,3 +94,6 @@ on the server. Its image link becomes public with the public report; it does
 not become a file in Git history. Preview uploads expire after seven days.
 There is no Supabase dependency or new storage service. See
 [data-storage.md](data-storage.md) for capacity and backup follow-up.
+
+The train evidence and its limits are documented in
+[train-layout-research.md](train-layout-research.md).

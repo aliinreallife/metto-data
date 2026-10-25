@@ -49,8 +49,18 @@ try {
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
       : {},
   );
-  for (const path of ["email-otp/send-verification-otp", "sign-in/email-otp", "sign-in/email", "sign-up/email", "sign-in/magic-link"]) {
-    const response = await fetch(origin + "/api/auth/" + path, { method: "POST", headers: { origin, "Content-Type": "application/json" }, body: "{}" });
+  for (const path of [
+    "email-otp/send-verification-otp",
+    "sign-in/email-otp",
+    "sign-in/email",
+    "sign-up/email",
+    "sign-in/magic-link",
+  ]) {
+    const response = await fetch(origin + "/api/auth/" + path, {
+      method: "POST",
+      headers: { origin, "Content-Type": "application/json" },
+      body: "{}",
+    });
     expect(response.status).toBe(404);
   }
   const context = await browser.newContext({
@@ -61,7 +71,12 @@ try {
     errors = [],
     sent = [],
     providers = [];
-  let signedIn = false, socialSucceeds = false;
+  let signedIn = false,
+    socialSucceeds = false;
+  let savedProfile = null,
+    profileRevision = null;
+  const profileWrites = [];
+  let linkedAccounts = [{ id: "google-account-id", providerId: "google" }];
   page.on("pageerror", (error) =>
     errors.push(new URL(page.url()).pathname + ": " + error.message),
   );
@@ -94,7 +109,9 @@ try {
       expect(body.callbackURL).toBe(origin + "/auth/callback?lang=en");
       if (socialSucceeds) {
         signedIn = true;
-        await route.fulfill({ json: { url: origin + "/account?lang=en", redirect: true } });
+        await route.fulfill({
+          json: { url: origin + "/account?lang=en", redirect: true },
+        });
         return;
       }
       await route.fulfill({
@@ -103,12 +120,57 @@ try {
       });
       return;
     }
+    if (path.endsWith("/list-accounts")) {
+      await route.fulfill({ json: linkedAccounts });
+      return;
+    }
+    if (path.endsWith("/link-social")) {
+      const body = route.request().postDataJSON();
+      expect(body.provider).toBe("github");
+      expect(body.callbackURL).toContain("/auth/callback?lang=en&mode=link");
+      linkedAccounts = [
+        ...linkedAccounts,
+        { id: "github-account-id", providerId: "github" },
+      ];
+      await route.fulfill({
+        json: { url: origin + "/account?lang=en", redirect: true },
+      });
+      return;
+    }
+    if (path.endsWith("/unlink-account")) {
+      const body = route.request().postDataJSON();
+      expect(body.accountId).toBe("github-account-id");
+      linkedAccounts = linkedAccounts.filter(
+        (account) => account.id !== body.accountId,
+      );
+      await route.fulfill({ json: { status: true } });
+      return;
+    }
     if (path.endsWith("/sign-out")) {
       signedIn = false;
       await route.fulfill({ json: { success: true } });
       return;
     }
     throw Error("Unexpected auth request in mock: " + path);
+  });
+  await context.route("**/api/profile", async (route) => {
+    if (route.request().method() === "PUT") {
+      const body = route.request().postDataJSON();
+      profileWrites.push(body);
+      savedProfile = structuredClone(body.profile);
+      if (savedProfile.socialLinks.x)
+        savedProfile.socialLinks.x =
+          "https://x.com/" + savedProfile.socialLinks.x.replace(/^@/, "");
+      user.name = savedProfile.name;
+      profileRevision = String(profileWrites.length);
+    }
+    await route.fulfill({
+      json: {
+        profile: savedProfile,
+        revision: profileRevision,
+        id: "a".repeat(64),
+      },
+    });
   });
   await context.route("**/api/reports", async (route) => {
     const body = route.request().postDataJSON();
@@ -216,17 +278,31 @@ try {
   await expect(
     page.getByRole("img", { name: "Photo to be sent with your report" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Remove photo and edit report", exact: true }).click();
-  expect(await page.locator("input[name=photo]").evaluate(input => input.files.length)).toBe(0);
-  await expect(page.getByRole("textbox", { name: "Description", exact: true })).toHaveValue("Weekday times observed today");
+  await page
+    .getByRole("button", { name: "Remove photo and edit report", exact: true })
+    .click();
+  expect(
+    await page
+      .locator("input[name=photo]")
+      .evaluate((input) => input.files.length),
+  ).toBe(0);
+  await expect(
+    page.getByRole("textbox", { name: "Description", exact: true }),
+  ).toHaveValue("Weekday times observed today");
   await review();
-  await expect(page.getByRole("img", { name: "Photo to be sent with your report" })).toHaveCount(0);
+  await expect(
+    page.getByRole("img", { name: "Photo to be sent with your report" }),
+  ).toHaveCount(0);
   await page
     .getByRole("button", { name: "Edit information", exact: true })
     .click();
   await page.locator("input[name=photo]").setInputFiles({
-    name: "board.png", mimeType: "image/png",
-    buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=", "base64"),
+    name: "board.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=",
+      "base64",
+    ),
   });
   await expect(
     page.getByRole("textbox", { name: "Description", exact: true }),
@@ -330,12 +406,95 @@ try {
     .getByRole("button", { name: "Continue with GitHub", exact: true })
     .click();
   expect(providers).toEqual(["google", "github"]);
-  expect(await page.locator('input[type="email"], input[name="otp"]').count()).toBe(0);
+  expect(
+    await page.locator('input[type="email"], input[name="otp"]').count(),
+  ).toBe(0);
   socialSucceeds = true;
-  await page.getByRole("button", { name: "Continue with Google", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
   await expect(
     page.getByRole("button", { name: "Log out", exact: true }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Save profile", exact: true }),
+  ).toBeEnabled();
+  await page
+    .getByRole("textbox", { name: "Name", exact: true })
+    .fill("Private profile name");
+  await page
+    .getByRole("spinbutton", { name: "Age (optional)", exact: true })
+    .fill("29");
+  await page.getByRole("combobox", { name: /Gender \(optional\)/ }).click();
+  await page.getByRole("option", { name: "Woman", exact: true }).click();
+  await expect(
+    page.getByRole("checkbox", { name: /Show my profile publicly/ }),
+  ).not.toBeChecked();
+  await page
+    .getByRole("textbox", { name: "Bio (optional)", exact: true })
+    .fill("I help with metro data.");
+  await page.getByRole("combobox", { name: /Add a link/ }).click();
+  await page.getByRole("option", { name: "X", exact: true }).click();
+  await page.locator("#social-x").fill("javascript:alert(1)");
+  await page.getByRole("button", { name: "Save profile", exact: true }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "One of the links is invalid",
+  );
+  expect(profileWrites).toHaveLength(0);
+  await page.locator("#social-x").fill("@metto_user");
+  await page.getByRole("button", { name: "Save profile", exact: true }).click();
+  await expect(
+    page.getByText("Your profile is saved.", { exact: true }),
+  ).toBeVisible();
+  expect(profileWrites[0].profile).toMatchObject({
+    age: 29,
+    gender: "woman",
+    publicProfile: false,
+  });
+  await page
+    .getByRole("checkbox", { name: /Show my profile publicly/ })
+    .check();
+  await page
+    .getByRole("textbox", { name: "Public name", exact: true })
+    .fill("Rail helper");
+  await page.getByRole("button", { name: "Save profile", exact: true }).click();
+  await expect(
+    page.getByRole("link", { name: /View public profile/ }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Login accounts", exact: true })
+    .click();
+  const providerRow = (name) =>
+    page
+      .getByRole("heading", { name, exact: true })
+      .locator("..")
+      .locator("..");
+  await expect(
+    providerRow("Google").getByRole("button", {
+      name: "Disconnect",
+      exact: true,
+    }),
+  ).toBeDisabled();
+  await providerRow("GitHub")
+    .getByRole("button", { name: "Connect", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Login accounts", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Login accounts", exact: true })
+    .click();
+  await expect(providerRow("GitHub")).toContainText("Connected");
+  await providerRow("GitHub")
+    .getByRole("button", { name: "Disconnect", exact: true })
+    .click();
+  await expect(providerRow("GitHub")).toContainText("Not connected");
+  await expect(
+    providerRow("Google").getByRole("button", {
+      name: "Disconnect",
+      exact: true,
+    }),
+  ).toBeDisabled();
   await page.goto(`${origin}/contribute?city=mashhad&lang=en`);
   await choose("Other information");
   await page
@@ -385,6 +544,12 @@ try {
         exact: true,
       }),
     ).toBeVisible();
+    await expect(
+      page.getByRole("button", {
+        name: lang === "fa" ? "ذخیرهٔ پروفایل" : "Save profile",
+        exact: true,
+      }),
+    ).toBeEnabled();
     const audit = await new AxeBuilder({ page }).analyze();
     expect(
       audit.violations.filter((v) =>
@@ -398,9 +563,60 @@ try {
   await expect(page.locator("svg[role=group] a")).toHaveCount(36);
   await page.goto(`${origin}/map?city=tehran&lang=en`);
   await expect(page.getByTestId("construction-section")).toHaveCount(0);
+  await page.setViewportSize({ width: 360, height: 900 });
+  await page.goto(`${origin}/contribute?city=tehran&lang=en`);
+  await choose("Car near an escalator");
+  const selectLayout = async (name) => {
+    await page.getByRole("combobox", { name: /The train you saw/ }).click();
+    await page.getByRole("option", { name, exact: true }).click();
+  };
+  await selectLayout("Tehran urban train · 7 cars");
+  const diagram = page.getByTestId("train-diagram");
+  await expect(diagram.locator("[data-car-number]")).toHaveCount(7);
+  await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(2);
+  await expect(
+    diagram.locator(
+      '[data-women-zone="head-half"], [data-women-zone="rear-half"]',
+    ),
+  ).toHaveCount(2);
+  await page.getByRole("button", { name: "Car 2", exact: true }).click();
+  await page.getByRole("button", { name: "Flip train", exact: true }).click();
+  await expect(diagram.locator("[data-car-number]").first()).toHaveAttribute(
+    "data-car-number",
+    "7",
+  );
+  await expect(
+    page.getByRole("button", { name: "Car 2", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("spinbutton").fill("8");
+  await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(0);
+  await expect(diagram).toContainText("Women-only boundaries are unconfirmed");
+  await selectLayout("Tehran–Karaj · double-deck, 9 cars");
+  await expect(diagram.locator("[data-car-number]")).toHaveCount(9);
+  await expect(diagram).toContainText("locomotives are not included");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  const trainAudit = await new AxeBuilder({ page }).analyze();
+  expect(
+    trainAudit.violations.filter((v) =>
+      ["serious", "critical"].includes(v.impact ?? ""),
+    ),
+  ).toEqual([]);
+  await page
+    .getByTestId("report-form")
+    .getByRole("combobox", { name: /^City/ })
+    .click();
+  await page.getByRole("option", { name: "Mashhad", exact: true }).click();
+  await expect(page.getByRole("spinbutton")).toHaveValue("");
+  await selectLayout("Mashhad Line 2 · 5 cars");
+  await expect(diagram.locator("[data-car-number]")).toHaveCount(5);
+  await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(0);
   expect(errors).toEqual([]);
   console.log(
-    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
+    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
   );
 } finally {
   await browser?.close();

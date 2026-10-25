@@ -28,13 +28,13 @@ Keep Neon Auth as the account/session service. Google and GitHub are ways
 to sign in **through that same service**. We do not need a second authentication
 system just to offer those methods.
 
-| Method | Best fit for Metto | Tradeoff | What it needs | Recommendation |
-| --- | --- | --- | --- | --- |
-| Google | Everyday riders who already have a Google account | External sign-in/consent screen; access should be checked on actual users’ devices | Own Google OAuth client ID/secret for production, Neon callback URI, app branding and trusted app domain | Primary option |
-| Email OTP | People who prefer a code without a social account or password | They must open email; delivery delays/spam can interrupt the flow | Enable email sign-in/OTP, configure a dedicated production email provider and sender, test expiry/resend/attempt limits | Deferred: not selected |
-| GitHub | Developers and open-data contributors | Many everyday riders do not have GitHub | GitHub OAuth app ID/secret and Neon callback; request only identity access, not repository permissions | Visible alongside Google |
-| SMS OTP | Riders who prefer using a phone number | Message cost, delivery/support work, number collection and abuse controls | An SMS gateway that serves the intended users and a supported phone-auth integration; none has been verified as configured here | Defer unless users specifically prefer phone login |
-| Email/password | Existing password-account users, if any | Password creation, resets and support add steps | Email delivery and recovery UX | Do not make it the main new-user flow; preserve recovery if existing users rely on it |
+| Method         | Best fit for Metto                                            | Tradeoff                                                                           | What it needs                                                                                                                   | Recommendation                                                                        |
+| -------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Google         | Everyday riders who already have a Google account             | External sign-in/consent screen; access should be checked on actual users’ devices | Own Google OAuth client ID/secret for production, Neon callback URI, app branding and trusted app domain                        | Primary option                                                                        |
+| Email OTP      | People who prefer a code without a social account or password | They must open email; delivery delays/spam can interrupt the flow                  | Enable email sign-in/OTP, configure a dedicated production email provider and sender, test expiry/resend/attempt limits         | Deferred: not selected                                                                |
+| GitHub         | Developers and open-data contributors                         | Many everyday riders do not have GitHub                                            | GitHub OAuth app ID/secret and Neon callback; request only identity access, not repository permissions                          | Visible alongside Google                                                              |
+| SMS OTP        | Riders who prefer using a phone number                        | Message cost, delivery/support work, number collection and abuse controls          | An SMS gateway that serves the intended users and a supported phone-auth integration; none has been verified as configured here | Defer unless users specifically prefer phone login                                    |
+| Email/password | Existing password-account users, if any                       | Password creation, resets and support add steps                                    | Email delivery and recovery UX                                                                                                  | Do not make it the main new-user flow; preserve recovery if existing users rely on it |
 
 **Current scope is Google and GitHub only.** Email codes, passwords, magic
 links and SMS are not part of the portal login. SDK support for those methods
@@ -47,21 +47,21 @@ production email provider is recommended.
 
 ## Proposed product decisions
 
-| Feature | What we want | What we do not want | Reason / prerequisite |
-| --- | --- | --- | --- |
-| Reporting | Anonymous reporting remains available | An account requirement before helping | Ordinary riders should be able to send a correction quickly |
-| Form | Choose topic → relevant details → review and explicitly confirm sending | Posting immediately from the details screen | Users should see what will become public before sending |
-| Wagon reporting | Clear train diagram, front/rear labels, obvious selected car, actual observed train length/direction | Assumed car count, default selected car or invented women-only sections | Reports must describe the train actually observed |
-| Preview submissions | Explicitly labelled test submission, isolated from production publication, or a clear handoff to the live form | “Not enabled” with a dead-looking primary action; silently publishing preview tests | The preview should let people understand/test the flow without creating real data reports by accident |
-| Login | Optional Google + GitHub using the existing Neon Auth service | A custom password/OTP/session system or several separate account databases | Reuse the account provider already available |
-| Public credit | Explicit opt-in public display name per report, attached to a server-verified account | Publishing the private contact name/email, or trusting an account ID supplied by the browser | Privacy and trustworthy attribution |
-| Leaderboard | Real accepted contributions as the main count; any submitted-report count clearly labelled separately | Hardcoded names, invented points, or presenting submitted reports as approved corrections | Define a reliable maintainer acceptance event first; do not treat a closed issue as acceptance |
-| Profiles | A small optional public profile with display name and credited contributions | A large social network or public private-contact history | Useful credit can stay simple; public history must respect consent |
-| Multiple amenities | Several observed amenities in one report, each with its own observed status | Forcing a separate report for every amenity or presenting unknowns as verified facts | This was useful in the old UI and can be restored after the main form |
-| City/line requests | An obvious request choice with the relevant name/source questions | Burying all requests in a vague text box | A dedicated report type may be enough; a separate page is not essential |
-| Voting | Consider later as a review signal | Votes automatically changing canonical data or approving reports | Popularity does not establish correctness; needs persisted identity and moderation |
-| Construction maps | Licensed, source-labelled future infrastructure; simple station-to-station display consistent with Tehran; excluded from route planning | Drawing a whole partly operating line as closed, inventing stops, or treating future lines as travel options | Review the future-stop source and statuses before showing them |
-| Donations | Add a verified owner-controlled destination if wanted | Restoring an unverified old payment link automatically | Not needed to complete contribution reporting |
+| Feature             | What we want                                                                                                                            | What we do not want                                                                                          | Reason / prerequisite                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Reporting           | Anonymous reporting remains available                                                                                                   | An account requirement before helping                                                                        | Ordinary riders should be able to send a correction quickly                                           |
+| Form                | Choose topic → relevant details → review and explicitly confirm sending                                                                 | Posting immediately from the details screen                                                                  | Users should see what will become public before sending                                               |
+| Wagon reporting     | Clear train diagram, front/rear labels, obvious selected car, actual observed train length/direction                                    | Assumed car count, default selected car or invented women-only sections                                      | Reports must describe the train actually observed                                                     |
+| Preview submissions | Explicitly labelled test submission, isolated from production publication, or a clear handoff to the live form                          | “Not enabled” with a dead-looking primary action; silently publishing preview tests                          | The preview should let people understand/test the flow without creating real data reports by accident |
+| Login               | Optional Google + GitHub using the existing Neon Auth service                                                                           | A custom password/OTP/session system or several separate account databases                                   | Reuse the account provider already available                                                          |
+| Public credit       | Explicit opt-in public display name per report, attached to a server-verified account                                                   | Publishing the private contact name/email, or trusting an account ID supplied by the browser                 | Privacy and trustworthy attribution                                                                   |
+| Leaderboard         | Real accepted contributions as the main count; any submitted-report count clearly labelled separately                                   | Hardcoded names, invented points, or presenting submitted reports as approved corrections                    | Define a reliable maintainer acceptance event first; do not treat a closed issue as acceptance        |
+| Profiles            | Editable name, optional private age/gender, opt-in public alias/bio/social links and credited contributions                             | A large social network or public private-contact history                                                     | Useful credit can stay simple; public history must respect consent                                    |
+| Multiple amenities  | Several observed amenities in one report, each with its own observed status                                                             | Forcing a separate report for every amenity or presenting unknowns as verified facts                         | This was useful in the old UI and can be restored after the main form                                 |
+| City/line requests  | An obvious request choice with the relevant name/source questions                                                                       | Burying all requests in a vague text box                                                                     | A dedicated report type may be enough; a separate page is not essential                               |
+| Voting              | Consider later as a review signal                                                                                                       | Votes automatically changing canonical data or approving reports                                             | Popularity does not establish correctness; needs persisted identity and moderation                    |
+| Construction maps   | Licensed, source-labelled future infrastructure; simple station-to-station display consistent with Tehran; excluded from route planning | Drawing a whole partly operating line as closed, inventing stops, or treating future lines as travel options | Review the future-stop source and statuses before showing them                                        |
+| Donations           | Add a verified owner-controlled destination if wanted                                                                                   | Restoring an unverified old payment link automatically                                                       | Not needed to complete contribution reporting                                                         |
 
 “Accepted contribution” needs a recorded review outcome: for example, an
 explicit maintainer approval tied to the resulting data change. Until that
@@ -74,21 +74,21 @@ Compared against `metto-data-prev` commit
 `c75b7bf1dea6afea848303b136881869dc6c22ce` and
 `docs/portal-migration.json`.
 
-| Old feature | What the old code actually did | Migration result |
-| --- | --- | --- |
-| Two-step form | Two client-side views | Lost during migration; restored in current PR #23. A third confirmation step is requested next |
-| Wagon suggestion | Clickable diagram with default/assumed counts; local proposal only | Real wagon report retained; more visible in PR #23; visual improvement remains pending |
-| Leaderboard | Four hardcoded names and counts calculated with `18 - i * 3` | Simulated screen omitted; real leaderboard not implemented |
-| My/public profiles | Fixed names, sample links, fixed statistics and sample history | Omitted |
-| Login/sign-up | Text inviting sign-up; no account creation/session/callback flow in the inspected snapshot | No functioning login UI was migrated. The existing Neon Auth connection was not removed |
-| Agree/disagree votes | React state; reset on page reload | Omitted |
-| Several amenities | Local checkbox list and a text proposal | Current structured form handles one amenity at a time |
-| Named/anonymous author | Checkbox assigned a sample author | Replaced with anonymous real submissions and private optional contact; verified public credit remains missing |
-| City suggestion page | Four text fields and an in-memory confirmation | Generic “Other information” / “Another city” report retained; dedicated screen omitted |
-| Recent contributions | Three sample records with sample review states | Replaced with real GitHub reports; closed does not imply approved |
-| Profile sharing/history | Generic sharing and sample history | Omitted with profiles |
-| Donation link | Fixed `buymeacoffee.com/mettodata` URL | Omitted; ownership was not established in migration |
-| Toy network map | Handwritten sample records | Replaced with committed Tehran/Mashhad data |
+| Old feature             | What the old code actually did                                                             | Migration result                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| Two-step form           | Two client-side views                                                                      | Lost during migration; restored in current PR #23. A third confirmation step is requested next                |
+| Wagon suggestion        | Clickable diagram with default/assumed counts; local proposal only                         | Real wagon report retained; more visible in PR #23; visual improvement remains pending                        |
+| Leaderboard             | Four hardcoded names and counts calculated with `18 - i * 3`                               | Simulated screen omitted; real leaderboard not implemented                                                    |
+| My/public profiles      | Fixed names, sample links, fixed statistics and sample history                             | Omitted                                                                                                       |
+| Login/sign-up           | Text inviting sign-up; no account creation/session/callback flow in the inspected snapshot | No functioning login UI was migrated. The existing Neon Auth connection was not removed                       |
+| Agree/disagree votes    | React state; reset on page reload                                                          | Omitted                                                                                                       |
+| Several amenities       | Local checkbox list and a text proposal                                                    | Current structured form handles one amenity at a time                                                         |
+| Named/anonymous author  | Checkbox assigned a sample author                                                          | Replaced with anonymous real submissions and private optional contact; verified public credit remains missing |
+| City suggestion page    | Four text fields and an in-memory confirmation                                             | Generic “Other information” / “Another city” report retained; dedicated screen omitted                        |
+| Recent contributions    | Three sample records with sample review states                                             | Replaced with real GitHub reports; closed does not imply approved                                             |
+| Profile sharing/history | Generic sharing and sample history                                                         | Omitted with profiles                                                                                         |
+| Donation link           | Fixed `buymeacoffee.com/mettodata` URL                                                     | Omitted; ownership was not established in migration                                                           |
+| Toy network map         | Handwritten sample records                                                                 | Replaced with committed Tehran/Mashhad data                                                                   |
 
 The migration code did not delete account/authentication tables. This comparison
 covers the inspected repository and migration; it does not establish that no
@@ -151,3 +151,18 @@ Neon documentation retrieved 2026-10-25:
 
 The installed Neon Auth SDK also exposes social sign-in and email-OTP APIs;
 that corroborates capability, not this project’s enabled provider configuration.
+
+## Latest implemented follow-up
+
+The owner confirmed full Google and GitHub login. Account settings add provider
+linking and protected unlinking through Neon, with no client-email account merge.
+The profile editor supports optional private age/gender, a separate public alias,
+bio and normalized social-profile links. The public profile projection excludes
+private name, age and gender even when sharing is enabled. User-entered social
+links do not become login providers. Existing issue credit is not rewritten by
+editing a profile.
+
+Wagon reporting now uses source-backed, editable city/line templates and a
+reversible train drawing. Full and half women-only areas are scoped to the
+seven-car Tehran reference; unconfirmed layouts remain unmarked. Research and
+sources: [train-layout-research.md](train-layout-research.md).

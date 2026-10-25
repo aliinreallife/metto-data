@@ -31,6 +31,8 @@ import type { PublicReport } from "../lib/reports";
 import { Account, usePortalAccount } from "./account";
 import type { Leader } from "../lib/leaderboard";
 import { NetworkMap } from "./network-map";
+import type { PublicMemberProfile } from "../lib/profile";
+import { socialKinds } from "../lib/social-links";
 type View =
   | "home"
   | "stations"
@@ -74,6 +76,7 @@ export type PortalProps = {
   githubEnabled: boolean;
   ranking: { leaders: Leader[]; unavailable: boolean; partial: boolean };
   profileId: string;
+  publicProfile: PublicMemberProfile | null;
   reports: PublicReport[];
   reportsUnavailable: boolean;
 };
@@ -558,7 +561,42 @@ export function Portal(props: PortalProps) {
         )}
         {view === "profile" && (
           <section className="mx-auto max-w-3xl">
-            <h1 className="text-3xl font-bold">{profile?.name ?? t.profile}</h1>
+            <h1 className="text-3xl font-bold">
+              {props.publicProfile?.publicName ?? profile?.name ?? t.profile}
+            </h1>
+            {props.publicProfile?.bio && (
+              <p className="mt-4 whitespace-pre-wrap break-words text-sm leading-7">
+                {props.publicProfile.bio}
+              </p>
+            )}
+            {props.publicProfile && (
+              <ul className="mt-5 flex flex-wrap gap-3">
+                {socialKinds.map((kind) => {
+                  const url = props.publicProfile?.socialLinks[kind];
+                  const label = {
+                    instagram: t.socialInstagram,
+                    telegram: t.socialTelegram,
+                    x: t.socialX,
+                    github: t.socialGithub,
+                    spotify: t.socialSpotify,
+                    website: t.socialWebsite,
+                  }[kind];
+                  return url ? (
+                    <li key={kind}>
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                        aria-label={`${label} — ${t.opensNewTab}`}
+                        className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold text-primary"
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            )}
             <p className="mt-3 text-sm text-muted-foreground">{t.profile}</p>
             {props.ranking.unavailable ? (
               <p role="status" className="mt-6">

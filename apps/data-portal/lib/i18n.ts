@@ -1,5 +1,85 @@
 export const STRINGS = {
   fa: {
+    trainLayout: "چیدمان قطاری که دیدی",
+    trainLayoutManual: "خودم تعداد را وارد می‌کنم",
+    trainLayoutHint:
+      "چیدمان نزدیک به قطارت را انتخاب کن؛ اگر تعداد فرق داشت، آن را تغییر بده.",
+    countFromFront: "شماره‌گذاری از سر قطار",
+    flipTrain: "برعکس نشان بده",
+    trainHeadLeft: "سر قطار سمت چپ است؛ واگن ۱ نزدیک سر قطار است.",
+    trainHeadRight: "سر قطار سمت راست است؛ واگن ۱ نزدیک سر قطار است.",
+    trainScroll: "واگن‌ها؛ برای دیدن بقیه به کنار بکش",
+    trainScrollHint:
+      "برای دیدن همهٔ واگن‌ها به کنار بکش. جهت را مثل قطاری که دیدی تنظیم کن.",
+    womenCar: "بانوان",
+    womenHalfCar: "نیمهٔ بانوان",
+    generalCar: "عمومی",
+    womenLayoutNote:
+      "صورتی: بخش بانوان؛ واگن اول و آخر کامل و نیمهٔ نزدیک به آن‌ها در واگن‌های ۲ و ۶. بخش‌های دیگر عمومی‌اند.",
+    womenLayoutUnknown:
+      "مرز بخش بانوان برای این چیدمان تأیید نشده؛ نشانه‌های روی قطار و سکو را ملاک بگیر.",
+    passengerCarsOnly: "فقط واگن‌های مسافری را بشمار؛ لوکوموتیو حساب نمی‌شود.",
+    trainLayoutSource: "منبع چیدمان",
+    accountSettingsIntro: "اطلاعاتت و راه‌های ورود به حساب را مدیریت کن.",
+    accountSections: "بخش‌های حساب",
+    editProfile: "ویرایش پروفایل",
+    loginConnections: "حساب‌های ورود",
+    profileName: "نام",
+    ageOptional: "سن (اختیاری)",
+    genderOptional: "جنسیت (اختیاری)",
+    notSet: "انتخاب نکرده‌ام",
+    genderWoman: "زن",
+    genderMan: "مرد",
+    genderNonbinary: "غیردودویی",
+    genderPrivate: "ترجیح می‌دهم نگویم",
+    privateDetails: "اطلاعات شخصی",
+    privateDetailsNote:
+      "سن و جنسیت همیشه خصوصی می‌مانند. نام عمومی را جداگانه انتخاب می‌کنی.",
+    publicProfile: "پروفایل عمومی",
+    showPublicProfile: "معرفی و پیوندهایم را عمومی کن",
+    publicProfileNote:
+      "نام عمومی، معرفی و پیوندها در صفحهٔ پروفایلت دیده می‌شوند. ثبت نام کنار هر گزارش همچنان انتخابی است.",
+    publicAlias: "نام عمومی",
+    bioOptional: "دربارهٔ من (اختیاری)",
+    socialLinks: "پیوندهای من",
+    socialLinksHint:
+      "شناسه یا پیوند پروفایل را وارد کن؛ مثلاً @username. پیوند پست یا دعوت مناسب این قسمت نیست.",
+    addSocial: "افزودن پیوند",
+    removeSocial: "حذف",
+    socialInvalid:
+      "یکی از پیوندها معتبر نیست؛ شناسه یا پیوند مستقیم پروفایل همان شبکه را وارد کن.",
+    socialInstagram: "اینستاگرام",
+    socialTelegram: "تلگرام",
+    socialX: "ایکس",
+    socialGithub: "گیت‌هاب",
+    socialSpotify: "اسپاتیفای",
+    socialWebsite: "وب‌سایت",
+    saveProfile: "ذخیرهٔ پروفایل",
+    savingProfile: "در حال ذخیره…",
+    profileSaved: "پروفایلت ذخیره شد.",
+    viewPublicProfile: "دیدن پروفایل عمومی",
+    profileLoading: "در حال دریافت اطلاعات…",
+    profileLoadFailed: "اطلاعات پروفایل دریافت نشد. دوباره تلاش کن.",
+    profileSaveFailed:
+      "پروفایل ذخیره نشد. ویرایش‌هایت حفظ شده؛ اطلاعات را بررسی کن و دوباره امتحان کن.",
+    profileChanged:
+      "پروفایل در برگهٔ دیگری تغییر کرده است. ویرایش‌هایت اینجا حفظ شده؛ برای جایگزین کردن نسخهٔ ذخیره‌شده، دوباره ذخیره کن.",
+    loginConnectionsHint:
+      "روش دوم را از همین‌جا وصل کن تا با هر دو وارد همین حساب و سابقهٔ مشارکت‌هایت شوی.",
+    keepLoginMethod:
+      "حداقل یک روش ورود باید وصل بماند. برای اتصال روش دوم، بهتر است ایمیل تأییدشدهٔ هر دو حساب یکسان باشد.",
+    connected: "وصل است",
+    notConnected: "وصل نیست",
+    connect: "وصل کردن",
+    disconnect: "قطع اتصال",
+    linkFailed:
+      "اتصال انجام نشد. ایمیل‌های دو حساب را بررسی کن؛ این روش ورود ممکن است به حساب متوی جداگانه‌ای وصل باشد.",
+    connectionFailed: "تغییر اتصال انجام نشد؛ دوباره تلاش کن.",
+    connectionRemoved: "اتصال قطع شد؛ هنوز می‌توانی با روش دیگر وارد شوی.",
+    connectionLoadFailed: "حساب‌های وصل‌شده دریافت نشدند.",
+    retry: "تلاش دوباره",
+    loginLinkHelp:
+      "قبلاً با روش دیگری حساب ساخته‌ای؟ با همان وارد شو و روش دوم را از «حساب من» وصل کن.",
     addAmenity: "افزودن امکان دیگر",
     removeAmenity: "حذف این امکان",
     detailsTooLong: "توضیحات خیلی طولانی است. کمی کوتاه‌ترش کن.",
@@ -56,8 +136,7 @@ export const STRINGS = {
     displayName: "نام نمایشی",
     accountUnavailable:
       "در حال حاضر اتصال ورود برقرار نیست. همچنان می‌توانی بدون حساب گزارش بفرستی.",
-    accountFailed:
-      "انجام نشد. کمی بعد دوباره امتحان کن.",
+    accountFailed: "انجام نشد. کمی بعد دوباره امتحان کن.",
     continueAnonymous: "فرستادن گزارش بدون حساب",
     creditAs: "می‌خواهم برای این گزارش نام عمومی ثبت کنم",
     creditHint:
@@ -253,6 +332,88 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    trainLayout: "The train you saw",
+    trainLayoutManual: "Enter the count myself",
+    trainLayoutHint:
+      "Choose the closest layout. You can change the count if your train differs.",
+    countFromFront: "Numbered from the front",
+    flipTrain: "Flip train",
+    trainHeadLeft: "The front is on the left. Car 1 is nearest the front.",
+    trainHeadRight: "The front is on the right. Car 1 is nearest the front.",
+    trainScroll: "Train cars; scroll sideways to see more",
+    trainScrollHint:
+      "Scroll sideways to see all cars. Flip the drawing to match the train you saw.",
+    womenCar: "Women only",
+    womenHalfCar: "Half women only",
+    generalCar: "General",
+    womenLayoutNote:
+      "Pink marks women-only areas: cars 1 and 7, plus the adjoining halves of 2 and 6. Other space is general.",
+    womenLayoutUnknown:
+      "Women-only boundaries are unconfirmed for this layout. Follow the signs on the train and platform.",
+    passengerCarsOnly:
+      "Count passenger coaches only; locomotives are not included.",
+    trainLayoutSource: "Layout source",
+    accountSettingsIntro: "Manage your profile and the ways you sign in.",
+    accountSections: "Account sections",
+    editProfile: "Edit profile",
+    loginConnections: "Login accounts",
+    profileName: "Name",
+    ageOptional: "Age (optional)",
+    genderOptional: "Gender (optional)",
+    notSet: "Not set",
+    genderWoman: "Woman",
+    genderMan: "Man",
+    genderNonbinary: "Non-binary",
+    genderPrivate: "Prefer not to say",
+    privateDetails: "Personal details",
+    privateDetailsNote:
+      "Age and gender always stay private. You choose a public name separately.",
+    publicProfile: "Public profile",
+    showPublicProfile: "Show my profile publicly",
+    publicProfileNote:
+      "Your public name, bio and links appear on your profile. Credit on each report is still a separate choice.",
+    publicAlias: "Public name",
+    bioOptional: "Bio (optional)",
+    socialLinks: "My links",
+    socialLinksHint:
+      "Enter a handle or profile link, such as @username. Use your profile, rather than a post or invite link.",
+    addSocial: "Add a link",
+    removeSocial: "Remove",
+    socialInvalid:
+      "One of the links is invalid. Enter a handle or a direct profile link for that platform.",
+    socialInstagram: "Instagram",
+    socialTelegram: "Telegram",
+    socialX: "X",
+    socialGithub: "GitHub",
+    socialSpotify: "Spotify",
+    socialWebsite: "Website",
+    saveProfile: "Save profile",
+    savingProfile: "Saving…",
+    profileSaved: "Your profile is saved.",
+    viewPublicProfile: "View public profile",
+    profileLoading: "Loading your details…",
+    profileLoadFailed: "Your profile could not be loaded. Please try again.",
+    profileSaveFailed:
+      "Your profile was not saved. Your edits are kept; check the fields and try again.",
+    profileChanged:
+      "Your profile changed in another tab. Your edits are kept here. Save again to replace the saved version.",
+    loginConnectionsHint:
+      "Connect the other provider here so both open the same account and contribution history.",
+    keepLoginMethod:
+      "Keep at least one login method connected. Use accounts with the same verified email when connecting the other provider.",
+    connected: "Connected",
+    notConnected: "Not connected",
+    connect: "Connect",
+    disconnect: "Disconnect",
+    linkFailed:
+      "The account could not be connected. Check both email addresses; this provider may already belong to a separate Metto account.",
+    connectionFailed: "The connection could not be changed. Please try again.",
+    connectionRemoved:
+      "Disconnected. You can still sign in with the other provider.",
+    connectionLoadFailed: "Your connected accounts could not be loaded.",
+    retry: "Try again",
+    loginLinkHelp:
+      "Used the other method before? Sign in with it, then connect the second provider in My account.",
     addAmenity: "Add another amenity",
     removeAmenity: "Remove this amenity",
     detailsTooLong: "Your report is too long. Please shorten the description.",
@@ -311,8 +472,7 @@ export const STRINGS = {
     displayName: "Display name",
     accountUnavailable:
       "Login is currently unavailable. You can still send a report without an account.",
-    accountFailed:
-      "That did not work. Please try again shortly.",
+    accountFailed: "That did not work. Please try again shortly.",
     continueAnonymous: "Send a report without an account",
     creditAs: "I want public credit for this report",
     creditHint:
