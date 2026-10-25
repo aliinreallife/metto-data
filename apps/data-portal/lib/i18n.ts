@@ -260,6 +260,7 @@ export const STRINGS = {
     available: "وجود دارد",
     absent: "وجود ندارد",
     carCount: "تعداد واگن‌های همین قطار (اختیاری)",
+    ofCars: "از",
     carHint:
       "تعداد و جای واگن به قطار و جهت حرکت بستگی دارد؛ دادهٔ تأییدشده‌ای نداریم.",
     car: "واگن",
@@ -545,6 +546,7 @@ export const STRINGS = {
     available: "Available",
     absent: "Not available",
     carCount: "Number of cars in this train (optional)",
+    ofCars: "of",
     carHint:
       "Car counts and positions depend on the train and direction. We have no verified car-position data.",
     car: "Car",

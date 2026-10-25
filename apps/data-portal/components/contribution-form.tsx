@@ -223,7 +223,7 @@ export function ContributionForm({
           : kind === "status" && fields.get("status")
             ? t[String(fields.get("status")) as StringKey]
             : kind === "wagon" && car
-              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} / ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${fields.get("direction") ? ` · ${fields.get("direction")}` : ""}`
+              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} ${t.ofCars} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${fields.get("direction") ? ` · ${fields.get("direction")}` : ""}`
               : "",
       );
       setStep(3);
