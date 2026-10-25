@@ -194,3 +194,13 @@ and flips without renumbering the selected car. Sourced women-only markers cover
 Tehran urban trains and the outer halves of Mashhad Line 1's first/last cars.
 Other layouts do not inherit those boundaries. See `docs/train-layout-research.md`
 for source dates and limitations.
+
+Wagon reports with a selected car require a station and explicit travel direction.
+Terminal options come from canonical boarding routes, filtered by the station
+and the layout's `routeIds`; main-line and airport-shuttle directions stay
+separate at Bimeh. The head displays the chosen terminal, including after a visual
+flip. Direction, station, city or train-type changes clear stale car selections.
+The drawing has native clickable/keyboard-operated car buttons, with larger
+number buttons as equivalent controls on narrow screens. Reviewed reports retain
+line, route and destination IDs alongside readable names, and Back preserves the
+selected direction/car. No direction or escalator location is guessed.

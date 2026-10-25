@@ -326,6 +326,24 @@ try {
   await expect(page.getByRole("spinbutton")).toHaveCount(0);
   await expect(page.getByTestId("train-fixed-count")).toContainText("3");
   await page.getByRole("button", { name: "Car 2", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Review report", exact: true })
+    .click();
+  await expect(
+    page.getByTestId("report-form").getByRole("alert"),
+  ).toContainText("station and direction");
+  expect(sent).toHaveLength(2);
+  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
+  await page
+    .getByRole("option", { name: "Line 1 · Toward Airport", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Car 2", exact: true }),
+  ).toHaveAttribute("aria-pressed", "false");
+  await page.locator('[data-diagram-car="2"]').click();
+  await expect(page.getByTestId("train-head-destination")).toHaveText(
+    "Toward Airport",
+  );
   await expect(
     page.getByRole("status").filter({ hasText: "Selected car" }),
   ).toContainText("2");
@@ -336,6 +354,20 @@ try {
   ).toBe(true);
   await review();
   await expect(page.getByTestId("report-review")).toContainText("Car 2 of 3");
+  await expect(page.getByTestId("report-review")).toContainText(
+    "Line 1 · Toward Airport",
+  );
+  await page
+    .getByRole("button", { name: "Edit information", exact: true })
+    .click();
+  await expect(page.locator('input[name="wagonDirection"]')).toHaveValue(
+    "mashhad:route:line-1-main|mashhad:station:airport",
+  );
+  await expect(page.locator('[data-diagram-car="2"]')).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await review();
   await send();
   await expect(
     page.getByRole("heading", {
@@ -344,6 +376,9 @@ try {
   ).toBeVisible();
   expect(sent[2].details).toContain("Car 2 of 3");
   expect(sent[2].details).toContain("mashhad:line1:3");
+  expect(sent[2].details).toContain(
+    "direction: toward Airport (mashhad:station:airport)",
+  );
   await another();
   await choose("Station amenities");
   await page
@@ -582,7 +617,15 @@ try {
       '[data-women-zone="head-half"], [data-women-zone="rear-half"]',
     ),
   ).toHaveCount(2);
-  await page.getByRole("button", { name: "Car 2", exact: true }).click();
+  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
+  await page
+    .getByRole("option", { name: "Line 1 · Toward Tajrish", exact: true })
+    .click();
+  await page.locator('[data-diagram-car="2"]').focus();
+  await page.locator('[data-diagram-car="2"]').press("Space");
+  await expect(page.getByTestId("train-head-destination")).toHaveText(
+    "Toward Tajrish",
+  );
   await page.getByRole("button", { name: "Flip train", exact: true }).click();
   await expect(diagram.locator("[data-car-number]").first()).toHaveAttribute(
     "data-car-number",
@@ -591,7 +634,21 @@ try {
   await expect(
     page.getByRole("button", { name: "Car 2", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("train-head-destination")).toHaveText(
+    "Toward Tajrish",
+  );
+  await page.getByRole("combobox", { name: /^Direction of travel/ }).click();
+  await page
+    .getByRole("option", { name: "Line 1 · Toward Kahrizak", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Car 2", exact: true }),
+  ).toHaveAttribute("aria-pressed", "false");
+  await expect(page.getByTestId("train-head-destination")).toHaveText(
+    "Toward Kahrizak",
+  );
   await selectLayout("Tehran–Karaj · double-deck, 9 cars");
+  await expect(page.locator('input[name="wagonDirection"]')).toHaveValue("");
   await expect(diagram.locator("[data-car-number]")).toHaveCount(9);
   await expect(diagram).toContainText("locomotives are not included");
   await expect(diagram).toContainText("Women-only boundaries are unconfirmed");
@@ -650,6 +707,16 @@ try {
   for (const lang of ["fa", "en"]) {
     await page.goto(`${origin}/contribute?city=mashhad&lang=${lang}`);
     await choose(lang === "fa" ? "کدام واگن" : "Car near an escalator");
+    await page
+      .getByRole("combobox", {
+        name: lang === "fa" ? /^جهت حرکت قطار/ : /^Direction of travel/,
+      })
+      .click();
+    await page
+      .getByRole("option")
+      .filter({ hasText: lang === "fa" ? "فرودگاه" : "Airport" })
+      .click();
+    await page.locator('[data-diagram-car="1"]').press("Enter");
     for (const mode of ["light", "dark"]) {
       await page.evaluate(async (mode) => {
         document.documentElement.classList.toggle("dark", mode === "dark");

@@ -164,7 +164,10 @@ editing a profile.
 
 Wagon reporting now defaults to a source-backed layout for the city/station.
 Users can select a listed train type, but cannot manually enter a car count.
-The full train fits on mobile and can be flipped without changing car identity.
+The full train fits on mobile, supports clicking the drawn wagons and can be
+flipped without changing car identity or the destination at its head. Reporting a
+selected car requires the station and explicit terminal direction. Changing
+direction clears the car so the other platform is reported separately.
 Women-only areas are sourced for Tehran urban seven-car trains and the outer
 halves of Mashhad Line 1's first/last cars; unconfirmed layouts remain unmarked. Research and
 sources: [train-layout-research.md](train-layout-research.md).

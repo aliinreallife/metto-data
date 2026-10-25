@@ -11,7 +11,7 @@ type SourceStation = {
 };
 type SourceLine = { id: string; names: Names; color: string };
 type SourceGraph = {
-  routes: { lineId: string; stops: { stationId: string }[] }[];
+  routes: { id: string; lineId: string; stops: { stationId: string }[] }[];
 };
 export type CatalogStation = SourceStation & {
   lines: SourceLine[];
@@ -23,7 +23,7 @@ export type CatalogCity = {
   candidate: boolean;
   stations: CatalogStation[];
   lines: SourceLine[];
-  routes: { lineId: string; stationIds: string[] }[];
+  routes: { id: string; lineId: string; stationIds: string[] }[];
 };
 export type Catalog = {
   cities: CatalogCity[];
@@ -72,6 +72,7 @@ export function buildCatalog(
       stations,
       lines,
       routes: routes.map((route) => ({
+        id: route.id,
         lineId: route.lineId,
         stationIds: route.stops.map((stop) => stop.stationId),
       })),

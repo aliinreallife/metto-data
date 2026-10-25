@@ -16,12 +16,16 @@ import {
   womenZone,
 } from "../lib/train-layouts";
 import { SelectField } from "./select-field";
+import type { TrainDirection } from "../lib/train-directions";
 export function WagonPicker({
   lang,
   cityId,
   stationId,
   lineIds,
   profileId,
+  directions,
+  direction,
+  onDirection,
   onProfile,
   selected,
   onSelect,
@@ -31,6 +35,9 @@ export function WagonPicker({
   stationId: string;
   lineIds: string[];
   profileId: string;
+  directions: TrainDirection[];
+  direction: TrainDirection | undefined;
+  onDirection: (value: string) => void;
   onProfile: (value: string) => void;
   selected: number | null;
   onSelect: (value: number) => void;
@@ -83,6 +90,24 @@ export function WagonPicker({
               {t.trainLayoutHint}
             </p>
           </div>
+          <div className="mb-5">
+            <SelectField
+              label={t.wagonDirection}
+              name="wagonDirection"
+              value={direction?.id ?? ""}
+              onChange={onDirection}
+              options={[
+                { value: "", label: t.chooseDirection },
+                ...directions.map((item) => ({
+                  value: item.id,
+                  label: `${item.lineNames[lang]} · ${t.toward} ${item.destinationNames[lang]}`,
+                })),
+              ]}
+            />
+            <p className="mt-2 text-xs leading-6 text-muted-foreground">
+              {t.wagonDirectionHint}
+            </p>
+          </div>
           <div
             className="mb-4 flex items-center justify-between gap-4 px-1"
             data-testid="train-fixed-count"
@@ -124,132 +149,220 @@ export function WagonPicker({
                 dir="auto"
               >
                 {!headRight && <ArrowLeft className="size-3.5" aria-hidden />}
-                {headRight ? t.trainRear : t.trainFront}
+                <span className="min-w-0">
+                  <span className="block">
+                    {headRight ? t.trainRear : t.trainFront}
+                  </span>
+                  <span
+                    className="mt-1 block text-xs font-semibold"
+                    data-testid={
+                      headRight
+                        ? "train-rear-destination"
+                        : "train-head-destination"
+                    }
+                  >
+                    {direction
+                      ? headRight
+                        ? direction.oppositeNames[lang]
+                        : `${t.toward} ${direction.destinationNames[lang]}`
+                      : !headRight
+                        ? t.chooseDirection
+                        : ""}
+                  </span>
+                </span>
               </span>
               <span
                 className={`inline-flex items-center gap-1 ${headRight ? "text-foreground" : "text-muted-foreground"}`}
                 dir="auto"
               >
-                {headRight ? t.trainFront : t.trainRear}
+                <span className="min-w-0">
+                  <span className="block">
+                    {headRight ? t.trainFront : t.trainRear}
+                  </span>
+                  <span
+                    className="mt-1 block text-xs font-semibold"
+                    data-testid={
+                      headRight
+                        ? "train-head-destination"
+                        : "train-rear-destination"
+                    }
+                  >
+                    {direction
+                      ? headRight
+                        ? `${t.toward} ${direction.destinationNames[lang]}`
+                        : direction.oppositeNames[lang]
+                      : headRight
+                        ? t.chooseDirection
+                        : ""}
+                  </span>
+                </span>
                 {headRight && <ArrowRight className="size-3.5" aria-hidden />}
               </span>
             </div>
-            <svg
-              viewBox={`0 0 ${width} 88`}
-              preserveAspectRatio="none"
-              aria-hidden="true"
-              focusable="false"
-              className="block h-24 w-full"
-              data-testid="train-overview"
-            >
-              <defs>
+            <p className="mt-3 text-xs text-muted-foreground">
+              {t.trainTapHint}
+            </p>
+            <div className="relative" dir="ltr" data-testid="train-overview">
+              <svg
+                viewBox={`0 0 ${width} 88`}
+                preserveAspectRatio="none"
+                aria-hidden="true"
+                focusable="false"
+                className="block h-24 w-full"
+              >
+                <defs>
+                  {cars.map((car, index) => {
+                    const x = 8 + index * 80,
+                      noseLeft =
+                        profile.kind !== "double_deck" &&
+                        ((!headRight && car === 1) ||
+                          (headRight && car === count)),
+                      noseRight =
+                        profile.kind !== "double_deck" &&
+                        ((headRight && car === 1) ||
+                          (!headRight && car === count));
+                    const path = noseLeft
+                      ? `M${x + 20} 18H${x + 62}a6 6 0 0 1 6 6v40H${x}V42Q${x} 26 ${x + 20} 18Z`
+                      : noseRight
+                        ? `M${x + 6} 18H${x + 48}Q${x + 68} 26 ${x + 68} 42v22H${x}V24a6 6 0 0 1 6-6Z`
+                        : `M${x + 6} 18h56a6 6 0 0 1 6 6v40H${x}V24a6 6 0 0 1 6-6Z`;
+                    return (
+                      <clipPath key={car} id={`${id}-car-${car}`}>
+                        <path id={`${id}-outline-${car}`} d={path} />
+                      </clipPath>
+                    );
+                  })}
+                </defs>
+                <path
+                  d={`M12 69H${width - 12}`}
+                  className="stroke-foreground/15"
+                  strokeWidth="2"
+                  vectorEffect="non-scaling-stroke"
+                />
                 {cars.map((car, index) => {
                   const x = 8 + index * 80,
-                    noseLeft =
-                      profile.kind !== "double_deck" &&
-                      ((!headRight && car === 1) ||
-                        (headRight && car === count)),
-                    noseRight =
-                      profile.kind !== "double_deck" &&
-                      ((headRight && car === 1) ||
-                        (!headRight && car === count));
-                  const path = noseLeft
-                    ? `M${x + 20} 18H${x + 62}a6 6 0 0 1 6 6v40H${x}V42Q${x} 26 ${x + 20} 18Z`
-                    : noseRight
-                      ? `M${x + 6} 18H${x + 48}Q${x + 68} 26 ${x + 68} 42v22H${x}V24a6 6 0 0 1 6-6Z`
-                      : `M${x + 6} 18h56a6 6 0 0 1 6 6v40H${x}V24a6 6 0 0 1 6-6Z`;
+                    zone = womenZone(profile, count, car),
+                    active = selected === car;
+                  const leftHalf =
+                    zone === "head-half" ? !headRight : headRight;
                   return (
-                    <clipPath key={car} id={`${id}-car-${car}`}>
-                      <path id={`${id}-outline-${car}`} d={path} />
-                    </clipPath>
+                    <g key={car}>
+                      {index < count - 1 && (
+                        <path
+                          d={`M${x + 66} 45h16`}
+                          className="stroke-muted-foreground/50"
+                          strokeWidth="3"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                      )}
+                      <g clipPath={`url(#${id}-car-${car})`}>
+                        <rect
+                          x={x}
+                          y="18"
+                          width="68"
+                          height="46"
+                          className={active ? "fill-primary/10" : "fill-card"}
+                        />
+                        {zone && (
+                          <rect
+                            x={zone === "full" || leftHalf ? x : x + 34}
+                            y="18"
+                            width={zone === "full" ? 68 : 34}
+                            height="46"
+                            className="fill-fuchsia-500/25"
+                          />
+                        )}
+                        {[12, 30, 48].map((window) => (
+                          <rect
+                            key={window}
+                            x={x + window}
+                            y="29"
+                            width="11"
+                            height={profile.kind === "double_deck" ? 9 : 14}
+                            rx="2"
+                            className="fill-foreground/35"
+                          />
+                        ))}
+                        {profile.kind === "double_deck" ? (
+                          <path
+                            d={`M${x + 14} 47h7m11 0h7m11 0h7`}
+                            className="stroke-foreground/25"
+                            strokeWidth="5"
+                            vectorEffect="non-scaling-stroke"
+                          />
+                        ) : (
+                          <rect
+                            x={x + 28}
+                            y="47"
+                            width="15"
+                            height="15"
+                            rx="2"
+                            className="fill-none stroke-foreground/30"
+                            strokeWidth="1"
+                            vectorEffect="non-scaling-stroke"
+                          />
+                        )}
+                        {profile.kind === "lrt" && (
+                          <path
+                            d={`M${x + 25} 20v42M${x + 45} 20v42`}
+                            className="stroke-muted-foreground/40"
+                            strokeDasharray="2 3"
+                            vectorEffect="non-scaling-stroke"
+                          />
+                        )}
+                      </g>
+                      <use
+                        href={`#${id}-outline-${car}`}
+                        fill="none"
+                        className={
+                          active ? "stroke-primary" : "stroke-foreground/50"
+                        }
+                        strokeWidth={active ? 2.5 : 1.2}
+                        vectorEffect="non-scaling-stroke"
+                      />
+                      <path
+                        d={`M${x + 12} 65v3h9v-3m26 0v3h9v-3`}
+                        className="fill-foreground/60"
+                      />
+                      <path
+                        d={`M${x + 3} 54h62`}
+                        className={
+                          active ? "stroke-primary/70" : "stroke-foreground/20"
+                        }
+                        strokeWidth="2"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                    </g>
                   );
                 })}
-              </defs>
-              <path
-                d={`M12 69H${width - 12}`}
-                className="stroke-foreground/15"
-                strokeWidth="2"
-                vectorEffect="non-scaling-stroke"
-              />
-              {cars.map((car, index) => {
-                const x = 8 + index * 80,
-                  zone = womenZone(profile, count, car),
-                  active = selected === car;
-                const leftHalf = zone === "head-half" ? !headRight : headRight;
-                return (
-                  <g key={car} data-diagram-car={car}>
-                    {index < count - 1 && (
-                      <path
-                        d={`M${x + 66} 45h16`}
-                        className="stroke-muted-foreground/50"
-                        strokeWidth="3"
-                        vectorEffect="non-scaling-stroke"
-                      />
-                    )}
-                    <g clipPath={`url(#${id}-car-${car})`}>
-                      <rect
-                        x={x}
-                        y="18"
-                        width="68"
-                        height="46"
-                        className="fill-card"
-                      />
-                      {zone && (
-                        <rect
-                          x={zone === "full" || leftHalf ? x : x + 34}
-                          y="18"
-                          width={zone === "full" ? 68 : 34}
-                          height="46"
-                          className="fill-fuchsia-500/25"
-                        />
-                      )}
-                      <path
-                        d={`M${x + 13} 27h42M${x + 13} 56h42`}
-                        className="stroke-foreground/35"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        vectorEffect="non-scaling-stroke"
-                      />
-                      {profile.kind === "double_deck" ? (
-                        <path
-                          d={`M${x + 13} 38h42M${x + 13} 46h42`}
-                          className="stroke-foreground/25"
-                          strokeWidth="2"
-                          strokeDasharray="5 4"
-                          vectorEffect="non-scaling-stroke"
-                        />
-                      ) : (
-                        <rect
-                          x={x + 24}
-                          y="34"
-                          width="20"
-                          height="14"
-                          rx="3"
-                          className="fill-foreground/10"
-                        />
-                      )}
-                      {profile.kind === "lrt" && (
-                        <path
-                          d={`M${x + 22} 20v42M${x + 46} 20v42`}
-                          className="stroke-muted-foreground/40"
-                          strokeDasharray="2 3"
-                          vectorEffect="non-scaling-stroke"
-                        />
-                      )}
-                    </g>
-                    <use
-                      href={`#${id}-outline-${car}`}
-                      fill="none"
-                      className={
-                        active ? "stroke-primary" : "stroke-foreground/50"
-                      }
-                      strokeWidth={active ? 2.5 : 1.2}
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </g>
-                );
-              })}
-            </svg>
+              </svg>
+              <div
+                role="group"
+                aria-label={t.trainTapHint}
+                className="absolute inset-0 grid"
+                style={{
+                  gridTemplateColumns: `repeat(${count}, minmax(0,1fr))`,
+                }}
+              >
+                {cars.map((car) => (
+                  <button
+                    key={car}
+                    type="button"
+                    aria-label={`${t.car} ${car} · ${t.trainTapHint}`}
+                    aria-pressed={selected === car}
+                    onClick={() => onSelect(car)}
+                    data-diagram-car={car}
+                    className="group relative min-w-0 cursor-pointer rounded-lg hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                  >
+                    <span
+                      className={`absolute inset-x-0 bottom-0 text-center text-[11px] font-semibold ${selected === car ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+                    >
+                      {number(car)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
             <p className="sr-only" role="status">
               {headRight ? t.trainHeadRight : t.trainHeadLeft}
             </p>
@@ -359,15 +472,6 @@ export function WagonPicker({
               </p>
             )}
           </div>
-          <label className="mt-5 flex flex-col gap-2 text-sm font-semibold">
-            {t.direction}
-            <input
-              name="direction"
-              maxLength={100}
-              placeholder={t.directionPlaceholder}
-              className="min-h-12 w-full rounded-xl border border-input bg-card px-3 py-3 text-base"
-            />
-          </label>
           <div className="mt-2 flex flex-wrap gap-x-4">
             {sources.map((source) => (
               <a

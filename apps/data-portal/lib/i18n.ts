@@ -1,5 +1,14 @@
 export const STRINGS = {
   fa: {
+    wagonDirection: "جهت حرکت قطار",
+    chooseDirection: "قطار به سمت کدام ایستگاه می‌رفت؟",
+    chooseStation: "ایستگاه را انتخاب کن",
+    toward: "به سمت",
+    trainTapHint: "روی واگن یا شماره‌اش بزن.",
+    wagonDirectionHint:
+      "جای پله‌برقی در هر جهت فرق می‌کند؛ جهت قطاری را انتخاب کن که از آن پیاده شدی.",
+    wagonContextRequired:
+      "برای ثبت واگن، ایستگاه و جهت حرکت قطار را انتخاب کن.",
     trainLayout: "چیدمان قطاری که دیدی",
     carCountFixed: "تعداد واگن‌ها",
     trainCarsUnit: "واگن",
@@ -192,7 +201,7 @@ export const STRINGS = {
     locationHint:
       "بگو محل درست ایستگاه یا ورودی کجاست. نشانی، نشانهٔ نزدیک یا پیوند نقشه کمک می‌کند؛ مختصات لازم نیست.",
     wagonHint:
-      "واگن نزدیک پله‌برقی را انتخاب کن. تعداد واگن‌ها با شهر و نوع قطار تنظیم می‌شود؛ جهت حرکت و ورودی را هم اگر می‌دانی بنویس.",
+      "ایستگاه و جهت قطاری را که از آن پیاده شدی انتخاب کن، بعد واگن نزدیک پله‌برقی را بزن. اگر چند خروجی هست، نام خروجی را در توضیحات بنویس.",
     otherHint:
       "بگو چه چیزی باید اضافه یا اصلاح شود. برای شهر یا خط جدید، نام و منبع اطلاعات را هم بنویس.",
     timetablePlaceholder: "مثلاً: روزهای کاری، خط ۱ به سمت فرودگاه، از ساعت…",
@@ -329,6 +338,15 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    wagonDirection: "Direction of travel",
+    chooseDirection: "Which terminal was the train heading toward?",
+    chooseStation: "Choose a station",
+    toward: "Toward",
+    trainTapHint: "Tap a car or its number.",
+    wagonDirectionHint:
+      "Escalator positions differ by direction. Choose the direction of the train you got off.",
+    wagonContextRequired:
+      "Choose the station and direction of travel before reporting a car.",
     trainLayout: "The train you saw",
     carCountFixed: "Number of cars",
     trainCarsUnit: "cars",
@@ -525,7 +543,7 @@ export const STRINGS = {
     locationHint:
       "Describe the correct station or entrance location. An address, nearby landmark or map link helps; coordinates aren’t needed.",
     wagonHint:
-      "Choose the car closest to the escalator. The city and train type set the car count. Include direction and entrance if known.",
+      "Choose your station and the direction of the train you got off, then tap the car closest to the escalator. If there are several exits, name the exit in your description.",
     otherHint:
       "Tell us what to add or correct. For a new city or line, include its name and any source you have.",
     timetablePlaceholder:

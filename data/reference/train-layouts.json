@@ -74,7 +74,16 @@
         "full": [1, 7],
         "headHalf": [2],
         "rearHalf": [6]
-      }
+      },
+      "routeIds": [
+        "tehran:route:line-1-main",
+        "tehran:route:line-2-main",
+        "tehran:route:line-3-main",
+        "tehran:route:line-4-main",
+        "tehran:route:line-6-main",
+        "tehran:route:line-7-main",
+        "tehran:route:line-1-parand"
+      ]
     },
     {
       "id": "tehran:line5:9",
@@ -87,7 +96,8 @@
       "cars": 9,
       "kind": "double_deck",
       "sourceIds": ["tehran-line5-2017"],
-      "women": null
+      "women": null,
+      "routeIds": ["tehran:route:line-5-main"]
     },
     {
       "id": "tehran:mehrabad:4",
@@ -100,7 +110,8 @@
       "cars": 4,
       "kind": "metro",
       "sourceIds": ["tehran-technical"],
-      "women": null
+      "women": null,
+      "routeIds": ["tehran:route:line-4-mehrabad"]
     },
     {
       "id": "mashhad:line1:3",
@@ -117,7 +128,8 @@
         "full": [],
         "headHalf": [1],
         "rearHalf": [3]
-      }
+      },
+      "routeIds": ["mashhad:route:line-1-main"]
     },
     {
       "id": "mashhad:line2:5",
@@ -130,7 +142,8 @@
       "cars": 5,
       "kind": "metro",
       "sourceIds": ["mashhad-line2-project"],
-      "women": null
+      "women": null,
+      "routeIds": ["mashhad:route:line-2-main"]
     }
   ],
   "defaults": {

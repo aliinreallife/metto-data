@@ -6,6 +6,15 @@ can choose a listed train type, but cannot enter an arbitrary car count. They ca
 describe a different observed formation and attach a photo for review. No car is
 selected on the user's behalf.
 
+Direction choices use the endpoints of canonical boarding routes, filtered to the
+selected station and layout. Route IDs distinguish the Mehrabad shuttle from
+Line 4's main service at Bimeh. Both terminal directions remain available at end
+stations because reports can describe an arriving train. A selected car requires
+an explicit station and direction; the report retains route/line/destination IDs.
+The train's head names the selected destination. Flipping preserves that meaning,
+while changing direction clears the selected car for the other platform. Neither
+direction nor escalator placement is inferred from the map.
+
 | Service                 | Evidence                                                                                                                                                                                                  | Treatment                                                                                                                                                                                                        |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Tehran urban            | Operator operations deputy, quoted by Mizan on 2026-08-26, describes a seven-car train and 1.5 women-only cars at each end.                                                                               | Tehran default: seven cars. Cars 1/7 are fully women-only, with the forward half of 2 and rear half of 6. Remaining space is general.                                                                            |

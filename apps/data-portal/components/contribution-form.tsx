@@ -18,6 +18,7 @@ import { WagonPicker } from "./wagon-picker";
 import type { AccountUser } from "./account";
 import { SelectField } from "./select-field";
 import { resolveTrainProfile } from "../lib/train-layouts";
+import { trainDirections } from "../lib/train-directions";
 type Kind =
   | "timetable"
   | "facility"
@@ -79,6 +80,7 @@ export function ContributionForm({
     ),
     [stationId, setStationId] = useState(initialStation),
     [trainProfileId, setTrainProfileId] = useState(""),
+    [directionId, setDirectionId] = useState(""),
     [amenityRows, setAmenityRows] = useState([0]),
     [car, setCar] = useState<number | null>(null),
     [pending, setPending] = useState(false),
@@ -126,6 +128,7 @@ export function ContributionForm({
       setCityId("other");
       setStationId("");
       setTrainProfileId("");
+      setDirectionId("");
       setCar(null);
     }
     setKind(value);
@@ -149,6 +152,7 @@ export function ContributionForm({
     setCityId(value);
     setStationId("");
     setTrainProfileId("");
+    setDirectionId("");
     setCar(null);
   };
   const wagonLines =
@@ -162,6 +166,8 @@ export function ContributionForm({
     stationId,
   );
   const carCount = selectedTrain?.cars ?? 0;
+  const directions = trainDirections(city, selectedTrain, stationId);
+  const direction = directions.find((item) => item.id === directionId);
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (step !== 2 || pending) return;
@@ -169,6 +175,10 @@ export function ContributionForm({
       details = String(fields.get("details") ?? "").trim(),
       file = (fields.get("photo") as File | null) ?? undefined;
     let observation = "";
+    if (kind === "wagon" && car && (!stationId || !direction)) {
+      setError("wagonContextRequired");
+      return;
+    }
     if (kind === "facility")
       observation = fields
         .getAll("amenity")
@@ -181,8 +191,14 @@ export function ContributionForm({
         .join("\n");
     if (kind === "status" && fields.get("status"))
       observation = `Observed status: ${fields.get("status")}`;
-    if (kind === "wagon" && selectedTrain && car && car <= selectedTrain.cars)
-      observation = `Car ${car} of ${carCount}; direction: ${String(fields.get("direction") ?? "").trim()}; layout reference: ${selectedTrain.id}`;
+    if (
+      kind === "wagon" &&
+      selectedTrain &&
+      car &&
+      car <= selectedTrain.cars &&
+      direction
+    )
+      observation = `Car ${car} of ${carCount}; line: ${direction.lineNames.en} (${direction.lineId}); direction: toward ${direction.destinationNames.en} (${direction.destinationId}); route: ${direction.routeId}; layout reference: ${selectedTrain.id}`;
     if (!details && !observation && !file?.size) {
       setError("required");
       return;
@@ -239,7 +255,7 @@ export function ContributionForm({
           : kind === "status" && fields.get("status")
             ? t[String(fields.get("status")) as StringKey]
             : kind === "wagon" && car
-              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} ${t.ofCars} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${fields.get("direction") ? ` · ${fields.get("direction")}` : ""}`
+              ? `${t.car} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(car)} ${t.ofCars} ${new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(Number(carCount))}${direction ? ` · ${direction.lineNames[lang]} · ${t.toward} ${direction.destinationNames[lang]}` : ""}`
               : "",
       );
       setStep(3);
@@ -487,6 +503,7 @@ export function ContributionForm({
               setError(null);
               setCar(null);
               setTrainProfileId("");
+              setDirectionId("");
               setDraft(null);
               setCredit(false);
               setStep(1);
@@ -524,18 +541,22 @@ export function ContributionForm({
             />
             {city && kind !== "city_request" && (
               <SelectField
-                label={t.selectStation}
+                label={kind === "wagon" ? t.station : t.selectStation}
                 name="stationId"
                 value={stationId}
                 onChange={(value) => {
                   setStationId(value);
                   setTrainProfileId("");
+                  setDirectionId("");
                   setCar(null);
                 }}
                 searchLabel={t.findStation}
                 emptyLabel={t.empty}
                 options={[
-                  { value: "", label: t.noStation },
+                  {
+                    value: "",
+                    label: kind === "wagon" ? t.chooseStation : t.noStation,
+                  },
                   ...stations.map((station) => ({
                     value: station.id,
                     label: station.names[lang],
@@ -665,8 +686,16 @@ export function ContributionForm({
               stationId={stationId}
               lineIds={wagonLines}
               profileId={selectedTrain?.id ?? ""}
+              directions={directions}
+              direction={direction}
+              onDirection={(value) => {
+                setDirectionId(value);
+                setCar(null);
+                setError(null);
+              }}
               onProfile={(value) => {
                 setTrainProfileId(value);
+                setDirectionId("");
                 setCar(null);
               }}
               selected={car}

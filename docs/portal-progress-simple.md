@@ -26,7 +26,10 @@ into the live site yet.
 - Train reporting has separate reference layouts for Tehran urban trains,
   Tehran–Karaj, the Mehrabad shuttle and Mashhad Lines 1/2. The city/station sets
   a default count. You can choose a listed train type, but cannot type a count.
-  The train can be flipped while the selected car number stays the same.
+  Choose the station and terminal direction before reporting a car. The train's
+  head names its destination; changing direction clears the selected car. Flipping
+  only changes the picture, preserving the direction and car identity. Tap the
+  drawn wagon or its larger number button; keyboard selection works too.
 - The whole train fits on mobile. Tehran's seven-car diagram shows sourced full
   and half women-only areas. Mashhad Line 1 shows the operator-confirmed outer
   half of the first and last cars. Other layouts remain unmarked until verified.
