@@ -888,7 +888,21 @@ try {
   await expect(fallback.getByTestId("report-review")).toContainText(
     "Keep this draft when storage is blocked",
   );
+  await popup
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
+  await expect(
+    popup.getByRole("button", { name: "Log out", exact: true }),
+  ).toBeVisible();
   await popup.close();
+  await fallback.bringToFront();
+  await fallback.evaluate(() => window.dispatchEvent(new Event("focus")));
+  await expect(
+    fallback.getByRole("textbox", { name: "Display name", exact: true }),
+  ).toBeVisible();
+  await expect(fallback.getByTestId("report-review")).toContainText(
+    "Keep this draft when storage is blocked",
+  );
   await fallback.close();
   expect(errors).toEqual([]);
   console.log(

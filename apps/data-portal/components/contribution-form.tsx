@@ -317,7 +317,11 @@ export function ContributionForm({
   function beforeLogin(event: React.MouseEvent<HTMLAnchorElement>) {
     if (!persist()) {
       event.preventDefault();
-      window.open(loginHref, "_blank", "noopener,noreferrer");
+      window.open(
+        "/account?" + new URLSearchParams({ lang }),
+        "_blank",
+        "noopener,noreferrer",
+      );
       setLoginSeparate(true);
     }
   }
