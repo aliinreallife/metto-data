@@ -71,6 +71,22 @@ try {
     errors = [],
     sent = [],
     providers = [];
+  // Disabled/loading controls can become enabled before their opacity transition
+  // ends. Audit the settled screen rather than sampling an intermediate frame.
+  async function auditPage() {
+    await page.evaluate(async () => {
+      await Promise.all(
+        document
+          .getAnimations()
+          .filter(
+            (animation) =>
+              animation.effect?.getComputedTiming().endTime !== Infinity,
+          )
+          .map((animation) => animation.finished.catch(() => {})),
+      );
+    });
+    return new AxeBuilder({ page }).analyze();
+  }
   let signedIn = false,
     socialSucceeds = false;
   let savedProfile = null,
@@ -562,7 +578,7 @@ try {
     await page.getByTestId("report-types").getByRole("button").nth(1).click();
     for (const width of [390, 1280]) {
       await page.setViewportSize({ width, height: 900 });
-      const audit = await new AxeBuilder({ page }).analyze();
+      const audit = await auditPage();
       expect(
         audit.violations.filter((v) =>
           ["serious", "critical"].includes(v.impact ?? ""),
@@ -587,7 +603,7 @@ try {
         exact: true,
       }),
     ).toBeEnabled();
-    const audit = await new AxeBuilder({ page }).analyze();
+    const audit = await auditPage();
     expect(
       audit.violations.filter((v) =>
         ["serious", "critical"].includes(v.impact ?? ""),
@@ -661,7 +677,7 @@ try {
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  const trainAudit = await new AxeBuilder({ page }).analyze();
+  const trainAudit = await auditPage();
   expect(
     trainAudit.violations.filter((v) =>
       ["serious", "critical"].includes(v.impact ?? ""),
@@ -726,7 +742,7 @@ try {
             .map((animation) => animation.finished.catch(() => {})),
         );
       }, mode);
-      const audit = await new AxeBuilder({ page }).analyze();
+      const audit = await auditPage();
       expect(
         audit.violations.filter((v) =>
           ["serious", "critical"].includes(v.impact ?? ""),
