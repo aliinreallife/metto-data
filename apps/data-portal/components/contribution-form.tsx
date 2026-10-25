@@ -429,7 +429,7 @@ export function ContributionForm({
             />
           )}
           {kind === "wagon" && (
-            <fieldset className="rounded-xl border border-border p-4">
+            <fieldset className="min-w-0 rounded-xl border border-border p-4">
               <legend className="px-1 font-semibold">{t.wagon}</legend>
               <p className="mb-4 text-sm leading-7 text-muted-foreground">
                 {t.carHint}
@@ -486,7 +486,7 @@ export function ContributionForm({
               className={input}
             />
           </label>
-          <details className="rounded-xl border border-border p-4">
+          <details className="min-w-0 rounded-xl border border-border p-4">
             <summary className="min-h-7 cursor-pointer text-sm font-semibold">
               {t.evidenceHeading}
             </summary>

@@ -77,16 +77,14 @@ try {
   await page
     .getByText("Add a photo or source link (optional)", { exact: true })
     .click();
-  await page
-    .locator("input[name=photo]")
-    .setInputFiles({
-      name: "board.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=",
-        "base64",
-      ),
-    });
+  await page.locator("input[name=photo]").setInputFiles({
+    name: "board.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=",
+      "base64",
+    ),
+  });
   await page
     .getByRole("button", { name: "Change report type", exact: true })
     .click();
@@ -167,6 +165,11 @@ try {
     .click();
   await page.getByRole("spinbutton").fill("6");
   await page.getByRole("button", { name: "Car 4", exact: true }).click();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Send report", exact: true }).click();
   await expect(
     page.getByRole("heading", {
