@@ -142,16 +142,17 @@ export function createProfilePhotoHandler(config: {
       }
       const version = createHash("sha256").update(image).digest("hex");
       if (current?.value.version === version) return reply(200, state(current));
+      const jpeg = image.toString("base64");
       if (
         config.store.canStorePhoto &&
-        !(await config.store.canStorePhoto(image.length))
+        !(await config.store.canStorePhoto(jpeg.length))
       )
         return reply(507, { error: "storage_full" });
       if (
         !(await config.store.write(
           path,
           {
-            jpeg: image.toString("base64"),
+            jpeg,
             version,
             updatedAt: new Date().toISOString(),
           } satisfies ProfilePhoto,

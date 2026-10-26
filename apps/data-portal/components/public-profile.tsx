@@ -242,7 +242,9 @@ export function PublicProfile({
                   href={report.url}
                   className="mt-4 flex min-h-11 items-center justify-between gap-4 break-words font-semibold leading-7 underline-offset-4 hover:underline"
                 >
-                  <span>{report.names?.[lang] ?? report.title}</span>
+                  <span className="min-w-0 flex-1">
+                    {report.names?.[lang] ?? report.title}
+                  </span>
                   <ExternalLink
                     className="size-4 shrink-0 text-muted-foreground"
                     aria-hidden
