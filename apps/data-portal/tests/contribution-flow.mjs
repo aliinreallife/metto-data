@@ -1227,6 +1227,10 @@ try {
     "blobatar",
   );
   await expect(page.locator("main time")).toHaveCount(1);
+  // A later test opened another window. Restore a foreground, permitted tab
+  // before exercising the real Clipboard API; headless browsers may deny it.
+  await page.bringToFront();
+  await context.grantPermissions(["clipboard-write"], { origin });
   for (const lang of ["fa", "en"]) {
     await page.goto(`${origin}/contributors/github-91134550?lang=${lang}`);
     const accepted = page
@@ -1281,6 +1285,25 @@ try {
       }
     }
   }
+  // Denied clipboard access must give useful feedback without breaking the page.
+  await page.evaluate(() =>
+    Object.defineProperty(navigator.clipboard, "writeText", {
+      configurable: true,
+      value: async () => {
+        throw new DOMException("Clipboard denied", "NotAllowedError");
+      },
+    }),
+  );
+  await page
+    .getByRole("button", { name: "Copy profile link", exact: true })
+    .click();
+  await expect(
+    page
+      .getByRole("status")
+      .filter({
+        hasText: "Could not copy. You can copy the link from your address bar.",
+      }),
+  ).toBeVisible();
   await page.goto(`${origin}/leaderboard?lang=en`);
   await expect(
     page.getByRole("link", { name: "علی رشیدی", exact: true }),
