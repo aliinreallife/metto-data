@@ -1,5 +1,7 @@
 export const STRINGS = {
   fa: {
+    womenPresenceReported:
+      "وجود واگن ویژهٔ بانوان در تهران–کرج گزارش شده؛ تعداد و جاشون هنوز تأیید نشده. علامت‌های سکو و قطار رو ببین.",
     allReports: "همهٔ گزارش‌ها",
     lineFilter: "فیلتر خط",
     allLines: "همهٔ خط‌ها",
@@ -376,6 +378,8 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    womenPresenceReported:
+      "Women-only coaches are reported on Tehran–Karaj. Their number and positions are unconfirmed; follow platform and train signs.",
     allReports: "All reports",
     lineFilter: "Filter by line",
     allLines: "All lines",

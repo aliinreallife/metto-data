@@ -18,7 +18,7 @@ direction nor escalator placement is inferred from the map.
 | Service                 | Evidence                                                                                                                                                                                                  | Treatment                                                                                                                                                                                                        |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Tehran urban            | Operator operations deputy, quoted by Mizan on 2026-08-26, describes a seven-car train and 1.5 women-only cars at each end.                                                                               | Tehran default: seven cars. Cars 1/7 are fully women-only, with the forward half of 2 and rear half of 6. Remaining space is general.                                                                            |
-| Tehran–Karaj Line 5     | Operator CEO, quoted by Mehr on 2017-11-25, says passenger coaches increased from eight to nine per train.                                                                                                | Nine passenger coaches, excluding locomotives. This is historical evidence; women-only boundaries need line-specific verification.                                                                               |
+| Tehran–Karaj Line 5     | Operator CEO, quoted by Mehr on 2017-11-25, says passenger coaches increased from eight to nine per train.                                                                                                | Nine passenger coaches, excluding locomotives. The owner reports women-only coaches, without count or placement. Show presence as reported; leave individual coaches unmarked until line-specific evidence confirms boundaries.                                                                               |
 | Tehran Mehrabad shuttle | Persian Tehran Metro article describes four-car trains because of shorter platforms.                                                                                                                      | Four-car secondary reference, automatically selected at the two airport terminal stations. Bimeh still offers the urban and shuttle layouts. Women-only boundaries remain unverified.                            |
 | Mashhad Line 1          | Operator CEO Davood Hematian, quoted by Shahrara on 2026-09-10, says trains have recently become three cars. He specifies women-only space to half of the first and last cars, with a general middle car. | Mashhad default: three cars. Outer half of car 1 and outer half of car 3 are women-only. Car 2 and the remaining halves are general. The older two-car secondary template is no longer offered as current stock. |
 | Mashhad Line 2          | EPC contractor Farab lists 20 trainsets and 100 cars.                                                                                                                                                     | Five-car project reference, derived from the equipment package. The Line 1 women's boundary is not extrapolated to Line 2.                                                                                       |
@@ -54,3 +54,20 @@ Source URLs, retrieval dates and snapshot hashes are recorded in
 `data/reference/train-layouts.json`. Full articles/photos are not copied into the
 public repository. No active stations, graph edges, timetables or canonical
 amenities change in this work.
+
+## Follow-up — 2026-10-26
+
+The reporting diagram starts with the head on the right in both languages. Only
+car 1 has a curved nose; the rear remains flat. Flipping mirrors the drawing,
+windows and shaded half-car positions while preserving car numbers, destination
+and the selected car. A standard woman wayfinding pictogram replaces the Venus
+symbol; the existing accessible section labels remain available.
+
+The owner confirmed that Tehran–Karaj has women-only coaches but did not know
+their number. This is recorded as an owner observation, separately from the
+operator sources. Follow-up checks of the Line 5 count announcement and the
+operator's urban-train interview did not establish Line 5-specific women's
+coach positions. Search results and general Tehran descriptions do not establish
+a current Line 5 count. The portal acknowledges reported presence, keeps those
+positions unconfirmed and points to platform/train signs. It does not mark all
+unknown coaches as general or infer urban half-car boundaries for Line 5.

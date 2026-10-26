@@ -25,6 +25,7 @@ import {
   type CatalogStation,
   type Lang,
 } from "../lib/catalog";
+import { THEME_STORAGE_KEY } from "../lib/theme";
 import { STRINGS, type StringKey } from "../lib/i18n";
 import { ContributionForm } from "./contribution-form";
 import { SelectField } from "./select-field";
@@ -105,20 +106,35 @@ export function Portal(props: PortalProps) {
     document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
   }, [lang]);
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("metto:theme");
-      setDark(
-        saved
-          ? saved === "dark"
-          : matchMedia("(prefers-color-scheme: dark)").matches,
+    // The head script already set the theme. Mounting a page must not reset it.
+    const root = document.documentElement;
+    const sync = () => setDark(root.classList.contains("dark"));
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    const updatePreference = () => {
+      let saved: string | null = null;
+      try {
+        saved = localStorage.getItem(THEME_STORAGE_KEY);
+      } catch {}
+      root.classList.toggle(
+        "dark",
+        saved === "dark" || (saved !== "light" && media.matches),
       );
-    } catch {
-      setDark(matchMedia("(prefers-color-scheme: dark)").matches);
-    }
+    };
+    const storage = (event: StorageEvent) => {
+      if (event.key === THEME_STORAGE_KEY || event.key === null)
+        updatePreference();
+    };
+    media.addEventListener("change", updatePreference);
+    window.addEventListener("storage", storage);
+    return () => {
+      observer.disconnect();
+      media.removeEventListener("change", updatePreference);
+      window.removeEventListener("storage", storage);
+    };
   }, []);
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
   useEffect(() => {
     if (!menuOpen) return;
     const close = (event: KeyboardEvent) => {
@@ -132,9 +148,10 @@ export function Portal(props: PortalProps) {
   }, [menuOpen]);
   const toggleTheme = () => {
     const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
     setDark(next);
     try {
-      localStorage.setItem("metto:theme", next ? "dark" : "light");
+      localStorage.setItem(THEME_STORAGE_KEY, next ? "dark" : "light");
     } catch {}
   };
   const chooseCity = (value: string) => {
