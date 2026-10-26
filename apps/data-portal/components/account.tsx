@@ -142,7 +142,7 @@ export function Account({
             href={reportLink}
             className="mb-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-primary px-4 py-3 font-semibold text-primary-foreground"
           >
-            {t.resumeDraft}
+            {reportLink.startsWith("/reports") ? t.reviewReport : t.resumeDraft}
           </a>
         )}
         <AccountSettings
@@ -249,7 +249,11 @@ export function Account({
           href={reportLink}
           className="mt-1 inline-flex min-h-11 items-center justify-center gap-2 px-2 text-sm font-semibold text-primary underline underline-offset-4"
         >
-          {safeReportReturn(returnTo) ? t.resumeDraft : t.continueAnonymous}
+          {safeReportReturn(returnTo)
+            ? reportLink.startsWith("/reports")
+              ? t.reviewReport
+              : t.resumeDraft
+            : t.continueAnonymous}
           <ArrowLeft className="size-4 ltr:rotate-180" aria-hidden />
         </a>
       </div>

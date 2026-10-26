@@ -28,8 +28,16 @@ export function createFixture(): string {
     join(repoRoot, "upstream-tehran-metro", "data", "stations.json"),
     join(root, "upstream-tehran-metro", "data", "stations.json"),
   );
-  cpSync(join(repoRoot, "overrides", "tehran.overrides.json"), join(root, "overrides", "tehran.overrides.json"));
-  for (const file of ["tehran.routes.json", "tehran.segments.json", "tehran.transfers.json", "tehran.aliases.json"]) {
+  cpSync(
+    join(repoRoot, "overrides", "tehran.overrides.json"),
+    join(root, "overrides", "tehran.overrides.json"),
+  );
+  for (const file of [
+    "tehran.routes.json",
+    "tehran.segments.json",
+    "tehran.transfers.json",
+    "tehran.aliases.json",
+  ]) {
     cpSync(join(repoRoot, "topology", file), join(root, "topology", file));
   }
   return root;
@@ -40,4 +48,18 @@ export function cleanupFixtures(): void {
   for (const root of tracked.splice(0)) {
     rmSync(root, { recursive: true, force: true });
   }
+}
+
+/** Pinned Mashhad inputs without any reviewed community corrections. */
+export function createMashhadFixture(): string {
+  const root = createFixture();
+  for (const [directory, file] of [
+    ["upstream-mashhad-metro/data", "stations.json"],
+    ["topology", "mashhad.routes.json"],
+    ["overrides", "mashhad.overrides.json"],
+  ]) {
+    mkdirSync(join(root, directory), { recursive: true });
+    cpSync(join(repoRoot, directory, file), join(root, directory, file));
+  }
+  return root;
 }

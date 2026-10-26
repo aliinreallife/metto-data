@@ -1,3 +1,4 @@
+import { notifyCommunityReviews } from "./community.ts";
 import {
   publish,
   REPOSITORY,
@@ -5,7 +6,11 @@ import {
   type IntakeConfig,
   type StoredReport,
 } from "./intake.ts";
-export async function reconcile(config: IntakeConfig, cursor?: string) {
+export async function reconcile(
+  config: IntakeConfig,
+  cursor?: string,
+  communityCursor?: string,
+) {
   const expired = (await config.store.cleanup?.()) ?? 0;
   const page = await config.store.paths("outbox/", cursor),
     summary = {
@@ -87,5 +92,10 @@ export async function reconcile(config: IntakeConfig, cursor?: string) {
     } else if (report.state === "pending") summary.pending++;
     else summary.needsReview++;
   }
-  return summary;
+  const community = await notifyCommunityReviews(config, communityCursor);
+  return {
+    ...summary,
+    communityNotified: community.notified,
+    communityCursor: community.cursor,
+  };
 }

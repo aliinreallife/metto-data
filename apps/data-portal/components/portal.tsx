@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -13,6 +13,7 @@ import {
   Moon,
   Plus,
   Search,
+  Sun,
   TrainFront,
   Trophy,
   UserRound,
@@ -32,6 +33,7 @@ import { Account, usePortalAccount } from "./account";
 import type { Leader } from "../lib/leaderboard";
 import { NetworkMap } from "./network-map";
 import type { PublicMemberProfile } from "../lib/profile";
+import { CommunityReportPanel } from "./community-report-panel";
 import { socialKinds } from "../lib/social-links";
 type View =
   | "home"
@@ -43,11 +45,11 @@ type View =
   | "leaderboard"
   | "profile";
 const input =
-  "w-full rounded-xl border border-input bg-background px-3 py-3 text-base focus-visible:ring-2 focus-visible:ring-ring";
+  "w-full rounded-xl border border-input bg-background px-3 py-3 text-base";
 const primary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground focus-visible:ring-2 focus-visible:ring-ring";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-primary-foreground";
 const secondary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 font-semibold hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring";
+  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 font-semibold hover:bg-muted";
 function Badge({
   children,
   candidate = false,
@@ -70,6 +72,7 @@ export type PortalProps = {
   initialCity: string;
   initialStation: string;
   initialKind: string;
+  initialReportId?: string;
   intakeEnabled: boolean;
   previewMode: boolean;
   authConfigured: boolean;
@@ -91,7 +94,9 @@ export function Portal(props: PortalProps) {
     [city, setCity] = useState(props.initialCity),
     [query, setQuery] = useState(""),
     [dark, setDark] = useState(false),
+    [line, setLine] = useState(""),
     [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   const t = STRINGS[lang],
     number = (value: number) =>
       new Intl.NumberFormat(lang === "fa" ? "fa-IR" : "en").format(value);
@@ -100,11 +105,53 @@ export function Portal(props: PortalProps) {
     document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
   }, [lang]);
   useEffect(() => {
+    try {
+      const saved = localStorage.getItem("metto:theme");
+      setDark(
+        saved
+          ? saved === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches,
+      );
+    } catch {
+      setDark(matchMedia("(prefers-color-scheme: dark)").matches);
+    }
+  }, []);
+  useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [menuOpen]);
+  const toggleTheme = () => {
+    const next = !dark;
+    setDark(next);
+    try {
+      localStorage.setItem("metto:theme", next ? "dark" : "light");
+    } catch {}
+  };
+  const chooseCity = (value: string) => {
+    setCity(value);
+    setLine("");
+    const url = new URL(location.href);
+    value
+      ? url.searchParams.set("city", value)
+      : url.searchParams.delete("city");
+    history.replaceState(null, "", url);
+  };
   const filtered = useMemo(
-    () => searchStations(catalog, city, query),
-    [catalog, city, query],
+    () =>
+      searchStations(catalog, city, query).filter(
+        (station) => !line || station.lines.some((item) => item.id === line),
+      ),
+    [catalog, city, query, line],
   );
   const href = (next: View, extra: Record<string, string> = {}) => {
     const params = new URLSearchParams({
@@ -135,7 +182,7 @@ export function Portal(props: PortalProps) {
         label={t.city}
         hideLabel
         value={city}
-        onChange={setCity}
+        onChange={chooseCity}
         options={[
           { value: "", label: t.all },
           ...catalog.cities.map((item) => ({
@@ -147,10 +194,14 @@ export function Portal(props: PortalProps) {
     </div>
   );
   const reports = (
-    <section className="mt-8">
+    <section className={view === "home" ? "mt-8" : ""}>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">{t.reportsTitle}</h2>
+          {view === "reports" ? (
+            <h1 className="text-3xl font-bold">{t.reports}</h1>
+          ) : (
+            <h2 className="text-2xl font-bold">{t.reportsTitle}</h2>
+          )}
           <p className="mt-2 text-sm leading-7 text-muted-foreground">
             {t.reportsIntro}
           </p>
@@ -186,10 +237,26 @@ export function Portal(props: PortalProps) {
                   {report.names?.[lang] ?? report.title}
                 </a>
               </h3>
+              <p className="mt-2 text-xs text-muted-foreground">
+                <time dateTime={report.createdAt}>
+                  {new Intl.DateTimeFormat(lang === "fa" ? "fa-IR" : "en", {
+                    dateStyle: "medium",
+                    timeZone: "Asia/Tehran",
+                  }).format(new Date(report.createdAt))}
+                </time>
+              </p>
               {report.contributorName && (
                 <p className="mt-3 text-sm text-muted-foreground">
                   {report.contributorName}
                 </p>
+              )}
+              {report.reportId && (
+                <Link
+                  href={href("reports", { report: report.reportId })}
+                  className={`${secondary} mt-4 text-sm`}
+                >
+                  {t.reviewReport}
+                </Link>
               )}
             </article>
           ))}
@@ -269,15 +336,20 @@ export function Portal(props: PortalProps) {
             </button>
             <button
               type="button"
-              onClick={() => setDark(!dark)}
+              onClick={toggleTheme}
               aria-label={t.theme}
               aria-pressed={dark}
               className="grid size-11 place-items-center rounded-lg hover:bg-muted"
             >
-              <Moon className="size-4" aria-hidden />
+              {dark ? (
+                <Sun className="size-4" aria-hidden />
+              ) : (
+                <Moon className="size-4" aria-hidden />
+              )}
             </button>
             <button
               type="button"
+              ref={menuButton}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label={t.menu}
               aria-expanded={menuOpen}
@@ -332,13 +404,13 @@ export function Portal(props: PortalProps) {
       >
         {view === "home" && (
           <>
-            <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-14">
+            <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-8">
               <div className="flex flex-col gap-6">
                 <Badge>
                   <Globe2 className="me-1 size-3.5" aria-hidden />
                   {t.brand}
                 </Badge>
-                <h1 className="text-balance text-4xl font-bold leading-tight sm:text-6xl">
+                <h1 className="text-balance text-3xl font-bold leading-snug sm:text-5xl">
                   {t.hero}
                   <br />
                   <span className="text-primary">{t.heroAccent}</span>
@@ -375,7 +447,7 @@ export function Portal(props: PortalProps) {
                 </div>
                 <p className="text-xs text-muted-foreground">{t.countsHint}</p>
               </div>
-              <div className="rounded-[2rem] border border-border bg-card p-6">
+              <div className="rounded-2xl border border-border bg-card p-6">
                 <div className="mb-6 flex items-center justify-between gap-4">
                   <div>
                     <h2 className="font-bold">{t.chooseCity}</h2>
@@ -455,6 +527,7 @@ export function Portal(props: PortalProps) {
                   aria-hidden
                 />
                 <input
+                  type="search"
                   aria-label={t.search}
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
@@ -463,7 +536,40 @@ export function Portal(props: PortalProps) {
                 />
               </label>
               {citySelect}
+              <div className="min-w-44">
+                <SelectField
+                  label={t.lineFilter}
+                  hideLabel
+                  value={line}
+                  onChange={setLine}
+                  options={[
+                    { value: "", label: t.allLines },
+                    ...catalog.cities
+                      .filter((item) => !city || item.id === city)
+                      .flatMap((item) =>
+                        item.lines.map((route) => ({
+                          value: route.id,
+                          label:
+                            (city ? "" : item.names[lang] + " · ") +
+                            route.names[lang],
+                        })),
+                      ),
+                  ]}
+                />
+              </div>
             </div>
+            {(query || line) && (
+              <button
+                type="button"
+                className="mb-4 min-h-11 text-sm font-semibold text-primary underline underline-offset-4"
+                onClick={() => {
+                  setQuery("");
+                  setLine("");
+                }}
+              >
+                {t.clearFilters}
+              </button>
+            )}
             <p role="status" className="mb-5 text-sm text-muted-foreground">
               {number(filtered.length)} {t.stations}
             </p>
@@ -504,8 +610,25 @@ export function Portal(props: PortalProps) {
         )}
         {view === "reports" && (
           <>
-            <h1 className="text-3xl font-bold">{t.reports}</h1>
-            {reports}
+            {props.initialReportId ? (
+              <section className="mx-auto max-w-3xl">
+                <Link
+                  href={href("reports")}
+                  className="mb-5 inline-flex min-h-11 items-center text-sm font-semibold text-primary"
+                >
+                  {t.allReports}
+                </Link>
+                <h1 className="mb-5 text-3xl font-bold">{t.reviewReport}</h1>
+                <CommunityReportPanel
+                  id={props.initialReportId}
+                  lang={lang}
+                  account={account}
+                  catalog={catalog}
+                />
+              </section>
+            ) : (
+              reports
+            )}
           </>
         )}
         {view === "account" && (
@@ -668,7 +791,7 @@ export function Portal(props: PortalProps) {
           />
         )}
       </main>
-      <footer className="mx-auto flex max-w-7xl flex-wrap gap-6 border-t border-border px-4 py-7 text-sm text-muted-foreground sm:px-6">
+      <footer className="mx-auto flex max-w-7xl flex-wrap gap-6 border-t border-border px-4 pt-7 pb-28 text-sm text-muted-foreground sm:px-6 lg:pb-7">
         <a
           href="https://metto.ir"
           className="inline-flex min-h-11 items-center hover:text-primary"
@@ -688,6 +811,40 @@ export function Portal(props: PortalProps) {
           {t.sources}
         </a>
       </footer>
+      <nav
+        aria-label={t.quickNav}
+        className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t border-border bg-card pb-[env(safe-area-inset-bottom)] shadow-sm lg:hidden"
+      >
+        {(
+          [
+            ["stations", t.stations, TrainFront],
+            ["map", t.map, MapIcon],
+            ["contribute", t.contribute, Plus],
+            ["account", account ? t.account : t.login, UserRound],
+          ] as const
+        ).map(([id, label, Icon]) => (
+          <Link
+            key={id}
+            href={href(id)}
+            target={
+              id === "account" && view === "contribute" ? "_blank" : undefined
+            }
+            rel={
+              id === "account" && view === "contribute"
+                ? "noopener noreferrer"
+                : undefined
+            }
+            aria-current={view === id ? "page" : undefined}
+            className={`flex min-h-16 flex-col items-center justify-center gap-1 px-1 text-xs ${view === id ? "font-bold text-primary" : "text-muted-foreground"}`}
+          >
+            <Icon className="size-5" aria-hidden />
+            {label}
+            {id === "account" && view === "contribute" && (
+              <span className="sr-only"> — {t.opensNewTab}</span>
+            )}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 }
@@ -758,9 +915,11 @@ function StationCard({
           <span className="text-sm text-muted-foreground">{t.noAmenities}</span>
         )}
       </div>
-      <p className="mb-4 text-xs leading-6 text-muted-foreground">
-        {t.unverified}
-      </p>
+      {amenities.length > 0 && !station.amenitiesVerified && (
+        <p className="mb-4 text-xs leading-6 text-muted-foreground">
+          {t.unverified}
+        </p>
+      )}
       <Link
         prefetch={false}
         href={`/contribute?city=${station.cityId}&station=${encodeURIComponent(station.id)}&lang=${lang}`}

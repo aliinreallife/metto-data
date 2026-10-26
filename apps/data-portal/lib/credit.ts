@@ -1,12 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-export function validPublicName(value: unknown): value is string {
-  return (
-    typeof value === "string" &&
-    value.trim().length >= 2 &&
-    value.trim().length <= 80 &&
-    !/[@\u0000-\u001f\u007f]/.test(value)
-  );
-}
+import { validPublicName } from "./public-name.ts";
+export { validPublicName } from "./public-name.ts";
 export type PublicCredit = { id: string; name: string; signature: string };
 export function contributorId(userId: string, secret: string): string {
   return createHmac("sha256", secret)

@@ -300,9 +300,7 @@ try {
   ).toBeFocused();
   await review();
   expect(sent).toHaveLength(0);
-  await page
-    .getByRole("radio", { name: /Sign in for contributor credit/ })
-    .check();
+  await page.getByRole("radio", { name: /Leave a private contact/ }).check();
   await page
     .getByRole("textbox", { name: "Name (optional)", exact: true })
     .fill("Private reporter");
@@ -312,6 +310,9 @@ try {
       exact: true,
     })
     .fill("private-contact@example.test");
+  await page
+    .getByRole("radio", { name: /Sign in for contributor credit/ })
+    .check();
   await page
     .getByRole("link", { name: "Continue to sign in", exact: true })
     .click();
@@ -337,6 +338,7 @@ try {
     .getByRole("button", { name: "Continue with Google", exact: true })
     .click();
   await expect(page.getByTestId("report-review")).toBeVisible();
+  await page.getByRole("radio", { name: /Leave a private contact/ }).check();
   await expect(
     page.getByRole("textbox", { name: "Name (optional)", exact: true }),
   ).toHaveValue("Private reporter");
@@ -634,20 +636,25 @@ try {
   await expect(
     page.getByRole("radio", { name: /Send anonymously/ }),
   ).toBeChecked();
-  await page.getByRole("radio", { name: /Use a public name/ }).check();
-  const alias = page.getByRole("textbox", {
-    name: "Display name",
-    exact: true,
-  });
-  await expect(alias).toHaveValue("");
-  await alias.fill("Public rider");
+  await page.getByRole("radio", { name: /Use my account/ }).check();
+  await expect(page.getByTestId("account-report-name")).toContainText(
+    "Private profile name",
+  );
+  await expect(
+    page.getByRole("textbox", { name: "Display name", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("textbox", { name: "Name (optional)", exact: true }),
+  ).toHaveCount(0);
   await send();
   await expect(
     page.getByRole("heading", {
       name: "Thank you! Your report was received for review.",
     }),
   ).toBeVisible();
-  expect(sent[5].publicName).toBe("Public rider");
+  expect(sent[5].publicNameSource).toBe("account");
+  expect(sent[5].publicName).toBeUndefined();
+  expect(sent[5].contact).toBe("");
   expect(sent[5].publicCredit).toBe(true);
   for (const lang of ["en", "fa"]) {
     await page.goto(`${origin}/contribute?city=mashhad&lang=${lang}`);
@@ -897,16 +904,131 @@ try {
   await popup.close();
   await fallback.bringToFront();
   await fallback.evaluate(() => window.dispatchEvent(new Event("focus")));
-  await expect(
-    fallback.getByRole("textbox", { name: "Display name", exact: true }),
-  ).toBeVisible();
+  await expect(fallback.getByTestId("account-report-name")).toBeVisible();
   await expect(fallback.getByTestId("report-review")).toContainText(
     "Keep this draft when storage is blocked",
   );
   await fallback.close();
+  // Community interaction is entirely mocked; no real votes or GitHub issues.
+  const reportId = "d2345678-1234-4123-8123-123456789abc";
+  let community = {
+    id: reportId,
+    confirm: 2,
+    deny: 0,
+    myVote: null,
+    threshold: 3,
+    queued: false,
+    notified: false,
+    decision: null,
+    automatic: 1,
+    manual: false,
+    report: {
+      title: "Basij",
+      details: "The elevator is working.",
+      source: "Observed today",
+      cityId: "mashhad",
+      stationId: "mashhad:station:basij",
+      issueUrl: "https://github.com/aliinreallife/metto-data/issues/101",
+    },
+  };
+  const voteWrites = [];
+  await context.route("**/api/community**", async (route) => {
+    if (route.request().method() === "POST") {
+      const body = route.request().postDataJSON();
+      voteWrites.push(body);
+      if (community.myVote === "confirm") community.confirm--;
+      if (community.myVote === "deny") community.deny--;
+      community.myVote = body.choice;
+      if (body.choice) community[body.choice]++;
+      community.queued = community.confirm >= 3 || community.deny >= 3;
+    }
+    await route.fulfill({ json: community });
+  });
+  signedIn = false;
+  await page.goto(`${origin}/reports?report=${reportId}&lang=en`);
+  await expect(page.getByTestId("community-report")).toContainText(
+    "The elevator is working.",
+  );
+  await page
+    .getByRole("link", { name: "Sign in to confirm or disagree", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Continue with Google", exact: true })
+    .click();
+  await expect(page).toHaveURL(new RegExp(`/reports\\?report=${reportId}`), {
+    timeout: 20000,
+  });
+  await page.getByRole("button", { name: "Confirm", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Confirm", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByTestId("community-report")).toContainText(
+    "Queued for maintainer review.",
+  );
+  expect(voteWrites[0]).toEqual({ reportId, choice: "confirm" });
+  await page.getByRole("button", { name: "Disagree", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Disagree", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page
+    .getByRole("button", { name: "Withdraw my vote", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Withdraw my vote", exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Change theme", exact: true }).click();
+  await page.reload();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  for (const lang of ["fa", "en"]) {
+    await page.goto(`${origin}/reports?report=${reportId}&lang=${lang}`);
+    const audit = await auditPage();
+    expect(
+      audit.violations.filter((v) =>
+        ["serious", "critical"].includes(v.impact ?? ""),
+      ),
+    ).toEqual([]);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  community = { ...community, decision: "manual", manual: true };
+  await page.reload();
+  await expect(page.getByTestId("community-report")).toContainText(
+    "Referred to the maintainer for a manual update.",
+  );
+  await expect(
+    page.getByRole("button", { name: "Confirm", exact: true }),
+  ).toHaveCount(0);
+  await page.goto(`${origin}/stations?lang=en`);
+  await page.getByRole("combobox", { name: /Filter by line/ }).click();
+  await page
+    .getByRole("option", { name: "Mashhad · Line 1", exact: true })
+    .click();
+  expect(await page.getByTestId("station-card").count()).toBe(24);
+  await page
+    .getByRole("searchbox", { name: "Search stations or cities", exact: true })
+    .fill("Basij");
+  expect(await page.getByTestId("station-card").count()).toBe(1);
+  await page
+    .getByRole("button", { name: "Clear search and line filter", exact: true })
+    .click();
+  expect(await page.getByTestId("station-card").count()).toBe(187);
+  await page.goto(`${origin}/map?city=mashhad&lang=en`);
+  await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  await expect(page.locator("figure svg[role=group]")).toHaveAttribute(
+    "style",
+    /150%/,
+  );
+  await page.getByRole("button", { name: "Reset zoom", exact: true }).click();
+  await expect(page.locator("figure svg[role=group]")).toHaveAttribute(
+    "style",
+    /100%/,
+  );
   expect(errors).toEqual([]);
   console.log(
-    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; explicit alias consent; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
+    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
   );
 } finally {
   await browser?.close();

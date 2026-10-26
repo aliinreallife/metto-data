@@ -1,6 +1,7 @@
 import { Portal, type PortalProps } from "../components/portal";
 import { catalog } from "./catalog-data";
 import { intakeConfig } from "./config";
+import { UUID } from "./intake";
 import { recentReports } from "./reports";
 import { portalAuth } from "./auth/server";
 import { leaderboard } from "./leaderboard";
@@ -36,7 +37,7 @@ export async function renderPortal(
     ? one("station")
     : "";
   const activity =
-    view === "home" || view === "reports"
+    view === "home" || (view === "reports" && !UUID.test(one("report")))
       ? await recentReports()
       : { reports: [], unavailable: false };
   const ranking =
@@ -63,6 +64,7 @@ export async function renderPortal(
       initialCity={initialCity}
       initialStation={initialStation}
       initialKind={one("kind")}
+      initialReportId={UUID.test(one("report")) ? one("report") : ""}
       intakeEnabled={intakeEnabled}
       previewMode={process.env.VERCEL_ENV === "preview"}
       authConfigured={!!portalAuth()}

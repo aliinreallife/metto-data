@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import type { Catalog, Lang } from "../lib/catalog";
 import { STRINGS, type StringKey } from "../lib/i18n";
+import { accountContributionName } from "../lib/public-name";
 import { preparePhoto } from "../lib/photo";
 import { WagonPicker } from "./wagon-picker";
 import type { AccountUser } from "./account";
@@ -106,6 +107,7 @@ export function ContributionForm({
     form = useRef<HTMLFormElement>(null),
     success = useRef<HTMLDivElement>(null);
   const last = useRef<SavedReportDraft["retry"]>(undefined);
+  const accountName = accountContributionName(account);
   const city = catalog.cities.find((c) => c.id === state.cityId),
     stations = city?.stations ?? [],
     station = stations.find((s) => s.id === state.stationId);
@@ -332,12 +334,8 @@ export function ContributionForm({
       setError("loginRequired");
       return;
     }
-    if (
-      credit &&
-      (state.publicName.trim().length < 2 ||
-        /[@\u0000-\u001f\u007f]/.test(state.publicName))
-    ) {
-      setError("publicNameError");
+    if (credit && !accountName) {
+      setError("accountNameRequired");
       return;
     }
     setPending(true);
@@ -364,13 +362,29 @@ export function ContributionForm({
           .filter(Boolean)
           .join("\n\n"),
         source: state.source.trim(),
-        name: state.contactMode === "anonymous" ? "" : state.name.trim(),
-        contact: state.contactMode === "anonymous" ? "" : state.contact.trim(),
+        name: state.contactMode === "contact" ? state.name.trim() : "",
+        contact: state.contactMode === "contact" ? state.contact.trim() : "",
         website: String(new FormData(form.current!).get("website") ?? ""),
         publicCredit: credit,
-        ...(credit ? { publicName: state.publicName.trim() } : {}),
+        ...(credit ? { publicNameSource: "account" } : {}),
         ...(state.photo ? { photo: state.photo } : {}),
         ...(wagon ? { wagon } : {}),
+        ...(state.kind === "facility" &&
+        state.amenities.some((row) => row.amenity && row.value)
+          ? {
+              amenities: state.amenities
+                .filter((row) => row.amenity && row.value)
+                .map((row) => ({
+                  key: row.amenity,
+                  value:
+                    row.value === "true"
+                      ? true
+                      : row.value === "false"
+                        ? false
+                        : null,
+                })),
+            }
+          : {}),
       };
       const bytes = await crypto.subtle.digest(
         "SHA-256",
@@ -1167,28 +1181,33 @@ export function ContributionForm({
             </div>
           )}
           {state.contactMode === "credit" && account?.emailVerified && (
-            <div className={labelClass}>
-              <label htmlFor="report-public-name">{t.displayName}</label>
-              <input
-                id="report-public-name"
-                name="publicName"
-                disabled={pending}
-                value={state.publicName}
-                onChange={(e) => patch({ publicName: e.target.value })}
-                maxLength={80}
-                autoComplete="nickname"
-                className={input}
-                aria-describedby="public-name-hint"
-              />
-              <span
-                id="public-name-hint"
-                className="text-xs font-normal leading-6 text-muted-foreground"
-              >
-                {t.publicNameHint}
+            <div
+              className="flex items-start gap-3 rounded-xl bg-muted/50 p-4"
+              data-testid="account-report-name"
+            >
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-primary/10 font-bold text-primary">
+                {accountName?.slice(0, 1) || (
+                  <UserRound className="size-5" aria-hidden />
+                )}
               </span>
+              <div className="min-w-0">
+                <strong className="block break-words">
+                  {accountName || t.accountNameRequired}
+                </strong>
+                <p className="mt-1 text-xs leading-6 text-muted-foreground">
+                  {t.accountCreditNameNote}
+                </p>
+                <a
+                  href={loginHref}
+                  onClick={beforeLogin}
+                  className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4"
+                >
+                  {t.editAccountName}
+                </a>
+              </div>
             </div>
           )}
-          {state.contactMode !== "anonymous" && (
+          {state.contactMode === "contact" && (
             <div className="space-y-3" data-testid="report-contact">
               <p className="text-xs leading-6 text-muted-foreground">
                 {t.contactNote}

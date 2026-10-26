@@ -1,0 +1,7 @@
+{
+  "matchingVoteThreshold": 3,
+  "dailyVotesPerAccount": 60,
+  "maxVotersPerReport": 1000,
+  "maintainer": "aliinreallife",
+  "automaticFields": ["station.amenities"]
+}

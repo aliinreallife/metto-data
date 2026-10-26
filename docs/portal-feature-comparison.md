@@ -185,3 +185,17 @@ The activity feed includes Ali Rashidi's real reviewed 17 Shahrivar correction,
 sourced to the existing canonical override. Boarding on Line 7 is distinguished
 from non-boardable Line 6 through-tracks. Historical feed credit does not forge
 an authenticated submission or add synthetic leaderboard points.
+
+The merged community follow-up uses account-owned names on reports without a
+second public-name/contact form. Published reports support one confirm/disagree
+vote per signed-in account, including changing/withdrawing it. Three matching
+votes notify the owner through a GitHub assignment. Only the owner's explicit
+`data:accepted` label can start application of supported structured amenity
+corrections; other report types, unknown values and conflicts are flagged for
+manual work. See [community-review.md](community-review.md) for exact behavior,
+review steps and the separate passenger-app import requirement.
+
+Shared navigation now includes mobile quick access and keyboard dismissal,
+city-aware line filtering, map zoom/line legends, clearer activity/report details
+and a saved light/dark preference. The simple Metto colors and existing
+three-step form remain consistent across the portal.
