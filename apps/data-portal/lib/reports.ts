@@ -1,3 +1,6 @@
+import { historicalId, resolveHistoricalId } from "./historical-credit.ts";
+import { profilePath, type MemberProfile } from "./profile.ts";
+import type { PrivateStore } from "./intake.ts";
 import { REPOSITORY, UUID } from "./intake.ts";
 import { verifyCredit } from "./credit.ts";
 import type { Names } from "./catalog.js";
@@ -12,6 +15,9 @@ export type PublicReport = {
   createdAt: string;
   verified: boolean;
   contributorName?: string;
+  contributorId?: string;
+  contributorUsername?: string;
+  kind?: "historical" | "report";
 };
 /** Real, reviewed historical corrections; no invented users, votes or scores. */
 export const reviewedReports: PublicReport[] = community.entries.map(
@@ -24,9 +30,32 @@ export const reviewedReports: PublicReport[] = community.entries.map(
     createdAt: entry.verifiedOn,
     verified: true,
     contributorName: entry.author.name,
+    contributorId: historicalId(entry.author.githubId),
+    kind: "historical",
   }),
 );
-export async function recentReports(): Promise<{
+async function contributorLinks(reports: PublicReport[], store?: PrivateStore) {
+  return Promise.all(
+    reports.map(async (report) => {
+      if (!report.contributorId) return report;
+      const id =
+        (await resolveHistoricalId(store, report.contributorId)) ??
+        report.contributorId;
+      const profile =
+        store && /^[a-f0-9]{64}$/.test(id)
+          ? await store.read<MemberProfile>(profilePath(id)).catch(() => null)
+          : null;
+      return {
+        ...report,
+        contributorId: id,
+        ...(profile?.value.username
+          ? { contributorUsername: profile.value.username }
+          : {}),
+      };
+    }),
+  );
+}
+export async function recentReports(store?: PrivateStore): Promise<{
   reports: PublicReport[];
   unavailable: boolean;
 }> {
@@ -74,7 +103,8 @@ export async function recentReports(): Promise<{
         )
       )
         continue;
-      let contributorName: string | undefined;
+      let contributorName: string | undefined,
+        contributorId: string | undefined;
       try {
         const metadata = [
           ...row.body.matchAll(/<!-- metto-data-report:([A-Za-z0-9+/=]+) -->/g),
@@ -85,8 +115,10 @@ export async function recentReports(): Promise<{
         if (
           data?.id === reference &&
           verifyCredit(reference, data.credit, secret)
-        )
+        ) {
           contributorName = data.credit.name;
+          contributorId = data.credit.id;
+        }
       } catch {}
       reports.push({
         id: row.id,
@@ -97,14 +129,20 @@ export async function recentReports(): Promise<{
         createdAt: row.created_at,
         verified:
           row.labels?.some((label) => label.name === "data:accepted") ?? false,
-        ...(contributorName ? { contributorName } : {}),
+        ...(contributorName ? { contributorName, contributorId } : {}),
       });
     }
     return {
-      reports: [...reviewedReports, ...reports.slice(0, 11)],
+      reports: await contributorLinks(
+        [...reviewedReports, ...reports.slice(0, 11)],
+        store,
+      ),
       unavailable: false,
     };
   } catch {
-    return { reports: reviewedReports, unavailable: true };
+    return {
+      reports: await contributorLinks(reviewedReports, store),
+      unavailable: true,
+    };
   }
 }

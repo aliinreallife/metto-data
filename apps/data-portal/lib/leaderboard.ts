@@ -1,3 +1,7 @@
+import { includeHistoricalCredits } from "./historical-credit.ts";
+import { profilePath, type MemberProfile } from "./profile.ts";
+import type { PrivateStore } from "./intake.ts";
+import type { Names } from "./catalog.js";
 import { verifyCredit } from "./credit.ts";
 import { REPOSITORY, UUID } from "./intake.ts";
 export type CreditedReport = {
@@ -6,10 +10,13 @@ export type CreditedReport = {
   url: string;
   accepted: boolean;
   createdAt: string;
+  names?: Names;
+  kind?: "historical" | "report";
 };
 export type Leader = {
   id: string;
   name: string;
+  username?: string;
   accepted: number;
   reports: CreditedReport[];
 };
@@ -25,9 +32,11 @@ export function rankCredits(issues: Issue[], secret: string): Leader[] {
   const people = new Map<string, Leader>(),
     seen = new Map<string, CreditedReport>();
   for (const issue of issues) {
-    const match = /<!-- metto-data-report:([A-Za-z0-9+/=]+) -->/.exec(
-      issue.body ?? "",
-    );
+    const match = [
+      ...(issue.body ?? "").matchAll(
+        /<!-- metto-data-report:([A-Za-z0-9+/=]+) -->/g,
+      ),
+    ].at(-1);
     if (!match) continue;
     try {
       const data = JSON.parse(Buffer.from(match[1], "base64").toString("utf8"));
@@ -74,7 +83,21 @@ export function rankCredits(issues: Issue[], secret: string): Leader[] {
     (a, b) => b.accepted - a.accepted || a.id.localeCompare(b.id),
   );
 }
-export async function leaderboard(): Promise<{
+export async function enrichLeaders(leaders: Leader[], store?: PrivateStore) {
+  const all = await includeHistoricalCredits(leaders, store);
+  if (store)
+    await Promise.all(
+      all.map(async (person) => {
+        if (!/^[a-f0-9]{64}$/.test(person.id)) return;
+        const profile = await store
+          .read<MemberProfile>(profilePath(person.id))
+          .catch(() => null);
+        if (profile?.value.username) person.username = profile.value.username;
+      }),
+    );
+  return all;
+}
+export async function leaderboard(store?: PrivateStore): Promise<{
   leaders: Leader[];
   unavailable: boolean;
   partial: boolean;
@@ -82,7 +105,12 @@ export async function leaderboard(): Promise<{
   const secret =
     process.env.DATA_PORTAL_CREDIT_SECRET ||
     process.env.DATA_PORTAL_QUOTA_SECRET;
-  if (!secret) return { leaders: [], unavailable: false, partial: false };
+  if (!secret)
+    return {
+      leaders: await enrichLeaders([], store),
+      unavailable: false,
+      partial: false,
+    };
   try {
     const issues: Issue[] = [];
     let partial = false;
@@ -110,11 +138,15 @@ export async function leaderboard(): Promise<{
       if (page === 10) partial = true;
     }
     return {
-      leaders: rankCredits(issues, secret),
+      leaders: await enrichLeaders(rankCredits(issues, secret), store),
       unavailable: false,
       partial,
     };
   } catch {
-    return { leaders: [], unavailable: true, partial: false };
+    return {
+      leaders: await enrichLeaders([], store),
+      unavailable: true,
+      partial: false,
+    };
   }
 }

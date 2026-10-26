@@ -7,6 +7,7 @@ export const PORTAL_MIGRATION = [
   "CREATE TABLE IF NOT EXISTS metto_data_portal.objects (path text PRIMARY KEY, value jsonb NOT NULL, revision bigint NOT NULL DEFAULT 1, updated_at timestamptz NOT NULL DEFAULT now())",
   "ALTER TABLE metto_data_portal.objects ADD COLUMN IF NOT EXISTS expires_at timestamptz",
   "CREATE INDEX IF NOT EXISTS portal_objects_expiry ON metto_data_portal.objects(expires_at) WHERE expires_at IS NOT NULL",
+  "CREATE UNIQUE INDEX IF NOT EXISTS portal_unique_username ON metto_data_portal.objects ((regexp_replace(path, 'profiles/[^/]+[.]json$', '')), (lower(value->>'username'))) WHERE path ~ '(^|/)profiles/[a-f0-9]{64}[.]json$' AND coalesce(value->>'username','')<>''",
   "ALTER TABLE metto_data_portal.objects ENABLE ROW LEVEL SECURITY",
   "REVOKE ALL ON SCHEMA metto_data_portal FROM PUBLIC",
   "REVOKE ALL ON TABLE metto_data_portal.objects FROM PUBLIC",
@@ -45,17 +46,50 @@ export function createPostgresStore(
     async write(path, value, expected) {
       await ensure();
       if (expected !== null && !/^\d+$/.test(expected)) return false;
-      const rows =
-        expected === null
-          ? await query(
-              "INSERT INTO metto_data_portal.objects(path,value,expires_at) VALUES($1,$2::jsonb,$3::timestamptz) ON CONFLICT(path) DO UPDATE SET value=EXCLUDED.value,revision=objects.revision+1,updated_at=now(),expires_at=EXCLUDED.expires_at WHERE objects.expires_at<=now() RETURNING revision",
-              [path, JSON.stringify(value), expiresAt(path)],
-            )
-          : await query(
-              "UPDATE metto_data_portal.objects SET value=$2::jsonb,revision=revision+1,updated_at=now(),expires_at=$4::timestamptz WHERE path=$1 AND revision=$3::bigint AND (expires_at IS NULL OR expires_at>now()) RETURNING revision",
-              [path, JSON.stringify(value), expected, expiresAt(path)],
-            );
+      let rows: Record<string, unknown>[];
+      try {
+        rows =
+          expected === null
+            ? await query(
+                "INSERT INTO metto_data_portal.objects(path,value,expires_at) VALUES($1,$2::jsonb,$3::timestamptz) ON CONFLICT(path) DO UPDATE SET value=EXCLUDED.value,revision=objects.revision+1,updated_at=now(),expires_at=EXCLUDED.expires_at WHERE objects.expires_at<=now() RETURNING revision",
+                [path, JSON.stringify(value), expiresAt(path)],
+              )
+            : await query(
+                "UPDATE metto_data_portal.objects SET value=$2::jsonb,revision=revision+1,updated_at=now(),expires_at=$4::timestamptz WHERE path=$1 AND revision=$3::bigint AND (expires_at IS NULL OR expires_at>now()) RETURNING revision",
+                [path, JSON.stringify(value), expected, expiresAt(path)],
+              );
+      } catch (error) {
+        const failure = error as {
+          code?: string;
+          constraint?: string;
+          message?: string;
+        };
+        if (
+          failure.code === "23505" &&
+          (failure.constraint === "portal_unique_username" ||
+            failure.message?.includes("portal_unique_username"))
+        )
+          return false;
+        throw error;
+      }
       return rows.length === 1;
+    },
+    async findProfileByUsername<T>(username: string, namespace = "") {
+      await ensure();
+      const pattern =
+        (namespace + "profiles/").replace(/[\\%_]/g, "\\$&") + "%";
+      const rows = await query(
+        "SELECT path,value,revision::text AS etag FROM metto_data_portal.objects WHERE path LIKE $1 AND path ~ '(^|/)profiles/[a-f0-9]{64}[.]json$' AND lower(value->>'username')=$2 AND (expires_at IS NULL OR expires_at>now()) LIMIT 1",
+        [pattern, username.toLowerCase()],
+      );
+      const row = rows[0];
+      return row
+        ? {
+            id: /profiles\/([a-f0-9]{64})[.]json$/.exec(String(row.path))![1],
+            value: row.value as T,
+            etag: String(row.etag),
+          }
+        : null;
     },
     async remove(path, expected) {
       await ensure();

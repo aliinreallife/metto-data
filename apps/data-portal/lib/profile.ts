@@ -1,3 +1,5 @@
+import { normalizeUsername } from "./usernames.ts";
+import { linkHistoricalCredit } from "./historical-credit.ts";
 import { contributorId, validPublicName } from "./credit.ts";
 import { cleanSocialLinks, type SocialLinks } from "./social-links.ts";
 import type { PrivateStore } from "./intake.ts";
@@ -10,6 +12,7 @@ export const genders = [
 ] as const;
 export type MemberProfile = {
   name: string;
+  username?: string;
   age: number | null;
   gender: (typeof genders)[number];
   bio: string;
@@ -19,7 +22,7 @@ export type MemberProfile = {
 };
 export type PublicMemberProfile = Pick<
   MemberProfile,
-  "publicName" | "bio" | "socialLinks"
+  "publicName" | "bio" | "socialLinks" | "username"
 >;
 export function parseProfile(raw: unknown): MemberProfile | null {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
@@ -30,10 +33,12 @@ export function parseProfile(raw: unknown): MemberProfile | null {
     !/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value)
       ? value.trim()
       : null;
+  const username = normalizeUsername(p.username);
   const name = text(p.name, 80),
     bio = text(p.bio, 300),
     publicName = text(p.publicName, 80);
   if (
+    username === null ||
     !name ||
     name.length < 2 ||
     /[\u0000-\u001f\u007f]/.test(name) ||
@@ -54,6 +59,7 @@ export function parseProfile(raw: unknown): MemberProfile | null {
   try {
     return {
       name,
+      username: username!,
       bio,
       publicName,
       age: p.age as number | null,
@@ -71,6 +77,7 @@ export function publicMemberProfile(
   return profile?.publicProfile
     ? {
         publicName: profile.publicName,
+        ...(profile.username ? { username: profile.username } : {}),
         bio: profile.bio,
         socialLinks: profile.socialLinks,
       }
@@ -82,6 +89,7 @@ export function createProfileHandler(config: {
   secret: string;
   user: () => Promise<{ id: string; name: string } | null>;
   updateName: (name: string) => Promise<boolean>;
+  verifiedAccounts?: () => Promise<{ providerId: string; accountId: string }[]>;
 }) {
   return async (request: Request) => {
     const reply = (status: number, value: unknown) =>
@@ -101,11 +109,24 @@ export function createProfileHandler(config: {
       const id = contributorId(user.id, config.secret),
         path = profilePath(id);
       const current = await config.store.read<MemberProfile>(path);
+      let historicalLinked = false;
+      if (config.verifiedAccounts) {
+        try {
+          historicalLinked = await linkHistoricalCredit(
+            config.store,
+            id,
+            await config.verifiedAccounts(),
+          );
+        } catch {
+          /* Provider lookup failure does not prevent profile editing. */
+        }
+      }
       if (request.method === "GET")
         return reply(200, {
           profile: current?.value ?? null,
           revision: current?.etag ?? null,
           id,
+          historicalLinked,
         });
       const body = await request.text();
       if (body.length > 7000) return reply(400, { error: "profile" });
@@ -119,6 +140,14 @@ export function createProfileHandler(config: {
         return reply(400, { error: "profile" });
       const profile = parseProfile(raw.profile);
       if (
+        profile &&
+        raw.profile &&
+        typeof raw.profile === "object" &&
+        !Object.hasOwn(raw.profile, "username") &&
+        current?.value.username
+      )
+        profile.username = current.value.username;
+      if (
         !profile ||
         !(raw.revision === null || typeof raw.revision === "string")
       )
@@ -128,12 +157,28 @@ export function createProfileHandler(config: {
           error: "changed",
           revision: current?.etag ?? null,
         });
+      if (profile.username) {
+        if (!config.store.findProfileByUsername)
+          return reply(503, { error: "username_unavailable" });
+        const owner = await config.store.findProfileByUsername<MemberProfile>(
+          profile.username,
+        );
+        if (owner && owner.id !== id)
+          return reply(409, { error: "username_taken" });
+      }
       if (
         user.name !== profile.name &&
         !(await config.updateName(profile.name))
       )
         return reply(503, { error: "name" });
       if (!(await config.store.write(path, profile, current?.etag ?? null))) {
+        if (profile.username && config.store.findProfileByUsername) {
+          const owner = await config.store.findProfileByUsername<MemberProfile>(
+            profile.username,
+          );
+          if (owner && owner.id !== id)
+            return reply(409, { error: "username_taken" });
+        }
         const latest = await config.store.read<MemberProfile>(path);
         return reply(409, { error: "changed", revision: latest?.etag ?? null });
       }
@@ -142,6 +187,7 @@ export function createProfileHandler(config: {
         profile: saved?.value ?? profile,
         revision: saved?.etag ?? null,
         id,
+        historicalLinked,
       });
     } catch {
       return reply(503, { error: "unavailable" });

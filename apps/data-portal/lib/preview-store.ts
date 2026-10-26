@@ -13,6 +13,12 @@ export function previewStore(
     ...(store.canStorePhoto
       ? { canStorePhoto: (bytes: number) => store.canStorePhoto!(bytes) }
       : {}),
+    ...(store.findProfileByUsername
+      ? {
+          findProfileByUsername: <T>(username: string, nested = "") =>
+            store.findProfileByUsername!<T>(username, prefix + nested),
+        }
+      : {}),
     async paths(path, cursor) {
       const result = await store.paths(
         prefix + path,

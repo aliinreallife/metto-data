@@ -1,3 +1,8 @@
+import { notFound, redirect } from "next/navigation";
+import { contributorId } from "./credit";
+import { portalUser } from "./auth/server";
+import { contributorHref, normalizeUsername } from "./usernames";
+import { resolveHistoricalId } from "./historical-credit";
 import { Portal, type PortalProps } from "../components/portal";
 import { catalog } from "./catalog-data";
 import { intakeConfig } from "./config";
@@ -36,26 +41,56 @@ export async function renderPortal(
   )
     ? one("station")
     : "";
-  const activity =
-    view === "home" || (view === "reports" && !UUID.test(one("report")))
-      ? await recentReports()
-      : { reports: [], unavailable: false };
-  const ranking =
-    view === "leaderboard" || view === "profile"
-      ? await leaderboard()
-      : { leaders: [], unavailable: false, partial: false };
   const requestHeaders = await headers();
   const host =
     requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host");
   const config = intakeConfig(host ? `https://${host}` : undefined);
   const intakeEnabled = !!config && host === new URL(config.publicOrigin).host;
-  const publicProfile =
-    view === "profile" && config
-      ? await config.store
-          .read<MemberProfile>(profilePath(profileId))
-          .then((row) => publicMemberProfile(row?.value ?? null))
-          .catch(() => null)
-      : null;
+  const activity =
+    view === "home" || (view === "reports" && !UUID.test(one("report")))
+      ? await recentReports(config?.store)
+      : { reports: [], unavailable: false };
+  const ranking =
+    view === "leaderboard" || view === "profile"
+      ? await leaderboard(config?.store)
+      : { leaders: [], unavailable: false, partial: false };
+  let savedProfile: MemberProfile | null = null;
+  const requestedProfileId = profileId;
+  if (view === "profile") {
+    if (profileId === "me") {
+      const user = await portalUser();
+      if (!user || !config?.creditSecret)
+        redirect("/account?lang=" + (one("lang") === "en" ? "en" : "fa"));
+      profileId = contributorId(user.id, config.creditSecret);
+    } else if (profileId.startsWith("github-")) {
+      const id = await resolveHistoricalId(config?.store, profileId);
+      if (!id) notFound();
+      profileId = id;
+    } else if (!/^[a-f0-9]{64}$/.test(profileId)) {
+      const username = normalizeUsername(profileId);
+      if (!username || !config?.store.findProfileByUsername) notFound();
+      const record =
+        await config.store.findProfileByUsername<MemberProfile>(username);
+      if (!record) notFound();
+      profileId = record.id;
+      savedProfile = record.value;
+    }
+    if (!savedProfile && config && /^[a-f0-9]{64}$/.test(profileId))
+      savedProfile = await config.store
+        .read<MemberProfile>(profilePath(profileId))
+        .then((row) => row?.value ?? null)
+        .catch(() => null);
+    const canonical = savedProfile?.username || profileId;
+    if (requestedProfileId !== canonical)
+      redirect(
+        contributorHref(
+          profileId,
+          savedProfile?.username,
+          one("lang") === "en" ? "en" : "fa",
+        ),
+      );
+  }
+  const publicProfile = publicMemberProfile(savedProfile);
   return (
     <Portal
       catalog={catalog}
@@ -72,6 +107,7 @@ export async function renderPortal(
       authReturnTo={safeReportReturn(one("returnTo")) ?? ""}
       ranking={ranking}
       profileId={profileId}
+      profileUsername={savedProfile?.username ?? ""}
       publicProfile={publicProfile}
       reports={activity.reports}
       reportsUnavailable={activity.unavailable}

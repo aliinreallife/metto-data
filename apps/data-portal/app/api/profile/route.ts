@@ -14,6 +14,15 @@ async function handle(request: Request) {
     store: config.store,
     secret: config.creditSecret,
     user: portalUser,
+    verifiedAccounts: async () => {
+      const result = await portalAuth()?.listAccounts();
+      return (
+        result?.data?.map((account) => ({
+          providerId: account.providerId,
+          accountId: account.accountId,
+        })) ?? []
+      );
+    },
     updateName: async (name) => {
       const result = await portalAuth()?.updateUser({ name });
       return !!result && !result.error;

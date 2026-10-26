@@ -5,7 +5,11 @@
       "id": "tehran-17-shahrivar-line-7",
       "cityId": "tehran",
       "stationId": "tehran:station:shohada-ye-hefdah-e-shahrivar",
-      "author": { "name": "علی رشیدی", "github": "aliinreallife" },
+      "author": {
+        "name": "علی رشیدی",
+        "github": "aliinreallife",
+        "githubId": "91134550"
+      },
       "names": {
         "fa": "۱۷ شهریور فعلاً فقط در خط ۷ فعاله.",
         "en": "17 Shahrivar is currently open on Line 7 only."

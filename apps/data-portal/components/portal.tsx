@@ -25,6 +25,7 @@ import {
   type CatalogStation,
   type Lang,
 } from "../lib/catalog";
+import { contributorHref } from "../lib/usernames";
 import { THEME_STORAGE_KEY } from "../lib/theme";
 import { STRINGS, type StringKey } from "../lib/i18n";
 import { ContributionForm } from "./contribution-form";
@@ -81,6 +82,7 @@ export type PortalProps = {
   authReturnTo?: string;
   ranking: { leaders: Leader[]; unavailable: boolean; partial: boolean };
   profileId: string;
+  profileUsername?: string;
   publicProfile: PublicMemberProfile | null;
   reports: PublicReport[];
   reportsUnavailable: boolean;
@@ -264,7 +266,33 @@ export function Portal(props: PortalProps) {
               </p>
               {report.contributorName && (
                 <p className="mt-3 text-sm text-muted-foreground">
-                  {report.contributorName}
+                  {report.contributorId ? (
+                    <Link
+                      href={contributorHref(
+                        report.contributorId,
+                        report.contributorUsername,
+                        lang,
+                      )}
+                      className="inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 hover:underline"
+                    >
+                      {report.contributorName}
+                      {report.contributorUsername && (
+                        <span
+                          dir="ltr"
+                          className="ms-2 text-xs font-normal text-muted-foreground"
+                        >
+                          @{report.contributorUsername}
+                        </span>
+                      )}
+                    </Link>
+                  ) : (
+                    report.contributorName
+                  )}
+                </p>
+              )}
+              {report.kind === "historical" && (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {t.historicalContribution}
                 </p>
               )}
               {report.reportId && (
@@ -663,7 +691,8 @@ export function Portal(props: PortalProps) {
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
               {t.leaderboardIntro}
             </p>
-            {props.ranking.unavailable ? (
+            {props.ranking.unavailable &&
+            !props.ranking.leaders.some((person) => person.accepted > 0) ? (
               <p
                 role="status"
                 className="mt-7 rounded-xl border border-border bg-card p-5"
@@ -683,10 +712,18 @@ export function Portal(props: PortalProps) {
                         {number(index + 1)}
                       </span>
                       <a
-                        href={`/contributors/${person.id}?lang=${lang}`}
+                        href={contributorHref(person.id, person.username, lang)}
                         className="min-w-0 flex-1 break-words font-semibold text-primary underline-offset-4 hover:underline"
                       >
-                        {person.name}
+                        <span className="block">{person.name}</span>
+                        {person.username && (
+                          <span
+                            dir="ltr"
+                            className="mt-1 block w-fit text-xs font-normal text-muted-foreground"
+                          >
+                            @{person.username}
+                          </span>
+                        )}
                       </a>
                       <span className="shrink-0 text-sm text-muted-foreground">
                         {number(person.accepted)} {t.acceptedContributions}
@@ -702,6 +739,12 @@ export function Portal(props: PortalProps) {
                 {t.leaderboardEmpty}
               </p>
             )}
+            {props.ranking.unavailable &&
+              props.ranking.leaders.some((person) => person.accepted > 0) && (
+                <p role="status" className="mt-4 text-sm text-muted-foreground">
+                  {t.contributionsUnavailable}
+                </p>
+              )}
             {props.ranking.partial && (
               <p role="status" className="mt-4 text-sm">
                 {t.leaderboardPartial}
@@ -715,8 +758,21 @@ export function Portal(props: PortalProps) {
         {view === "profile" && (
           <section className="mx-auto max-w-3xl">
             <h1 className="text-3xl font-bold">
-              {props.publicProfile?.publicName ?? profile?.name ?? t.profile}
+              {props.publicProfile?.publicName ??
+                profile?.name ??
+                (props.profileUsername
+                  ? "@" + props.profileUsername
+                  : t.profile)}
             </h1>
+            {props.profileUsername &&
+              (props.publicProfile?.publicName || profile?.name) && (
+                <p
+                  dir="ltr"
+                  className="mt-2 w-fit text-sm text-muted-foreground"
+                >
+                  @{props.profileUsername}
+                </p>
+              )}
             {props.publicProfile?.bio && (
               <p className="mt-4 whitespace-pre-wrap break-words text-sm leading-7">
                 {props.publicProfile.bio}
@@ -751,7 +807,7 @@ export function Portal(props: PortalProps) {
               </ul>
             )}
             <p className="mt-3 text-sm text-muted-foreground">{t.profile}</p>
-            {props.ranking.unavailable ? (
+            {props.ranking.unavailable && !profile ? (
               <p role="status" className="mt-6">
                 {t.leaderboardUnavailable}
               </p>
@@ -775,11 +831,16 @@ export function Portal(props: PortalProps) {
                       >
                         {report.accepted ? t.accepted : t.submitted}
                       </span>
+                      {report.kind === "historical" && (
+                        <p className="mt-3 text-xs leading-6 text-muted-foreground">
+                          {t.historicalContributionNote}
+                        </p>
+                      )}
                       <a
                         className="mt-3 block font-semibold underline-offset-4 hover:underline"
                         href={report.url}
                       >
-                        {report.title}
+                        {report.names?.[lang] ?? report.title}
                       </a>
                     </li>
                   ))}
