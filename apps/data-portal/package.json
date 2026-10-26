@@ -14,6 +14,7 @@
     "test:ui": "node tests/contribution-flow.mjs"
   },
   "dependencies": {
+    "@blobatar/react": "2.7.0",
     "@neondatabase/auth": "0.7.0-beta",
     "@neondatabase/serverless": "1.2.0",
     "@vercel/blob": "2.8.2",

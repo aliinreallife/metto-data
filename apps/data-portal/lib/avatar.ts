@@ -1,7 +1,8 @@
 import { blobatarUri } from "blobatar/uri";
 /** Stable public contributor IDs keep avatars consistent without using email. */
+export const avatarSeed = (id: string) => "metto:" + id;
 export const defaultAvatar = (id: string) =>
-  blobatarUri("metto:" + id, { background: "circle" });
+  blobatarUri(avatarSeed(id), { background: "circle" });
 export function profilePhotoUrl(id: string, version: string) {
   return (
     "/api/profile-photos/" +

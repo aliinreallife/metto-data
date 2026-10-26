@@ -83,3 +83,16 @@ and social links, actual contribution totals and dated activity. Visitors can
 filter accepted contributions and copy the page link. Historical contributions
 keep their original provenance and source. These changes do not publish the
 private profile name, age, gender, contacts or hidden bio/social links.
+
+Default avatars render as inline SVG through the official `@blobatar/react`
+adapter, retaining the same seeded face as the static version. On a desktop the
+eyes follow the pointer and the face lifts slightly on hover. Idle glances,
+blinks and gentle breathing also run on touch devices without requiring a tap.
+Pointer tracking stays disabled for coarse pointers. The library responds to
+live reduced-motion changes; our override also removes hover movement, and
+avatars pause while off-screen or in a hidden tab. Uploaded photos remain normal
+images, with a failed image returning to the animated default.
+
+Browser checks exercise actual pointer tracking in FA/EN, hover, autonomous
+mobile eye movement, live reduced-motion changes, off-screen pause/resume, and
+failed-photo fallback alongside the existing upload flow.

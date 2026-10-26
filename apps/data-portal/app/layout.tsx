@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import "blobatar/motion.css";
+import "blobatar/gaze.css";
 import "./globals.css";
 import { THEME_INIT_SCRIPT } from "../lib/theme";
 const vazirmatn = localFont({
