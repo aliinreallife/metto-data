@@ -51,3 +51,35 @@ in a new tab so the draft remains intact.
 Verification uses isolated PostgreSQL-compatible PGlite databases, concurrent
 claims, authenticated-provider fixtures and mocked browser saves. No production
 account, username or credit binding is seeded or assigned during testing.
+
+## Profile photos and public pages
+
+Account → Profile offers a photo preview with its own Save/Cancel controls. It
+accepts JPEG, PNG and WebP up to 8 MB, center-crops to a 512-pixel square in the
+browser and sends a JPEG of at most 64 KiB. The server independently checks the
+format and size, bounds decoded pixels, re-encodes and strips EXIF/GPS metadata.
+Saving or removing a photo cannot overwrite profile text or its revision. A
+failed upload keeps the selected preview and unsaved text for retry. A stale tab
+loads the current photo and requires another explicit save before replacing it.
+
+An uploaded photo is public, as stated beside the controls. It is stored in a
+separate private Neon `avatars/<stable-contributor-id>.json` row, never copied
+into leaderboard/profile JSON or Git. The owner endpoint derives identity from
+the verified session; the public endpoint serves only the processed JPEG with
+`nosniff`, an ETag and mandatory revalidation. Old version URLs stop serving the
+photo after replacement/removal. The existing shared storage guard applies;
+upload attempts are limited to 20/account/UTC day, while removal remains
+available. Preview namespaces also isolate these rows. No new service or
+credential is required.
+
+When no photo exists, or an image cannot load, the profile uses the official
+[Blobatar](https://blobatar.dev/) core package locally. Its seed is the public
+contributor ID, so usernames and names do not change the avatar and no email or
+private Auth ID goes to an avatar service. Removing a photo restores that
+avatar. The dependency is pinned; see `LICENSES/Blobatar-MIT.txt`.
+
+The public page shows the public alias (when opted in), username, optional bio
+and social links, actual contribution totals and dated activity. Visitors can
+filter accepted contributions and copy the page link. Historical contributions
+keep their original provenance and source. These changes do not publish the
+private profile name, age, gender, contacts or hidden bio/social links.

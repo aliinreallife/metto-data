@@ -21,6 +21,7 @@ import {
 import type { MemberProfile } from "../lib/profile";
 import type { Lang } from "../lib/catalog";
 import type { AccountUser } from "./account";
+import { ProfilePhotoEditor } from "./profile-photo-editor";
 import { SelectField } from "./select-field";
 const input =
   "min-h-12 w-full rounded-xl border border-input bg-card px-3 py-3 text-base";
@@ -281,6 +282,7 @@ export function AccountSettings({
           onSubmit={save}
           className="space-y-6 rounded-2xl border border-border bg-card p-5 sm:p-7"
         >
+          {loaded && id && <ProfilePhotoEditor id={id} lang={lang} />}
           {!loaded && (
             <p role="status" className="text-sm text-muted-foreground">
               {error ? t.profileLoadFailed : t.profileLoading}

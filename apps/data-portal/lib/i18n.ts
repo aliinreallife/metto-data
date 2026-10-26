@@ -1,5 +1,40 @@
 export const STRINGS = {
   fa: {
+    avatarTitle: "عکس پروفایل",
+    avatarPublicNote:
+      "این عکس در پروفایل عمومی‌ات نمایش داده می‌شه. بقیهٔ اطلاعاتت با این کار عمومی نمی‌شن.",
+    avatarChoose: "انتخاب عکس",
+    avatarReplace: "تغییر عکس",
+    avatarRemove: "حذف عکس",
+    avatarSave: "ذخیرهٔ عکس",
+    avatarCancel: "لغو",
+    avatarPreview: "پیش‌نمایش عکس پروفایل",
+    avatarHint:
+      "JPG، PNG یا WebP تا ۸ مگابایت. اگه عکس نذاری، آواتار خودت رو نشون می‌دیم.",
+    avatarCropNote:
+      "عکس به شکل مربع برش می‌خوره. اگه پیش‌نمایش خوبه، ذخیره‌اش کن.",
+    avatarWorking: "در حال آماده‌سازی عکس…",
+    avatarSaved: "عکس پروفایلت ذخیره شد.",
+    avatarRemoved: "عکس حذف شد؛ آواتار پیش‌فرضت برگشت.",
+    avatarFailed:
+      "عکس ذخیره نشد. دوباره امتحان کن؛ عکس انتخاب‌شده و نوشته‌هات هنوز اینجان.",
+    avatarLoadFailed: "عکس پروفایل بارگذاری نشد. دوباره امتحان کن.",
+    avatarChanged:
+      "عکست در صفحهٔ دیگه‌ای تغییر کرده. عکس فعلی رو بارگذاری کردیم؛ برای جایگزین کردنش دوباره ذخیره رو بزن.",
+    avatarLimited: "امروز چند بار عکست رو تغییر دادی. فردا دوباره امتحان کن.",
+    avatarStorageFull:
+      "فعلاً جای کافی برای عکس تازه نداریم. کمی بعد دوباره امتحان کن.",
+    profileContributor: "همراه متو",
+    profileSocialLinks: "لینک‌های این همراه",
+    profileShare: "کپی لینک پروفایل",
+    profileLinkCopied: "لینک پروفایل کپی شد.",
+    profileCopyFailed: "کپی نشد؛ می‌تونی لینک رو از نوار آدرس برداری.",
+    profileAllContributions: "کل مشارکت‌ها",
+    profileActivity: "مشارکت‌ها",
+    profileActivityFilter: "نمایش مشارکت‌ها",
+    profileAll: "همه",
+    profileNoAccepted: "هنوز مشارکت پذیرفته‌شده‌ای ثبت نشده.",
+
     contributionsUnavailable:
       "همهٔ مشارکت‌ها بارگذاری نشدن؛ فعلاً موارد در دسترس رو می‌بینی.",
     username: "شناسهٔ کاربری",
@@ -390,6 +425,44 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    avatarTitle: "Profile photo",
+    avatarPublicNote:
+      "This photo appears on your public profile. Your other private details stay private.",
+    avatarChoose: "Choose photo",
+    avatarReplace: "Change photo",
+    avatarRemove: "Remove photo",
+    avatarSave: "Save photo",
+    avatarCancel: "Cancel",
+    avatarPreview: "Profile photo preview",
+    avatarHint:
+      "JPG, PNG or WebP, up to 8 MB. Without a photo, we’ll show your default avatar.",
+    avatarCropNote:
+      "Your photo is cropped to a square. Save it if the preview looks right.",
+    avatarWorking: "Preparing your photo…",
+    avatarSaved: "Your profile photo is saved.",
+    avatarRemoved: "Photo removed. Your default avatar is back.",
+    avatarFailed:
+      "Photo not saved. Try again; your chosen photo and profile text are still here.",
+    avatarLoadFailed:
+      "Your profile photo could not be loaded. Please try again.",
+    avatarChanged:
+      "Your photo changed in another tab. We loaded the current photo; save again to replace it.",
+    avatarLimited:
+      "You have changed your photo several times today. Please try again tomorrow.",
+    avatarStorageFull:
+      "There is no room for a new photo right now. Please try again later.",
+    profileContributor: "Metto contributor",
+    profileSocialLinks: "Contributor links",
+    profileShare: "Copy profile link",
+    profileLinkCopied: "Profile link copied.",
+    profileCopyFailed:
+      "Could not copy. You can copy the link from your address bar.",
+    profileAllContributions: "Total contributions",
+    profileActivity: "Contributions",
+    profileActivityFilter: "Filter contributions",
+    profileAll: "All",
+    profileNoAccepted: "No accepted contributions yet.",
+
     contributionsUnavailable:
       "Some contributions could not load. Available records are shown.",
     username: "Username",
