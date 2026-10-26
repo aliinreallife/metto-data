@@ -102,6 +102,8 @@ export function Account({
   const t = STRINGS[lang];
   const [pending, setPending] = useState<"google" | "github" | null>(null);
   const [message, setMessage] = useState("");
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
   const notice = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (new URL(window.location.href).searchParams.has("error"))
@@ -111,7 +113,7 @@ export function Account({
     if (message) notice.current?.focus();
   }, [message]);
   async function social(provider: "google" | "github") {
-    if (pending) return;
+    if (!ready || pending) return;
     setPending(provider);
     setMessage("");
     try {
@@ -191,8 +193,8 @@ export function Account({
                 <button
                   key={provider}
                   type="button"
-                  disabled={!!pending}
-                  aria-busy={pending === provider}
+                  disabled={!ready || !!pending}
+                  aria-busy={!ready || pending === provider}
                   onClick={() => social(provider)}
                   className="grid min-h-14 w-full grid-cols-[24px_1fr_24px] items-center gap-3 rounded-xl border border-input bg-card px-4 py-3 text-sm font-semibold transition-colors hover:border-foreground/40 hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 >

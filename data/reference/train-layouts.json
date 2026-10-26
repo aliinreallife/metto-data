@@ -97,7 +97,8 @@
       "kind": "double_deck",
       "sourceIds": ["tehran-line5-2017"],
       "women": null,
-      "routeIds": ["tehran:route:line-5-main"]
+      "routeIds": ["tehran:route:line-5-main"],
+      "womenPresenceObservation": "tehran-line5-owner-observation-2026-10-26"
     },
     {
       "id": "tehran:mehrabad:4",
@@ -153,5 +154,14 @@
   "stationOverrides": {
     "tehran:station:mehrabad-airport-terminal-1-2": "tehran:mehrabad:4",
     "tehran:station:mehrabad-airport-terminal-4-6": "tehran:mehrabad:4"
-  }
+  },
+  "observations": [
+    {
+      "id": "tehran-line5-owner-observation-2026-10-26",
+      "kind": "owner-observation",
+      "reportedOn": "2026-10-26",
+      "claim": "Women-only coaches are present on Tehran–Karaj Line 5; exact count and positions were not supplied.",
+      "verification": "presence-reported-boundaries-unverified"
+    }
+  ]
 }

@@ -90,3 +90,15 @@ it("defaults by city and station while rejecting stale or unrelated profile sele
     ).map((p) => p.cars),
   ).toEqual([7, 4]);
 });
+
+it("records reported Line 5 women-only presence separately from verified positions", () => {
+  const profile = resolveTrainProfile("tehran", ["tehran:line:5"]);
+  expect(profile).toHaveProperty(
+    "womenPresenceObservation",
+    "tehran-line5-owner-observation-2026-10-26",
+  );
+  expect(profile?.women).toBeNull();
+  expect(
+    Array.from({ length: 9 }, (_, i) => womenZone(profile, 9, i + 1)),
+  ).toEqual(Array(9).fill(null));
+});

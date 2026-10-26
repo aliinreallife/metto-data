@@ -9,7 +9,6 @@ import {
   DoorOpen,
   Repeat2,
   TrainFront,
-  Venus,
 } from "lucide-react";
 import { STRINGS } from "../lib/i18n";
 import type { Lang } from "../lib/catalog";
@@ -21,6 +20,29 @@ import {
 import type { TrainDirection } from "../lib/train-directions";
 import type { ExitTarget } from "../lib/station-exits";
 import { SelectField } from "./select-field";
+/** Familiar wayfinding pictogram for the women-only section. */
+function WomanIcon({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      style={style}
+      aria-hidden="true"
+      focusable="false"
+      data-testid="women-only-icon"
+    >
+      <circle cx="12" cy="4" r="2.5" />
+      <path d="M9.5 8h5l3.5 9h-3.5v5h-2v-5h-1v5h-2v-5H6z" />
+    </svg>
+  );
+}
 function EscalatorIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -70,12 +92,13 @@ export function WagonPicker({
 }) {
   const t = STRINGS[lang],
     id = useId(),
-    [headRight, setHeadRight] = useState(false);
+    [headRight, setHeadRight] = useState(true);
   const profiles = availableTrainProfiles(cityId, lineIds, stationId),
     profile = profiles.find((p) => p.id === profileId),
     count = profile?.cars ?? 0;
   const exit = exits.find((exit) => exit.id === exitId) ?? exits[0],
-    knownWomen = !!profile?.women;
+    knownWomen = !!profile?.women,
+    reportedWomen = !!profile && "womenPresenceObservation" in profile;
   const cars = Array.from({ length: count }, (_, i) => i + 1);
   if (headRight) cars.reverse();
   const number = (n: number) =>
@@ -281,39 +304,39 @@ export function WagonPicker({
           role="group"
           aria-label={t.trainTapHint}
           data-testid="train-overview"
+          data-head-side={headRight ? "right" : "left"}
         >
           {cars.map((car) => {
             const zone = womenZone(profile, count, car),
               active = car === selected,
               leftHalf = zone === "head-half" ? !headRight : headRight;
-            const isLeftEnd = headRight ? car === count : car === 1,
-              isRightEnd = headRight ? car === 1 : car === count;
+            const isHead = car === 1;
             return (
               <button
                 key={car}
                 type="button"
                 data-diagram-car={car}
                 data-car-number={car}
+                data-train-end={
+                  car === 1 ? "head" : car === count ? "rear" : undefined
+                }
                 data-women-zone={zone ?? (knownWomen ? "general" : "unknown")}
                 aria-label={t.car + " " + car}
                 aria-pressed={active}
                 aria-describedby={knownWomen ? id + "-role-" + car : undefined}
                 onClick={() => onSelect(car)}
                 className={
-                  "relative h-24 min-w-0 flex-1 cursor-pointer border bg-card focus-visible:outline-none " +
+                  "relative h-24 min-w-0 flex-1 cursor-pointer border bg-card " +
                   (active
                     ? "border-primary ring-1 ring-primary"
                     : "border-foreground/40 hover:border-primary/70")
                 }
                 style={{
-                  borderRadius:
-                    profile.kind === "double_deck"
-                      ? 6
-                      : isLeftEnd
-                        ? "22px 6px 6px 6px"
-                        : isRightEnd
-                          ? "6px 22px 6px 6px"
-                          : 6,
+                  borderRadius: isHead
+                    ? headRight
+                      ? "6px 28px 12px 6px"
+                      : "28px 6px 6px 12px"
+                    : 6,
                 }}
               >
                 <span
@@ -331,35 +354,51 @@ export function WagonPicker({
                     />
                   )}
                   {active && <span className="absolute inset-0 bg-primary/5" />}
-                  <span className="absolute inset-x-1.5 top-2 flex gap-1">
-                    <span className="h-3 min-w-0 flex-1 rounded-sm bg-foreground/20" />
-                    <span className="h-3 min-w-0 flex-1 rounded-sm bg-foreground/20" />
+                  <span
+                    className="absolute inset-x-1 top-3 h-4 overflow-hidden rounded-[3px] border border-slate-500/40 bg-sky-100 shadow-[inset_0_1px_0_rgb(255_255_255_/_0.7)] dark:border-sky-200/25 dark:bg-slate-700"
+                    data-testid="train-window"
+                    style={
+                      isHead
+                        ? {
+                            [headRight
+                              ? "borderTopRightRadius"
+                              : "borderTopLeftRadius"]: 10,
+                          }
+                        : undefined
+                    }
+                  >
+                    <span className="absolute inset-0 bg-linear-to-br from-white/65 to-transparent dark:from-sky-200/15" />
+                    <span className="absolute inset-y-0 left-1/2 w-px bg-slate-500/40 dark:bg-sky-100/30" />
                   </span>
                   {profile.kind === "double_deck" && (
-                    <span className="absolute inset-x-1.5 top-6 flex gap-1">
-                      <span className="h-2 min-w-0 flex-1 rounded-sm bg-foreground/20" />
-                      <span className="h-2 min-w-0 flex-1 rounded-sm bg-foreground/20" />
+                    <span
+                      className="absolute inset-x-1 top-8 h-3 overflow-hidden rounded-[3px] border border-slate-500/40 bg-sky-100 dark:border-sky-200/25 dark:bg-slate-700"
+                      data-testid="train-window"
+                    >
+                      <span className="absolute inset-0 bg-linear-to-br from-white/65 to-transparent dark:from-sky-200/15" />
+                      <span className="absolute inset-y-0 left-1/2 w-px bg-slate-500/40 dark:bg-sky-100/30" />
                     </span>
                   )}
                   <span
                     className={
-                      "absolute inset-x-0 top-9 text-center text-base font-semibold " +
+                      "absolute inset-x-0 text-center text-base font-semibold " +
+                      (profile.kind === "double_deck" ? "top-12 " : "top-10 ") +
                       (active ? "text-primary" : "text-foreground")
                     }
                   >
                     {number(car)}
                   </span>
                   {zone && (
-                    <Venus
-                      className="absolute bottom-2.5 size-3 text-fuchsia-800 dark:text-fuchsia-200"
+                    <WomanIcon
+                      className="absolute bottom-2 size-4 text-fuchsia-800 dark:text-fuchsia-200"
                       aria-hidden
                       style={{
                         left:
                           zone === "full"
-                            ? "calc(50% - 6px)"
+                            ? "calc(50% - 8px)"
                             : leftHalf
-                              ? "calc(25% - 6px)"
-                              : "calc(75% - 6px)",
+                              ? "calc(25% - 8px)"
+                              : "calc(75% - 8px)",
                       }}
                     />
                   )}
@@ -427,15 +466,21 @@ export function WagonPicker({
         </p>
         {knownWomen ? (
           <p className="mt-3 flex items-start gap-2 text-xs leading-6 text-muted-foreground">
-            <Venus
-              className="mt-1 size-3.5 shrink-0 text-fuchsia-800 dark:text-fuchsia-200"
+            <WomanIcon
+              className="mt-0.5 size-4 shrink-0 text-fuchsia-800 dark:text-fuchsia-200"
               aria-hidden
             />
             {t.womenLayoutNote}
           </p>
         ) : (
-          <p className="mt-3 text-xs leading-6 text-muted-foreground">
-            {t.womenLayoutUnknown}
+          <p
+            className="mt-3 flex items-start gap-2 text-xs leading-6 text-muted-foreground"
+            data-testid="women-layout-unconfirmed"
+          >
+            {reportedWomen && (
+              <WomanIcon className="mt-0.5 size-4 shrink-0 text-fuchsia-800 dark:text-fuchsia-200" />
+            )}
+            {reportedWomen ? t.womenPresenceReported : t.womenLayoutUnknown}
           </p>
         )}
         {profile.kind === "double_deck" && (

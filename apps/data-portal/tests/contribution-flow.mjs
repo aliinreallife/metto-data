@@ -1,3 +1,4 @@
+import { checkThemePaint } from "./theme-paint.mjs";
 import { chromium, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawn } from "node:child_process";
@@ -49,6 +50,7 @@ try {
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
       : {},
   );
+  await checkThemePaint(browser, origin);
   for (const path of [
     "email-otp/send-verification-otp",
     "sign-in/email-otp",
@@ -710,6 +712,28 @@ try {
   await expect(page.getByTestId("train-fixed-count")).toContainText("7");
   await expect(page.getByRole("spinbutton")).toHaveCount(0);
   await expect(diagram.locator("[data-car-number]")).toHaveCount(7);
+  await expect(page.getByTestId("train-overview")).toHaveAttribute(
+    "data-head-side",
+    "right",
+  );
+  await expect(diagram.locator("[data-car-number]").last()).toHaveAttribute(
+    "data-car-number",
+    "1",
+  );
+  const endRadii = await diagram
+    .locator("[data-train-end]")
+    .evaluateAll((ends) =>
+      ends.map((el) => ({
+        end: el.dataset.trainEnd,
+        radius: el.style.borderRadius,
+      })),
+    );
+  expect(endRadii.find((end) => end.end === "head").radius).toBe(
+    "6px 28px 12px 6px",
+  );
+  expect(endRadii.find((end) => end.end === "rear").radius).toBe("6px");
+  await expect(diagram.getByTestId("train-window")).toHaveCount(7);
+  await expect(diagram.getByTestId("women-only-icon")).toHaveCount(5);
   await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(2);
   await expect(
     diagram.locator(
@@ -725,7 +749,11 @@ try {
   await page.getByRole("button", { name: "Flip train", exact: true }).click();
   await expect(diagram.locator("[data-car-number]").first()).toHaveAttribute(
     "data-car-number",
-    "7",
+    "1",
+  );
+  await expect(page.getByTestId("train-overview")).toHaveAttribute(
+    "data-head-side",
+    "left",
   );
   await expect(
     page.getByRole("button", { name: "Car 2", exact: true }),
@@ -744,7 +772,12 @@ try {
   await expect(page.locator('input[name="wagonDirection"]')).toHaveValue("");
   await expect(diagram.locator("[data-car-number]")).toHaveCount(9);
   await expect(diagram).toContainText("locomotives are not included");
-  await expect(diagram).toContainText("Women-only boundaries are unconfirmed");
+  await expect(diagram).toContainText(
+    "Women-only coaches are reported on Tehran–Karaj",
+  );
+  await expect(diagram.locator('[data-women-zone="full"]')).toHaveCount(0);
+  await expect(diagram.locator('[data-women-zone="unknown"]')).toHaveCount(9);
+  await expect(diagram.getByTestId("train-window")).toHaveCount(18);
   await expect(diagram.locator("[data-diagram-car]")).toHaveCount(9);
   const overview = await page.getByTestId("train-overview").boundingBox();
   expect(overview.x).toBeGreaterThanOrEqual(0);
@@ -1028,7 +1061,7 @@ try {
   );
   expect(errors).toEqual([]);
   console.log(
-    "Passed: three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
+    "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
   );
 } finally {
   await browser?.close();

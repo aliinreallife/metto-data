@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { THEME_INIT_SCRIPT } from "../lib/theme";
 const vazirmatn = localFont({
   src: [
     { path: "./fonts/Vazirmatn-Regular.ttf", weight: "400", style: "normal" },
@@ -22,6 +23,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       className={vazirmatn.variable}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          id="metto-theme"
+          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
