@@ -1,3 +1,4 @@
+import { checkAvatarMotion } from "./avatar-motion.mjs";
 import { checkThemePaint } from "./theme-paint.mjs";
 import { chromium, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
@@ -53,6 +54,7 @@ try {
       : {},
   );
   await checkThemePaint(browser, origin);
+  await checkAvatarMotion(browser, origin);
   for (const path of [
     "email-otp/send-verification-otp",
     "sign-in/email-otp",
@@ -678,6 +680,22 @@ try {
   expect(
     Buffer.from(avatarWrites[1].photo, "base64").length,
   ).toBeLessThanOrEqual(65536);
+  await page.route("**/api/profile-photos/**", (route) =>
+    route.fulfill({ status: 404, body: "" }),
+  );
+  await page.getByTestId("profile-avatar").evaluate((image) => {
+    image.src += "&unavailable=1";
+  });
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "data-avatar-kind",
+    "blobatar",
+  );
+  expect(
+    await page
+      .getByTestId("profile-avatar")
+      .evaluate((node) => node.tagName.toLowerCase()),
+  ).toBe("svg");
+  await page.unroute("**/api/profile-photos/**");
   const avatarAudit = await auditPage();
   expect(
     avatarAudit.violations.filter((v) =>
@@ -1314,7 +1332,7 @@ try {
   ).toBeVisible();
   expect(errors).toEqual([]);
   console.log(
-    "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. Profile-photo preview/save/retry/remove with unsaved text retained; Blobatar defaults, dated public activity, filters and sharing. All auth/report/photo writes mocked.",
+    "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. Profile-photo preview/save/retry/remove with unsaved text retained; live Blobatar pointer tracking, hover, autonomous mobile eyes, reduced-motion changes, off-screen pause and failed-image fallback; dated public activity, filters and sharing. All auth/report/photo writes mocked.",
   );
 } finally {
   await browser?.close();

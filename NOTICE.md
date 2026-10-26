@@ -13,6 +13,6 @@ This is a multi-license repository:
 The AGPL on tooling does not override the ODbL on data outputs, and the ODbL
 on data does not relicense the tooling.
 
-The data portal's default profile avatars use
+The data portal's default profile avatars use the core and official React adapter of
 [Blobatar](https://github.com/Alain00/blobatar), copyright (c) 2026 Alain,
 under the MIT license. See `LICENSES/Blobatar-MIT.txt`.
