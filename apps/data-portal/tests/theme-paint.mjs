@@ -58,8 +58,31 @@ export async function checkThemePaint(browser, origin) {
           .evaluate((el) => getComputedStyle(el).colorScheme),
       ).toBe(scenario.dark ? "dark" : "light");
       await page.screenshot(); // Force a pre-hydration paint while bundles remain held.
+      let accountPage;
+      if (scenario.preference === "dark") {
+        accountPage = await context.newPage();
+        await accountPage.goto(origin + "/account?lang=en", {
+          waitUntil: "commit",
+        });
+        await expect(
+          accountPage.getByRole("button", {
+            name: "Continue with Google",
+            exact: true,
+          }),
+        ).toBeDisabled();
+      }
       release();
       await page.waitForLoadState("load");
+      if (accountPage) {
+        await accountPage.waitForLoadState("load");
+        await expect(
+          accountPage.getByRole("button", {
+            name: "Continue with Google",
+            exact: true,
+          }),
+        ).toBeEnabled();
+        await accountPage.close();
+      }
       await expect(
         page.getByRole("button", { name: "Change theme", exact: true }),
       ).toHaveAttribute("aria-pressed", String(scenario.dark));
