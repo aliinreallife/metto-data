@@ -1215,6 +1215,9 @@ try {
     "/contributors/github-91134550?lang=fa",
   );
   await ownerLink.click();
+  await expect(page).toHaveURL(/\/contributors\/github-91134550\?lang=fa$/, {
+    timeout: 15000,
+  });
   await expect(
     page.getByRole("heading", { level: 1, name: "علی رشیدی", exact: true }),
   ).toBeVisible();
@@ -1298,11 +1301,9 @@ try {
     .getByRole("button", { name: "Copy profile link", exact: true })
     .click();
   await expect(
-    page
-      .getByRole("status")
-      .filter({
-        hasText: "Could not copy. You can copy the link from your address bar.",
-      }),
+    page.getByRole("status").filter({
+      hasText: "Could not copy. You can copy the link from your address bar.",
+    }),
   ).toBeVisible();
   await page.goto(`${origin}/leaderboard?lang=en`);
   await expect(
