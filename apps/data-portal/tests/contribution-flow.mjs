@@ -2,6 +2,8 @@ import { checkThemePaint } from "./theme-paint.mjs";
 import { chromium, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 const origin = "http://127.0.0.1:3017";
 const server = spawn(
@@ -94,6 +96,43 @@ try {
   let savedProfile = null,
     profileRevision = null;
   const profileWrites = [];
+  const avatarWrites = [];
+  let avatar = null,
+    avatarRevision = null,
+    failAvatar = true;
+  const photoFixture = JSON.parse(
+    readFileSync(
+      new URL("../../../tests/fixtures/report-photo.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  await context.route("**/api/profile-photo", async (route) => {
+    if (route.request().method() === "PUT") {
+      const body = route.request().postDataJSON();
+      avatarWrites.push(body);
+      if (failAvatar) {
+        failAvatar = false;
+        await route.fulfill({ status: 503, json: { error: "unavailable" } });
+        return;
+      }
+      avatar = body.photo;
+      avatarRevision = avatar ? String(avatarWrites.length) : null;
+    }
+    await route.fulfill({
+      json: {
+        url: avatar
+          ? "/api/profile-photos/" + "a".repeat(64) + "?v=" + avatarRevision
+          : null,
+        revision: avatarRevision,
+      },
+    });
+  });
+  await context.route("**/api/profile-photos/**", async (route) => {
+    await route.fulfill({
+      contentType: "image/jpeg",
+      body: Buffer.from(avatar ?? photoFixture.jpeg, "base64"),
+    });
+  });
   let linkedAccounts = [{ id: "google-account-id", providerId: "google" }];
   page.on("pageerror", (error) =>
     errors.push(new URL(page.url()).pathname + ": " + error.message),
@@ -572,6 +611,89 @@ try {
     name: "Username",
     exact: true,
   });
+  // The photo has its own preview/save lifecycle and cannot submit/reset profile text.
+  const avatarInput = page.locator("#profile-photo-file");
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "data-avatar-kind",
+    "blobatar",
+  );
+  if (process.env.UI_SCREENSHOTS_DIR) {
+    await page.evaluate(() => {
+      document.activeElement?.blur();
+      window.scrollTo(0, 0);
+    });
+    await page.screenshot({
+      path: join(
+        process.env.UI_SCREENSHOTS_DIR,
+        "profile-photo-account-mobile.png",
+      ),
+      fullPage: true,
+    });
+  }
+  await avatarInput.setInputFiles({
+    name: "unsupported.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from("<svg></svg>"),
+  });
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "Choose a JPG, PNG or WebP",
+  );
+  const uploadFixture = {
+    name: "photo.jpg",
+    mimeType: "image/jpeg",
+    buffer: Buffer.from(photoFixture.jpeg, "base64"),
+  };
+  await avatarInput.setInputFiles(uploadFixture);
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "src",
+    /^data:image\/jpeg;base64,/,
+  );
+  expect(avatarWrites).toHaveLength(0);
+  await page.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "data-avatar-kind",
+    "blobatar",
+  );
+  await avatarInput.setInputFiles(uploadFixture);
+  await page.getByRole("button", { name: "Save photo", exact: true }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "Photo not saved",
+  );
+  await expect(
+    page.getByRole("textbox", { name: "Name", exact: true }),
+  ).toHaveValue("Private profile name");
+  await expect(
+    page.getByRole("button", { name: "Save photo", exact: true }),
+  ).toBeVisible();
+  expect(profileWrites).toHaveLength(0);
+  await page.getByRole("button", { name: "Save photo", exact: true }).click();
+  await expect(
+    page.getByText("Your profile photo is saved.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "src",
+    /^\/api\/profile-photos\//,
+  );
+  expect(avatarWrites[1].revision).toBe(null);
+  expect(
+    Buffer.from(avatarWrites[1].photo, "base64").length,
+  ).toBeLessThanOrEqual(65536);
+  const avatarAudit = await auditPage();
+  expect(
+    avatarAudit.violations.filter((v) =>
+      ["serious", "critical"].includes(v.impact ?? ""),
+    ),
+  ).toEqual([]);
+  await page.getByRole("button", { name: "Remove photo", exact: true }).click();
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "data-avatar-kind",
+    "blobatar",
+  );
+  expect(avatarWrites[2]).toEqual({ photo: null, revision: "2" });
+  await expect(
+    page.getByRole("textbox", { name: "Name", exact: true }),
+  ).toHaveValue("Private profile name");
+  expect(profileWrites).toHaveLength(0);
   await usernameInput.fill("ab");
   await page.getByRole("button", { name: "Save profile", exact: true }).click();
   expect(await usernameInput.evaluate((input) => input.validity.valid)).toBe(
@@ -1100,6 +1222,65 @@ try {
     page.getByText("۱ مشارکت پذیرفته‌شده", { exact: true }),
   ).toBeVisible();
   await expect(page.getByText(/این اصلاح قبلاً با منبع/)).toBeVisible();
+  await expect(page.getByTestId("profile-avatar")).toHaveAttribute(
+    "data-avatar-kind",
+    "blobatar",
+  );
+  await expect(page.locator("main time")).toHaveCount(1);
+  for (const lang of ["fa", "en"]) {
+    await page.goto(`${origin}/contributors/github-91134550?lang=${lang}`);
+    const accepted = page
+      .getByRole("group", {
+        name: lang === "fa" ? "نمایش مشارکت‌ها" : "Filter contributions",
+      })
+      .getByRole("button", {
+        name: lang === "fa" ? "پذیرفته‌شده" : "Accepted",
+        exact: true,
+      });
+    await accepted.click();
+    await expect(accepted).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("main time")).toHaveCount(1);
+    await page
+      .getByRole("button", {
+        name: lang === "fa" ? "کپی لینک پروفایل" : "Copy profile link",
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("status").filter({
+        hasText:
+          lang === "fa" ? "لینک پروفایل کپی شد." : "Profile link copied.",
+      }),
+    ).toBeVisible();
+    for (const width of [390, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const dark of [false, true]) {
+        await page.evaluate(
+          (value) => document.documentElement.classList.toggle("dark", value),
+          dark,
+        );
+        const audit = await auditPage();
+        expect(
+          audit.violations.filter((v) =>
+            ["serious", "critical"].includes(v.impact ?? ""),
+          ),
+        ).toEqual([]);
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+        if (process.env.UI_SCREENSHOTS_DIR)
+          await page.screenshot({
+            path: join(
+              process.env.UI_SCREENSHOTS_DIR,
+              `public-profile-${lang}-${width}-${dark ? "dark" : "light"}.png`,
+            ),
+            fullPage: true,
+          });
+      }
+    }
+  }
   await page.goto(`${origin}/leaderboard?lang=en`);
   await expect(
     page.getByRole("link", { name: "علی رشیدی", exact: true }),
@@ -1109,7 +1290,7 @@ try {
   ).toBeVisible();
   expect(errors).toEqual([]);
   console.log(
-    "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",
+    "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. Profile-photo preview/save/retry/remove with unsaved text retained; Blobatar defaults, dated public activity, filters and sharing. All auth/report/photo writes mocked.",
   );
 } finally {
   await browser?.close();

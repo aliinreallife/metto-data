@@ -207,3 +207,11 @@ username in account settings. The stable contributor ID still owns report
 history; renaming a username does not move contributions. Bio/social details
 remain opt-in, and private name, age and gender are not exposed by choosing a
 username. See [contributor-profiles.md](contributor-profiles.md).
+
+The public-profile follow-up adds real dated activity, accepted/all filters,
+counts, optional public links and profile-link copying. Members can preview,
+save, replace or remove a small public photo independently of their profile
+text. Photos use the existing Neon store, with metadata removed and bounded
+storage; the default avatar comes from the official Blobatar package, generated
+locally from the stable public contributor ID. No new account/storage provider
+is introduced. Details: [contributor-profiles.md](contributor-profiles.md).

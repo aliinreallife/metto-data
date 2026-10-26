@@ -1,4 +1,6 @@
 import { notFound, redirect } from "next/navigation";
+import { savedProfilePhoto } from "./profile-photo";
+import { profilePhotoUrl } from "./avatar";
 import { contributorId } from "./credit";
 import { portalUser } from "./auth/server";
 import { contributorHref, normalizeUsername } from "./usernames";
@@ -91,6 +93,10 @@ export async function renderPortal(
       );
   }
   const publicProfile = publicMemberProfile(savedProfile);
+  const avatar =
+    view === "profile"
+      ? await savedProfilePhoto(config?.store, profileId).catch(() => null)
+      : null;
   return (
     <Portal
       catalog={catalog}
@@ -108,6 +114,9 @@ export async function renderPortal(
       ranking={ranking}
       profileId={profileId}
       profileUsername={savedProfile?.username ?? ""}
+      profilePhotoUrl={
+        avatar ? profilePhotoUrl(profileId, avatar.value.version) : null
+      }
       publicProfile={publicProfile}
       reports={activity.reports}
       reportsUnavailable={activity.unavailable}

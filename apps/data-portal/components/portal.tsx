@@ -36,7 +36,7 @@ import type { Leader } from "../lib/leaderboard";
 import { NetworkMap } from "./network-map";
 import type { PublicMemberProfile } from "../lib/profile";
 import { CommunityReportPanel } from "./community-report-panel";
-import { socialKinds } from "../lib/social-links";
+import { PublicProfile } from "./public-profile";
 type View =
   | "home"
   | "stations"
@@ -83,6 +83,7 @@ export type PortalProps = {
   ranking: { leaders: Leader[]; unavailable: boolean; partial: boolean };
   profileId: string;
   profileUsername?: string;
+  profilePhotoUrl?: string | null;
   publicProfile: PublicMemberProfile | null;
   reports: PublicReport[];
   reportsUnavailable: boolean;
@@ -756,104 +757,16 @@ export function Portal(props: PortalProps) {
           </section>
         )}
         {view === "profile" && (
-          <section className="mx-auto max-w-3xl">
-            <h1 className="text-3xl font-bold">
-              {props.publicProfile?.publicName ??
-                profile?.name ??
-                (props.profileUsername
-                  ? "@" + props.profileUsername
-                  : t.profile)}
-            </h1>
-            {props.profileUsername &&
-              (props.publicProfile?.publicName || profile?.name) && (
-                <p
-                  dir="ltr"
-                  className="mt-2 w-fit text-sm text-muted-foreground"
-                >
-                  @{props.profileUsername}
-                </p>
-              )}
-            {props.publicProfile?.bio && (
-              <p className="mt-4 whitespace-pre-wrap break-words text-sm leading-7">
-                {props.publicProfile.bio}
-              </p>
-            )}
-            {props.publicProfile && (
-              <ul className="mt-5 flex flex-wrap gap-3">
-                {socialKinds.map((kind) => {
-                  const url = props.publicProfile?.socialLinks[kind];
-                  const label = {
-                    instagram: t.socialInstagram,
-                    telegram: t.socialTelegram,
-                    x: t.socialX,
-                    github: t.socialGithub,
-                    spotify: t.socialSpotify,
-                    website: t.socialWebsite,
-                  }[kind];
-                  return url ? (
-                    <li key={kind}>
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        aria-label={`${label} — ${t.opensNewTab}`}
-                        className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold text-primary"
-                      >
-                        {label}
-                      </a>
-                    </li>
-                  ) : null;
-                })}
-              </ul>
-            )}
-            <p className="mt-3 text-sm text-muted-foreground">{t.profile}</p>
-            {props.ranking.unavailable && !profile ? (
-              <p role="status" className="mt-6">
-                {t.leaderboardUnavailable}
-              </p>
-            ) : !profile ? (
-              <p role="status" className="mt-6">
-                {t.profileEmpty}
-              </p>
-            ) : (
-              <>
-                <p className="mt-5 text-sm font-semibold">
-                  {number(profile.accepted)} {t.acceptedContributions}
-                </p>
-                <ul className="mt-6 grid gap-3">
-                  {profile.reports.map((report) => (
-                    <li
-                      key={report.id}
-                      className="rounded-2xl border border-border bg-card p-5"
-                    >
-                      <span
-                        className={`inline-block rounded-full px-3 py-1 text-xs ${report.accepted ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
-                      >
-                        {report.accepted ? t.accepted : t.submitted}
-                      </span>
-                      {report.kind === "historical" && (
-                        <p className="mt-3 text-xs leading-6 text-muted-foreground">
-                          {t.historicalContributionNote}
-                        </p>
-                      )}
-                      <a
-                        className="mt-3 block font-semibold underline-offset-4 hover:underline"
-                        href={report.url}
-                      >
-                        {report.names?.[lang] ?? report.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            <a
-              className="mt-6 inline-flex min-h-11 items-center text-sm font-semibold text-primary underline underline-offset-4"
-              href={href("leaderboard")}
-            >
-              {t.leaderboard}
-            </a>
-          </section>
+          <PublicProfile
+            id={props.profileId}
+            username={props.profileUsername}
+            photoUrl={props.profilePhotoUrl}
+            profile={props.publicProfile}
+            person={profile}
+            unavailable={props.ranking.unavailable}
+            partial={props.ranking.partial}
+            lang={lang}
+          />
         )}
         {view === "contribute" && (
           <ContributionForm

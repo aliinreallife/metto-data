@@ -86,3 +86,9 @@ by this change.
 A storage failure returns an error without clearing the form. The app never
 claims a report was received until its durable write is confirmed. Matching
 retries reuse the report ID and do not create duplicate issues.
+
+Profile photos also use the bounded Neon storage described above, in separate
+`avatars/<contributor-id>.json` rows. Public responses contain only processed
+JPEG bytes; metadata is removed on upload. See
+[contributor-profiles.md](contributor-profiles.md#profile-photos-and-public-pages)
+for upload, removal, caching and default-avatar behavior.
