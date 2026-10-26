@@ -183,8 +183,7 @@ amenities can be corrected together without duplicate choices.
 
 The activity feed includes Ali Rashidi's real reviewed 17 Shahrivar correction,
 sourced to the existing canonical override. Boarding on Line 7 is distinguished
-from non-boardable Line 6 through-tracks. Historical feed credit does not forge
-an authenticated submission or add synthetic leaderboard points.
+from non-boardable Line 6 through-tracks. Historical corrections retain their source and are now counted once in the leaderboard. They link to a contributor page, and a verified GitHub provider identity can attach that credit to the member account without fabricating an authenticated submission.
 
 The merged community follow-up uses account-owned names on reports without a
 second public-name/contact form. Published reports support one confirm/disagree
@@ -199,3 +198,12 @@ Shared navigation now includes mobile quick access and keyboard dismissal,
 city-aware line filtering, map zoom/line legends, clearer activity/report details
 and a saved light/dark preference. The simple Metto colors and existing
 three-step form remain consistent across the portal.
+
+## Contributor pages and usernames
+
+Contributor names in activity, report details and the leaderboard open public
+profile pages. Members can choose a case-insensitive, unique 3–30 character
+username in account settings. The stable contributor ID still owns report
+history; renaming a username does not move contributions. Bio/social details
+remain opt-in, and private name, age and gender are not exposed by choosing a
+username. See [contributor-profiles.md](contributor-profiles.md).

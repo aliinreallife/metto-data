@@ -65,6 +65,10 @@ export interface PrivateStore {
     prefix: string,
     cursor?: string,
   ): Promise<{ paths: string[]; cursor?: string }>;
+  findProfileByUsername?<T>(
+    username: string,
+    namespace?: string,
+  ): Promise<{ id: string; value: T; etag: string } | null>;
   cleanup?(): Promise<number>;
   canStorePhoto?(bytes: number): Promise<boolean>;
 }

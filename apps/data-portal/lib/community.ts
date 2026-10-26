@@ -1,3 +1,4 @@
+import { profilePath, type MemberProfile } from "./profile.ts";
 import { contributorId } from "./credit.ts";
 import {
   REPOSITORY,
@@ -32,6 +33,7 @@ export type PublicCommunity = {
     stationId: string;
     issueUrl: string;
     photoUrl?: string;
+    contributor?: { id: string; name: string; username?: string };
   };
   automatic: number;
   manual: boolean;
@@ -90,6 +92,12 @@ export async function publicCommunity(
   const secret = config.creditSecret || config.quotaSecret || "",
     hash = userId && secret ? contributorId(userId, secret) : "";
   const names = config.stationNames?.[row.value.report.stationId];
+  const credit = row.value.report.credit;
+  const authorProfile = credit
+    ? await config.store
+        .read<MemberProfile>(profilePath(credit.id))
+        .catch(() => null)
+    : null;
   return {
     id,
     confirm: number("confirm"),
@@ -101,6 +109,17 @@ export async function publicCommunity(
     decision: current.decision ?? null,
     report: {
       title: names?.fa ?? row.value.report.subject,
+      ...(credit
+        ? {
+            contributor: {
+              id: credit.id,
+              name: credit.name,
+              ...(authorProfile?.value.username
+                ? { username: authorProfile.value.username }
+                : {}),
+            },
+          }
+        : {}),
       details: row.value.report.details,
       source: row.value.report.source,
       cityId: row.value.report.cityId,

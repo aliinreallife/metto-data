@@ -40,8 +40,7 @@ unknown amenity values and older free-text-only reports require manual work.
 A report containing both supported amenity booleans and unknown values applies
 only its supported fields and explicitly flags the remainder. Photos are evidence,
 not trusted machine-extracted data. A single approved field does not mark all
-station amenities as verified. Accepted, signed-in contributions continue to
-count toward the existing leaderboard; anonymous reports remain anonymous.
+station amenities as verified. Accepted reports with public credit and sourced, reviewed historical corrections count toward the leaderboard; anonymous reports remain anonymous. Historical records are labeled, counted once and linked to accounts only through a server-verified provider identity.
 
 The automatic change updates **metto-data** and its portal. Metto's passenger
 app imports a pinned dataset separately; updating/releasing that import remains

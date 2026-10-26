@@ -1191,9 +1191,21 @@ export function ContributionForm({
                 )}
               </span>
               <div className="min-w-0">
-                <strong className="block break-words">
-                  {accountName || t.accountNameRequired}
-                </strong>
+                {accountName ? (
+                  <a
+                    href={`/contributors/me?lang=${lang}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${accountName} — ${t.opensNewTab}`}
+                    className="block break-words font-bold text-primary underline-offset-4 hover:underline"
+                  >
+                    {accountName}
+                  </a>
+                ) : (
+                  <strong className="block break-words">
+                    {t.accountNameRequired}
+                  </strong>
+                )}
                 <p className="mt-1 text-xs leading-6 text-muted-foreground">
                   {t.accountCreditNameNote}
                 </p>

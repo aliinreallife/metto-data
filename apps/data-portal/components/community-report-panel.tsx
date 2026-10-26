@@ -1,4 +1,5 @@
 "use client";
+import { contributorHref } from "../lib/usernames";
 import { useEffect, useState } from "react";
 import { Check, X, ExternalLink, MessageCircle } from "lucide-react";
 import type { PublicCommunity, VoteChoice } from "../lib/community";
@@ -165,6 +166,26 @@ export function CommunityReportPanel({
         <h2 className="text-xl font-bold">
           {station?.names[lang] ?? data.report.title}
         </h2>
+        {data.report.contributor && (
+          <a
+            className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline-offset-4 hover:underline"
+            href={contributorHref(
+              data.report.contributor.id,
+              data.report.contributor.username,
+              lang,
+            )}
+          >
+            {data.report.contributor.name}
+            {data.report.contributor.username && (
+              <span
+                dir="ltr"
+                className="ms-2 text-xs font-normal text-muted-foreground"
+              >
+                @{data.report.contributor.username}
+              </span>
+            )}
+          </a>
+        )}
         <p className="whitespace-pre-wrap break-words text-sm leading-8">
           {data.report.details}
         </p>

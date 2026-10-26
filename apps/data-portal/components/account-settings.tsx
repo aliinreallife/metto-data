@@ -9,6 +9,7 @@ import {
   UserRound,
   ShieldCheck,
 } from "lucide-react";
+import { contributorHref, USERNAME_PATTERN } from "../lib/usernames";
 import { authClient } from "../lib/auth/client";
 import { STRINGS } from "../lib/i18n";
 import {
@@ -46,6 +47,7 @@ export function AccountSettings({
   const [tab, setTab] = useState<"profile" | "connections">("profile");
   const [profile, setProfile] = useState<MemberProfile>({
     name: user.name,
+    username: "",
     age: null,
     gender: "",
     bio: "",
@@ -55,6 +57,8 @@ export function AccountSettings({
   });
   const [revision, setRevision] = useState<string | null>(null),
     [id, setId] = useState("");
+  const [savedUsername, setSavedUsername] = useState("");
+  const [historicalLinked, setHistoricalLinked] = useState(false);
   const [loaded, setLoaded] = useState(false),
     [pending, setPending] = useState(false),
     [savedPublic, setSavedPublic] = useState(false);
@@ -81,6 +85,8 @@ export function AccountSettings({
       if (data.profile) setProfile(data.profile);
       setRevision(data.revision);
       setId(data.id);
+      setSavedUsername(data.profile?.username ?? "");
+      setHistoricalLinked(!!data.historicalLinked);
       setSavedPublic(!!data.profile?.publicProfile);
       setLoaded(true);
     } catch {
@@ -150,6 +156,8 @@ export function AccountSettings({
       if (!response.ok) {
         if (response.status === 409) {
           const conflict = await response.json();
+          if (conflict.error === "username_taken")
+            throw Error("username_taken");
           if (
             conflict.revision === null ||
             typeof conflict.revision === "string"
@@ -162,15 +170,19 @@ export function AccountSettings({
       setProfile(data.profile);
       setRevision(data.revision);
       setId(data.id);
+      setSavedUsername(data.profile?.username ?? "");
+      setHistoricalLinked(!!data.historicalLinked);
       setSavedPublic(data.profile.publicProfile);
       setMessage(t.profileSaved);
       window.dispatchEvent(new Event("metto:account"));
     } catch (caught) {
       setError(true);
       setMessage(
-        caught instanceof Error && caught.message === "changed"
-          ? t.profileChanged
-          : t.profileSaveFailed,
+        caught instanceof Error && caught.message === "username_taken"
+          ? t.usernameTaken
+          : caught instanceof Error && caught.message === "changed"
+            ? t.profileChanged
+            : t.profileSaveFailed,
       );
     } finally {
       setPending(false);
@@ -334,6 +346,34 @@ export function AccountSettings({
             className="min-w-0 space-y-5 border-t border-border pt-5"
           >
             <legend className="px-2 font-semibold">{t.publicProfile}</legend>
+            <div className="flex flex-col gap-2 text-sm font-semibold">
+              <label htmlFor="profile-username">{t.username}</label>
+              <input
+                id="profile-username"
+                className={input}
+                value={profile.username ?? ""}
+                minLength={3}
+                maxLength={30}
+                pattern={USERNAME_PATTERN}
+                autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
+                dir="ltr"
+                aria-describedby="username-hint"
+                onChange={(event) =>
+                  change(
+                    "username",
+                    event.target.value.replace(/^@/, "").toLowerCase(),
+                  )
+                }
+              />
+              <span
+                id="username-hint"
+                className="text-xs font-normal leading-6 text-muted-foreground"
+              >
+                {t.usernameHint}
+              </span>
+            </div>
             <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-muted/50 p-4 text-sm leading-7">
               <input
                 className="mt-1.5 size-4 shrink-0 accent-primary"
@@ -466,6 +506,11 @@ export function AccountSettings({
               )}
             </div>
           </fieldset>
+          {historicalLinked && (
+            <p className="rounded-xl bg-muted/50 p-4 text-sm leading-7">
+              {t.historicalCreditLinked}
+            </p>
+          )}
           <div className="flex flex-wrap items-center gap-4">
             <button
               type="submit"
@@ -475,9 +520,9 @@ export function AccountSettings({
               <Check className="size-4" aria-hidden />
               {pending ? t.savingProfile : t.saveProfile}
             </button>
-            {savedPublic && id && (
+            {id && (savedPublic || savedUsername) && (
               <a
-                href={`/contributors/${id}?lang=${lang}`}
+                href={contributorHref(id, savedUsername, lang)}
                 className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-primary underline underline-offset-4"
               >
                 {t.viewPublicProfile}

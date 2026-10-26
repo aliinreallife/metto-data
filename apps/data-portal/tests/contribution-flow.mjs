@@ -183,6 +183,10 @@ try {
   await context.route("**/api/profile", async (route) => {
     if (route.request().method() === "PUT") {
       const body = route.request().postDataJSON();
+      if (body.profile.username === "taken_user") {
+        await route.fulfill({ status: 409, json: { error: "username_taken" } });
+        return;
+      }
       profileWrites.push(body);
       savedProfile = structuredClone(body.profile);
       if (savedProfile.socialLinks.x)
@@ -564,6 +568,17 @@ try {
   await expect(
     page.getByRole("checkbox", { name: /Show my profile publicly/ }),
   ).not.toBeChecked();
+  const usernameInput = page.getByRole("textbox", {
+    name: "Username",
+    exact: true,
+  });
+  await usernameInput.fill("ab");
+  await page.getByRole("button", { name: "Save profile", exact: true }).click();
+  expect(await usernameInput.evaluate((input) => input.validity.valid)).toBe(
+    false,
+  );
+  expect(profileWrites).toHaveLength(0);
+  await usernameInput.fill("rail_helper");
   await page
     .getByRole("textbox", { name: "Bio (optional)", exact: true })
     .fill("I help with metro data.");
@@ -576,6 +591,15 @@ try {
   );
   expect(profileWrites).toHaveLength(0);
   await page.locator("#social-x").fill("@metto_user");
+  await usernameInput.fill("taken_user");
+  await page.getByRole("button", { name: "Save profile", exact: true }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText(
+    "That username is already taken",
+  );
+  await expect(
+    page.getByRole("textbox", { name: "Bio (optional)", exact: true }),
+  ).toHaveValue("I help with metro data.");
+  await usernameInput.fill("rail_helper");
   await page.getByRole("button", { name: "Save profile", exact: true }).click();
   await expect(
     page.getByText("Your profile is saved.", { exact: true }),
@@ -585,6 +609,9 @@ try {
     gender: "woman",
     publicProfile: false,
   });
+  await expect(
+    page.getByRole("link", { name: /View public profile/ }),
+  ).toHaveAttribute("href", "/contributors/rail_helper?lang=en");
   await page
     .getByRole("checkbox", { name: /Show my profile publicly/ })
     .check();
@@ -1059,6 +1086,27 @@ try {
     "style",
     /100%/,
   );
+  await page.goto(`${origin}/reports?lang=fa`);
+  const ownerLink = page.getByRole("link", { name: "علی رشیدی", exact: true });
+  await expect(ownerLink).toHaveAttribute(
+    "href",
+    "/contributors/github-91134550?lang=fa",
+  );
+  await ownerLink.click();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "علی رشیدی", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("۱ مشارکت پذیرفته‌شده", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText(/این اصلاح قبلاً با منبع/)).toBeVisible();
+  await page.goto(`${origin}/leaderboard?lang=en`);
+  await expect(
+    page.getByRole("link", { name: "علی رشیدی", exact: true }),
+  ).toHaveAttribute("href", "/contributors/github-91134550?lang=en");
+  await expect(
+    page.getByText("1 accepted contributions", { exact: true }),
+  ).toBeVisible();
   expect(errors).toEqual([]);
   console.log(
     "Passed: theme before hydration, link navigation and reload without light frames; head right, only curved nose, framed windows and women pictograms; three-step confirmation without early writes; draft/photo retention; keyboard/search/Tab; multi-amenity, wagon and city reports; retries; Google/GitHub-only login UI; account name without duplicate contact fields; private profiles/social links and connected logins; city train layouts/full-half women sections/flip; FA/EN mobile/desktop accessibility; future map geometry isolated from boarding stations. All auth/report writes mocked.",

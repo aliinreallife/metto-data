@@ -1,5 +1,17 @@
 export const STRINGS = {
   fa: {
+    contributionsUnavailable:
+      "همهٔ مشارکت‌ها بارگذاری نشدن؛ فعلاً موارد در دسترس رو می‌بینی.",
+    username: "شناسهٔ کاربری",
+    usernameHint:
+      "۳ تا ۳۰ حرف انگلیسی، عدد یا زیرخط؛ با حرف یا عدد شروع کن. این شناسه عمومی و مخصوص توست و پیوند صفحه‌ات باهاش ساخته می‌شه.",
+    usernameTaken:
+      "این شناسه قبلاً انتخاب شده؛ یکی دیگه رو امتحان کن. اطلاعاتت توی فرم باقی مونده.",
+    historicalContribution: "اصلاح ثبت‌شدهٔ قبلی",
+    historicalContributionNote:
+      "این اصلاح قبلاً با منبع بررسی و تأیید شده و مثل بقیهٔ مشارکت‌های تأییدشده حساب می‌شه.",
+    historicalCreditLinked:
+      "مشارکت قبلی‌ات از طریق حساب گیت‌هاب تأییدشده به این حساب وصل شده و در جدول مشارکت‌کننده‌ها حساب می‌شه.",
     womenPresenceReported:
       "وجود واگن ویژهٔ بانوان در تهران–کرج گزارش شده؛ تعداد و جاشون هنوز تأیید نشده. علامت‌های سکو و قطار رو ببین.",
     allReports: "همهٔ گزارش‌ها",
@@ -202,7 +214,7 @@ export const STRINGS = {
       "برای ثبت نام عمومی دوباره وارد شو، یا گزارش را بدون نام بفرست.",
     leaderboard: "مشارکت‌کنندگان",
     leaderboardIntro:
-      "این جدول فقط مشارکت‌هایی را می‌شمارد که بازبینی و پذیرفته شده‌اند و فرستنده ثبت نام عمومی را انتخاب کرده است. ارسال یا بسته شدن گزارش به‌تنهایی امتیاز ندارد.",
+      "مشارکت‌های پذیرفته‌شده با نام عمومی و اصلاح‌های قبلیِ تأییدشده در این جدول حساب می‌شن. ارسال یا بستن گزارش به‌تنهایی امتیاز نداره.",
     leaderboardEmpty:
       "هنوز مشارکت پذیرفته‌شده‌ای با نام عمومی برای نمایش نداریم. می‌توانی گزارش بفرستی؛ ناشناس یا با نام انتخابی خودت.",
     leaderboardUnavailable:
@@ -378,6 +390,18 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    contributionsUnavailable:
+      "Some contributions could not load. Available records are shown.",
+    username: "Username",
+    usernameHint:
+      "3–30 English letters, numbers or underscores, starting with a letter or number. This unique public username becomes your profile link.",
+    usernameTaken:
+      "That username is already taken. Try another; your other fields are still here.",
+    historicalContribution: "Historical correction",
+    historicalContributionNote:
+      "This earlier correction was reviewed with its source and counts just like other accepted contributions.",
+    historicalCreditLinked:
+      "Your earlier contribution is linked through your verified GitHub account and counts on the leaderboard.",
     womenPresenceReported:
       "Women-only coaches are reported on Tehran–Karaj. Their number and positions are unconfirmed; follow platform and train signs.",
     allReports: "All reports",
@@ -585,7 +609,7 @@ export const STRINGS = {
       "Log in again for public credit, or send the report without a public name.",
     leaderboard: "Contributors",
     leaderboardIntro:
-      "Only reviewed, accepted contributions with optional public credit count here. Sending or closing a report alone does not earn credit.",
+      "Accepted reports with public credit and sourced, reviewed historical corrections count here. Sending or closing a report alone does not earn credit.",
     leaderboardEmpty:
       "No accepted contributions with public credit to show yet. You can send a report anonymously or with a public name you choose.",
     leaderboardUnavailable:
