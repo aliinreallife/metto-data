@@ -1,5 +1,14 @@
 export const STRINGS = {
   fa: {
+    allReports: "همهٔ گزارش‌ها",
+    lineFilter: "فیلتر خط",
+    allLines: "همهٔ خط‌ها",
+    clearFilters: "پاک کردن جست‌وجو و فیلتر خط",
+    quickNav: "دسترسی سریع",
+    accountNameRequired: "نام حسابت رو کامل کن یا بدون نام بفرست.",
+    accountCreditNameNote:
+      "این نام همراه گزارشت ثبت می‌شه. ایمیلت عمومی نمی‌شه.",
+    editAccountName: "ویرایش نام حساب",
     descriptionOptional: "توضیح بیشتر (اختیاری)",
     verifiedContribution: "تأییدشده",
     whichExit: "کدوم خروجی؟",
@@ -11,7 +20,7 @@ export const STRINGS = {
     leaveContact: "راه تماس می‌ذارم",
     manualContactNote: "راه تماست فقط برای پیگیریه و عمومی نمی‌شه.",
     signInForCredit: "با ورود، مشارکتم ثبت بشه",
-    withPublicCredit: "با نام دلخواهم ثبت بشه",
+    withPublicCredit: "با حسابم می‌فرستم",
     leaderboardLoginNote:
       "بعد از تأیید گزارش، مشارکتت توی جدول مشارکت‌کننده‌ها شمرده می‌شه.",
     howToCredit: "گزارش رو چطور بفرستیم؟",
@@ -79,7 +88,7 @@ export const STRINGS = {
     genderPrivate: "ترجیح می‌دهم نگویم",
     privateDetails: "اطلاعات شخصی",
     privateDetailsNote:
-      "سن و جنسیت همیشه خصوصی می‌مانند. نام عمومی را جداگانه انتخاب می‌کنی.",
+      "سن و جنسیت خصوصی می‌مونن. نام حساب فقط وقتی با حسابت گزارش می‌فرستی، همراه گزارش دیده می‌شه.",
     publicProfile: "پروفایل عمومی",
     showPublicProfile: "معرفی و پیوندهایم را عمومی کن",
     publicProfileNote:
@@ -273,12 +282,12 @@ export const STRINGS = {
     reviewNote: "گزارش‌ها بررسی می‌شوند و داده‌ها پس از تأیید به‌روز می‌شوند.",
     privacy: "راه تماس اختیاری",
     privacyNote:
-      "نام و راه تماست خصوصی می‌ماند؛ اطلاعات و عکس گزارش عمومی است.",
+      "راه تماس خصوصیه. گزارش و عکس عمومی می‌شه؛ نمایش نام حساب با انتخاب خودته.",
     directory: "ایستگاه‌ها و وضعیت",
     search: "جست‌وجوی ایستگاه یا شهر",
     city: "شهر",
     empty: "ایستگاهی پیدا نشد.",
-    changeStation: "پیشنهاد تغییر برای این ایستگاه",
+    changeStation: "اصلاح اطلاعات ایستگاه",
     amenities: "امکانات ثبت‌شده",
     unknown: "نامشخص",
     unverified: "اطلاعات امکانات نیازمند بررسی است",
@@ -318,7 +327,7 @@ export const STRINGS = {
     name: "نام (اختیاری)",
     contact: "ایمیل یا شناسهٔ تماس (اختیاری)",
     publicNote:
-      "اطلاعات و عکس گزارش در گیت‌هاب عمومی می‌شود؛ نام و راه تماس فقط برای پیگیری نگه داشته می‌شود. حساب لازم نیست.",
+      "گزارش و عکس در گیت‌هاب عمومی می‌شه. راه تماس خصوصیه؛ نام حساب فقط با انتخاب خودت کنار گزارش میاد.",
     send: "فرستادن گزارش",
     sending: "در حال فرستادن…",
     unavailable:
@@ -367,6 +376,15 @@ export const STRINGS = {
     police: "پلیس مترو",
   },
   en: {
+    allReports: "All reports",
+    lineFilter: "Filter by line",
+    allLines: "All lines",
+    clearFilters: "Clear search and line filter",
+    quickNav: "Quick navigation",
+    accountNameRequired: "Add a name to your account, or send anonymously.",
+    accountCreditNameNote:
+      "This account name will appear with your report. Your email stays private.",
+    editAccountName: "Edit account name",
     descriptionOptional: "Description (optional)",
     verifiedContribution: "Verified",
     whichExit: "Which exit?",
@@ -378,7 +396,7 @@ export const STRINGS = {
     leaveContact: "Leave a private contact",
     manualContactNote: "Only used for follow-up. It stays private.",
     signInForCredit: "Sign in for contributor credit",
-    withPublicCredit: "Use a public name",
+    withPublicCredit: "Use my account",
     leaderboardLoginNote:
       "Accepted reports count toward your contributor history and leaderboard.",
     howToCredit: "How would you like to send it?",
@@ -448,7 +466,7 @@ export const STRINGS = {
     genderPrivate: "Prefer not to say",
     privateDetails: "Personal details",
     privateDetailsNote:
-      "Age and gender always stay private. You choose a public name separately.",
+      "Age and gender stay private. Your account name is shown only when you choose to send a report with your account.",
     publicProfile: "Public profile",
     showPublicProfile: "Show my profile publicly",
     publicProfileNote:
@@ -653,12 +671,12 @@ export const STRINGS = {
     reviewNote: "Reports are reviewed before they become changes to the data.",
     privacy: "Optional contact",
     privacyNote:
-      "Your name and contact stay private. Report information and photos are public.",
+      "Contact details stay private. Reports and photos are public; showing your account name is your choice.",
     directory: "Stations and status",
     search: "Search stations or cities",
     city: "City",
     empty: "No stations found.",
-    changeStation: "Suggest a change for this station",
+    changeStation: "Suggest a correction",
     amenities: "Recorded amenities",
     unknown: "Unknown",
     unverified: "Amenity information needs review",
@@ -699,7 +717,7 @@ export const STRINGS = {
     name: "Name (optional)",
     contact: "Email or contact handle (optional)",
     publicNote:
-      "Your information and photo become a public GitHub report. Name and contact are kept only for follow-up. No account needed.",
+      "Reports and photos become public on GitHub. Contact details stay private; your account name appears only when you choose to use it.",
     send: "Send report",
     sending: "Sending…",
     unavailable:

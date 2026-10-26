@@ -157,7 +157,7 @@ export function SelectField({
         aria-controls={`${id}-list`}
         aria-activedescendant={!searchLabel && open ? activeId : undefined}
         onClick={() => (open ? close() : show())}
-        className={`flex min-h-12 w-full items-center justify-between gap-3 rounded-xl border bg-card px-3.5 py-3 text-start text-sm transition-colors hover:border-primary/50 focus-visible:outline-none ${open ? "border-primary ring-2 ring-primary/10" : "border-input"}`}
+        className={`flex min-h-12 w-full items-center justify-between gap-3 rounded-xl border bg-card px-3.5 py-3 text-start text-sm transition-colors hover:border-primary/50 ${open ? "border-primary ring-2 ring-primary/10" : "border-input"}`}
       >
         <span id={`${id}-value`} className="truncate">
           {options.find((option) => option.value === selected)?.label ??
@@ -190,7 +190,7 @@ export function SelectField({
                   setActive(0);
                 }}
                 placeholder={searchLabel}
-                className="min-h-11 w-full rounded-lg bg-muted py-2 pe-3 ps-10 text-base outline-none focus-visible:outline-none"
+                className="min-h-11 w-full rounded-lg bg-muted py-2 pe-3 ps-10 text-base outline-none"
               />
             </div>
           )}

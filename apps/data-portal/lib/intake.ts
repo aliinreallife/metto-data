@@ -1,6 +1,8 @@
 import { createHash, createHmac, randomUUID } from "node:crypto";
 import { makeCredit, validPublicName, type PublicCredit } from "./credit.ts";
 import { sanitizePhoto } from "./photo-server.ts";
+import { amenityKeys } from "./report-draft.ts";
+import { STRINGS } from "./i18n.ts";
 import { trainProfiles } from "./train-layouts.ts";
 import type { WagonObservation } from "./report-observation.js";
 export const REPOSITORY = "aliinreallife/metto-data";
@@ -42,6 +44,7 @@ export type Report = {
   photo?: string;
   credit?: PublicCredit;
   wagon?: WagonObservation;
+  amenities?: { key: string; value: boolean | null }[];
 };
 export type StoredReport = {
   report: Report;
@@ -90,8 +93,17 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
   if (data.publicCredit !== undefined && typeof data.publicCredit !== "boolean")
     return null;
   if (
+    data.publicNameSource !== undefined &&
+    data.publicNameSource !== "account"
+  )
+    return null;
+  const creditName =
+    data.publicNameSource === "account"
+      ? config.contributor?.name
+      : data.publicName;
+  if (
     data.publicCredit === true &&
-    (!config.contributor || !validPublicName(data.publicName))
+    (!config.contributor || !validPublicName(creditName))
   )
     return null;
   const text = (key: string, max: number) =>
@@ -136,6 +148,32 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
     } catch {
       return null;
     }
+  }
+  let amenities: Report["amenities"];
+  if (data.amenities !== undefined) {
+    if (
+      kind !== "facility" ||
+      !stationId ||
+      !Array.isArray(data.amenities) ||
+      !data.amenities.length ||
+      data.amenities.length > 10
+    )
+      return null;
+    const rows = data.amenities as { key: string; value: unknown }[];
+    if (
+      rows.some(
+        (row) =>
+          !row ||
+          !amenityKeys.includes(row.key as (typeof amenityKeys)[number]) ||
+          ![true, false, null].includes(row.value as boolean | null),
+      ) ||
+      new Set(rows.map((row) => row.key)).size !== rows.length
+    )
+      return null;
+    amenities = rows.map((row) => ({
+      key: row.key,
+      value: row.value as boolean | null,
+    }));
   }
   let wagon: WagonObservation | undefined;
   if (data.wagon !== undefined) {
@@ -211,6 +249,7 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
         contact,
         ...(photo ? { photo } : {}),
         ...(wagon ? { wagon } : {}),
+        ...(amenities ? { amenities } : {}),
         ...(data.publicCredit === true &&
         config.contributor &&
         (config.creditSecret || config.quotaSecret)
@@ -219,7 +258,7 @@ function parse(raw: unknown, config: IntakeConfig): Report | null {
                 id,
                 {
                   id: config.contributor.id,
-                  name: String(data.publicName).trim(),
+                  name: String(creditName).trim(),
                 },
                 (config.creditSecret || config.quotaSecret)!,
               ),
@@ -247,6 +286,7 @@ export function publicBody(
       kind: report.kind,
       ...(report.credit ? { credit: report.credit } : {}),
       ...(report.wagon ? { wagon: report.wagon } : {}),
+      ...(report.amenities ? { amenities: report.amenities } : {}),
     }),
   ).toString("base64");
   const station = stationNames?.[report.stationId]?.fa;
@@ -257,6 +297,23 @@ export function publicBody(
     ...(station ? ["ایستگاه: " + station] : []),
     ...(report.subject ? ["", "موضوع:", literal(report.subject)] : []),
     ...(report.details ? ["", "توضیحات:", literal(report.details)] : []),
+    ...(report.amenities?.length
+      ? [
+          "",
+          "اصلاحات دقیق برای بررسی مدیر:",
+          ...report.amenities.map((row) =>
+            literal(
+              STRINGS.fa[row.key as keyof typeof STRINGS.fa] +
+                ": " +
+                (row.value === true
+                  ? "وجود دارد"
+                  : row.value === false
+                    ? "وجود ندارد"
+                    : "نامشخص؛ نیازمند بررسی دستی"),
+            ),
+          ),
+        ]
+      : []),
     ...(report.source ? ["", "منبع:", literal(report.source)] : []),
     ...(report.photo
       ? [
@@ -269,6 +326,15 @@ export function publicBody(
       : []),
     "",
     "این گزارش پیش از تغییر داده‌ها بررسی می‌شود.",
+    report.kind === "facility" &&
+    report.amenities?.some((row) => typeof row.value === "boolean")
+      ? "امکانات ثبت‌شده پس از تأیید مدیر با برچسب data:accepted قابل اعمال خودکارند؛ موارد نامشخص نیازمند بررسی دستی‌اند."
+      : "این نوع گزارش نیازمند ثبت یا بررسی دستی است.",
+    "نظر مسافرها و وضعیت بررسی: " +
+      origin +
+      "/reports?report=" +
+      report.id +
+      "&lang=fa",
     "<!-- Submission reference: " + report.id + " -->",
     "<!-- metto-data-report:" + metadata + " -->",
   ].join("\n");

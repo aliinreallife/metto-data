@@ -18,7 +18,7 @@ export type PortalQuery = (
 function expiresAt(path: string): string | null {
   if (path.startsWith("preview/"))
     return new Date(Date.now() + 7 * 86400000).toISOString();
-  const day = /^limits\/(\d{4}-\d{2}-\d{2})\.json$/.exec(path)?.[1];
+  const day = /^limits\/(\d{4}-\d{2}-\d{2})(?:\.json|\/)/.exec(path)?.[1];
   return day ? new Date(Date.parse(day) + 3 * 86400000).toISOString() : null;
 }
 export function createPostgresStore(

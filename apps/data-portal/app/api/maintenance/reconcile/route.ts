@@ -14,12 +14,15 @@ export async function POST(request: Request) {
   } catch {
     return new Response(null, { status: 403 });
   }
-  let body: { cursor?: string; githubToken?: string };
+  let body: { cursor?: string; communityCursor?: string; githubToken?: string };
   try {
     const text = await request.text();
     if (text.length > 5000) throw Error();
     body = JSON.parse(text);
     if (
+      (body.communityCursor !== undefined &&
+        (typeof body.communityCursor !== "string" ||
+          body.communityCursor.length > 2000)) ||
       !body ||
       typeof body !== "object" ||
       Array.isArray(body) ||
@@ -41,6 +44,7 @@ export async function POST(request: Request) {
       await reconcile(
         { ...config, githubToken: body.githubToken },
         body.cursor,
+        body.communityCursor,
       ),
       { headers: { "Cache-Control": "no-store" } },
     );

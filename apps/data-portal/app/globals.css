@@ -90,7 +90,7 @@
   input,
   textarea,
   select {
-    font: inherit;
+    font-family: inherit;
   }
 }
 
@@ -98,6 +98,7 @@
   button,
   article {
     transition-duration: 180ms;
+    transition-property: background-color, border-color, color, box-shadow;
   }
 }
 
@@ -125,6 +126,6 @@ button {
   outline-offset: 3px;
 }
 button:disabled {
-  cursor: wait;
+  cursor: not-allowed;
   opacity: 0.6;
 }

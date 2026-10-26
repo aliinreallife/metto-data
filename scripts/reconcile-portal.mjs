@@ -34,7 +34,7 @@ async function identity() {
   tokenAt = Date.now();
   return cachedToken;
 }
-let cursor;
+let cursor, communityCursor;
 for (let page = 0; page < 10; page++) {
   const response = await fetch(new URL("/api/maintenance/reconcile", url), {
     method: "POST",
@@ -42,7 +42,7 @@ for (let page = 0; page < 10; page++) {
       Authorization: `Bearer ${await identity()}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ cursor, githubToken }),
+    body: JSON.stringify({ cursor, communityCursor, githubToken }),
     signal: AbortSignal.timeout(290000),
   });
   if (!response.ok)
@@ -53,13 +53,18 @@ for (let page = 0; page < 10; page++) {
   console.log(
     JSON.stringify(
       Object.fromEntries(
-        ["processed", "published", "pending", "needsReview", "expired"].map((key) => [
-          key,
-          Number(result[key]) || 0,
-        ]),
+        [
+          "processed",
+          "published",
+          "pending",
+          "needsReview",
+          "expired",
+          "communityNotified",
+        ].map((key) => [key, Number(result[key]) || 0]),
       ),
     ),
   );
   cursor = result.cursor;
-  if (!cursor) break;
+  communityCursor = result.communityCursor;
+  if (!cursor && !communityCursor) break;
 }

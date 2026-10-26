@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { afterAll, describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import {
@@ -15,6 +15,15 @@ import {
   type StoredReport,
 } from "../apps/data-portal/lib/intake.js";
 import { reconcile } from "../apps/data-portal/lib/reconcile.js";
+import { buildMashhad } from "../importers/mashhad.js";
+import { buildTehran } from "../importers/tehran.js";
+import {
+  createFixture,
+  cleanupFixtures,
+  repoRoot,
+  createMashhadFixture,
+} from "./fixtures.js";
+afterAll(cleanupFixtures);
 const data = (city: string, file: string) =>
   JSON.parse(
     readFileSync(
@@ -188,9 +197,14 @@ describe("real portal catalog", () => {
       lines: "da687ea48c12c64c88d37117c837bc6519d67eb7",
       graph: "8d24868fdf39b0009e5160768fdb20fbd040b258",
     };
+    const baseline = buildTehran(createFixture());
     for (const [file, hash] of Object.entries(expected)) {
-      const bytes = readFileSync(
-        new URL(`../data/cities/tehran/${file}.json`, import.meta.url),
+      const bytes = Buffer.from(
+        JSON.stringify(
+          baseline[file as "stations" | "lines" | "graph"],
+          null,
+          2,
+        ) + "\n",
       );
       expect(
         createHash("sha1")
@@ -199,6 +213,11 @@ describe("real portal catalog", () => {
           .digest("hex"),
       ).toBe(hash);
     }
+  });
+  it("serves exactly the current pinned inputs plus explicitly approved Tehran corrections", () => {
+    const built = buildTehran(repoRoot);
+    for (const key of ["stations", "lines", "graph"] as const)
+      expect(data("tehran", key)).toEqual(built[key]);
   });
   it("keeps shared names in distinct cities and supports Persian text normalization", () => {
     expect(
@@ -217,7 +236,7 @@ describe("real portal catalog", () => {
       "mashhad:line:2",
     ]);
     expect(
-      city.stations.every((station) =>
+      buildMashhad(createMashhadFixture()).stations.every((station) =>
         Object.values(station.amenities).every((value) => value === null),
       ),
     ).toBe(true);

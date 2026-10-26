@@ -1,4 +1,4 @@
-/** A login may resume a contribution, never redirect to an arbitrary URL. */
+/** A login may resume a contribution, or public report, never redirect to an arbitrary URL. */
 export function safeReportReturn(value: unknown): string | null {
   if (
     typeof value !== "string" ||
@@ -12,11 +12,13 @@ export function safeReportReturn(value: unknown): string | null {
     const url = new URL(value, "https://metto.invalid");
     if (
       url.origin !== "https://metto.invalid" ||
-      url.pathname !== "/contribute"
+      !["/contribute", "/reports"].includes(url.pathname)
     )
       return null;
-    const result = new URL("/contribute", url.origin);
-    for (const key of ["city", "station", "kind", "lang", "resume"]) {
+    const result = new URL(url.pathname, url.origin);
+    for (const key of url.pathname === "/reports"
+      ? ["report", "lang"]
+      : ["city", "station", "kind", "lang", "resume"]) {
       const part = url.searchParams.get(key);
       if (part && part.length <= 350) result.searchParams.set(key, part);
     }

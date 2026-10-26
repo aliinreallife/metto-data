@@ -4,6 +4,7 @@ import type { Names } from "./catalog.js";
 import community from "../../../data/reference/community-contributions.json" with { type: "json" };
 export type PublicReport = {
   id: number | string;
+  reportId?: string;
   title: string;
   names?: Names;
   url: string;
@@ -75,9 +76,9 @@ export async function recentReports(): Promise<{
         continue;
       let contributorName: string | undefined;
       try {
-        const metadata = /<!-- metto-data-report:([A-Za-z0-9+/=]+) -->/.exec(
-          row.body,
-        );
+        const metadata = [
+          ...row.body.matchAll(/<!-- metto-data-report:([A-Za-z0-9+/=]+) -->/g),
+        ].at(-1);
         const data = metadata
           ? JSON.parse(Buffer.from(metadata[1], "base64").toString("utf8"))
           : null;
@@ -89,6 +90,7 @@ export async function recentReports(): Promise<{
       } catch {}
       reports.push({
         id: row.id,
+        reportId: reference,
         title: row.title,
         url: row.html_url,
         state: row.state,
