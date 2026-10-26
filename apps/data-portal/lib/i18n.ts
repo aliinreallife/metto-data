@@ -10,7 +10,7 @@ export const STRINGS = {
     avatarCancel: "لغو",
     avatarPreview: "پیش‌نمایش عکس پروفایل",
     avatarHint:
-      "JPG، PNG یا WebP تا ۸ مگابایت. بدون عکس، یک آواتار Blobatar مخصوص خودت داری.",
+      "JPG، PNG یا WebP تا ۸ مگابایت. اگه عکس نذاری، آواتار خودت رو نشون می‌دیم.",
     avatarCropNote:
       "عکس به شکل مربع برش می‌خوره. اگه پیش‌نمایش خوبه، ذخیره‌اش کن.",
     avatarWorking: "در حال آماده‌سازی عکس…",
@@ -435,7 +435,7 @@ export const STRINGS = {
     avatarCancel: "Cancel",
     avatarPreview: "Profile photo preview",
     avatarHint:
-      "JPG, PNG or WebP, up to 8 MB. Without a photo, you have your own Blobatar avatar.",
+      "JPG, PNG or WebP, up to 8 MB. Without a photo, we’ll show your default avatar.",
     avatarCropNote:
       "Your photo is cropped to a square. Save it if the preview looks right.",
     avatarWorking: "Preparing your photo…",
