@@ -65,6 +65,10 @@
     {
       "id": "interchange",
       "description": "Imam Hossein is mapped as a future Line 1/2 interchange. Do not create a live transfer to an unlaunched Line 2."
+    },
+    {
+      "id": "20-vs-18-boardable",
+      "description": "An operator-quoted Dec 2025 report calls Line 1 a 20-active-station system; an Oct 2026 guide says Daneshgah and Kargar stations are not yet open. Treat both as disputed per-station claims rather than silently counting 18 or 20 boardable stations."
     }
   ],
   "sources": [
@@ -91,6 +95,18 @@
       "role": "Potential data-source discovery only; license not established, no data copied or coordinates admitted",
       "license": "unverified",
       "contentRedistributed": false
+    },
+    {
+      "url": "https://www.wikiparvaz.com/8029/مترو-اصفهان-1405/",
+      "role": "2026-10-19 published secondary line1 station boarding caveat; names may differ in spelling",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/",
+      "role": "2026-10-10 official-quoted Line 2 service not launched due to missing trains",
+      "license": "reference-only",
+      "contentRedistributed": false
     }
   ],
   "outstandingGates": [
@@ -105,5 +121,7 @@
   "noCoordinatesCopied": true,
   "noTimetables": true,
   "noFacilityClaims": true,
-  "noTravelTimeEstimates": true
+  "noTravelTimeEstimates": true,
+  "evidenceMatrix": "sources/isfahan/station-evidence.json",
+  "reviewStatus": "missing-station-evidence-and-coordinates"
 }

@@ -47,3 +47,23 @@ Line 1: **20 proposed names**; Line 2/3: **no passenger routing**.
 
 Review entries are intentionally conservative. A source reporting a currently
 operational **line** does not certify that every proposed stop can board.
+
+## Source matrix / outstanding contradiction (28 Oct 2026)
+
+`sources/isfahan/station-evidence.json` now records **20 source-listed station
+names**, one review record per item, with references. Individual boarding
+is *not confirmed* at any of these stops. In particular, **Daneshgah** and
+**Kargar** are disputed: the operator-quoted 8 Dey 1404 report says Line 1
+has 20 active stations, while a guide published 27 Mehr 1405 says those
+two are not yet operational. The correct boardable count is NOT 18 or 20
+until individual checks resolve this.
+- Report: https://www.tasnimnews.ir/fa/news/1404/10/08/3483056/
+- Newer secondary caveat: https://www.wikiparvaz.com/8029/مترو-اصفهان-1405/
+
+A later 18 Mehr 1405 official-quoted account says Line 2 has completed
+infrastructure but **cannot start public service due to missing trains**.
+Keep Line 2 out of passenger routing until operator-confirmed launch:
+https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/
+
+All geographic points and OpenStreetMap entity IDs intentionally remain
+`null` pending an immutable licensed extract. No copied external map.

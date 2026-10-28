@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewAsOf": "2026-10-28",
+  "releaseStatus": "candidate",
+  "stationCount": 20,
+  "sourceLicensePolicy": "reference-only, original factual notes; third-party maps/coordinates not copied",
+  "operationalScope": "Line 1 reports only; do not infer station-level boarding or travel estimates",
+  "sourceLedger": [
+    {
+      "id": "tasnim-1404-10-08",
+      "url": "https://www.tasnimnews.ir/fa/news/1404/10/08/3483056/",
+      "publishedSolar": "1404-10-08",
+      "tier": "operator-quoted",
+      "finding": "Operator representative described Line 1 as having 20 active stations; not an individual platform status audit."
+    },
+    {
+      "id": "wikiparvaz-1405-07-27",
+      "url": "https://www.wikiparvaz.com/8029/مترو-اصفهان-1405/",
+      "publishedSolar": "1405-07-27",
+      "tier": "secondary-guide",
+      "finding": "Lists 20 stop names but identifies دانشگاه and کارگر as not open; conflicts with prior operator-quoted line-wide count."
+    },
+    {
+      "id": "tasnim-1405-07-18",
+      "url": "https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/",
+      "publishedSolar": "1405-07-18",
+      "tier": "official-quoted",
+      "finding": "Five stations and 5.5km of Line 2 described as ready but passenger operation blocked by train procurement; NOT proof of launch."
+    }
+  ],
+  "lines": [
+    {
+      "lineId": "isfahan:line:1",
+      "serviceEvidence": "reported-operational",
+      "boardingVerification": "individual-stations-pending",
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "lineId": "isfahan:line:2",
+      "serviceEvidence": "not-confirmed-open-as-of-2026-10-18",
+      "boardingVerification": "blocked",
+      "sourceIds": [
+        "tasnim-1405-07-18"
+      ]
+    }
+  ],
+  "stationReviews": [
+    {
+      "sourceOrdinal": 1,
+      "candidateNameFa": "قدس",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 2,
+      "candidateNameFa": "بهارستان",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 3,
+      "candidateNameFa": "گلستان",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 4,
+      "candidateNameFa": "شهید مفتح",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 5,
+      "candidateNameFa": "شهید علیخانی",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 6,
+      "candidateNameFa": "جابر",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 7,
+      "candidateNameFa": "کاوه",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 8,
+      "candidateNameFa": "شهید چمران",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 9,
+      "candidateNameFa": "شهید باهنر",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 10,
+      "candidateNameFa": "شهدا",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 11,
+      "candidateNameFa": "تختی",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 12,
+      "candidateNameFa": "امام حسین",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 13,
+      "candidateNameFa": "انقلاب",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 14,
+      "candidateNameFa": "سی‌وسه‌پل",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 15,
+      "candidateNameFa": "دکتر شریعتی",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 16,
+      "candidateNameFa": "آزادی",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 17,
+      "candidateNameFa": "دانشگاه",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "conflicting-reports",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ],
+      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable."
+    },
+    {
+      "sourceOrdinal": 18,
+      "candidateNameFa": "کارگر",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "conflicting-reports",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ],
+      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable."
+    },
+    {
+      "sourceOrdinal": 19,
+      "candidateNameFa": "کوی امام",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    },
+    {
+      "sourceOrdinal": 20,
+      "candidateNameFa": "دفاع مقدس",
+      "lineId": "isfahan:line:1",
+      "boardingReview": "not-station-verified",
+      "coordinateReview": "missing-licensed-element",
+      "currentServiceConfirmed": false,
+      "coordinates": null,
+      "osmElement": null,
+      "sourceIds": [
+        "tasnim-1404-10-08",
+        "wikiparvaz-1405-07-27"
+      ]
+    }
+  ],
+  "aliasesPending": [
+    {
+      "candidate": "دانشگاه",
+      "other": "دانشگاه اصفهان",
+      "status": "pending-operator-name"
+    },
+    {
+      "candidate": "دکتر شریعتی",
+      "other": "شریعتی",
+      "status": "pending-operator-name"
+    },
+    {
+      "candidate": "سی‌وسه‌پل",
+      "other": "سی و سه پل",
+      "status": "orthographic-normalization-pending"
+    }
+  ],
+  "releaseGates": {
+    "individualBoardingStatusesVerified": false,
+    "allCoordinatesPinnedAndLicensed": false,
+    "orderedTracksValidated": false,
+    "finalReleaseApproved": false
+  }
+}

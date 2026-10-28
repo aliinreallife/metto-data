@@ -1,3 +1,4 @@
+import stationEvidence from "../sources/isfahan/station-evidence.json" with { type: "json" };
 import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -34,4 +35,24 @@ describe("isfahan intake remains research-only", () => {
     expect(review.noFacilityClaims).toBe(true);
     expect(review.noTravelTimeEstimates).toBe(true);
   });
+  it("requires a source-linked record for every candidate Line 1 stop before publishing", () => {
+    const evidence = stationEvidence;
+    expect(evidence.releaseStatus).toBe("candidate");
+    expect(evidence.stationCount).toBe(20);
+    expect(evidence.stationReviews.map((s) => s.candidateNameFa)).toEqual(review.candidateLines[0].orderedStopNamesFa);
+    expect(evidence.stationReviews.map((s) => s.sourceOrdinal)).toEqual(Array.from({length:20}, (_,i) => i+1));
+    const sourceIds = new Set(evidence.sourceLedger.map((s) => s.id));
+    for (const s of evidence.stationReviews) {
+      expect(s.currentServiceConfirmed).toBe(false);
+      expect(s.coordinateReview).toBe("missing-licensed-element");
+      expect(s.coordinates).toBeNull();
+      expect(s.osmElement).toBeNull();
+      expect(s.sourceIds.every((id) => sourceIds.has(id))).toBe(true);
+      expect(s.boardingReview === "not-station-verified" || s.boardingReview === "conflicting-reports").toBe(true);
+    }
+    expect(evidence.stationReviews.filter((s) => s.boardingReview === "conflicting-reports").map((s) => s.candidateNameFa)).toEqual(["دانشگاه", "کارگر"]);
+    expect(Object.values(evidence.releaseGates).every((v) => v === false)).toBe(true);
+    expect(evidence.lines.find((l) => l.lineId === "isfahan:line:2")?.boardingVerification).toBe("blocked");
+  });
+
 });
