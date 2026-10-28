@@ -87,6 +87,14 @@
     {
       "id": "interchange",
       "description": "Imam Hossein is shared between Lines 1 and 2; review explicit bidirectional transfer connectivity without inventing walk durations."
+    },
+    {
+      "id": "line2-intermediate-stop",
+      "description": "Lastsecond shows 15 Khordad physically between Esteghlal and Imam Hossein, marked not opened. A seven-boardable-stop route projection must not create an unreviewed direct adjacent track edge."
+    },
+    {
+      "id": "future-line4-interchange",
+      "description": "Shiraz mayor described Independence as future Line 2/4 interchange. No active Line 4 transfer should be generated."
     }
   ],
   "sources": [
@@ -113,6 +121,12 @@
       "role": "Older third-party station data, outdated four-stop Line 2 and old schedules; no bytes reused",
       "license": "not-reviewed",
       "contentRedistributed": false
+    },
+    {
+      "url": "https://www.saadatrent.com/mag/iran/shiraz-metro-guide/",
+      "role": "Secondary guide updated 1405-06-25: Line 2 ordering conflicts with Reylo and Lastsecond; service times not an official GTFS",
+      "license": "reference-only",
+      "contentRedistributed": false
     }
   ],
   "outstandingGates": [
@@ -127,5 +141,7 @@
   "noCoordinatesCopied": true,
   "noTimetables": true,
   "noFacilityClaims": true,
-  "noTravelTimeEstimates": true
+  "noTravelTimeEstimates": true,
+  "evidenceMatrix": "sources/shiraz/station-evidence.json",
+  "reviewStatus": "missing-station-evidence-and-coordinates"
 }

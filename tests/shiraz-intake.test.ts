@@ -1,3 +1,4 @@
+import stationEvidence from "../sources/shiraz/station-evidence.json" with { type: "json" };
 import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -35,4 +36,34 @@ describe("shiraz intake remains research-only", () => {
     expect(review.noFacilityClaims).toBe(true);
     expect(review.noTravelTimeEstimates).toBe(true);
   });
+  it("tracks 27 candidate line memberships with 26 distinct names and immutable source URLs", () => {
+    expect(stationEvidence.releaseStatus).toBe("candidate");
+    expect(stationEvidence.stationReviews).toHaveLength(27);
+    expect(new Set(stationEvidence.stationReviews.map((r) => r.candidateNameFa)).size).toBe(26);
+    expect(stationEvidence.stationReviews.filter((r) => r.lineId === "shiraz:line:1").map((r) => r.candidateNameFa)).toEqual(review.candidateLines[0].orderedStopNamesFa);
+    expect(stationEvidence.stationReviews.filter((r) => r.lineId === "shiraz:line:2").map((r) => r.candidateNameFa)).toEqual(review.candidateLines[1].orderedStopNamesFa);
+    const ids = new Set(stationEvidence.sourceLedger.map((s) => s.id));
+    for (const s of stationEvidence.stationReviews) {
+      expect(s.serviceTodayVerified).toBe(false);
+      expect(s.coordinateReview).toBe("missing-licensed-element");
+      expect(s.coordinates).toBeNull();
+      expect(s.osmElement).toBeNull();
+      expect(s.sourceIds.every((id) => ids.has(id))).toBe(true);
+    }
+    expect(stationEvidence.stationReviews.filter((s) => s.boardingReview === "dated-operator-opening-report").map((s) => s.candidateNameFa)).toEqual(["استقلال"]);
+    expect(Object.values(stationEvidence.releaseGates).every((v) => v === false)).toBe(true);
+  });
+
+  it("models order conflict and nonboarding infrastructure without producing an edge", () => {
+    const hypotheses = stationEvidence.line2OrderHypotheses;
+    expect(hypotheses).toHaveLength(2);
+    expect(hypotheses[0].boardingNamesFa).toEqual(review.candidateLines[1].orderedStopNamesFa);
+    expect([...hypotheses[1].boardingNamesFa].sort()).toEqual([...hypotheses[0].boardingNamesFa].sort());
+    expect(hypotheses[1].boardingNamesFa).not.toEqual(hypotheses[0].boardingNamesFa);
+    expect(stationEvidence.line2TrackGapReview).toHaveLength(1);
+    expect(stationEvidence.line2TrackGapReview[0].edgeInferenceAllowed).toBe(false);
+    expect(stationEvidence.line2TrackGapReview[0].intermediateNamedStation).toBe("۱۵ خرداد");
+    expect(stationEvidence.interchangeClaims.every((t) => t.transferLinksVerified === false && t.walkSeconds === null)).toBe(true);
+  });
+
 });

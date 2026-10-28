@@ -44,3 +44,29 @@ unknown-license datasets are duplicated in the repository.
 
 Status: candidate; no public route claims, timetables, station coordinates,
 facilities or service guarantees.
+
+## Station-by-station service evidence (28 Oct 2026)
+
+`sources/shiraz/station-evidence.json` contains 27 **line memberships**
+for 26 distinct named physical-station leads. The only individually
+operator-quoted station opening here is **Esteghlal (19 Farvardin 1405)**;
+that dated event is not a live service API.
+
+**Line 2 order is disputed.** Lastsecond and Reylo order Esteghlal before
+Imam Hossein, but Saadatrent presents Imam Hossein before Esteghlal.
+Lastsecond also reports unopened **15 Khordad** between them; it is
+not part of the seven boardable-stop list. Do not join those stations with
+an invented direct track edge until the physical line pattern is verified.
+
+- Dated operator-quoted opening: https://www.tasnimnews.ir/fa/news/1405/01/19/3560870/
+- Alternative published order: https://www.saadatrent.com/mag/iran/shiraz-metro-guide/
+- Construction gap / alternative order: https://lastsecond.ir/blog/11175-shiraz-metro-guide
+- Secondary planner: https://reylo.ir/line/shiraz-metro-line-2/
+
+The Mayor's release additionally describes **Esteghlal as a future interchange
+with Line 4**: it must NOT become a passenger-accessible Line 4 connection.
+The Line 1/2 interchange at Imam Hossein also needs explicit directed
+platform connectivity review; no walk time is claimed.
+
+Source-linked claims are deliberately separate from canonical production
+station IDs, coordinates and topology; release gates stay false.
