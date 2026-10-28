@@ -354,5 +354,17 @@
     "allCoordinatesPinnedAndLicensed": false,
     "orderedTracksValidated": false,
     "finalReleaseApproved": false
+  },
+  "osmNetworkCrosscheck": {
+    "sourceUrl": "https://maps.mail.ru/osm/tools/subways/latest/iran.html",
+    "generatedAt": "2026-10-11T10:11:00Z",
+    "routeLines": 1,
+    "subwayValidatorStationRecords": 20,
+    "interchanges": 0,
+    "scope": "network-level OSM-derived validation; NOT an immutable raw OSM element snapshot",
+    "stationByStationBoardingVerified": false,
+    "sourceElementIdsAndVersionsCaptured": false,
+    "physicalIdentityReconciled": false,
+    "acceptance": "review-corroboration-only"
   }
 }

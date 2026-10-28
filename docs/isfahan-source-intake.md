@@ -67,3 +67,13 @@ https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/
 
 All geographic points and OpenStreetMap entity IDs intentionally remain
 `null` pending an immutable licensed extract. No copied external map.
+
+### Independent OSM network-count cross-check
+
+The [OSM-derived subway validator](https://maps.mail.ru/osm/tools/subways/latest/iran.html)
+reports 1 mapped subway line(s), 20 station records and 0
+interchange(s) for isfahan, generated 2026-10-11 10:11 UTC.
+This **corroborates only a network-level inventory**, NOT that the records
+match current boardable stations or represent distinct physical buildings.
+Exact raw OSM entity IDs/versions, live boarding status and access still
+require manual verification and a pinned ODbL-compatible extract.
