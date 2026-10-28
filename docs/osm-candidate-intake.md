@@ -76,3 +76,35 @@ This extractor preserves a precise OSM **snapshot hash** and entity version,
 but it cannot independently authenticate the user's exported file.
 No OSM geometries are copied into the canonical dataset by this script,
 and the generated report is intentionally gitignored until explicit review.
+
+## Match review-only candidates against a city's station inventory
+
+When the city research matrix from [Isfahan PR #31](https://github.com/aliinreallife/metto-data/pull/31)
+or [Shiraz PR #32](https://github.com/aliinreallife/metto-data/pull/32)
+is available locally, run this **offline** cross-reference:
+
+```sh
+pnpm source:osm:candidates --city isfahan --input /tmp/isfahan-overpass.json
+pnpm source:osm:name-review --city isfahan \
+  --candidates .quality-report/isfahan-osm-candidates.json \
+  --matrix sources/isfahan/station-evidence.json
+
+pnpm source:osm:candidates --city shiraz --input /tmp/shiraz-overpass.json
+pnpm source:osm:name-review --city shiraz \
+  --candidates .quality-report/shiraz-osm-candidates.json \
+  --matrix sources/shiraz/station-evidence.json
+```
+
+This produces a second **gitignored** artifact,
+`.quality-report/<city>-osm-name-review.json`. It proposes only exact
+normalized Persian-name matches. Arabic ي/ك versus Persian ی/ک,
+the half-space, punctuation and the "ایستگاه مترو" prefix are normalized.
+There is no fuzzy guessing or implicit platform merge. Shiraz's shared
+Imam Hossein name is one physical *name lead* with two line memberships;
+multiple same-named OSM objects are flagged **ambiguous**, not automatically
+chosen. Unknown names remain unmatched.
+
+All match entries retain false fields for station identity, coordinates,
+boarding, topology and production approval. The candidate export's SHA
+and the actual research matrix's SHA are recorded; this is a review queue,
+not an immutable verification of the original upstream OSM response.
