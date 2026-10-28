@@ -79,6 +79,9 @@ export function processOSMExport(rawBytes, city) {
       approvedForProduction: false,
     });
   }
+  if (candidates.length === 0) {
+    throw new Error("no mapped transit candidates in supplied Overpass export; inspect bbox and tags");
+  }
   candidates.sort((a, b) => a.osm.type.localeCompare(b.osm.type) || a.osm.id - b.osm.id);
   return {
     schemaVersion: 1, cityId: city, reviewOnly: true,
