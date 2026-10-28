@@ -66,4 +66,20 @@ describe("shiraz intake remains research-only", () => {
     expect(stationEvidence.interchangeClaims.every((t) => t.transferLinksVerified === false && t.walkSeconds === null)).toBe(true);
   });
 
+  it("requires raw pinned OSM members rather than treating Wikidata linkage as a route", () => {
+    const r = stationEvidence.rawOsmIntake;
+    expect(r.candidateLine2.type).toBe("relation");
+    expect(r.candidateLine2.id).toBe(15510494);
+    expect(r.candidateLine2.discoveredFromSourceId).toBe("wikidata-q97218492");
+    expect(r.candidateLine2.version).toBeNull();
+    expect(r.candidateLine2.rawElementSnapshotSha256).toBeNull();
+    expect(r.candidateLine2.memberElementsCaptured).toBe(false);
+    expect(r.line1.id).toBeNull();
+    expect(r.interchangeAccessVerified).toBe(false);
+    expect(r.currentGraphApproval).toBe("blocked");
+    expect(stationEvidence.releaseGates.rawOsmElementsVersionPinned).toBe(false);
+    expect(stationEvidence.releaseGates.routeMemberRolesReconciled).toBe(false);
+    expect(stationEvidence.reviewPriority).toHaveLength(4);
+  });
+
 });

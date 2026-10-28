@@ -34,6 +34,13 @@
       "publishedSolar": null,
       "tier": "third-party-planner",
       "finding": "Lists seven boarding names with Esteghlal before Imam Hossein; publishes estimated time but no operator-validated GTFS."
+    },
+    {
+      "id": "wikidata-q97218492",
+      "url": "https://www.wikidata.org/wiki/Q97218492",
+      "publishedSolar": null,
+      "tier": "public-knowledgebase-crosslink",
+      "finding": "Wikidata links Shiraz Line 2 to OSM relation 15510494. Neither OSM relation version nor ordered members are captured here. The relation ID is a discovery hint, not topology verification."
     }
   ],
   "stationReviews": [
@@ -528,7 +535,9 @@
     "allCoordinatesPinnedAndLicensed": false,
     "orderedTracksValidated": false,
     "directedTransfersVerified": false,
-    "finalReleaseApproved": false
+    "finalReleaseApproved": false,
+    "rawOsmElementsVersionPinned": false,
+    "routeMemberRolesReconciled": false
   },
   "osmNetworkCrosscheck": {
     "sourceUrl": "https://maps.mail.ru/osm/tools/subways/latest/iran.html",
@@ -541,5 +550,51 @@
     "sourceElementIdsAndVersionsCaptured": false,
     "physicalIdentityReconciled": false,
     "acceptance": "review-corroboration-only"
-  }
+  },
+  "rawOsmIntake": {
+    "expectedNetwork": "Shiraz Metro",
+    "candidateLine2": {
+      "type": "relation",
+      "id": 15510494,
+      "discoveredFromSourceId": "wikidata-q97218492",
+      "version": null,
+      "rawElementSnapshotSha256": null,
+      "memberElementsCaptured": false
+    },
+    "line1": {
+      "type": "relation",
+      "id": null,
+      "version": null,
+      "rawElementSnapshotSha256": null,
+      "memberElementsCaptured": false
+    },
+    "acquisitionRequired": "independent OSM API element/way/relation fetch with object IDs, versions, role-qualified members, ODbL attribution; no third-party rendered map extraction",
+    "licensing": "OpenStreetMap contributors / ODbL 1.0",
+    "currentGraphApproval": "blocked",
+    "provisionalStopOrderStatus": "contradictory",
+    "interchangeAccessVerified": false,
+    "currentOperationalStatusVerified": false
+  },
+  "reviewPriority": [
+    {
+      "rank": 1,
+      "topic": "Line 2 track order",
+      "next": "Retrieve version-pinned relation, map member roles and distinguish boarding stop platforms from through-track/15 Khordad construction; compare two contradictory hypotheses."
+    },
+    {
+      "rank": 2,
+      "topic": "Line 1 raw route",
+      "next": "Retrieve original OSM route object and stop/platform member IDs, deduplicate physical interchange at Imam Hossein."
+    },
+    {
+      "rank": 3,
+      "topic": "Line 2 interchange",
+      "next": "Independent station-level source confirming both directions of passenger transfer at Imam Hossein; do not invent walkway seconds."
+    },
+    {
+      "rank": 4,
+      "topic": "Current service",
+      "next": "Confirm any late-2026 status changes from operator; April 2026 launch is dated but not a real-time feed."
+    }
+  ]
 }

@@ -80,3 +80,24 @@ This **corroborates only a network-level inventory**, NOT that the records
 match current boardable stations or represent distinct physical buildings.
 Exact raw OSM entity IDs/versions, live boarding status and access still
 require manual verification and a pinned ODbL-compatible extract.
+
+## Raw OpenStreetMap data still required (2026-10-28)
+
+Wikidata lists **Shiraz Metro Line 2 → OSM relation 15510494**:
+https://www.wikidata.org/wiki/Q97218492
+
+This is a lead for an original ODbL-compatible extract, **not** an
+audited set of current platforms or track directions. The OSM relation
+version, stop/platform members, role ordering and geometry remain
+uncollected. Raw relation and child objects must be saved with immutable
+versions, provenance and hashes before an importer consumes them.
+ODbL attribution and license obligations:
+https://www.openstreetmap.org/copyright
+
+The April 2026 dated opening of Esteghlal as seventh Line 2 station
+does not establish its physical order relative to Imam Hossein. The
+published secondary guides disagree. In particular, 15 Khordad may
+be *nonboarding track infrastructure*; representing it as another
+boardable platform or building direct edges without verification
+would change passenger routes. Remain candidate and do not publish
+schedule estimates, map markers or transfers from this lead.
