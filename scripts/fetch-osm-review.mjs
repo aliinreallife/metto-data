@@ -26,7 +26,7 @@ export function stationQuery(city) {
   const bbox = box.join(",");
   const clauses = [
     'nwr["station"="subway"]',
-    'nwr["railway"="station"]["station"="subway"]',
+    'nwr["railway"="station"]',
     'nwr["public_transport"="station"]["subway"="yes"]',
     'nwr["public_transport"="platform"]["subway"="yes"]',
     'nwr["railway"="platform"]["subway"="yes"]',
@@ -35,6 +35,15 @@ export function stationQuery(city) {
   return '[out:json][timeout:75];\n(\n' +
     clauses.map((clause) => '  ' + clause + '(' + bbox + ');').join('\n') +
     '\n);\nout center meta;\n';
+}
+
+export function scopedQuery(city, scope) {
+  if (scope === "stations") return stationQuery(city);
+  if (scope === "shiraz-line2-relation" && city === "shiraz") {
+    // OSM relation only: a discovery lead, not verified boarding or travel.
+    return '[out:json][timeout:75];\\nrelation(15510494);\\n(._;>;);\\nout center meta;\\n'.replaceAll('\\n', '\n');
+  }
+  throw new Error("Unsupported city/scope combination");
 }
 
 export function inspectRaw(raw) {
@@ -102,14 +111,15 @@ async function main(argv) {
   const city = getOpt(argv, "--city");
   const endpointName = getOpt(argv, "--endpoint") ?? "main";
   const validFile = getOpt(argv, "--validate");
+  const scope = getOpt(argv, "--scope") ?? "stations";
   const dry = argv.includes("--dry-run");
   const expected = (dry ? 1 : 0) + (validFile ? 2 : 0) +
-    (argv.includes("--endpoint") ? 2 : 0) + 2;
+    (argv.includes("--endpoint") ? 2 : 0) + (argv.includes("--scope") ? 2 : 0) + 2;
   if (!BOX[city] || !ENDPOINTS[endpointName] || argv.length !== expected ||
       (dry && validFile)) {
-    throw new Error("Usage: --city isfahan|shiraz [--endpoint main|private] [--dry-run | --validate saved-overpass.json]");
+    throw new Error("Usage: --city isfahan|shiraz [--scope stations|shiraz-line2-relation] [--endpoint main|private] [--dry-run | --validate saved-overpass.json]");
   }
-  const query = stationQuery(city);
+  const query = scopedQuery(city, scope);
   if (dry) { process.stdout.write(query); return; }
   // No URL or arbitrary host is accepted from the CLI.
   let raw;
@@ -134,10 +144,24 @@ async function main(argv) {
     source = { kind: "live-overpass-export", endpoint };
   }
   const checked = inspectRaw(raw);
+  let relationMembers = null;
+  if (scope === "shiraz-line2-relation") {
+    const parsed = JSON.parse(raw.toString("utf8"));
+    const relation = parsed.elements.find(
+      (e) => e.type === "relation" && e.id === 15510494
+    );
+    if (!relation || !Array.isArray(relation.members) ||
+        relation.members.length === 0) {
+      throw new Error("Expected Shiraz Line 2 relation with a nonempty member list");
+    }
+    relationMembers = relation.members.length;
+  }
   const dir = join(ROOT, ".quality-report");
   mkdirSync(dir, { recursive: true });
-  const output = join(dir, city + "-overpass-raw.json");
-  const manifest = join(dir, city + "-overpass-raw.provenance.json");
+  const stem = scope === "stations" ? city + "-overpass-raw" :
+    "shiraz-line2-relation-overpass-raw";
+  const output = join(dir, stem + ".json");
+  const manifest = join(dir, stem + ".provenance.json");
   // Write the original Overpass bytes without normalization. Never publish
   // source data to data/cities/, scripts' own fixtures or the production app.
   const tmp = output + ".tmp";
@@ -148,7 +172,11 @@ async function main(argv) {
   const provenance = {
     schemaVersion: 1, cityId: city, reviewOnly: true,
     fetchedOrCheckedAt: new Date().toISOString(),
-    source, ...checked,
+    source, ...checked, scope,
+    ...(relationMembers === null ? {} :
+      { sourceRelation: { type: "relation", id: 15510494,
+        observedMembers: relationMembers, routeTopologyVerified: false,
+        boardingStationsVerified: false, directionVerified: false } }),
     requestQuery: validFile ? null : query,
     license: "ODbL-1.0",
     attribution: "© OpenStreetMap contributors",

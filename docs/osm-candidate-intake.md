@@ -141,3 +141,18 @@ an automatic station/boarding approval.** Record OSM object type, ID,
 version and a second station-level operator source before admission to
 the city importer. Public Overpass servers are best-effort services and
 may fail/rate-limit; prefer a saved manual export rather than retries.
+
+## Raw Shiraz Line 2 route relation (unverified)
+
+The Wikidata-linked OSM relation ID **15510494** is a discovery lead only.
+Fetch its versioned relation members and referenced objects separately:
+```sh
+pnpm source:osm:fetch --city shiraz --scope shiraz-line2-relation
+# Or validate saved original Overpass bytes without network:
+pnpm source:osm:fetch --city shiraz --scope shiraz-line2-relation --validate /tmp/line2-raw.json
+```
+Output stays under `.quality-report/shiraz-line2-relation-overpass-raw.json`
+with a separate provenance file. The tool checks that relation 15510494 and its
+members exist; it does **not** infer a route, platform, interchange, direction,
+or boarding status. The disputed placement of Esteghlal, 15 Khordad and
+Imam Hossein requires independent operator evidence.

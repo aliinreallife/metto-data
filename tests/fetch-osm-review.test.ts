@@ -72,4 +72,37 @@ describe("explicit Overpass snapshot acquisition, network-free tests", () => {
       ]});
     } finally { rmSync(dir, { recursive: true, force: true }); }
   });
+  it("preserves relation member references without approving Shiraz Line 2 topology", () => {
+    const query = cli(["--city", "shiraz", "--scope", "shiraz-line2-relation", "--dry-run"]);
+    expect(query).toContain("relation(15510494)");
+    expect(query).toContain("out center meta;");
+    expect(() => cli(["--city", "isfahan", "--scope", "shiraz-line2-relation", "--dry-run"])).toThrow();
+    const dir = mkdtempSync(join(tmpdir(), "metto-shiraz-rel-"));
+    try {
+      const f = join(dir, "relation.json");
+      writeFileSync(f, JSON.stringify({
+        osm3s: { timestamp_osm_base: "2026-10-28T00:00:00Z" },
+        elements: [
+          { type: "relation", id: 15510494, version: 11,
+            members: [{ type: "node", ref: 117, role: "stop" }],
+            tags: { type: "route", route: "subway" } },
+          { type: "node", id: 117, version: 3, lat: 29.6, lon: 52.6 },
+        ],
+      }));
+      cli(["--city", "shiraz", "--scope", "shiraz-line2-relation", "--validate", f]);
+      const report = JSON.parse(readFileSync(
+        ".quality-report/shiraz-line2-relation-overpass-raw.provenance.json", "utf8"));
+      expect(report.sourceRelation).toEqual({
+        type: "relation", id: 15510494, observedMembers: 1,
+        routeTopologyVerified: false, boardingStationsVerified: false, directionVerified: false,
+      });
+      expect(report.readyForProduction).toBe(false);
+      writeFileSync(f, JSON.stringify({
+        osm3s: { timestamp_osm_base: "2026-10-28T00:00:00Z" },
+        elements: [{ type: "relation", id: 999, version: 1, members: [] }],
+      }));
+      expect(() => cli(["--city", "shiraz", "--scope", "shiraz-line2-relation", "--validate", f])).toThrow();
+    } finally { rmSync(dir, { recursive: true, force: true }); }
+  });
+
 });
