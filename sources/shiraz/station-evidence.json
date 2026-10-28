@@ -1,0 +1,600 @@
+{
+  "schemaVersion": 1,
+  "cityId": "shiraz",
+  "reviewAsOf": "2026-10-28",
+  "releaseStatus": "candidate",
+  "membershipCount": 27,
+  "uniquePhysicalNameLeads": 26,
+  "sourceLicensePolicy": "reference-only, original factual notes; coordinates, raw imagery and third-party schedules not copied",
+  "sourceLedger": [
+    {
+      "id": "tasnim-1405-01-19",
+      "url": "https://www.tasnimnews.ir/fa/news/1405/01/19/3560870/",
+      "publishedSolar": "1405-01-19",
+      "tier": "operator-quoted",
+      "finding": "Shiraz mayor states Independence opened as seventh Line 2 station, completing first phase. Its planned Line 4 interchange is NOT in passenger service."
+    },
+    {
+      "id": "saadatrent-1405-06-25",
+      "url": "https://www.saadatrent.com/mag/iran/shiraz-metro-guide/",
+      "publishedSolar": "1405-06-25",
+      "tier": "secondary-guide",
+      "finding": "Lists 20 Line 1 and seven Line 2 station names; Line 2 presents Imam Hossein before Esteghlal. Timing claims are not official feeds."
+    },
+    {
+      "id": "lastsecond-1405-05-01",
+      "url": "https://lastsecond.ir/blog/11175-shiraz-metro-guide",
+      "publishedSolar": "1405-05-01",
+      "tier": "secondary-guide",
+      "finding": "Line 2 names Esteghlal then nonboarding construction stop 15 Khordad then Imam Hossein; may represent infrastructure ordering, not rider stop sequence."
+    },
+    {
+      "id": "reylo-2026",
+      "url": "https://reylo.ir/line/shiraz-metro-line-2/",
+      "publishedSolar": null,
+      "tier": "third-party-planner",
+      "finding": "Lists seven boarding names with Esteghlal before Imam Hossein; publishes estimated time but no operator-validated GTFS."
+    },
+    {
+      "id": "wikidata-q97218492",
+      "url": "https://www.wikidata.org/wiki/Q97218492",
+      "publishedSolar": null,
+      "tier": "public-knowledgebase-crosslink",
+      "finding": "Wikidata links Shiraz Line 2 to OSM relation 15510494. Neither OSM relation version nor ordered members are captured here. The relation ID is a discovery hint, not topology verification."
+    }
+  ],
+  "stationReviews": [
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 1,
+      "candidateNameFa": "احسان",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 2,
+      "candidateNameFa": "دکتر شریعتی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 3,
+      "candidateNameFa": "میرزای شیرازی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 4,
+      "candidateNameFa": "شاهد",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 5,
+      "candidateNameFa": "قصر دشت",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 6,
+      "candidateNameFa": "شهید مطهری",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 7,
+      "candidateNameFa": "شهید آوینی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 8,
+      "candidateNameFa": "نمازی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 9,
+      "candidateNameFa": "امام حسین",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 10,
+      "candidateNameFa": "زندیه",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 11,
+      "candidateNameFa": "وکیل الرعایا",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 12,
+      "candidateNameFa": "میدان ولیعصر",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 13,
+      "candidateNameFa": "شهید کاوه",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 14,
+      "candidateNameFa": "فضیلت",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 15,
+      "candidateNameFa": "رازی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 16,
+      "candidateNameFa": "غدیر",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 17,
+      "candidateNameFa": "جانبازان",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 18,
+      "candidateNameFa": "فرصت شیرازی",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 19,
+      "candidateNameFa": "شهید دوران",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:1",
+      "sourceOrdinal": 20,
+      "candidateNameFa": "شهید دستغیب",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 1,
+      "candidateNameFa": "قهرمانان",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 2,
+      "candidateNameFa": "شهدای عادل آباد",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 3,
+      "candidateNameFa": "دولت",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 4,
+      "candidateNameFa": "رحمت",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 5,
+      "candidateNameFa": "بسیج",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ]
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 6,
+      "candidateNameFa": "استقلال",
+      "boardingReview": "dated-operator-opening-report",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "tasnim-1405-01-19",
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01"
+      ],
+      "topologyConflict": "relative-order-conflicts-in-published-guides; do not infer direct edge"
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "sourceOrdinal": 7,
+      "candidateNameFa": "امام حسین",
+      "boardingReview": "not-station-verified",
+      "serviceTodayVerified": false,
+      "coordinates": null,
+      "osmElement": null,
+      "coordinateReview": "missing-licensed-element",
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ],
+      "topologyConflict": "relative-order-conflicts-in-published-guides; do not infer direct edge"
+    }
+  ],
+  "line2OrderHypotheses": [
+    {
+      "label": "ShirazMetro secondary planner and Lastsecond (boarding-only projection)",
+      "sourceIds": [
+        "lastsecond-1405-05-01",
+        "reylo-2026"
+      ],
+      "boardingNamesFa": [
+        "قهرمانان",
+        "شهدای عادل آباد",
+        "دولت",
+        "رحمت",
+        "بسیج",
+        "استقلال",
+        "امام حسین"
+      ],
+      "containsMissingNonboardingStop": true,
+      "nonBoardingInfrastructureClaim": [
+        "۱۵ خرداد"
+      ]
+    },
+    {
+      "label": "Saadatrent October 2026 secondary guide",
+      "sourceIds": [
+        "saadatrent-1405-06-25"
+      ],
+      "boardingNamesFa": [
+        "قهرمانان",
+        "شهدای عادل آباد",
+        "دولت",
+        "رحمت",
+        "بسیج",
+        "امام حسین",
+        "استقلال"
+      ],
+      "containsMissingNonboardingStop": "unclear",
+      "nonBoardingInfrastructureClaim": []
+    }
+  ],
+  "line2TrackGapReview": [
+    {
+      "betweenCandidateStations": [
+        "استقلال",
+        "امام حسین"
+      ],
+      "intermediateNamedStation": "۱۵ خرداد",
+      "serviceStatus": "reported-not-open",
+      "sourceIds": [
+        "lastsecond-1405-05-01"
+      ],
+      "edgeInferenceAllowed": false
+    }
+  ],
+  "interchangeClaims": [
+    {
+      "stationNameFa": "امام حسین",
+      "lines": [
+        "shiraz:line:1",
+        "shiraz:line:2"
+      ],
+      "transferLinksVerified": false,
+      "walkSeconds": null,
+      "sourceIds": [
+        "saadatrent-1405-06-25",
+        "reylo-2026"
+      ]
+    },
+    {
+      "stationNameFa": "استقلال",
+      "lines": [
+        "shiraz:line:2",
+        "shiraz:line:4"
+      ],
+      "serviceStatus": "future-interchange-only",
+      "transferLinksVerified": false,
+      "walkSeconds": null,
+      "sourceIds": [
+        "tasnim-1405-01-19"
+      ]
+    }
+  ],
+  "aliasesPending": [
+    {
+      "candidate": "رازی",
+      "other": "راضی",
+      "note": "Two guides disagree in spelling (Razi/Razi); operator nomenclature required."
+    },
+    {
+      "candidate": "قصر دشت",
+      "other": "قصردشت",
+      "note": "Normalize spelling without losing original."
+    },
+    {
+      "candidate": "شهدای عادل آباد",
+      "other": "عادل آباد",
+      "note": "Historic and modern naming; verify designation."
+    }
+  ],
+  "releaseGates": {
+    "individualBoardingStatusesVerified": false,
+    "allCoordinatesPinnedAndLicensed": false,
+    "orderedTracksValidated": false,
+    "directedTransfersVerified": false,
+    "finalReleaseApproved": false,
+    "rawOsmElementsVersionPinned": false,
+    "routeMemberRolesReconciled": false
+  },
+  "osmNetworkCrosscheck": {
+    "sourceUrl": "https://maps.mail.ru/osm/tools/subways/latest/iran.html",
+    "generatedAt": "2026-10-11T10:11:00Z",
+    "routeLines": 2,
+    "subwayValidatorStationRecords": 27,
+    "interchanges": 1,
+    "scope": "network-level OSM-derived validation; NOT an immutable raw OSM element snapshot",
+    "stationByStationBoardingVerified": false,
+    "sourceElementIdsAndVersionsCaptured": false,
+    "physicalIdentityReconciled": false,
+    "acceptance": "review-corroboration-only"
+  },
+  "rawOsmIntake": {
+    "expectedNetwork": "Shiraz Metro",
+    "candidateLine2": {
+      "type": "relation",
+      "id": 15510494,
+      "discoveredFromSourceId": "wikidata-q97218492",
+      "version": null,
+      "rawElementSnapshotSha256": null,
+      "memberElementsCaptured": false
+    },
+    "line1": {
+      "type": "relation",
+      "id": null,
+      "version": null,
+      "rawElementSnapshotSha256": null,
+      "memberElementsCaptured": false
+    },
+    "acquisitionRequired": "independent OSM API element/way/relation fetch with object IDs, versions, role-qualified members, ODbL attribution; no third-party rendered map extraction",
+    "licensing": "OpenStreetMap contributors / ODbL 1.0",
+    "currentGraphApproval": "blocked",
+    "provisionalStopOrderStatus": "contradictory",
+    "interchangeAccessVerified": false,
+    "currentOperationalStatusVerified": false
+  },
+  "reviewPriority": [
+    {
+      "rank": 1,
+      "topic": "Line 2 track order",
+      "next": "Retrieve version-pinned relation, map member roles and distinguish boarding stop platforms from through-track/15 Khordad construction; compare two contradictory hypotheses."
+    },
+    {
+      "rank": 2,
+      "topic": "Line 1 raw route",
+      "next": "Retrieve original OSM route object and stop/platform member IDs, deduplicate physical interchange at Imam Hossein."
+    },
+    {
+      "rank": 3,
+      "topic": "Line 2 interchange",
+      "next": "Independent station-level source confirming both directions of passenger transfer at Imam Hossein; do not invent walkway seconds."
+    },
+    {
+      "rank": 4,
+      "topic": "Current service",
+      "next": "Confirm any late-2026 status changes from operator; April 2026 launch is dated but not a real-time feed."
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "cityId": "shiraz",
+  "names": {
+    "fa": "شیراز",
+    "en": "Shiraz"
+  },
+  "country": "IR",
+  "timezone": "Asia/Tehran",
+  "reviewOnly": true,
+  "releaseStatus": "candidate",
+  "productionAuthorized": false,
+  "reviewDate": "2026-10-28",
+  "purpose": "Source-intake inventory only; NOT a route graph, map, timetable, or a source for production releases",
+  "publishingGate": "blocked",
+  "candidateLines": [
+    {
+      "lineId": "shiraz:line:1",
+      "lineName": {
+        "fa": "خط ۱",
+        "en": "Line 1"
+      },
+      "status": "reported-running-not-station-audited",
+      "orderedStopNamesFa": [
+        "احسان",
+        "دکتر شریعتی",
+        "میرزای شیرازی",
+        "شاهد",
+        "قصر دشت",
+        "شهید مطهری",
+        "شهید آوینی",
+        "نمازی",
+        "امام حسین",
+        "زندیه",
+        "وکیل الرعایا",
+        "میدان ولیعصر",
+        "شهید کاوه",
+        "فضیلت",
+        "رازی",
+        "غدیر",
+        "جانبازان",
+        "فرصت شیرازی",
+        "شهید دوران",
+        "شهید دستغیب"
+      ],
+      "orderVerified": false
+    },
+    {
+      "lineId": "shiraz:line:2",
+      "lineName": {
+        "fa": "خط ۲",
+        "en": "Line 2"
+      },
+      "status": "seven-station-phase-reported-opened-2026-04",
+      "orderedStopNamesFa": [
+        "قهرمانان",
+        "شهدای عادل آباد",
+        "دولت",
+        "رحمت",
+        "بسیج",
+        "استقلال",
+        "امام حسین"
+      ],
+      "orderVerified": false,
+      "caveat": "Independence/Imam Hossein order, and unboardable intermediate infrastructure, have not been audited. Some guides list the last two in reverse order; do not construct edges from this list."
+    }
+  ],
+  "linesExcludedFromRouting": [
+    {
+      "lineId": "shiraz:line:3",
+      "reason": "Under construction, not evidence of Line 3 passenger service"
+    },
+    {
+      "lineId": "shiraz:line:4",
+      "reason": "Under construction, no passenger boarding"
+    }
+  ],
+  "conflictingClaims": [
+    {
+      "id": "line-2-order",
+      "description": "Secondary lists disagree about the order of Esteghlal and Imam Hossein; chronology of opening is not route order. Confirm physical topology before turning ordered names into edges."
+    },
+    {
+      "id": "line-2-names",
+      "description": "Adelabad/Shohadaye Adelabad naming variants and unboardable intermediate 15 Khordad construction require stable aliases and route-stop status."
+    },
+    {
+      "id": "interchange",
+      "description": "Imam Hossein is shared between Lines 1 and 2; review explicit bidirectional transfer connectivity without inventing walk durations."
+    },
+    {
+      "id": "line2-intermediate-stop",
+      "description": "Lastsecond shows 15 Khordad physically between Esteghlal and Imam Hossein, marked not opened. A seven-boardable-stop route projection must not create an unreviewed direct adjacent track edge."
+    },
+    {
+      "id": "future-line4-interchange",
+      "description": "Shiraz mayor described Independence as future Line 2/4 interchange. No active Line 4 transfer should be generated."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.tasnimnews.ir/fa/news/1405/01/19/3560870/",
+      "role": "2026-04 official statements on Esteghlal opening as seventh Line 2 station",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://lastsecond.ir/blog/11175-shiraz-metro-guide",
+      "role": "Secondary Line 1 stop order and incomplete Line 2 infrastructure map",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://reylo.ir/line/shiraz-metro-line-2/",
+      "role": "Secondary seven-station ordered list requiring cross-check",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://github.com/MaxEdison/ShirazMetro-API",
+      "role": "Older third-party station data, outdated four-stop Line 2 and old schedules; no bytes reused",
+      "license": "not-reviewed",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.saadatrent.com/mag/iran/shiraz-metro-guide/",
+      "role": "Secondary guide updated 1405-06-25: Line 2 ordering conflicts with Reylo and Lastsecond; service times not an official GTFS",
+      "license": "reference-only",
+      "contentRedistributed": false
+    }
+  ],
+  "outstandingGates": [
+    "Resolve exact seven Line 2 boarding stops and their correct physical sequence",
+    "Identify nonboarding Line 2 stations, branch topology and the real Line 1/2 interchange",
+    "Obtain independently licensed, pinned ODbL/official coordinates and station aliases",
+    "Set stable city-prefixed station/line/route IDs, source provenance, unknown amenities null",
+    "Never import old app schedules or fabricate arrival/headway/travel time estimates",
+    "Implement and validate schema-v1 importer, independent edges, directed interchange links and candidate graph",
+    "Pass evidence and release CI followed by explicit Metto owner approval for path-only preview"
+  ],
+  "noCoordinatesCopied": true,
+  "noTimetables": true,
+  "noFacilityClaims": true,
+  "noTravelTimeEstimates": true,
+  "evidenceMatrix": "sources/shiraz/station-evidence.json",
+  "reviewStatus": "missing-station-evidence-and-coordinates"
+}
