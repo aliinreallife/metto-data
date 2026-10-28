@@ -70,3 +70,13 @@ platform connectivity review; no walk time is claimed.
 
 Source-linked claims are deliberately separate from canonical production
 station IDs, coordinates and topology; release gates stay false.
+
+### Independent OSM network-count cross-check
+
+The [OSM-derived subway validator](https://maps.mail.ru/osm/tools/subways/latest/iran.html)
+reports 2 mapped subway line(s), 27 station records and 1
+interchange(s) for shiraz, generated 2026-10-11 10:11 UTC.
+This **corroborates only a network-level inventory**, NOT that the records
+match current boardable stations or represent distinct physical buildings.
+Exact raw OSM entity IDs/versions, live boarding status and access still
+require manual verification and a pinned ODbL-compatible extract.
