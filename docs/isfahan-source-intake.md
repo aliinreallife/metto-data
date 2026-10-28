@@ -1,0 +1,49 @@
+# اصفهان (isfahan): candidate-only source intake
+
+This is a **research packet, not a public city launch**. The repo main branch
+already serves Tehran and carries Mashhad's candidate dataset. اصفهان is not
+registered in `sources.json`, because the current builder and validators
+expect complete pinned datasets with actual coordinates, route edges,
+license-provenance and stable IDs.
+
+## What has been assembled
+
+Line 1's twenty ordered stop names are recorded for comparison with the current station list. Isfahan Line 2 is construction-only in this intake, even where a future interchange is represented.
+
+The `sources/isfahan/review.json` file holds candidate ordered stop-name
+inventories, source URLs, source ambiguities, exclusions and an explicit
+blocked release policy. These are **names**, not a validated route graph or a
+claim of every individual platform being open. No copyrighted images, maps,
+unknown-license coordinates, schedules or third-party raw data have been
+copied. All amenities remain undefined pending evidence.
+
+Line 1: **20 proposed names**; Line 2/3: **no passenger routing**.
+
+## Production gating
+
+1. Obtain a redistribution-compatible immutable dataset, ideally ODbL-licensed
+   OpenStreetMap elements (with element IDs/versions) or approved operator data.
+2. Pin independent coordinates for every station and audit boarding
+   availability, non-stopping pass-through tracks, route order and
+   interchange access.
+3. Add `upstream-isfahan-metro` only when there is an actual pinned source.
+   Alternatively register a pinned, original, source-backed collection after
+   validating its license. Do not register a speculative source.
+4. Implement `importers/isfahan.ts` and
+   `topology/isfahan.*.json` with schema v1 IDs and explicit route statuses.
+   Preserve unknown amenities as `null` and transfer duration as unknown;
+   do not invent timetables or ETAs.
+5. Pass source review, independent graph tests, exact source hash checks and
+   `pnpm build --city isfahan` before publishing generated data.
+6. Get a separately recorded release authorization for a bounded *path-only*
+   city preview before wiring app routes, maps, station counts, SEO or sitemap.
+
+## Sources to examine
+
+- https://www.tasnimnews.ir/fa/news/1404/10/08/3483056/ — 2025-12 operator-reported 20-station Line 1 and service state
+- https://www.mysafar.com/mag/iran-tourism/isfahan/isfahan-metro-map/ — 2026 ordered 20-stop Line 1 secondary inventory; not audited current service
+- https://www.tasnimnews.ir/fa/news/1405/06/14/3689088/ — September 2026 city administration statement about Line 2 progress and carriages
+- https://github.com/miladvlp/esfahan-metro-data — Potential data-source discovery only; license not established, no data copied or coordinates admitted
+
+Review entries are intentionally conservative. A source reporting a currently
+operational **line** does not certify that every proposed stop can board.
