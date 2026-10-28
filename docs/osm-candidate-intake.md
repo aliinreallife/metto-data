@@ -108,3 +108,36 @@ All match entries retain false fields for station identity, coordinates,
 boarding, topology and production approval. The candidate export's SHA
 and the actual research matrix's SHA are recorded; this is a review queue,
 not an immutable verification of the original upstream OSM response.
+
+## Explicit live snapshot fetch (manual only; never CI or build)
+
+The optional command below downloads and retains the **unaltered**, versioned
+OSM export in gitignored `.quality-report/`, with a source/provenance sidecar.
+It uses a small bounded Overpass query, allowlisted public server endpoints,
+90-second timeout and a 20 MB response cap. It **cannot** be used to change
+`sources.json`, import or publish a city automatically.
+
+```sh
+pnpm source:osm:fetch --city isfahan
+pnpm source:osm:fetch --city shiraz
+
+# Inspect the exact query offline:
+pnpm source:osm:fetch --city isfahan --dry-run
+
+# Accept an already saved raw export, without any HTTP request:
+pnpm source:osm:fetch --city isfahan --validate /tmp/isfahan-export.json
+
+# Parse to unverified candidate points, then compare with the review matrix:
+pnpm source:osm:candidates --city isfahan --input .quality-report/isfahan-overpass-raw.json
+pnpm source:osm:name-review --city isfahan \
+  --candidates .quality-report/isfahan-osm-candidates.json \
+  --matrix sources/isfahan/station-evidence.json
+```
+
+Run the same three-stage process for Shiraz. The candidate and matrix
+review commands exist only after the reviewed draft branches are checked
+out together or the dependencies are merged. **Never use the report as
+an automatic station/boarding approval.** Record OSM object type, ID,
+version and a second station-level operator source before admission to
+the city importer. Public Overpass servers are best-effort services and
+may fail/rate-limit; prefer a saved manual export rather than retries.
