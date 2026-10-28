@@ -27,6 +27,13 @@
       "publishedSolar": "1405-07-18",
       "tier": "official-quoted",
       "finding": "Five stations and 5.5km of Line 2 described as ready but passenger operation blocked by train procurement; NOT proof of launch."
+    },
+    {
+      "id": "tasnim-1396-12-27",
+      "url": "https://www.tasnimnews.ir/fa/news/1396/12/27/1684108/",
+      "publishedSolar": "1396-12-27",
+      "tier": "historical-opening-report",
+      "finding": "March 2018 trial opening of the six southern Line 1 stops from Azadi toward Soffeh; historically inaugurated, not evidence of October 2026 passenger boarding."
     }
   ],
   "lines": [
@@ -284,9 +291,11 @@
       "osmElement": null,
       "sourceIds": [
         "tasnim-1404-10-08",
-        "wikiparvaz-1405-07-27"
+        "wikiparvaz-1405-07-27",
+        "tasnim-1396-12-27"
       ],
-      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable."
+      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable.",
+      "historicalOpeningEvidence": "trial-opening-corridor-2018"
     },
     {
       "sourceOrdinal": 18,
@@ -299,9 +308,11 @@
       "osmElement": null,
       "sourceIds": [
         "tasnim-1404-10-08",
-        "wikiparvaz-1405-07-27"
+        "wikiparvaz-1405-07-27",
+        "tasnim-1396-12-27"
       ],
-      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable."
+      "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable.",
+      "historicalOpeningEvidence": "trial-opening-corridor-2018"
     },
     {
       "sourceOrdinal": 19,
@@ -366,5 +377,22 @@
     "sourceElementIdsAndVersionsCaptured": false,
     "physicalIdentityReconciled": false,
     "acceptance": "review-corroboration-only"
+  },
+  "historicalOpeningReview": {
+    "scope": "southern-line-1-from-azadi-to-soffeh",
+    "sourceIds": [
+      "tasnim-1396-12-27"
+    ],
+    "stationsOfInterest": [
+      "دانشگاه",
+      "کارگر"
+    ],
+    "historicalOpeningSupported": true,
+    "currentBoardingClaim": "unresolved",
+    "alternativeSourceIds": [
+      "wikiparvaz-1405-07-27"
+    ],
+    "decision": "do-not-automatically-mark-open-or-closed",
+    "nextEvidence": "dated station-specific operator notice or direct boarding audit"
   }
 }

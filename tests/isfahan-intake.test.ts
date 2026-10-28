@@ -55,4 +55,21 @@ describe("isfahan intake remains research-only", () => {
     expect(evidence.lines.find((l) => l.lineId === "isfahan:line:2")?.boardingVerification).toBe("blocked");
   });
 
+  it("keeps historical 2018 opening separate from current unverified boarding", () => {
+    const history = stationEvidence.historicalOpeningReview;
+    expect(history.historicalOpeningSupported).toBe(true);
+    expect(history.currentBoardingClaim).toBe("unresolved");
+    expect(history.sourceIds).toContain("tasnim-1396-12-27");
+    expect(history.decision).toBe("do-not-automatically-mark-open-or-closed");
+    const disputed = stationEvidence.stationReviews.filter((s) => history.stationsOfInterest.includes(s.candidateNameFa));
+    expect(disputed).toHaveLength(2);
+    for (const s of disputed) {
+      expect(s.boardingReview).toBe("conflicting-reports");
+      expect(s.currentServiceConfirmed).toBe(false);
+      expect(s.coordinates).toBeNull();
+      expect(s.sourceIds).toContain("tasnim-1396-12-27");
+      expect(s.historicalOpeningEvidence).toBe("trial-opening-corridor-2018");
+    }
+  });
+
 });

@@ -77,3 +77,18 @@ This **corroborates only a network-level inventory**, NOT that the records
 match current boardable stations or represent distinct physical buildings.
 Exact raw OSM entity IDs/versions, live boarding status and access still
 require manual verification and a pinned ODbL-compatible extract.
+
+## Historical opening is not current station service
+
+A dated 27 Esfand 1396 report records the **trial opening of six southern
+stations** on Line 1 between Azadi and Soffeh:
+https://www.tasnimnews.ir/fa/news/1396/12/27/1684108/
+
+This supports an historical opening, not current boarding status. The
+October 2026 secondary guide claims Daneshgah/Kargar are inactive. Both
+are kept as `conflicting-reports`; none is silently marked operational
+or closed. Verify with a dated station-specific operator report.
+
+For future geographic intake use raw, immutable OSM elements with object
+type, ID, version and legal attribution (ODbL), NOT copied coordinates
+from an unlicensed third-party map. https://www.openstreetmap.org/copyright
