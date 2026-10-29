@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "names": {
+    "fa": "اصفهان",
+    "en": "Isfahan"
+  },
+  "country": "IR",
+  "timezone": "Asia/Tehran",
+  "reviewOnly": true,
+  "releaseStatus": "candidate",
+  "productionAuthorized": false,
+  "reviewDate": "2026-10-28",
+  "purpose": "Source-intake inventory only; NOT a route graph, map, timetable, or source for production releases",
+  "publishingGate": "blocked",
+  "candidateLines": [
+    {
+      "lineId": "isfahan:line:1",
+      "lineName": {
+        "fa": "خط ۱",
+        "en": "Line 1"
+      },
+      "status": "reported-running-not-station-audited",
+      "orderedStopNamesFa": [
+        "قدس",
+        "بهارستان",
+        "گلستان",
+        "شهید مفتح",
+        "شهید علیخانی",
+        "جابر",
+        "کاوه",
+        "شهید چمران",
+        "شهید باهنر",
+        "شهدا",
+        "تختی",
+        "امام حسین",
+        "انقلاب",
+        "سی‌وسه‌پل",
+        "دکتر شریعتی",
+        "آزادی",
+        "دانشگاه",
+        "کارگر",
+        "کوی امام",
+        "دفاع مقدس"
+      ],
+      "orderVerified": false,
+      "caveat": "Some secondary guides dispute passenger boarding at Daneshgah and Kargar. Their presence in the route inventory DOES NOT assert boarding access."
+    }
+  ],
+  "linesExcludedFromRouting": [
+    {
+      "lineId": "isfahan:line:2",
+      "reason": "Construction / not confirmed carrying public passengers as of reviewed sources"
+    },
+    {
+      "lineId": "isfahan:line:3",
+      "reason": "Planned; no verified boarding route"
+    }
+  ],
+  "conflictingClaims": [
+    {
+      "id": "station-status",
+      "description": "2025 operator-quoted reporting states 20 active Line 1 stations, while a recent 2026 guide names Daneshgah and Kargar as not in service. Resolve individual station boarding status before mapping."
+    },
+    {
+      "id": "interchange",
+      "description": "Imam Hossein is mapped as a future Line 1/2 interchange. Do not create a live transfer to an unlaunched Line 2."
+    },
+    {
+      "id": "20-vs-18-boardable",
+      "description": "An operator-quoted Dec 2025 report calls Line 1 a 20-active-station system; an Oct 2026 guide says Daneshgah and Kargar stations are not yet open. Treat both as disputed per-station claims rather than silently counting 18 or 20 boardable stations."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.tasnimnews.ir/fa/news/1404/10/08/3483056/",
+      "role": "2025-12 operator-reported 20-station Line 1 and service state",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.mysafar.com/mag/iran-tourism/isfahan/isfahan-metro-map/",
+      "role": "2026 ordered 20-stop Line 1 secondary inventory; not audited current service",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.tasnimnews.ir/fa/news/1405/06/14/3689088/",
+      "role": "September 2026 city administration statement about Line 2 progress and carriages",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://github.com/miladvlp/esfahan-metro-data",
+      "role": "Potential data-source discovery only; license not established, no data copied or coordinates admitted",
+      "license": "unverified",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.wikiparvaz.com/8029/مترو-اصفهان-1405/",
+      "role": "2026-10-19 published secondary line1 station boarding caveat; names may differ in spelling",
+      "license": "reference-only",
+      "contentRedistributed": false
+    },
+    {
+      "url": "https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/",
+      "role": "2026-10-10 official-quoted Line 2 service not launched due to missing trains",
+      "license": "reference-only",
+      "contentRedistributed": false
+    }
+  ],
+  "outstandingGates": [
+    "Confirm source dataset redistribution rights, preferably retrieve a pinned official or OpenStreetMap ODbL snapshot",
+    "Verify all 20 platform/boarding statuses individually; especially Daneshgah and Kargar",
+    "Pin independent geocoordinates per station, source IDs/versions, and resolve geocoding conflicts",
+    "Verify route ordering and any pass-through nonboarding infrastructure",
+    "Create an importer and generated schema-v1 snapshot with namespaced stable IDs and null unknown amenities",
+    "Pass topological, coordinate, license, contributions and reproducible-build CI review",
+    "Explicit owner approval of a bounded untimed path release before any application integration"
+  ],
+  "noCoordinatesCopied": true,
+  "noTimetables": true,
+  "noFacilityClaims": true,
+  "noTravelTimeEstimates": true,
+  "evidenceMatrix": "sources/isfahan/station-evidence.json",
+  "reviewStatus": "missing-station-evidence-and-coordinates"
+}
