@@ -1,6 +1,6 @@
 # Versioned research snapshots — not production city data
 
-Original Overpass JSON bytes, © OpenStreetMap contributors, licensed under
+Original OpenStreetMap JSON bytes (Overpass or OSM API, as recorded per file), © OpenStreetMap contributors, licensed under
 [ODbL-1.0](../../LICENSES/ODbL-1.0.txt). Attribution and license obligations:
 https://www.openstreetmap.org/copyright . These files are manual research inputs,
 not operator feeds or released Metto datasets. They are not in `sources.json`
@@ -31,3 +31,12 @@ The station exports do not establish a complete track graph. Shiraz Line 2's
 full relation export was not obtained (one HTTP 504, one bounded timeout); no
 partial relation or invented track geometry is included. No current boarding,
 interchange access, amenities or travel times are approved by these snapshots.
+
+
+Isfahan's follow-up also pins full OSM API exports of Line 1 relations 5587340
+(version 33, southbound) and 7705632 (version 18, northbound). These are original
+API 0.6 documents, not Overpass documents. Their provenance records HTTP Date
+and exact object versions; no global Overpass base timestamp is invented.
+The candidate command consumes their reviewed mainline geometry while excluding
+construction ways and inactive extension stops. See
+[Isfahan candidate review](../../docs/isfahan-candidate-graph.md).

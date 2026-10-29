@@ -110,18 +110,20 @@
     }
   ],
   "outstandingGates": [
-    "Confirm source dataset redistribution rights, preferably retrieve a pinned official or OpenStreetMap ODbL snapshot",
+    "Independently review the pinned ODbL representative station points before admitting approved coordinates",
     "Verify all 20 platform/boarding statuses individually; especially Daneshgah and Kargar",
-    "Pin independent geocoordinates per station, source IDs/versions, and resolve geocoding conflicts",
+    "Review the 20 mapped station/stop identities and representative coordinates; exact source IDs, versions and hashes are now pinned",
     "Verify route ordering and any pass-through nonboarding infrastructure",
     "Create an importer and generated schema-v1 snapshot with namespaced stable IDs and null unknown amenities",
     "Pass topological, coordinate, license, contributions and reproducible-build CI review",
     "Explicit owner approval of a bounded untimed path release before any application integration"
   ],
-  "noCoordinatesCopied": true,
+  "noCoordinatesCopied": false,
   "noTimetables": true,
   "noFacilityClaims": true,
   "noTravelTimeEstimates": true,
   "evidenceMatrix": "sources/isfahan/station-evidence.json",
-  "reviewStatus": "missing-station-evidence-and-coordinates"
+  "reviewStatus": "pinned-osm-candidate-awaiting-boarding-and-independent-coordinate-review",
+  "coordinatePolicy": "Original ODbL OSM research bytes are now pinned; candidate representative points are not approved app coordinates or entrances.",
+  "candidateInputs": "sources/isfahan/candidate-inputs.json"
 }

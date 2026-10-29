@@ -31,7 +31,8 @@
     "map-reference:check": "tsx scripts/build-construction-map.ts --check",
     "source:osm:candidates": "node scripts/osm-candidate-intake.mjs",
     "source:osm:name-review": "node scripts/osm-name-review.mjs",
-    "source:osm:fetch": "node scripts/fetch-osm-review.mjs"
+    "source:osm:fetch": "node scripts/fetch-osm-review.mjs",
+    "candidate:isfahan": "tsx scripts/build-isfahan-candidate.ts"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",

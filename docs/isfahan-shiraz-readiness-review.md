@@ -18,6 +18,10 @@ Reviewed commits:
 The conversation preview contained placeholders; this review is based on the
 actual PRs, source files, downloaded OSM snapshots and linked news references.
 
+The later [Isfahan candidate follow-up](isfahan-candidate-graph.md) now adds an
+offline review builder and mapped station identities. The statements above
+describe the original reviewed commits, not a public Isfahan launch.
+
 ## Findings fixed in this follow-up
 
 1. **Partial exports could look complete.** The candidate parser accepted

@@ -4,7 +4,7 @@
   "reviewAsOf": "2026-10-28",
   "releaseStatus": "candidate",
   "stationCount": 20,
-  "sourceLicensePolicy": "reference-only, original factual notes; third-party maps/coordinates not copied",
+  "sourceLicensePolicy": "Reference-only news notes plus separate original ODbL snapshots; no unlicensed geospatial assets, imagery or third-party schedules copied. Approved station coordinates remain null.",
   "operationalScope": "Line 1 reports only; do not infer station-level boarding or travel estimates",
   "sourceLedger": [
     {
@@ -61,286 +61,506 @@
       "candidateNameFa": "قدس",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "way",
+        "id": 915388782,
+        "version": 4,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3690028835,
+        "version": 20
+      }
     },
     {
       "sourceOrdinal": 2,
       "candidateNameFa": "بهارستان",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679625,
+        "version": 10,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736361,
+        "version": 16
+      }
     },
     {
       "sourceOrdinal": 3,
       "candidateNameFa": "گلستان",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679623,
+        "version": 11,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736360,
+        "version": 17
+      }
     },
     {
       "sourceOrdinal": 4,
       "candidateNameFa": "شهید مفتح",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "way",
+        "id": 251049327,
+        "version": 12,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3690028848,
+        "version": 18
+      }
     },
     {
       "sourceOrdinal": 5,
       "candidateNameFa": "شهید علیخانی",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "way",
+        "id": 1152614291,
+        "version": 3,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3690028850,
+        "version": 19
+      }
     },
     {
       "sourceOrdinal": 6,
       "candidateNameFa": "جابر",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "way",
+        "id": 322480231,
+        "version": 6,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736362,
+        "version": 16
+      }
     },
     {
       "sourceOrdinal": 7,
       "candidateNameFa": "کاوه",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5161577421,
+        "version": 14,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736364,
+        "version": 16
+      }
     },
     {
       "sourceOrdinal": 8,
       "candidateNameFa": "شهید چمران",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5161576020,
+        "version": 14,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736365,
+        "version": 17
+      }
     },
     {
       "sourceOrdinal": 9,
       "candidateNameFa": "شهید باهنر",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5161576018,
+        "version": 13,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3787736366,
+        "version": 19
+      }
     },
     {
       "sourceOrdinal": 10,
       "candidateNameFa": "شهدا",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679627,
+        "version": 12,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 3690028870,
+        "version": 20
+      }
     },
     {
       "sourceOrdinal": 11,
       "candidateNameFa": "تختی",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679628,
+        "version": 13,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260397,
+        "version": 16
+      }
     },
     {
       "sourceOrdinal": 12,
       "candidateNameFa": "امام حسین",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679629,
+        "version": 15,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4769272241,
+        "version": 15
+      }
     },
     {
       "sourceOrdinal": 13,
       "candidateNameFa": "انقلاب",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5162679631,
+        "version": 11,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260297,
+        "version": 15
+      }
     },
     {
       "sourceOrdinal": 14,
       "candidateNameFa": "سی‌وسه‌پل",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 5176142291,
+        "version": 11,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260791,
+        "version": 18
+      }
     },
     {
       "sourceOrdinal": 15,
       "candidateNameFa": "دکتر شریعتی",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 4023917392,
+        "version": 12,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260298,
+        "version": 16
+      }
     },
     {
       "sourceOrdinal": 16,
       "candidateNameFa": "آزادی",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 7077111839,
+        "version": 7,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 7104501371,
+        "version": 5
+      }
     },
     {
       "sourceOrdinal": 17,
       "candidateNameFa": "دانشگاه",
       "lineId": "isfahan:line:1",
       "boardingReview": "conflicting-reports",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 4023933990,
+        "version": 10,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27",
         "tasnim-1396-12-27"
       ],
       "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable.",
-      "historicalOpeningEvidence": "trial-opening-corridor-2018"
+      "historicalOpeningEvidence": "trial-opening-corridor-2018",
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260594,
+        "version": 13
+      }
     },
     {
       "sourceOrdinal": 18,
       "candidateNameFa": "کارگر",
       "lineId": "isfahan:line:1",
       "boardingReview": "conflicting-reports",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 4023917394,
+        "version": 12,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27",
         "tasnim-1396-12-27"
       ],
       "issue": "Official-quoted 2025 line-wide 20-active count conflicts with October 2026 secondary guide's claim that this specific stop is not boardable.",
-      "historicalOpeningEvidence": "trial-opening-corridor-2018"
+      "historicalOpeningEvidence": "trial-opening-corridor-2018",
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260595,
+        "version": 14
+      }
     },
     {
       "sourceOrdinal": 19,
       "candidateNameFa": "کوی امام",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 4023933989,
+        "version": 12,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4020260592,
+        "version": 14
+      }
     },
     {
       "sourceOrdinal": 20,
       "candidateNameFa": "دفاع مقدس",
       "lineId": "isfahan:line:1",
       "boardingReview": "not-station-verified",
-      "coordinateReview": "missing-licensed-element",
+      "coordinateReview": "pinned-osm-candidate-not-approved",
       "currentServiceConfirmed": false,
       "coordinates": null,
-      "osmElement": null,
+      "osmElement": {
+        "type": "node",
+        "id": 7712005418,
+        "version": 7,
+        "snapshot": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+        "snapshotSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+      },
       "sourceIds": [
         "tasnim-1404-10-08",
         "wikiparvaz-1405-07-27"
-      ]
+      ],
+      "mappedStopPosition": {
+        "type": "node",
+        "id": 4023936989,
+        "version": 15
+      }
     }
   ],
   "aliasesPending": [
@@ -352,12 +572,12 @@
     {
       "candidate": "دکتر شریعتی",
       "other": "شریعتی",
-      "status": "pending-operator-name"
+      "status": "resolved-for-pinned-osm-candidate; official naming review remains separate"
     },
     {
       "candidate": "سی‌وسه‌پل",
       "other": "سی و سه پل",
-      "status": "orthographic-normalization-pending"
+      "status": "resolved-for-pinned-osm-candidate; official naming review remains separate"
     }
   ],
   "releaseGates": {
@@ -372,7 +592,7 @@
     "routeLines": 1,
     "subwayValidatorStationRecords": 20,
     "interchanges": 0,
-    "scope": "network-level OSM-derived validation; NOT an immutable raw OSM element snapshot",
+    "scope": "network-level OSM-derived validation; NOT an immutable raw OSM element snapshot. Newer independently collected candidate exports are documented under sourceProgress.",
     "stationByStationBoardingVerified": false,
     "sourceElementIdsAndVersionsCaptured": false,
     "physicalIdentityReconciled": false,
@@ -394,5 +614,15 @@
     ],
     "decision": "do-not-automatically-mark-open-or-closed",
     "nextEvidence": "dated station-specific operator notice or direct boarding audit"
+  },
+  "sourceProgress": {
+    "checkedAt": "2026-10-29",
+    "licensedSnapshotsPinned": true,
+    "stationToStopMappings": 20,
+    "mappedDirectionsChecked": 2,
+    "physicalLinksChecked": 38,
+    "boardingDisputesResolved": false,
+    "approvedCoordinatesRemainNull": true,
+    "details": "sources/isfahan/candidate-inputs.json"
   }
 }

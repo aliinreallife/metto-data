@@ -65,8 +65,10 @@ infrastructure but **cannot start public service due to missing trains**.
 Keep Line 2 out of passenger routing until operator-confirmed launch:
 https://www.tasnimnews.ir/fa/news/1405/07/18/3719021/
 
-All geographic points and OpenStreetMap entity IDs intentionally remain
-`null` pending an immutable licensed extract. No copied external map.
+Approved coordinates remain `null`. The follow-up pins original ODbL OSM
+objects and records candidate station/stop identities; these have not been
+admitted as independently reviewed coordinates or current boarding claims.
+See [the candidate graph review](isfahan-candidate-graph.md).
 
 ### Independent OSM network-count cross-check
 
@@ -92,3 +94,14 @@ or closed. Verify with a dated station-specific operator report.
 For future geographic intake use raw, immutable OSM elements with object
 type, ID, version and legal attribution (ODbL), NOT copied coordinates
 from an unlicensed third-party map. https://www.openstreetmap.org/copyright
+
+
+## Candidate follow-up (2026-10-29)
+
+The source-acquisition and mapping tasks have advanced: all 20 core station
+objects and their track-stop identities now have exact versions and raw hashes.
+Both mapped Line 1 directions agree on those 20 stops. Three existing-rail ways
+provide the candidate geometry; six construction ways and five inactive
+extension stop memberships are explicitly excluded. Approved coordinates stay
+null, source-point/entrance verification is pending, and boarding at Daneshgah
+and Kargar remains disputed. This does not register Isfahan in the city builder.
