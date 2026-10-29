@@ -28,7 +28,10 @@
     "portal:start": "pnpm --filter @metto/data-portal start",
     "portal:test:ui": "pnpm --filter @metto/data-portal test:ui",
     "map-reference:build": "tsx scripts/build-construction-map.ts",
-    "map-reference:check": "tsx scripts/build-construction-map.ts --check"
+    "map-reference:check": "tsx scripts/build-construction-map.ts --check",
+    "source:osm:candidates": "node scripts/osm-candidate-intake.mjs",
+    "source:osm:name-review": "node scripts/osm-name-review.mjs",
+    "source:osm:fetch": "node scripts/fetch-osm-review.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",

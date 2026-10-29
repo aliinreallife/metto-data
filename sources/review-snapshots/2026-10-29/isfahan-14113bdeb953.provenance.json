@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "fetchedOrCheckedAt": "2026-10-29T06:11:45.423Z",
+  "source": {
+    "kind": "live-overpass-export",
+    "endpoint": "https://overpass-api.de/api/interpreter"
+  },
+  "snapshotBase": "2026-10-29T06:09:58Z",
+  "count": 79,
+  "rawSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88",
+  "scope": "stations",
+  "requestQuery": "[out:json][timeout:75];\n(\n  nwr[\"station\"=\"subway\"](32.51,51.46,32.81,51.87);\n  nwr[\"railway\"=\"station\"](32.51,51.46,32.81,51.87);\n  nwr[\"public_transport\"=\"station\"][\"subway\"=\"yes\"](32.51,51.46,32.81,51.87);\n  nwr[\"public_transport\"=\"platform\"][\"subway\"=\"yes\"](32.51,51.46,32.81,51.87);\n  nwr[\"railway\"=\"platform\"][\"subway\"=\"yes\"](32.51,51.46,32.81,51.87);\n  nwr[\"public_transport\"=\"stop_position\"][\"subway\"=\"yes\"](32.51,51.46,32.81,51.87);\n);\nout center meta;\n",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "attributionUrl": "https://www.openstreetmap.org/copyright",
+  "verifiedPassengerService": false,
+  "coordinatesApproved": false,
+  "routesApproved": false,
+  "readyForProduction": false,
+  "note": "Snapshot is not an operator feed; OSM object versions and positions still require independent per-station review.",
+  "rawFile": "isfahan-14113bdeb953.json"
+}
