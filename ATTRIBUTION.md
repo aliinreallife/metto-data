@@ -93,3 +93,10 @@ to metro/city officials. Source URLs and publication metadata are retained for
 review. Article bodies, photography, videos and maps are not redistributed;
 those publications retain their own rights. These references do not supply a
 timetable, media license, live operating guarantee or public-release approval.
+
+## Isfahan and Shiraz research snapshots (not released city datasets)
+
+The raw files under `sources/review-snapshots/` contain OpenStreetMap data,
+© OpenStreetMap contributors, under ODbL-1.0. See their original bytes,
+SHA-256 provenance sidecars, and [OpenStreetMap attribution](https://www.openstreetmap.org/copyright).
+They are review-only inputs, not verified passenger service or application data.

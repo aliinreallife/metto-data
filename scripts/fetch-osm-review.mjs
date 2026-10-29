@@ -4,13 +4,23 @@
  * Downloads one bounded Overpass JSON snapshot for station-candidate review.
  * ODbL © OpenStreetMap contributors. Does not infer boarding or train service.
  */
+import {
+  parseOSMExport,
+  completeRelation,
+  MAX_OSM_BYTES as MAX_BYTES,
+} from "./osm-export.mjs";
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const MAX_BYTES = 20_000_000;
 const ENDPOINTS = Object.freeze({
   main: "https://overpass-api.de/api/interpreter",
   private: "https://overpass.private.coffee/api/interpreter",
@@ -32,16 +42,21 @@ export function stationQuery(city) {
     'nwr["railway"="platform"]["subway"="yes"]',
     'nwr["public_transport"="stop_position"]["subway"="yes"]',
   ];
-  return '[out:json][timeout:75];\n(\n' +
-    clauses.map((clause) => '  ' + clause + '(' + bbox + ');').join('\n') +
-    '\n);\nout center meta;\n';
+  return (
+    "[out:json][timeout:75];\n(\n" +
+    clauses.map((clause) => "  " + clause + "(" + bbox + ");").join("\n") +
+    "\n);\nout center meta;\n"
+  );
 }
 
 export function scopedQuery(city, scope) {
   if (scope === "stations") return stationQuery(city);
   if (scope === "shiraz-line2-relation" && city === "shiraz") {
     // OSM relation only: a discovery lead, not verified boarding or travel.
-    return '[out:json][timeout:75];\\nrelation(15510494);\\n(._;>;);\\nout center meta;\\n'.replaceAll('\\n', '\n');
+    return "[out:json][timeout:75];\\nrelation(15510494);\\n(._;>>;);\\nout center meta;\\n".replaceAll(
+      "\\n",
+      "\n",
+    );
   }
   throw new Error("Unsupported city/scope combination");
 }
@@ -50,27 +65,7 @@ export function inspectRaw(raw) {
   if (!Buffer.isBuffer(raw) || raw.length === 0 || raw.length > MAX_BYTES) {
     throw new Error("Empty or oversized export (limit: 20 MB)");
   }
-  let d;
-  try { d = JSON.parse(raw.toString("utf8")); }
-  catch { throw new Error("Overpass response is not JSON"); }
-  if (!d || !Array.isArray(d.elements) || d.elements.length === 0 ||
-      !d.osm3s || !Number.isFinite(Date.parse(d.osm3s.timestamp_osm_base))) {
-    throw new Error("Missing OSM base timestamp or OSM elements; output not admissible");
-  }
-  if (d.remark && /timeout|error|runtime/i.test(String(d.remark))) {
-    throw new Error("Overpass returned an error/timeout remark");
-  }
-  const seen = new Set();
-  for (const e of d.elements) {
-    if (!e || !["node", "way", "relation"].includes(e.type) ||
-        !Number.isSafeInteger(e.id) || e.id <= 0 ||
-        !Number.isSafeInteger(e.version) || e.version <= 0) {
-      throw new Error("Export contains an unversioned/invalid OSM entity; require 'out center meta'");
-    }
-    const key = e.type + "/" + e.id;
-    if (seen.has(key)) throw new Error("Duplicate OSM entity: " + key);
-    seen.add(key);
-  }
+  const d = parseOSMExport(raw);
   return {
     snapshotBase: d.osm3s.timestamp_osm_base,
     count: d.elements.length,
@@ -94,7 +89,9 @@ async function boundedResponse(response) {
       if (size > MAX_BYTES) throw new Error("Overpass export exceeds 20 MB");
       chunks.push(Buffer.from(value));
     }
-  } finally { reader.releaseLock(); }
+  } finally {
+    reader.releaseLock();
+  }
   return Buffer.concat(chunks);
 }
 
@@ -113,14 +110,27 @@ async function main(argv) {
   const validFile = getOpt(argv, "--validate");
   const scope = getOpt(argv, "--scope") ?? "stations";
   const dry = argv.includes("--dry-run");
-  const expected = (dry ? 1 : 0) + (validFile ? 2 : 0) +
-    (argv.includes("--endpoint") ? 2 : 0) + (argv.includes("--scope") ? 2 : 0) + 2;
-  if (!BOX[city] || !ENDPOINTS[endpointName] || argv.length !== expected ||
-      (dry && validFile)) {
-    throw new Error("Usage: --city isfahan|shiraz [--scope stations|shiraz-line2-relation] [--endpoint main|private] [--dry-run | --validate saved-overpass.json]");
+  const expected =
+    (dry ? 1 : 0) +
+    (validFile ? 2 : 0) +
+    (argv.includes("--endpoint") ? 2 : 0) +
+    (argv.includes("--scope") ? 2 : 0) +
+    2;
+  if (
+    !BOX[city] ||
+    !ENDPOINTS[endpointName] ||
+    argv.length !== expected ||
+    (dry && validFile)
+  ) {
+    throw new Error(
+      "Usage: --city isfahan|shiraz [--scope stations|shiraz-line2-relation] [--endpoint main|private] [--dry-run | --validate saved-overpass.json]",
+    );
   }
   const query = scopedQuery(city, scope);
-  if (dry) { process.stdout.write(query); return; }
+  if (dry) {
+    process.stdout.write(query);
+    return;
+  }
   // No URL or arbitrary host is accepted from the CLI.
   let raw;
   let source;
@@ -134,8 +144,9 @@ async function main(argv) {
       body: new URLSearchParams({ data: query }),
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Accept": "application/json",
-        "User-Agent": "MettoSourceReview/1.0 (https://github.com/aliinreallife/metto-data)",
+        Accept: "application/json",
+        "User-Agent":
+          "MettoSourceReview/1.0 (https://github.com/aliinreallife/metto-data)",
       },
       signal: AbortSignal.timeout(90000),
       redirect: "error",
@@ -144,22 +155,20 @@ async function main(argv) {
     source = { kind: "live-overpass-export", endpoint };
   }
   const checked = inspectRaw(raw);
-  let relationMembers = null;
+  let relationMembers = null,
+    relationVersion = null;
   if (scope === "shiraz-line2-relation") {
     const parsed = JSON.parse(raw.toString("utf8"));
-    const relation = parsed.elements.find(
-      (e) => e.type === "relation" && e.id === 15510494
-    );
-    if (!relation || !Array.isArray(relation.members) ||
-        relation.members.length === 0) {
-      throw new Error("Expected Shiraz Line 2 relation with a nonempty member list");
-    }
+    const relation = completeRelation(parsed, 15510494);
     relationMembers = relation.members.length;
+    relationVersion = relation.version;
   }
   const dir = join(ROOT, ".quality-report");
   mkdirSync(dir, { recursive: true });
-  const stem = scope === "stations" ? city + "-overpass-raw" :
-    "shiraz-line2-relation-overpass-raw";
+  const stem =
+    scope === "stations"
+      ? city + "-overpass-raw"
+      : "shiraz-line2-relation-overpass-raw";
   const output = join(dir, stem + ".json");
   const manifest = join(dir, stem + ".provenance.json");
   // Write the original Overpass bytes without normalization. Never publish
@@ -168,30 +177,57 @@ async function main(argv) {
   try {
     writeFileSync(tmp, raw, { flag: "w" });
     renameSync(tmp, output);
-  } finally { rmSync(tmp, { force: true }); }
+  } finally {
+    rmSync(tmp, { force: true });
+  }
   const provenance = {
-    schemaVersion: 1, cityId: city, reviewOnly: true,
+    schemaVersion: 1,
+    cityId: city,
+    reviewOnly: true,
     fetchedOrCheckedAt: new Date().toISOString(),
-    source, ...checked, scope,
-    ...(relationMembers === null ? {} :
-      { sourceRelation: { type: "relation", id: 15510494,
-        observedMembers: relationMembers, routeTopologyVerified: false,
-        boardingStationsVerified: false, directionVerified: false } }),
+    source,
+    ...checked,
+    scope,
+    ...(relationMembers === null
+      ? {}
+      : {
+          sourceRelation: {
+            type: "relation",
+            id: 15510494,
+            version: relationVersion,
+            referencedObjectsPresent: true,
+            observedMembers: relationMembers,
+            routeTopologyVerified: false,
+            boardingStationsVerified: false,
+            directionVerified: false,
+          },
+        }),
     requestQuery: validFile ? null : query,
     license: "ODbL-1.0",
     attribution: "© OpenStreetMap contributors",
     attributionUrl: "https://www.openstreetmap.org/copyright",
-    verifiedPassengerService: false, coordinatesApproved: false,
-    routesApproved: false, readyForProduction: false,
+    verifiedPassengerService: false,
+    coordinatesApproved: false,
+    routesApproved: false,
+    readyForProduction: false,
     note: "Snapshot is not an operator feed; OSM object versions and positions still require independent per-station review.",
   };
   writeFileSync(manifest, JSON.stringify(provenance, null, 2) + "\n");
-  console.log("Saved " + checked.count + " versioned OSM source objects for " + city +
-    " (review-only). SHA-256 " + checked.rawSha256);
+  console.log(
+    "Saved " +
+      checked.count +
+      " versioned OSM source objects for " +
+      city +
+      " (review-only). SHA-256 " +
+      checked.rawSha256,
+  );
   console.log("Source: " + output + "; provenance: " + manifest);
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   main(process.argv.slice(2)).catch((error) => {
     console.error("OSM source acquisition: " + error.message);
     process.exitCode = 1;

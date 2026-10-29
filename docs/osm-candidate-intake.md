@@ -156,3 +156,21 @@ with a separate provenance file. The tool checks that relation 15510494 and its
 members exist; it does **not** infer a route, platform, interchange, direction,
 or boarding status. The disputed placement of Esteghlal, 15 Khordad and
 Imam Hossein requires independent operator evidence.
+
+## Review hardening and saved inputs (2026-10-29)
+
+Raw fetching and local candidate parsing now use the same strict validator.
+Any Overpass remark, duplicate object, missing version or invalid timestamp
+rejects the whole export instead of leaving a plausible partial station list.
+The relation scope recurses through nested relations and verifies that every
+member and way-node reference is present, retaining the root relation version.
+This checks source completeness, not track continuity, boarding or service.
+
+Name review requires versioned, unique, unapproved candidates and false report
+gates, and emits explicit version links. It still never turns a matching name
+into an approved physical station or transfer.
+
+The CLI regression tests use copied scripts in temporary scratch repositories;
+they cannot replace the research files in this checkout's `.quality-report/`.
+Manually retained original snapshots and their provenance are documented in
+[`sources/review-snapshots/README.md`](../sources/review-snapshots/README.md).
