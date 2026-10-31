@@ -1,0 +1,17 @@
+{
+  "sourceUrl": "https://www.openstreetmap.org/api/0.6/relation/5587340/full.json",
+  "responseHeaders": {
+    "date": "Thu, 29 Oct 2026 06:39:26 GMT",
+    "lastModified": null
+  },
+  "reviewOnly": true,
+  "approvedForProduction": false,
+  "rawFile": "isfahan-route-5587340-9cf36a8d852d.json",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "format": "OSM API 0.6 JSON",
+  "operatorFeed": false,
+  "currentBoardingVerified": false,
+  "rawSha256": "9cf36a8d852dc0828e4522971cc7e25c05b22a0affaf51f321a54ba91d5b72e9",
+  "note": "Original OSM API bytes; response Date and individual object versions are preserved. No Overpass global base timestamp is claimed."
+}

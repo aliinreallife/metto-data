@@ -1,0 +1,1388 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-10-29T06:14:01Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 306434173,
+  "lat": 29.5586924,
+  "lon": 52.5945667,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 22,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید دوران",
+    "name:en": "Shahid Doran metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306434174,
+  "lat": 29.5649301,
+  "lon": 52.5904089,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 21,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو فرصت شیرازی",
+    "name:en": "Forsat Shirazi metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306434175,
+  "lat": 29.5723197,
+  "lon": 52.5853063,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 20,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو جانبازان",
+    "name:en": "Janbazan metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306435235,
+  "lat": 29.5517575,
+  "lon": 52.5991915,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 16,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید دستغیب",
+    "name:en": "Shahid Dastgheib Metro Station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306435238,
+  "lat": 29.5806692,
+  "lon": 52.5791755,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 17,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو غدیر",
+    "name:en": "Ghadir metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306435240,
+  "lat": 29.5961274,
+  "lon": 52.5678562,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 22,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو فضیلت",
+    "name:en": "Fazilat metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306435241,
+  "lat": 29.6028963,
+  "lon": 52.5628780,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 20,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید کاوه",
+    "name:en": "Shahid Kaveh metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 306435246,
+  "lat": 29.6082292,
+  "lon": 52.5584942,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 23,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو ولیعصر",
+    "name:en": "Valiasr metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 314366213,
+  "lat": 29.6374517,
+  "lon": 52.5027536,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 16,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید مطهری",
+    "name:en": "Shahid Motahhari Metro Station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes",
+    "wikidata": "Q22905762"
+  }
+},
+{
+  "type": "node",
+  "id": 815613519,
+  "lat": 29.6552320,
+  "lon": 52.4854456,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 22,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو قصردشت",
+    "name:en": "Qasr Dasht metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 815622239,
+  "lat": 29.6662468,
+  "lon": 52.4865066,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 21,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شاهد",
+    "name:en": "Shahed metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 815622271,
+  "lat": 29.6863935,
+  "lon": 52.4732813,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 15,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو میرزای شیرازی",
+    "name:en": "Mirza-ye Shirazi Metro Station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 815622276,
+  "lat": 29.6827237,
+  "lon": 52.4650301,
+  "timestamp": "2026-08-27T06:38:23Z",
+  "version": 16,
+  "changeset": 188079184,
+  "user": "Claudius Henrichs",
+  "uid": 18069,
+  "tags": {
+    "name": "ایستگاه مترو دکتر شریعتی",
+    "name:en": "Doctor Shari'ati metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 815622281,
+  "lat": 29.6782282,
+  "lon": 52.4546056,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 14,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو احسان",
+    "name:en": "Ehsan metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 828648487,
+  "lat": 29.7641449,
+  "lon": 52.4313620,
+  "timestamp": "2023-10-24T18:29:00Z",
+  "version": 6,
+  "changeset": 143078254,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "tags": {
+    "name": "ایستگاه راه آهن شیراز",
+    "name:en": "Shiraz Railway Station",
+    "phone": "+98 71 3620 1815; +98 71 3620 1270",
+    "public_transport": "station",
+    "rail": "station",
+    "railway": "station",
+    "train": "yes",
+    "wikidata": "Q5951511",
+    "wikipedia": "fa:ایستگاه راه‌آهن شیراز"
+  }
+},
+{
+  "type": "node",
+  "id": 3890672464,
+  "lat": 29.6124045,
+  "lon": 52.5517707,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 19,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو وکیل الرعایا",
+    "name:en": "Vakil-Al-Roaya metro station",
+    "network": "متروی شیراز",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3890672475,
+  "lat": 29.6313648,
+  "lon": 52.5199023,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 15,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو نمازی",
+    "name:en": "Namazi Metro Station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3890683367,
+  "lat": 29.6189093,
+  "lon": 52.5406692,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 21,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو زندیه",
+    "name:en": "Zandiyeh metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893391971,
+  "lat": 29.6141124,
+  "lon": 52.5699189,
+  "timestamp": "2026-08-26T13:52:13Z",
+  "version": 6,
+  "changeset": 188045466,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "سعدیه",
+    "name:en": "Sa'diyeh",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes",
+    "wikidata": "Q109994782",
+    "wikipedia": "fa:ایستگاه متروی سعدیه"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392078,
+  "lat": 29.6294658,
+  "lon": 52.5506398,
+  "timestamp": "2026-08-26T13:52:13Z",
+  "version": 6,
+  "changeset": 188045466,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "اطلسی",
+    "name:en": "Atlasi",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes",
+    "wikidata": "Q109549445",
+    "wikipedia": "fa:ایستگاه متروی اطلسی"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392081,
+  "lat": 29.6307854,
+  "lon": 52.5371022,
+  "timestamp": "2026-08-26T13:52:13Z",
+  "version": 6,
+  "changeset": 188045466,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "آزادی",
+    "name:en": "Azadi",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes",
+    "wikidata": "Q109994888",
+    "wikipedia": "fa:ایستگاه متروی آزادی (شیراز)"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392082,
+  "lat": 29.6241427,
+  "lon": 52.5319677,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 21,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو امام حسین",
+    "name:en": "Emam Hossein metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392083,
+  "lat": 29.6196780,
+  "lon": 52.5283639,
+  "timestamp": "2026-08-26T13:38:05Z",
+  "version": 7,
+  "changeset": 188044604,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "پانزده خرداد",
+    "name:en": "15 Khordad",
+    "proposed": "stop_position",
+    "public_transport": "stop_position",
+    "railway": "proposed",
+    "subway": "yes",
+    "wikidata": "Q109994859",
+    "wikipedia": "fa:ایستگاه متروی پانزده خرداد (پارامونت)"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392084,
+  "lat": 29.6138990,
+  "lon": 52.5238013,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 10,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو استقلال",
+    "name:en": "Esteqlal metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes",
+    "wikidata": "Q109549444"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392174,
+  "lat": 29.6261375,
+  "lon": 52.5564360,
+  "timestamp": "2026-08-26T13:52:13Z",
+  "version": 7,
+  "changeset": 188045466,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "حافظیه",
+    "name:en": "Hafeziyeh",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes",
+    "wikidata": "Q109994917",
+    "wikipedia": "fa:ایستگاه متروی حافظیه"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392187,
+  "lat": 29.5974349,
+  "lon": 52.5107708,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 9,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "layer": "-2",
+    "level": "-2",
+    "name": "ایستگاه مترو رحمت",
+    "name:en": "Rahmat metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392189,
+  "lat": 29.5803568,
+  "lon": 52.5063999,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 11,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "layer": "-2",
+    "level": "-2",
+    "name": "ایستگاه مترو شهدای عادل آباد",
+    "name:en": "Shohada-ye Adel Abad metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392193,
+  "lat": 29.5701053,
+  "lon": 52.4964915,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 12,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "layer": "-2",
+    "level": "-2",
+    "name": "ایستگاه مترو قهرمانان",
+    "name:en": "Ghahramanan metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392274,
+  "lat": 29.5881887,
+  "lon": 52.5081949,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 10,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "layer": "-2",
+    "level": "-2",
+    "name": "ایستگاه مترو دولت",
+    "name:en": "Dowlat metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "start_date": "2024-02",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3893392463,
+  "lat": 29.5726912,
+  "lon": 52.4873770,
+  "timestamp": "2026-08-26T13:38:05Z",
+  "version": 6,
+  "changeset": 188044604,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "شکوفه",
+    "name:en": "Shekoufeh",
+    "proposed": "stop_position",
+    "public_transport": "stop_position",
+    "railway": "proposed",
+    "subway": "yes",
+    "wikidata": "Q109549438",
+    "wikipedia": "fa:ایستگاه متروی شکوفه"
+  }
+},
+{
+  "type": "node",
+  "id": 3896356866,
+  "lat": 29.7647034,
+  "lon": 52.4284155,
+  "timestamp": "2024-11-23T08:48:19Z",
+  "version": 5,
+  "changeset": 159488551,
+  "user": "gscholz",
+  "uid": 109705,
+  "tags": {
+    "construction": "station",
+    "construction:public_transport": "station",
+    "construction:railway": "station",
+    "name": "راه آهن",
+    "name:en": "Rahahan",
+    "railway": "construction",
+    "station": "subway",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5014863146,
+  "lat": 29.6321783,
+  "lon": 52.5122478,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 12,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید آوینی",
+    "name:en": "Shahid Avini Metro Station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029881,
+  "lat": 29.6782824,
+  "lon": 52.4547140,
+  "timestamp": "2026-08-26T14:46:45Z",
+  "version": 8,
+  "changeset": 188048017,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو احسان",
+    "name:en": "Ehsan metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q18353025"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029882,
+  "lat": 29.6827061,
+  "lon": 52.4650396,
+  "timestamp": "2026-08-26T14:54:01Z",
+  "version": 7,
+  "changeset": 188048374,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "light_rail": "yes",
+    "name": "ایستگاه مترو دکتر شریعتی",
+    "name:en": "Doctor Shari'ati metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029883,
+  "lat": 29.6863672,
+  "lon": 52.4732597,
+  "timestamp": "2026-09-01T08:36:20Z",
+  "version": 13,
+  "changeset": 188350572,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو میرزای شیرازی",
+    "name:en": "Mirza-ye Shirazi Metro Station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q18345561"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029884,
+  "lat": 29.6374262,
+  "lon": 52.5027545,
+  "timestamp": "2026-08-26T15:14:10Z",
+  "version": 7,
+  "changeset": 188049418,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید مطهری",
+    "name:en": "Shahid Motahhari Metro Station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "light_rail;subway",
+    "subway": "yes",
+    "wikidata": "Q22905762"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029885,
+  "lat": 29.6319040,
+  "lon": 52.5119815,
+  "timestamp": "2026-08-26T15:24:18Z",
+  "version": 8,
+  "changeset": 188049922,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "light_rail": "yes",
+    "name": "ایستگاه مترو شهید آوینی",
+    "name:en": "Shahid Avini Metro Station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q27048819"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029887,
+  "lat": 29.6314651,
+  "lon": 52.5197410,
+  "timestamp": "2026-08-26T15:29:41Z",
+  "version": 9,
+  "changeset": 188050251,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "light_rail": "yes",
+    "name": "ایستگاه مترو نمازی",
+    "name:en": "Namazi Metro Station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "light_rail",
+    "wikidata": "Q18379107"
+  }
+},
+{
+  "type": "node",
+  "id": 5161029888,
+  "lat": 29.6240701,
+  "lon": 52.5319584,
+  "timestamp": "2026-08-26T15:37:08Z",
+  "version": 13,
+  "changeset": 188050678,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "light_rail": "yes",
+    "name": "ایستگاه مترو امام حسین",
+    "name:en": "Emam Hossein metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "light_rail",
+    "wikidata": "Q97217974",
+    "wikipedia": "fa:ایستگاه متروی امام حسین (شیراز)"
+  }
+},
+{
+  "type": "node",
+  "id": 5163318951,
+  "lat": 29.5517273,
+  "lon": 52.5991287,
+  "timestamp": "2026-08-29T07:21:46Z",
+  "version": 11,
+  "changeset": 188182644,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید دستغیب",
+    "name:en": "Shahid Dastgheib Metro Station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q38252234"
+  }
+},
+{
+  "type": "node",
+  "id": 5936862196,
+  "lat": 29.5874557,
+  "lon": 52.5742048,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 12,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو رازی",
+    "name:en": "Razi metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6678130962,
+  "lat": 29.5874592,
+  "lon": 52.5742169,
+  "timestamp": "2026-08-29T06:51:00Z",
+  "version": 5,
+  "changeset": 188181695,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو رازی",
+    "name:en": "Razi metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q48803908"
+  }
+},
+{
+  "type": "node",
+  "id": 7724682270,
+  "lat": 29.7151612,
+  "lon": 52.4503516,
+  "timestamp": "2026-08-26T13:44:31Z",
+  "version": 4,
+  "changeset": 188045057,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "آرین",
+    "name:en": "Aryan",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7724682281,
+  "lat": 29.7022951,
+  "lon": 52.4584931,
+  "timestamp": "2026-08-26T13:44:31Z",
+  "version": 4,
+  "changeset": 188045057,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "صنایع",
+    "name:en": "Sanaye'",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7724682282,
+  "lat": 29.7260229,
+  "lon": 52.4426552,
+  "timestamp": "2026-08-26T13:44:31Z",
+  "version": 4,
+  "changeset": 188045057,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "شهید بهشتی",
+    "name:en": "Shahid Beheshti",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7724682283,
+  "lat": 29.7419447,
+  "lon": 52.4336985,
+  "timestamp": "2026-08-26T13:44:31Z",
+  "version": 4,
+  "changeset": 188045057,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "construction": "stop_position",
+    "name": "بزین",
+    "name:en": "Bezeyn",
+    "public_transport": "stop_position",
+    "railway": "construction",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7724682284,
+  "lat": 29.7552083,
+  "lon": 52.4284786,
+  "timestamp": "2024-11-23T08:48:19Z",
+  "version": 3,
+  "changeset": 159488551,
+  "user": "gscholz",
+  "uid": 109705,
+  "tags": {
+    "construction": "station",
+    "construction:public_transport": "station",
+    "construction:railway": "station",
+    "name": "شهرک گلستان",
+    "name:en": "Shahrak-e Golestan",
+    "railway": "construction",
+    "station": "subway",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7756716285,
+  "lat": 29.5586872,
+  "lon": 52.5945809,
+  "timestamp": "2026-08-29T07:12:52Z",
+  "version": 2,
+  "changeset": 188182360,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید دوران",
+    "name:en": "Shahid Doran metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q38252233"
+  }
+},
+{
+  "type": "node",
+  "id": 11001703269,
+  "lat": 29.6240854,
+  "lon": 52.5319613,
+  "timestamp": "2026-09-28T10:34:11Z",
+  "version": 6,
+  "changeset": 189671543,
+  "user": "Claudius Henrichs",
+  "uid": 18069,
+  "tags": {
+    "layer": "-3",
+    "level": "-3",
+    "name": "ایستگاه مترو امام حسین",
+    "name:en": "Emam Hossein metro station",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "start_date": "2023-02-08",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 11362701838,
+  "lat": 29.5803673,
+  "lon": 52.5063302,
+  "timestamp": "2026-08-26T14:10:57Z",
+  "version": 4,
+  "changeset": 188046280,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهدای عادل آباد",
+    "name:en": "Shohada-ye Adel Abad metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "start_date": "2023-09-01",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q109549441",
+    "wikipedia": "fa:ایستگاه متروی شهدای عادل آباد"
+  }
+},
+{
+  "type": "node",
+  "id": 11362701839,
+  "lat": 29.6039128,
+  "lon": 52.5158273,
+  "timestamp": "2026-09-04T23:17:01Z",
+  "version": 5,
+  "changeset": 188548866,
+  "user": "Terrificboy",
+  "uid": 24517009,
+  "tags": {
+    "alt_name": "امیر کبیر",
+    "alt_name:en": "Amir Kabir",
+    "name": "ایستگاه مترو بسیج",
+    "name:en": "Basij metro station",
+    "name:fa": "بسیج",
+    "opening_hours": "Mo-Su 06:00-18:00",
+    "public_transport": "station",
+    "railway": "station",
+    "start_date": "2023-02-08",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q109994837",
+    "wikipedia": "fa:ایستگاه متروی بسیج (شیراز)"
+  }
+},
+{
+  "type": "node",
+  "id": 11362701858,
+  "lat": 29.5701791,
+  "lon": 52.4965036,
+  "timestamp": "2026-09-04T23:17:00Z",
+  "version": 4,
+  "changeset": 188548866,
+  "user": "Terrificboy",
+  "uid": 24517009,
+  "tags": {
+    "name": "ایستگاه مترو قهرمانان",
+    "name:en": "Ghahramanan metro station",
+    "opening_hours": "Mo-Su 06:00-18:00",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q109549439",
+    "wikipedia": "fa:ایستگاه متروی قهرمانان"
+  }
+},
+{
+  "type": "node",
+  "id": 11672415726,
+  "lat": 29.5882256,
+  "lon": 52.5081335,
+  "timestamp": "2026-08-26T14:19:29Z",
+  "version": 6,
+  "changeset": 188046707,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو دولت",
+    "name:en": "Dowlat metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "start_date": "2024-02",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q109994811",
+    "wikipedia": "fa:ایستگاه متروی دولت"
+  }
+},
+{
+  "type": "node",
+  "id": 11672415727,
+  "lat": 29.5974761,
+  "lon": 52.5107135,
+  "timestamp": "2026-08-26T14:22:55Z",
+  "version": 5,
+  "changeset": 188046878,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو رحمت",
+    "name:en": "Rahmat metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "start_date": "2024-02",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q109549443",
+    "wikipedia": "fa:ایستگاه متروی رحمت"
+  }
+},
+{
+  "type": "node",
+  "id": 13196660856,
+  "lat": 29.6038712,
+  "lon": 52.5158811,
+  "timestamp": "2026-09-07T09:18:52Z",
+  "version": 3,
+  "changeset": 188659814,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "alt_name": "امیر کبیر",
+    "alt_name:en": "Amir Kabir",
+    "name": "ایستگاه مترو بسیج",
+    "name:en": "Basij metro station",
+    "name:fa": "بسیج",
+    "public_transport": "stop_position",
+    "railway": "stop",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 13196689027,
+  "lat": 29.6552369,
+  "lon": 52.4854204,
+  "timestamp": "2026-08-26T15:09:52Z",
+  "version": 2,
+  "changeset": 188049161,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو قصردشت",
+    "name:en": "Qasr Dasht metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wheelchair": "yes",
+    "wikidata": "Q68115723"
+  }
+},
+{
+  "type": "node",
+  "id": 13196689029,
+  "lat": 29.6662456,
+  "lon": 52.4865241,
+  "timestamp": "2026-08-26T15:05:29Z",
+  "version": 2,
+  "changeset": 188048933,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شاهد",
+    "name:en": "Shahed metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q18378234"
+  }
+},
+{
+  "type": "node",
+  "id": 13196689030,
+  "lat": 29.5806826,
+  "lon": 52.5791945,
+  "timestamp": "2026-08-29T06:59:16Z",
+  "version": 2,
+  "changeset": 188181979,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو غدیر",
+    "name:en": "Ghadir metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 13196689031,
+  "lat": 29.5723303,
+  "lon": 52.5853246,
+  "timestamp": "2026-08-29T07:02:14Z",
+  "version": 2,
+  "changeset": 188182082,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو جانبازان",
+    "name:en": "Janbazan metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q97218025"
+  }
+},
+{
+  "type": "node",
+  "id": 13196689032,
+  "lat": 29.5649631,
+  "lon": 52.5904477,
+  "timestamp": "2026-08-29T07:07:13Z",
+  "version": 2,
+  "changeset": 188182217,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو فرصت شیرازی",
+    "name:en": "Forsat Shirazi metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q60785841"
+  }
+},
+{
+  "type": "node",
+  "id": 13200207828,
+  "lat": 29.6189133,
+  "lon": 52.5406720,
+  "timestamp": "2026-08-26T15:46:40Z",
+  "version": 2,
+  "changeset": 188051267,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو زندیه",
+    "name:en": "Zandiyeh metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q30606556"
+  }
+},
+{
+  "type": "node",
+  "id": 13200210530,
+  "lat": 29.6029027,
+  "lon": 52.5628918,
+  "timestamp": "2026-08-29T06:36:20Z",
+  "version": 2,
+  "changeset": 188181288,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو شهید کاوه",
+    "name:en": "Shahid Kaveh metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q97218095"
+  }
+},
+{
+  "type": "node",
+  "id": 13200211527,
+  "lat": 29.6082344,
+  "lon": 52.5585197,
+  "timestamp": "2026-08-26T15:53:00Z",
+  "version": 2,
+  "changeset": 188051704,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو ولیعصر",
+    "name:en": "Valiasr metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q38252231"
+  }
+},
+{
+  "type": "node",
+  "id": 13200231566,
+  "lat": 29.6124141,
+  "lon": 52.5517783,
+  "timestamp": "2026-08-26T15:50:11Z",
+  "version": 2,
+  "changeset": 188051508,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو وکیل الرعایا",
+    "name:en": "Vakil-Al-Roaya metro station",
+    "network": "متروی شیراز",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q88722357",
+    "wikipedia": "fa:ایستگاه متروی وکیل‌الرعایا"
+  }
+},
+{
+  "type": "node",
+  "id": 13200463967,
+  "lat": 29.5961373,
+  "lon": 52.5678755,
+  "timestamp": "2026-08-29T06:46:05Z",
+  "version": 2,
+  "changeset": 188181536,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "tags": {
+    "name": "ایستگاه مترو فضیلت",
+    "name:en": "Fazilat metro station",
+    "public_transport": "station",
+    "railway": "station",
+    "station": "subway",
+    "subway": "yes",
+    "wikidata": "Q38252232"
+  }
+},
+{
+  "type": "node",
+  "id": 13735049175,
+  "lat": 29.6139309,
+  "lon": 52.5237246,
+  "timestamp": "2026-09-04T23:17:02Z",
+  "version": 3,
+  "changeset": 188548866,
+  "user": "Terrificboy",
+  "uid": 24517009,
+  "tags": {
+    "name": "ایستگاه مترو استقلال",
+    "name:en": "Esteqlal metro station",
+    "opening_hours": "Mo-Su 06:00-18:00",
+    "public_transport": "station",
+    "railway": "station",
+    "start_date": "2026-04-09",
+    "station": "subway",
+    "subway": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1225273193,
+  "timestamp": "2026-08-26T15:37:08Z",
+  "version": 2,
+  "changeset": 188050678,
+  "user": "Nastaran_Sabouri",
+  "uid": 10924444,
+  "center": {
+    "lat": 29.6241287,
+    "lon": 52.5318977
+  },
+  "nodes": [
+    11362701843,
+    11362701842,
+    11362701841,
+    11362701840,
+    11362701843
+  ],
+  "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "covered": "yes",
+    "indoor": "yes",
+    "layer": "-3",
+    "level": "-3",
+    "light_rail": "yes",
+    "public_transport": "platform",
+    "railway": "platform",
+    "subway": "yes",
+    "tunnel": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1225273196,
+  "timestamp": "2023-11-19T19:59:00Z",
+  "version": 1,
+  "changeset": 144221459,
+  "user": "Karthoo",
+  "uid": 3232636,
+  "center": {
+    "lat": 29.5701691,
+    "lon": 52.4965745
+  },
+  "nodes": [
+    11362701857,
+    11362701854,
+    11362701855,
+    11362701856,
+    11362701857
+  ],
+  "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "indoor": "yes",
+    "layer": "-2",
+    "level": "-2",
+    "name": "قهرمانان",
+    "name:en": "Ghahramanan",
+    "public_transport": "platform",
+    "railway": "platform",
+    "subway": "yes",
+    "tunnel": "yes"
+  }
+}
+
+  ]
+}

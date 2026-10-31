@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "kind": "timetable-candidate-intake-review",
+  "cityId": "isfahan",
+  "lineId": "isfahan:line:1",
+  "receivedOn": "2026-10-31",
+  "reviewOnly": true,
+  "readyForProduction": false,
+  "uploadedInputs": [
+    {
+      "fileName": "metto_isfahan_line1_full_timetable_candidates.xlsx",
+      "sizeBytes": 284983,
+      "sha256": "2036470ca36573ab48601a37c3de14ff3506076c7fb229110f3d9138ed8758e0",
+      "redistributed": false
+    },
+    {
+      "fileName": "stop_times.csv",
+      "sizeBytes": 1601350,
+      "sha256": "672ac1f7aa5d74f634902bf324f00a0fb150b316dea901f003b87b0607e0a08d",
+      "redistributed": false
+    }
+  ],
+  "operatorReference": {
+    "pageUrl": "https://metroisfahan.ir/post/9363/زمان-بندی-حرکت-قطارها",
+    "titleFa": "جدول زمانی حرکت قطارها از شنبه تا پنج شنبه و روزهای جمعه به روز رسانی شده در تاریخ 1405/07/11",
+    "operatorNameFa": "شرکت مترو منطقه اصفهان",
+    "observedOn": "2026-10-31",
+    "pageSha256": "459118f490cf3847327c67134f38944922224a33c22c404cba99aeb18dda8bcc",
+    "publishedUpdateJalali": "1405/07/11",
+    "timezone": "Asia/Tehran",
+    "license": "operator site asserts all rights reserved; referenced images not redistributed",
+    "images": [
+      {
+        "name": "weekday",
+        "url": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+        "bytes": 1952170,
+        "sha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+        "dimensions": [
+          2085,
+          3133
+        ],
+        "httpLastModified": "Sat, 03 Oct 2026 11:19:41 GMT",
+        "redistributed": false
+      },
+      {
+        "name": "friday",
+        "url": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%B1%D9%88%D8%B2%D9%87%D8%A7%DB%8C%20%D8%AC%D9%85%D8%B9%D9%87%201405.jpg",
+        "bytes": 2258353,
+        "sha256": "adabb8a3ded462e1e91c790caf17441caa0c501c2c14af4c379ba2c4925c378b",
+        "dimensions": [
+          3454,
+          4525
+        ],
+        "httpLastModified": "Sat, 03 Oct 2026 11:20:02 GMT",
+        "redistributed": false
+      }
+    ],
+    "inspectionScope": "Page title/date, image headers, direction endpoints, final Friday departure row, conditional weekday rows and footnote inspected visually. Full station-cell transcription not independently verified."
+  },
+  "structureChecks": {
+    "csvRows": 5204,
+    "workbookStopTimeRows": 5204,
+    "distinctTrips": 281,
+    "stationIdentities": 20,
+    "sharedFieldCount": 12,
+    "csvWorkbookKeySetsEqual": true,
+    "csvWorkbookSharedFieldMismatches": 0,
+    "duplicateTripStationKeys": 0,
+    "unknownStationIdsOrNames": 0,
+    "invalidClockFields": 0,
+    "nonMonotonicTripTimes": 0,
+    "directionStationOrderMismatches": 0,
+    "fridayBlackCells": 416,
+    "allArrivalEqualsDeparture": true,
+    "reconstructionMethod": "terminal_departure_plus_first_run_station_offsets",
+    "sourcePriorityHighTrips": 37
+  },
+  "directions": [
+    {
+      "uploadedValue": "qods_to_defa",
+      "originStationId": "isfahan:station:qods",
+      "destinationStationId": "isfahan:station:defa-e-moghaddas",
+      "sourceDestinationLabelFa": "صفه",
+      "aliasesFa": [
+        "دفاع مقدس",
+        "صفه"
+      ],
+      "verifiedAgainstOperatorImageHeader": true
+    },
+    {
+      "uploadedValue": "defa_to_qods",
+      "originStationId": "isfahan:station:defa-e-moghaddas",
+      "destinationStationId": "isfahan:station:qods",
+      "sourceOriginLabelFa": "صفه",
+      "verifiedAgainstOperatorImageHeader": true
+    }
+  ],
+  "uploadedGroups": [
+    {
+      "serviceId": "saturday_thursday",
+      "direction": "qods_to_defa",
+      "trips": 89,
+      "stationTimes": 1780,
+      "firstTerminalDeparture": "06:00",
+      "lastTerminalDeparture": "22:00",
+      "conditionalExtraRuns": 3
+    },
+    {
+      "serviceId": "saturday_thursday",
+      "direction": "defa_to_qods",
+      "trips": 88,
+      "stationTimes": 1760,
+      "firstTerminalDeparture": "06:00",
+      "lastTerminalDeparture": "22:00",
+      "conditionalExtraRuns": 2
+    },
+    {
+      "serviceId": "friday",
+      "direction": "qods_to_defa",
+      "trips": 52,
+      "stationTimes": 832,
+      "firstTerminalDeparture": "09:00",
+      "lastTerminalDeparture": "21:45",
+      "conditionalExtraRuns": 0
+    },
+    {
+      "serviceId": "friday",
+      "direction": "defa_to_qods",
+      "trips": 52,
+      "stationTimes": 832,
+      "firstTerminalDeparture": "09:00",
+      "lastTerminalDeparture": "21:45",
+      "conditionalExtraRuns": 0
+    }
+  ],
+  "stationIdCrosswalk": [
+    {
+      "uploadedStationId": "isf_l1_01",
+      "stationId": "isfahan:station:qods",
+      "sourceNameFa": "قدس",
+      "ordinalQodsToDefa": 1
+    },
+    {
+      "uploadedStationId": "isf_l1_02",
+      "stationId": "isfahan:station:baharestan",
+      "sourceNameFa": "بهارستان",
+      "ordinalQodsToDefa": 2
+    },
+    {
+      "uploadedStationId": "isf_l1_03",
+      "stationId": "isfahan:station:golestan",
+      "sourceNameFa": "گلستان",
+      "ordinalQodsToDefa": 3
+    },
+    {
+      "uploadedStationId": "isf_l1_04",
+      "stationId": "isfahan:station:shahid-mofatteh",
+      "sourceNameFa": "شهید مفتح",
+      "ordinalQodsToDefa": 4
+    },
+    {
+      "uploadedStationId": "isf_l1_05",
+      "stationId": "isfahan:station:shahid-alikhani",
+      "sourceNameFa": "شهید علیخانی",
+      "ordinalQodsToDefa": 5
+    },
+    {
+      "uploadedStationId": "isf_l1_06",
+      "stationId": "isfahan:station:jaber",
+      "sourceNameFa": "جابر",
+      "ordinalQodsToDefa": 6
+    },
+    {
+      "uploadedStationId": "isf_l1_07",
+      "stationId": "isfahan:station:kaveh",
+      "sourceNameFa": "کاوه",
+      "ordinalQodsToDefa": 7
+    },
+    {
+      "uploadedStationId": "isf_l1_08",
+      "stationId": "isfahan:station:shahid-chamran",
+      "sourceNameFa": "شهید چمران",
+      "ordinalQodsToDefa": 8
+    },
+    {
+      "uploadedStationId": "isf_l1_09",
+      "stationId": "isfahan:station:shahid-bahonar",
+      "sourceNameFa": "شهید باهنر",
+      "ordinalQodsToDefa": 9
+    },
+    {
+      "uploadedStationId": "isf_l1_10",
+      "stationId": "isfahan:station:shohada",
+      "sourceNameFa": "شهدا",
+      "ordinalQodsToDefa": 10
+    },
+    {
+      "uploadedStationId": "isf_l1_11",
+      "stationId": "isfahan:station:takhti",
+      "sourceNameFa": "تختی",
+      "ordinalQodsToDefa": 11
+    },
+    {
+      "uploadedStationId": "isf_l1_12",
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceNameFa": "امام حسین",
+      "ordinalQodsToDefa": 12
+    },
+    {
+      "uploadedStationId": "isf_l1_13",
+      "stationId": "isfahan:station:enghelab",
+      "sourceNameFa": "انقلاب",
+      "ordinalQodsToDefa": 13
+    },
+    {
+      "uploadedStationId": "isf_l1_14",
+      "stationId": "isfahan:station:si-o-se-pol",
+      "sourceNameFa": "سی و سه پل",
+      "ordinalQodsToDefa": 14
+    },
+    {
+      "uploadedStationId": "isf_l1_15",
+      "stationId": "isfahan:station:shariati",
+      "sourceNameFa": "دکتر شریعتی",
+      "ordinalQodsToDefa": 15
+    },
+    {
+      "uploadedStationId": "isf_l1_16",
+      "stationId": "isfahan:station:azadi",
+      "sourceNameFa": "آزادی",
+      "ordinalQodsToDefa": 16
+    },
+    {
+      "uploadedStationId": "isf_l1_17",
+      "stationId": "isfahan:station:daneshgah",
+      "sourceNameFa": "دانشگاه",
+      "ordinalQodsToDefa": 17
+    },
+    {
+      "uploadedStationId": "isf_l1_18",
+      "stationId": "isfahan:station:kargar",
+      "sourceNameFa": "کارگر",
+      "ordinalQodsToDefa": 18
+    },
+    {
+      "uploadedStationId": "isf_l1_19",
+      "stationId": "isfahan:station:kooye-imam",
+      "sourceNameFa": "کوی امام",
+      "ordinalQodsToDefa": 19
+    },
+    {
+      "uploadedStationId": "isf_l1_20",
+      "stationId": "isfahan:station:defa-e-moghaddas",
+      "sourceNameFa": "دفاع مقدس",
+      "ordinalQodsToDefa": 20
+    }
+  ],
+  "findings": [
+    {
+      "id": "missing-friday-last-departures",
+      "severity": "error",
+      "evidence": "The original Friday image visibly includes the final 22:00 departure in each direction. Both uploads and their calendar stop at 21:45.",
+      "missingDepartures": [
+        {
+          "serviceId": "friday",
+          "direction": "qods_to_defa",
+          "terminalDeparture": "22:00",
+          "lastVisibleTerminalTime": "22:39"
+        },
+        {
+          "serviceId": "friday",
+          "direction": "defa_to_qods",
+          "terminalDeparture": "22:00",
+          "lastVisibleTerminalTime": "22:39"
+        }
+      ],
+      "minimumMissingVisibleStationTimes": 32,
+      "correctionStatus": "identified; originals unchanged; no station times auto-filled"
+    },
+    {
+      "id": "conditional-extra-runs",
+      "severity": "release-blocker",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد",
+      "evidence": "Five orange weekday runs are conditional extras. Trips retains special_dispatch=True, but the CSV lacks that field. A CSV-only import would lose this distinction.",
+      "runs": [
+        {
+          "tripId": "isf_l1_saturday_thursday_qods_to_defa_005",
+          "direction": "qods_to_defa",
+          "terminalDeparture": "06:42"
+        },
+        {
+          "tripId": "isf_l1_saturday_thursday_qods_to_defa_007",
+          "direction": "qods_to_defa",
+          "terminalDeparture": "06:53"
+        },
+        {
+          "tripId": "isf_l1_saturday_thursday_qods_to_defa_009",
+          "direction": "qods_to_defa",
+          "terminalDeparture": "07:04"
+        },
+        {
+          "tripId": "isf_l1_saturday_thursday_defa_to_qods_043",
+          "direction": "defa_to_qods",
+          "terminalDeparture": "13:07"
+        },
+        {
+          "tripId": "isf_l1_saturday_thursday_defa_to_qods_045",
+          "direction": "defa_to_qods",
+          "terminalDeparture": "13:19"
+        }
+      ],
+      "correctionStatus": "retain separately from guaranteed scheduled departures"
+    },
+    {
+      "id": "friday-black-stations",
+      "severity": "unresolved",
+      "evidence": "Both Friday source panels black out Baharestan, Golestan, Daneshgah and Kargar. No explanation is printed in the inspected Friday image/page. The workbook explicitly leaves confirmed_skip_or_closed=False.",
+      "stationIds": [
+        "isfahan:station:baharestan",
+        "isfahan:station:golestan",
+        "isfahan:station:daneshgah",
+        "isfahan:station:kargar"
+      ],
+      "doNotInfer": [
+        "current closure",
+        "nonstop passage",
+        "shorter interstation running time",
+        "permanent nonboarding status"
+      ]
+    },
+    {
+      "id": "reconstructed-station-times",
+      "severity": "release-blocker",
+      "evidence": "All 5,204 rows use terminal-departure-plus-first-run-offset reconstruction, not independent reading of every source cell. All trips have a reconstructed 39-minute terminal span.",
+      "individuallyVerifiedCells": false,
+      "highPriorityOcrTrips": 37
+    },
+    {
+      "id": "arrival-departure-semantics",
+      "severity": "unresolved",
+      "evidence": "Every arrival_time equals departure_time. The source is a station movement timetable and does not provide separate arrival/departure or dwell columns.",
+      "doNotInfer": [
+        "zero dwell",
+        "separately measured arrivals"
+      ]
+    },
+    {
+      "id": "holiday-calendar",
+      "severity": "unresolved",
+      "evidence": "Two groups are explicitly supplied: Saturday–Thursday and Friday. Public-holiday exceptions are not established. Thursday can be adapted to Metto’s separate day type using the same source pattern, without inventing a different Thursday schedule."
+    }
+  ],
+  "publicationBoundary": {
+    "canonicalTimetablesWritten": false,
+    "currentBoardingStatusChanged": false,
+    "passengerPlannerTimingEnabled": false,
+    "sourceCalendarAndBlackCellMeaningNeedReview": true
+  }
+}

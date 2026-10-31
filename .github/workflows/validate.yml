@@ -43,6 +43,8 @@ jobs:
         run: pnpm validate
       - name: Regression tests
         run: pnpm test
+      - name: Build offline Isfahan candidate review (not a published dataset)
+        run: pnpm candidate:isfahan
       - name: Build Vercel portal from the same canonical data
         run: pnpm portal:build
       - name: Portal typecheck

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "stationSnapshot": {
+    "path": "sources/review-snapshots/2026-10-29/isfahan-14113bdeb953.json",
+    "sha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88"
+  },
+  "routes": [
+    {
+      "path": "sources/review-snapshots/2026-10-29/isfahan-route-5587340-9cf36a8d852d.json",
+      "sha256": "9cf36a8d852dc0828e4522971cc7e25c05b22a0affaf51f321a54ba91d5b72e9",
+      "relationId": 5587340,
+      "relationVersion": 33,
+      "direction": "southbound",
+      "sourceUrl": "https://www.openstreetmap.org/api/0.6/relation/5587340/full.json"
+    },
+    {
+      "path": "sources/review-snapshots/2026-10-29/isfahan-route-7705632-a5c1d6f27303.json",
+      "sha256": "a5c1d6f2730374227a67ae6c1db829f049cf7c5576d5b46c8ee7c3520dce5847",
+      "relationId": 7705632,
+      "relationVersion": 18,
+      "direction": "northbound",
+      "sourceUrl": "https://www.openstreetmap.org/api/0.6/relation/7705632/full.json"
+    }
+  ],
+  "boardingReport": {
+    "sourceUrl": "https://www.tasnimnews.ir/fa/news/1404/10/08/3483056/",
+    "reportedStationCount": 20,
+    "publishedSolar": "1404-10-08",
+    "scope": "operator-quoted line-wide report; not current per-station confirmation"
+  },
+  "productionApproved": false
+}
