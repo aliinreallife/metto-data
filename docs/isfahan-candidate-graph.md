@@ -28,8 +28,9 @@ by either passenger or data-portal city selectors.
 - All amenities remain null; no timetable, travel time or arrival estimates.
 
 A [user-shared facility table](isfahan-facility-evidence.md) was transcribed on
-2026-10-31 as separate, unverified evidence. Its original source/date and
-asterisk legend are still unknown. It does not change canonical amenities,
+2026-10-31 as separate, unverified evidence. The user clarified that ✓ means
+present and * means absent; its original source/date remain unknown. It does
+not change canonical amenities,
 wheelchair-accessibility claims, boarding gates or the candidate graph.
 
 `checks.osmIdentityMappingComplete` and `mappedRailContinuityChecked` describe

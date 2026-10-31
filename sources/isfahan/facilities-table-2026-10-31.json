@@ -19,10 +19,21 @@
   "transcription": {
     "method": "manual visual transcription; display whitespace normalized; original symbols and cell-location notes retained",
     "symbolMeaning": {
-      "✓": "positive facility claim in the supplied table; not independently verified or checked for present-day operation",
-      "*": "literal asterisk; meaning unknown because no legend is visible; never convert to confirmed absence"
+      "✓": "facility reported present in the supplied table, as clarified by the supplying user",
+      "*": "facility reported absent in the supplied table, as clarified by the supplying user"
     },
-    "stationIdentityBasis": "explicit manual cross-reference of all 20 names within Isfahan Line 1, including Imam Hossein (honorific), Si-o-se-pol spacing, and Shariati without the doctor title; not a cross-city name merge"
+    "stationIdentityBasis": "explicit manual cross-reference of all 20 names within Isfahan Line 1, including Imam Hossein (honorific), Si-o-se-pol spacing, and Shariati without the doctor title; not a cross-city name merge",
+    "reportedPresenceBySymbol": {
+      "✓": true,
+      "*": false
+    },
+    "symbolMeaningClarification": {
+      "providedBy": "supplying user",
+      "receivedOn": "2026-10-31",
+      "statement": "Checkmarks mean the facility is present; asterisks mean it is absent.",
+      "printedLegendVisible": false,
+      "independentlyVerified": false
+    }
   },
   "columns": [
     {
@@ -345,14 +356,12 @@
   "review": {
     "sourceAuthenticated": false,
     "sourceDateVerified": false,
-    "asteriskMeaningVerified": false,
     "amenitiesVerified": false,
     "endToEndStepFreeAccessVerified": false,
     "currentServiceConfirmed": false,
     "productionApproved": false,
     "blockingQuestions": [
       "Obtain the original page/PDF, publisher and publication or revision date.",
-      "Confirm the asterisk legend before interpreting negative claims.",
       "Clarify lift reach: eastern-side access at Shahid Alikhani and ticket-hall-only wording at Si-o-se-pol.",
       "A station appearing in a facility table does not resolve current boarding at Daneshgah/Kargar."
     ],
@@ -362,6 +371,8 @@
       "A bicycle station is not proof of the canonical parking facility.",
       "A coffee vending machine is not a coffee shop.",
       "Metro Market is retained by its source label, not silently classified as a grocery store."
-    ]
+    ],
+    "symbolMeaningClarifiedByUser": true,
+    "symbolMeaningIndependentlyVerified": false
   }
 }

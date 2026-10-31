@@ -9,12 +9,15 @@ and the two location notes. This is a source-review record, not generated data.
 
 The original URL, publisher, publication/revision date and license are unknown.
 The receipt date above is **not** the table's publication date. No legend is
-visible. The original image is not stored in this repository, so an image hash
+visible, but the supplying user clarified the symbols on 2026-10-31: **✓ means
+present; * means absent**. This interpretation is attributed to the user rather
+than to an independently authenticated printed legend. The original image is not
+stored in this repository, so an image hash
 is not asserted. Its source has not been independently authenticated.
 
 ## What the image reports
 
-| Column | Positive checkmarks | Literal asterisks, meaning unresolved |
+| Column | Reported present (✓) | Reported absent (*) |
 | --- | ---: | ---: |
 | پله برقی — escalator | 20 | 0 |
 | آسانسور — elevator | 20 | 0 |
@@ -25,17 +28,19 @@ is not asserted. Its source has not been independently authenticated.
 | مترو مارکت — Metro Market | 2 | 18 |
 
 These counts describe symbols in this image, not facilities independently
-verified as available or working today. An asterisk stays uninterpreted; it is
-not converted into a confirmed `false` value.
+verified as available or working today. The explicit `reportedPresenceBySymbol`
+mapping records ✓ as `true` and * as `false`, based on the user’s clarification.
+These values describe the table’s claims; independent source/date and current
+facility verification remain separate.
 
 The two Metro Market checkmarks are at شهید مفتح and کوی امام. The lone
-wheelchair-access asterisk is at سی و سه پل.
+reported absence of wheelchair access is at سی و سه پل.
 
 ## Preserve the qualifications
 
 - شهید علیخانی: the elevator cell says **سمت شرقی** (east side).
 - سی و سه پل: the elevator cell says **سالن بلیط** (ticket hall), while the
-  wheelchair-access cell is an asterisk. Do not turn that elevator claim into
+  wheelchair-access cell reports absence (*). Do not turn that elevator claim into
   an assertion of continuous street-to-platform step-free access.
 - An escalator is a separate facility from an elevator. A bicycle station is
   not automatically the canonical parking facility, a coffee vending machine
@@ -58,5 +63,6 @@ remain null, the original candidate output remains byte-for-byte unchanged, and
 all boarding/accessibility/publication verification flags remain false. This
 table is not imported into passenger amenities or accessibility routing.
 
-Next evidence needed: the original page/PDF and date, the asterisk legend, and
-the extent and current availability of the two qualified elevator entries.
+The symbol meanings are now supplied by the user. Future corroboration can
+establish the original publication/date and the extent and current availability
+of the two qualified elevator entries.
