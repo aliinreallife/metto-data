@@ -27,6 +27,11 @@ by either passenger or data-portal city selectors.
   comes from metro ways, never a street router or straight-line fallback.
 - All amenities remain null; no timetable, travel time or arrival estimates.
 
+A [user-shared facility table](isfahan-facility-evidence.md) was transcribed on
+2026-10-31 as separate, unverified evidence. Its original source/date and
+asterisk legend are still unknown. It does not change canonical amenities,
+wheelchair-accessibility claims, boarding gates or the candidate graph.
+
 `checks.osmIdentityMappingComplete` and `mappedRailContinuityChecked` describe
 these **OSM-only checks**. They do not certify operator topology, entrances,
 independent coordinate accuracy, or current passenger boarding.

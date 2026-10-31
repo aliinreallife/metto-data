@@ -1,0 +1,367 @@
+{
+  "schemaVersion": 1,
+  "kind": "station-facility-table-transcription",
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "source": {
+    "id": "user-shared-isfahan-facilities-2026-10-31",
+    "receivedOn": "2026-10-31",
+    "providedVia": "image attached by the user in the Metto city-review conversation",
+    "originalUrl": null,
+    "publisher": null,
+    "publishedAt": null,
+    "license": null,
+    "legendVisible": false,
+    "originalImageStored": false,
+    "originalImageSha256": null,
+    "status": "unverified-user-supplied-reference"
+  },
+  "transcription": {
+    "method": "manual visual transcription; display whitespace normalized; original symbols and cell-location notes retained",
+    "symbolMeaning": {
+      "✓": "positive facility claim in the supplied table; not independently verified or checked for present-day operation",
+      "*": "literal asterisk; meaning unknown because no legend is visible; never convert to confirmed absence"
+    },
+    "stationIdentityBasis": "explicit manual cross-reference of all 20 names within Isfahan Line 1, including Imam Hossein (honorific), Si-o-se-pol spacing, and Shariati without the doctor title; not a cross-city name merge"
+  },
+  "columns": [
+    {
+      "key": "escalator",
+      "headerFa": "پله برقی"
+    },
+    {
+      "key": "elevator",
+      "headerFa": "آسانسور"
+    },
+    {
+      "key": "wheelchairAccess",
+      "headerFa": "دسترسی ویلچر"
+    },
+    {
+      "key": "bicycleStation",
+      "headerFa": "ایستگاه دوچرخه"
+    },
+    {
+      "key": "drinkingWater",
+      "headerFa": "آبسردکن"
+    },
+    {
+      "key": "coffeeVendingMachine",
+      "headerFa": "دستگاه فروش قهوه"
+    },
+    {
+      "key": "metroMarket",
+      "headerFa": "مترو مارکت"
+    }
+  ],
+  "rows": [
+    {
+      "sourceRow": 1,
+      "stationId": "isfahan:station:qods",
+      "stationNameFaAsShown": "ایستگاه قدس",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 2,
+      "stationId": "isfahan:station:baharestan",
+      "stationNameFaAsShown": "ایستگاه بهارستان",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 3,
+      "stationId": "isfahan:station:golestan",
+      "stationNameFaAsShown": "ایستگاه گلستان",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 4,
+      "stationId": "isfahan:station:shahid-mofatteh",
+      "stationNameFaAsShown": "ایستگاه شهید مفتح",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "✓"
+      }
+    },
+    {
+      "sourceRow": 5,
+      "stationId": "isfahan:station:shahid-alikhani",
+      "stationNameFaAsShown": "ایستگاه شهید علیخانی",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      },
+      "cellNotesFa": {
+        "elevator": "سمت شرقی"
+      }
+    },
+    {
+      "sourceRow": 6,
+      "stationId": "isfahan:station:jaber",
+      "stationNameFaAsShown": "ایستگاه جابر",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 7,
+      "stationId": "isfahan:station:kaveh",
+      "stationNameFaAsShown": "ایستگاه کاوه",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 8,
+      "stationId": "isfahan:station:shahid-chamran",
+      "stationNameFaAsShown": "ایستگاه شهید چمران",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 9,
+      "stationId": "isfahan:station:shahid-bahonar",
+      "stationNameFaAsShown": "ایستگاه شهید باهنر",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 10,
+      "stationId": "isfahan:station:shohada",
+      "stationNameFaAsShown": "ایستگاه شهدا",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 11,
+      "stationId": "isfahan:station:takhti",
+      "stationNameFaAsShown": "ایستگاه تختی",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 12,
+      "stationId": "isfahan:station:imam-hossein",
+      "stationNameFaAsShown": "ایستگاه امام حسین(ع)",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 13,
+      "stationId": "isfahan:station:enghelab",
+      "stationNameFaAsShown": "ایستگاه انقلاب",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 14,
+      "stationId": "isfahan:station:si-o-se-pol",
+      "stationNameFaAsShown": "ایستگاه سی و سه پل",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "*",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      },
+      "cellNotesFa": {
+        "elevator": "سالن بلیط"
+      }
+    },
+    {
+      "sourceRow": 15,
+      "stationId": "isfahan:station:shariati",
+      "stationNameFaAsShown": "ایستگاه شریعتی",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 16,
+      "stationId": "isfahan:station:azadi",
+      "stationNameFaAsShown": "ایستگاه آزادی",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "✓",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 17,
+      "stationId": "isfahan:station:daneshgah",
+      "stationNameFaAsShown": "ایستگاه دانشگاه",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 18,
+      "stationId": "isfahan:station:kargar",
+      "stationNameFaAsShown": "ایستگاه کارگر",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    },
+    {
+      "sourceRow": 19,
+      "stationId": "isfahan:station:kooye-imam",
+      "stationNameFaAsShown": "ایستگاه کوی امام",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "*",
+        "coffeeVendingMachine": "✓",
+        "metroMarket": "✓"
+      }
+    },
+    {
+      "sourceRow": 20,
+      "stationId": "isfahan:station:defa-e-moghaddas",
+      "stationNameFaAsShown": "ایستگاه دفاع مقدس",
+      "cells": {
+        "escalator": "✓",
+        "elevator": "✓",
+        "wheelchairAccess": "✓",
+        "bicycleStation": "*",
+        "drinkingWater": "✓",
+        "coffeeVendingMachine": "*",
+        "metroMarket": "*"
+      }
+    }
+  ],
+  "review": {
+    "sourceAuthenticated": false,
+    "sourceDateVerified": false,
+    "asteriskMeaningVerified": false,
+    "amenitiesVerified": false,
+    "endToEndStepFreeAccessVerified": false,
+    "currentServiceConfirmed": false,
+    "productionApproved": false,
+    "blockingQuestions": [
+      "Obtain the original page/PDF, publisher and publication or revision date.",
+      "Confirm the asterisk legend before interpreting negative claims.",
+      "Clarify lift reach: eastern-side access at Shahid Alikhani and ticket-hall-only wording at Si-o-se-pol.",
+      "A station appearing in a facility table does not resolve current boarding at Daneshgah/Kargar."
+    ],
+    "mappingLimits": [
+      "An escalator is not an elevator.",
+      "A lift claim is not a complete street-to-platform wheelchair-accessibility assessment.",
+      "A bicycle station is not proof of the canonical parking facility.",
+      "A coffee vending machine is not a coffee shop.",
+      "Metro Market is retained by its source label, not silently classified as a grocery store."
+    ]
+  }
+}
