@@ -33,6 +33,12 @@ present and * means absent; its original source/date remain unknown. It does
 not change canonical amenities,
 wheelchair-accessibility claims, boarding gates or the candidate graph.
 
+The later [timetable upload review](isfahan-timetable-candidate-review.md) checks
+281 candidate runs against both uploaded formats and the retrieved operator
+images. Directions are explicit; missing final Friday departures, conditional
+extra trains, unresolved black columns and reconstructed station times still
+need handling before timing can be enabled. The candidate graph is unchanged.
+
 `checks.osmIdentityMappingComplete` and `mappedRailContinuityChecked` describe
 these **OSM-only checks**. They do not certify operator topology, entrances,
 independent coordinate accuracy, or current passenger boarding.
