@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "cityId": "shiraz",
+  "reviewOnly": true,
+  "fetchedOrCheckedAt": "2026-10-29T06:14:58.037Z",
+  "source": {
+    "kind": "live-overpass-export",
+    "endpoint": "https://overpass-api.de/api/interpreter"
+  },
+  "snapshotBase": "2026-10-29T06:14:01Z",
+  "count": 68,
+  "rawSha256": "14caef2e21c78dd9f2c4916e88cdbd828908efb8544b8bf5307ee4c545c8048b",
+  "scope": "stations",
+  "requestQuery": "[out:json][timeout:75];\n(\n  nwr[\"station\"=\"subway\"](29.48,52.38,29.78,52.76);\n  nwr[\"railway\"=\"station\"](29.48,52.38,29.78,52.76);\n  nwr[\"public_transport\"=\"station\"][\"subway\"=\"yes\"](29.48,52.38,29.78,52.76);\n  nwr[\"public_transport\"=\"platform\"][\"subway\"=\"yes\"](29.48,52.38,29.78,52.76);\n  nwr[\"railway\"=\"platform\"][\"subway\"=\"yes\"](29.48,52.38,29.78,52.76);\n  nwr[\"public_transport\"=\"stop_position\"][\"subway\"=\"yes\"](29.48,52.38,29.78,52.76);\n);\nout center meta;\n",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "attributionUrl": "https://www.openstreetmap.org/copyright",
+  "verifiedPassengerService": false,
+  "coordinatesApproved": false,
+  "routesApproved": false,
+  "readyForProduction": false,
+  "note": "Snapshot is not an operator feed; OSM object versions and positions still require independent per-station review.",
+  "rawFile": "shiraz-14caef2e21c7.json"
+}

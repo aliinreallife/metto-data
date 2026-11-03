@@ -1,0 +1,40 @@
+{
+  "reviewOnly": true,
+  "approvedForProduction": false,
+  "snapshots": [
+    {
+      "cityId": "isfahan",
+      "rawFile": "isfahan-14113bdeb953.json",
+      "rawSha256": "14113bdeb9537fdb35e314670bb4d38067fdefdebd8e80495e0a3814ac638e88",
+      "objects": 79,
+      "osmBase": "2026-10-29T06:09:58Z",
+      "nameReviewCounts": {
+        "stationMemberships": 20,
+        "uniqueNameLeads": 20,
+        "oneObjectNameMatches": 0,
+        "ambiguousNames": 17,
+        "unmatchedNames": 3
+      },
+      "matrixSha256": "696f68f4caa42a2f8b3684fbe6e927c831a3b8a4ca9a77b900fe70e07d7900c8",
+      "matrixPR": 31,
+      "allReleaseGatesFalse": true
+    },
+    {
+      "cityId": "shiraz",
+      "rawFile": "shiraz-14caef2e21c7.json",
+      "rawSha256": "14caef2e21c78dd9f2c4916e88cdbd828908efb8544b8bf5307ee4c545c8048b",
+      "objects": 68,
+      "osmBase": "2026-10-29T06:14:01Z",
+      "nameReviewCounts": {
+        "stationMemberships": 27,
+        "uniqueNameLeads": 26,
+        "oneObjectNameMatches": 0,
+        "ambiguousNames": 24,
+        "unmatchedNames": 2
+      },
+      "matrixSha256": "18bcd6678def5d39bdf1fd862c26342dd1e54c5f3cc0887e0e4463f277d849cc",
+      "matrixPR": 32,
+      "allReleaseGatesFalse": true
+    }
+  ]
+}

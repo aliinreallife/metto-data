@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "productionAuthorized": true,
+  "authorizedOn": "2026-11-03",
+  "authority": "owner instruction in this conversation",
+  "scope": "Line 1 core stations, rail paths and regular published timetable; holiday application provisional",
+  "graphSha256": "51a0d6e2c063ab84dad4037e1fa8bddc68eca8d9dc89ef5cf5d6d4bc76611099",
+  "sourceCellAuditSha256": "ff7c025a60a14d85d1e9c00f3c10493a3cf06f598766cbc70346748295514b77",
+  "holidayService": "assumed_friday_unconfirmed",
+  "fridayNoBoardingStationIds": [
+    "isfahan:station:baharestan",
+    "isfahan:station:golestan",
+    "isfahan:station:daneshgah",
+    "isfahan:station:kargar"
+  ],
+  "conditionalDispatchesIncluded": false,
+  "unresolvedSourceDiscrepancyPreserved": true,
+  "amenitiesAuthorized": false,
+  "artifact": "data/releases/isfahan-line1.json"
+}

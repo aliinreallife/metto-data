@@ -1,0 +1,492 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "stations": [
+    {
+      "id": "isfahan:station:qods",
+      "names": {
+        "fa": "قدس",
+        "en": "Qods"
+      },
+      "aliasesFa": [
+        "قدس"
+      ],
+      "sourceOrdinal": 1,
+      "stationObject": {
+        "type": "way",
+        "id": 915388782,
+        "version": 4
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3690028835,
+        "version": 20
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:baharestan",
+      "names": {
+        "fa": "بهارستان",
+        "en": "Baharestan"
+      },
+      "aliasesFa": [
+        "بهارستان"
+      ],
+      "sourceOrdinal": 2,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679625,
+        "version": 10
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736361,
+        "version": 16
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:golestan",
+      "names": {
+        "fa": "گلستان",
+        "en": "Golestan"
+      },
+      "aliasesFa": [
+        "گلستان"
+      ],
+      "sourceOrdinal": 3,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679623,
+        "version": 11
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736360,
+        "version": 17
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shahid-mofatteh",
+      "names": {
+        "fa": "شهید مفتح",
+        "en": "Shahid Mofatteh"
+      },
+      "aliasesFa": [
+        "شهید مفتح"
+      ],
+      "sourceOrdinal": 4,
+      "stationObject": {
+        "type": "way",
+        "id": 251049327,
+        "version": 12
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3690028848,
+        "version": 18
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shahid-alikhani",
+      "names": {
+        "fa": "شهید علیخانی",
+        "en": "Shahid Alikhani"
+      },
+      "aliasesFa": [
+        "شهید علیخانی"
+      ],
+      "sourceOrdinal": 5,
+      "stationObject": {
+        "type": "way",
+        "id": 1152614291,
+        "version": 3
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3690028850,
+        "version": 19
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:jaber",
+      "names": {
+        "fa": "جابر",
+        "en": "Jaber"
+      },
+      "aliasesFa": [
+        "جابر"
+      ],
+      "sourceOrdinal": 6,
+      "stationObject": {
+        "type": "way",
+        "id": 322480231,
+        "version": 6
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736362,
+        "version": 16
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:kaveh",
+      "names": {
+        "fa": "کاوه",
+        "en": "Kaveh"
+      },
+      "aliasesFa": [
+        "کاوه"
+      ],
+      "sourceOrdinal": 7,
+      "stationObject": {
+        "type": "node",
+        "id": 5161577421,
+        "version": 14
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736364,
+        "version": 16
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shahid-chamran",
+      "names": {
+        "fa": "شهید چمران",
+        "en": "Shahid Chamran"
+      },
+      "aliasesFa": [
+        "شهید چمران"
+      ],
+      "sourceOrdinal": 8,
+      "stationObject": {
+        "type": "node",
+        "id": 5161576020,
+        "version": 14
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736365,
+        "version": 17
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shahid-bahonar",
+      "names": {
+        "fa": "شهید باهنر",
+        "en": "Shahid Bahonar"
+      },
+      "aliasesFa": [
+        "شهید باهنر"
+      ],
+      "sourceOrdinal": 9,
+      "stationObject": {
+        "type": "node",
+        "id": 5161576018,
+        "version": 13
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3787736366,
+        "version": 19
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shohada",
+      "names": {
+        "fa": "شهدا",
+        "en": "Shohada"
+      },
+      "aliasesFa": [
+        "شهدا"
+      ],
+      "sourceOrdinal": 10,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679627,
+        "version": 12
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 3690028870,
+        "version": 20
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:takhti",
+      "names": {
+        "fa": "تختی",
+        "en": "Takhti"
+      },
+      "aliasesFa": [
+        "تختی"
+      ],
+      "sourceOrdinal": 11,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679628,
+        "version": 13
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260397,
+        "version": 16
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:imam-hossein",
+      "names": {
+        "fa": "امام حسین",
+        "en": "Imam Hossein"
+      },
+      "aliasesFa": [
+        "امام حسین"
+      ],
+      "sourceOrdinal": 12,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679629,
+        "version": 15
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4769272241,
+        "version": 15
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:enghelab",
+      "names": {
+        "fa": "انقلاب",
+        "en": "Enghelab"
+      },
+      "aliasesFa": [
+        "انقلاب"
+      ],
+      "sourceOrdinal": 13,
+      "stationObject": {
+        "type": "node",
+        "id": 5162679631,
+        "version": 11
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260297,
+        "version": 15
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:si-o-se-pol",
+      "names": {
+        "fa": "سی‌وسه‌پل",
+        "en": "Si-o-se-pol"
+      },
+      "aliasesFa": [
+        "سی و سه پل",
+        "سی‌وسه‌پل"
+      ],
+      "sourceOrdinal": 14,
+      "stationObject": {
+        "type": "node",
+        "id": 5176142291,
+        "version": 11
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260791,
+        "version": 18
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:shariati",
+      "names": {
+        "fa": "دکتر شریعتی",
+        "en": "Shariati"
+      },
+      "aliasesFa": [
+        "دکتر شریعتی",
+        "شریعتی"
+      ],
+      "sourceOrdinal": 15,
+      "stationObject": {
+        "type": "node",
+        "id": 4023917392,
+        "version": 12
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260298,
+        "version": 16
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:azadi",
+      "names": {
+        "fa": "آزادی",
+        "en": "Azadi"
+      },
+      "aliasesFa": [
+        "آزادی"
+      ],
+      "sourceOrdinal": 16,
+      "stationObject": {
+        "type": "node",
+        "id": 7077111839,
+        "version": 7
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 7104501371,
+        "version": 5
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:daneshgah",
+      "names": {
+        "fa": "دانشگاه",
+        "en": "Daneshgah"
+      },
+      "aliasesFa": [
+        "دانشگاه"
+      ],
+      "sourceOrdinal": 17,
+      "stationObject": {
+        "type": "node",
+        "id": 4023933990,
+        "version": 10
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260594,
+        "version": 13
+      },
+      "boardingReview": "conflicting-reports",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:kargar",
+      "names": {
+        "fa": "کارگر",
+        "en": "Kargar"
+      },
+      "aliasesFa": [
+        "کارگر"
+      ],
+      "sourceOrdinal": 18,
+      "stationObject": {
+        "type": "node",
+        "id": 4023917394,
+        "version": 12
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260595,
+        "version": 14
+      },
+      "boardingReview": "conflicting-reports",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:kooye-imam",
+      "names": {
+        "fa": "کوی امام",
+        "en": "Kooye Imam"
+      },
+      "aliasesFa": [
+        "کوی امام"
+      ],
+      "sourceOrdinal": 19,
+      "stationObject": {
+        "type": "node",
+        "id": 4023933989,
+        "version": 12
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4020260592,
+        "version": 14
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    },
+    {
+      "id": "isfahan:station:defa-e-moghaddas",
+      "names": {
+        "fa": "دفاع مقدس",
+        "en": "Defa-e Moghaddas"
+      },
+      "aliasesFa": [
+        "دفاع مقدس",
+        "دفاع مقدس (صفه)",
+        "صفه"
+      ],
+      "sourceOrdinal": 20,
+      "stationObject": {
+        "type": "node",
+        "id": 7712005418,
+        "version": 7
+      },
+      "stopPosition": {
+        "type": "node",
+        "id": 4023936989,
+        "version": 15
+      },
+      "boardingReview": "not-station-verified",
+      "currentServiceConfirmed": false,
+      "identityScope": "curated station-to-stop mapping from pinned OSM names, object roles and proximity; not operator boarding approval"
+    }
+  ],
+  "productionApproved": false
+}

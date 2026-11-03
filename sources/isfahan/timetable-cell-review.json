@@ -1,0 +1,1504 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "productionEtaApproved": false,
+  "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+  "method": "Visually read enlarged source-cell crops labelled by native image row, direction and station ordinal; CSV values were not shown in the contact sheets. This is one reviewer, not independent second-person or operator sign-off.",
+  "cells": [
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 3,
+      "stationOrdinal": 15,
+      "bbox": [
+        340,
+        697,
+        381,
+        717
+      ],
+      "stationId": "isfahan:station:shariati",
+      "sourceCellValue": "06:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 5,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        745,
+        1514,
+        765
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "07:03",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 6,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        769,
+        518,
+        789
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "07:04",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 6,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        769,
+        1514,
+        789
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "07:09",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 7,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        793,
+        1514,
+        813
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "07:14",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 8,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        817,
+        518,
+        837
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "07:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 8,
+      "stationOrdinal": 19,
+      "bbox": [
+        1108,
+        817,
+        1150,
+        837
+      ],
+      "stationId": "isfahan:station:kooye-imam",
+      "sourceCellValue": "07:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 10,
+      "stationOrdinal": 1,
+      "bbox": [
+        1928,
+        865,
+        1969,
+        885
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "07:10",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 12,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        913,
+        1019,
+        933
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "08:11",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 12,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        913,
+        973,
+        933
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "08:08",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 12,
+      "stationOrdinal": 18,
+      "bbox": [
+        203,
+        913,
+        245,
+        933
+      ],
+      "stationId": "isfahan:station:kargar",
+      "sourceCellValue": "07:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 13,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        937,
+        1514,
+        957
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "08:04",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 14,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        961,
+        518,
+        981
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "08:10",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 14,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        961,
+        1514,
+        981
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "08:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 15,
+      "stationOrdinal": 20,
+      "bbox": [
+        1063,
+        985,
+        1104,
+        1005
+      ],
+      "stationId": "isfahan:station:defa-e-moghaddas",
+      "sourceCellValue": "08:44",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 16,
+      "stationOrdinal": 10,
+      "bbox": [
+        567,
+        1009,
+        609,
+        1029
+      ],
+      "stationId": "isfahan:station:shohada",
+      "sourceCellValue": "08:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 17,
+      "stationOrdinal": 5,
+      "bbox": [
+        1745,
+        1033,
+        1787,
+        1053
+      ],
+      "stationId": "isfahan:station:shahid-alikhani",
+      "sourceCellValue": "08:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 19,
+      "stationOrdinal": 5,
+      "bbox": [
+        795,
+        1081,
+        836,
+        1101
+      ],
+      "stationId": "isfahan:station:shahid-alikhani",
+      "sourceCellValue": "09:19",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 20,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        1105,
+        973,
+        1125
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "09:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 21,
+      "stationOrdinal": 18,
+      "bbox": [
+        203,
+        1129,
+        245,
+        1149
+      ],
+      "stationId": "isfahan:station:kargar",
+      "sourceCellValue": "09:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 21,
+      "stationOrdinal": 3,
+      "bbox": [
+        1836,
+        1129,
+        1878,
+        1149
+      ],
+      "stationId": "isfahan:station:golestan",
+      "sourceCellValue": "09:16",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 21,
+      "stationOrdinal": 4,
+      "bbox": [
+        1791,
+        1129,
+        1832,
+        1149
+      ],
+      "stationId": "isfahan:station:shahid-mofatteh",
+      "sourceCellValue": "09:18",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 21,
+      "stationOrdinal": 13,
+      "bbox": [
+        1381,
+        1129,
+        1423,
+        1149
+      ],
+      "stationId": "isfahan:station:enghelab",
+      "sourceCellValue": "09:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 21,
+      "stationOrdinal": 17,
+      "bbox": [
+        1199,
+        1129,
+        1241,
+        1149
+      ],
+      "stationId": "isfahan:station:daneshgah",
+      "sourceCellValue": "09:44",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 22,
+      "stationOrdinal": 13,
+      "bbox": [
+        431,
+        1153,
+        472,
+        1174
+      ],
+      "stationId": "isfahan:station:enghelab",
+      "sourceCellValue": "09:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 23,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        1178,
+        1019,
+        1198
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "10:12",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 23,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        1178,
+        973,
+        1198
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "10:09",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 23,
+      "stationOrdinal": 2,
+      "bbox": [
+        1882,
+        1178,
+        1924,
+        1198
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "09:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 24,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        1202,
+        518,
+        1222
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "10:00",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 24,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        1202,
+        1514,
+        1222
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "10:05",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 24,
+      "stationOrdinal": 13,
+      "bbox": [
+        1381,
+        1202,
+        1423,
+        1222
+      ],
+      "stationId": "isfahan:station:enghelab",
+      "sourceCellValue": "10:09",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 25,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        1226,
+        1514,
+        1246
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "10:16",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 25,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        1226,
+        1468,
+        1246
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "10:18",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 27,
+      "stationOrdinal": 1,
+      "bbox": [
+        1928,
+        1274,
+        1969,
+        1294
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "10:17",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 28,
+      "stationOrdinal": 16,
+      "bbox": [
+        294,
+        1298,
+        336,
+        1318
+      ],
+      "stationId": "isfahan:station:azadi",
+      "sourceCellValue": "10:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 32,
+      "stationOrdinal": 8,
+      "bbox": [
+        658,
+        1396,
+        700,
+        1418
+      ],
+      "stationId": "isfahan:station:shahid-chamran",
+      "sourceCellValue": "11:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 33,
+      "stationOrdinal": 7,
+      "bbox": [
+        1654,
+        1422,
+        1696,
+        1445
+      ],
+      "stationId": "isfahan:station:kaveh",
+      "sourceCellValue": "11:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 38,
+      "stationOrdinal": 11,
+      "bbox": [
+        522,
+        1555,
+        563,
+        1577
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "12:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 39,
+      "stationOrdinal": 4,
+      "bbox": [
+        1791,
+        1581,
+        1832,
+        1604
+      ],
+      "stationId": "isfahan:station:shahid-mofatteh",
+      "sourceCellValue": "12:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 43,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        1687,
+        1019,
+        1710
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "13:46",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 44,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        1714,
+        1468,
+        1736
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "13:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 45,
+      "stationOrdinal": 7,
+      "bbox": [
+        704,
+        1740,
+        745,
+        1763
+      ],
+      "stationId": "isfahan:station:kaveh",
+      "sourceCellValue": "13:45",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 50,
+      "stationOrdinal": 6,
+      "bbox": [
+        749,
+        1873,
+        791,
+        1895
+      ],
+      "stationId": "isfahan:station:jaber",
+      "sourceCellValue": "14:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 50,
+      "stationOrdinal": 15,
+      "bbox": [
+        340,
+        1873,
+        381,
+        1895
+      ],
+      "stationId": "isfahan:station:shariati",
+      "sourceCellValue": "14:18",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 51,
+      "stationOrdinal": 1,
+      "bbox": [
+        1928,
+        1899,
+        1969,
+        1922
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "14:19",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 51,
+      "stationOrdinal": 9,
+      "bbox": [
+        1563,
+        1899,
+        1605,
+        1922
+      ],
+      "stationId": "isfahan:station:shahid-bahonar",
+      "sourceCellValue": "14:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 55,
+      "stationOrdinal": 17,
+      "bbox": [
+        1199,
+        2005,
+        1241,
+        2028
+      ],
+      "stationId": "isfahan:station:daneshgah",
+      "sourceCellValue": "15:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 58,
+      "stationOrdinal": 20,
+      "bbox": [
+        111,
+        2085,
+        154,
+        2107
+      ],
+      "stationId": "isfahan:station:defa-e-moghaddas",
+      "sourceCellValue": "15:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 61,
+      "stationOrdinal": 14,
+      "bbox": [
+        1336,
+        2164,
+        1377,
+        2187
+      ],
+      "stationId": "isfahan:station:si-o-se-pol",
+      "sourceCellValue": "16:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 63,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2217,
+        973,
+        2240
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "17:07",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 63,
+      "stationOrdinal": 3,
+      "bbox": [
+        886,
+        2217,
+        927,
+        2240
+      ],
+      "stationId": "isfahan:station:golestan",
+      "sourceCellValue": "17:05",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 64,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2244,
+        973,
+        2267
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "17:18",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 64,
+      "stationOrdinal": 3,
+      "bbox": [
+        886,
+        2244,
+        927,
+        2267
+      ],
+      "stationId": "isfahan:station:golestan",
+      "sourceCellValue": "17:16",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 64,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        2244,
+        1468,
+        2267
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "17:05",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 65,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        2271,
+        518,
+        2295
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "17:09",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 65,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        2271,
+        1514,
+        2295
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "17:14",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 65,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        2271,
+        1468,
+        2295
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "17:16",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 66,
+      "stationOrdinal": 4,
+      "bbox": [
+        840,
+        2299,
+        882,
+        2322
+      ],
+      "stationId": "isfahan:station:shahid-mofatteh",
+      "sourceCellValue": "17:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 67,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        2326,
+        1514,
+        2350
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "17:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 68,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        2354,
+        1019,
+        2377
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "18:05",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 68,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2354,
+        973,
+        2377
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "18:02",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 68,
+      "stationOrdinal": 3,
+      "bbox": [
+        886,
+        2354,
+        927,
+        2377
+      ],
+      "stationId": "isfahan:station:golestan",
+      "sourceCellValue": "18:00",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 69,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        2381,
+        1019,
+        2405
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "18:16",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 69,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2381,
+        973,
+        2405
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "18:13",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 69,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        2381,
+        1468,
+        2405
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "18:00",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 70,
+      "stationOrdinal": 11,
+      "bbox": [
+        1472,
+        2409,
+        1514,
+        2432
+      ],
+      "stationId": "isfahan:station:takhti",
+      "sourceCellValue": "18:09",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 70,
+      "stationOrdinal": 13,
+      "bbox": [
+        1381,
+        2409,
+        1423,
+        2432
+      ],
+      "stationId": "isfahan:station:enghelab",
+      "sourceCellValue": "18:13",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 71,
+      "stationOrdinal": 12,
+      "bbox": [
+        476,
+        2436,
+        518,
+        2460
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "18:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 71,
+      "stationOrdinal": 19,
+      "bbox": [
+        1108,
+        2436,
+        1150,
+        2460
+      ],
+      "stationId": "isfahan:station:kooye-imam",
+      "sourceCellValue": "18:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 72,
+      "stationOrdinal": 3,
+      "bbox": [
+        1836,
+        2464,
+        1878,
+        2487
+      ],
+      "stationId": "isfahan:station:golestan",
+      "sourceCellValue": "18:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 74,
+      "stationOrdinal": 18,
+      "bbox": [
+        203,
+        2519,
+        245,
+        2542
+      ],
+      "stationId": "isfahan:station:kargar",
+      "sourceCellValue": "18:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 78,
+      "stationOrdinal": 10,
+      "bbox": [
+        567,
+        2629,
+        609,
+        2652
+      ],
+      "stationId": "isfahan:station:shohada",
+      "sourceCellValue": "19:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 79,
+      "stationOrdinal": 1,
+      "bbox": [
+        977,
+        2656,
+        1019,
+        2680
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "20:06",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 79,
+      "stationOrdinal": 5,
+      "bbox": [
+        1745,
+        2656,
+        1787,
+        2680
+      ],
+      "stationId": "isfahan:station:shahid-alikhani",
+      "sourceCellValue": "19:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 82,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2739,
+        973,
+        2762
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "20:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 83,
+      "stationOrdinal": 13,
+      "bbox": [
+        1381,
+        2766,
+        1423,
+        2790
+      ],
+      "stationId": "isfahan:station:enghelab",
+      "sourceCellValue": "20:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 83,
+      "stationOrdinal": 17,
+      "bbox": [
+        1199,
+        2766,
+        1241,
+        2790
+      ],
+      "stationId": "isfahan:station:daneshgah",
+      "sourceCellValue": "20:44",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 87,
+      "stationOrdinal": 2,
+      "bbox": [
+        931,
+        2876,
+        973,
+        2900
+      ],
+      "stationId": "isfahan:station:baharestan",
+      "sourceCellValue": "21:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 89,
+      "stationOrdinal": 17,
+      "bbox": [
+        249,
+        2931,
+        290,
+        2955
+      ],
+      "stationId": "isfahan:station:daneshgah",
+      "sourceCellValue": "21:36",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_disagreement"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 90,
+      "stationOrdinal": 5,
+      "bbox": [
+        795,
+        2959,
+        836,
+        2982
+      ],
+      "stationId": "isfahan:station:shahid-alikhani",
+      "sourceCellValue": "22:15",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 90,
+      "stationOrdinal": 12,
+      "bbox": [
+        1427,
+        2959,
+        1468,
+        2982
+      ],
+      "stationId": "isfahan:station:imam-hossein",
+      "sourceCellValue": "22:08",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "defa_to_qods",
+      "sourceDataRow": 91,
+      "stationOrdinal": 20,
+      "bbox": [
+        111,
+        2986,
+        154,
+        3010
+      ],
+      "stationId": "isfahan:station:defa-e-moghaddas",
+      "sourceCellValue": "22:00",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    },
+    {
+      "poster": "weekday",
+      "direction": "qods_to_defa",
+      "sourceDataRow": 91,
+      "stationOrdinal": 1,
+      "bbox": [
+        1928,
+        2986,
+        1969,
+        3010
+      ],
+      "stationId": "isfahan:station:qods",
+      "sourceCellValue": "22:00",
+      "verification": "manual_source_cell",
+      "reviewedOn": "2026-11-03",
+      "reviewer": "Codex visual review, not operator confirmation",
+      "reason": "decoder_abstention"
+    }
+  ]
+}
