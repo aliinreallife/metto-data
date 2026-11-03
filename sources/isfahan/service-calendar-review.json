@@ -65,6 +65,27 @@
         "Non-Friday official holidays generally have no service; current blanket 1405 rule unconfirmed.",
         "Nowruz has specific closures and modified hours; exact original announcements need independent retrieval."
       ]
+    },
+    {
+      "id": "user-designated-timetable-posters-2026-11-03",
+      "type": "user_supplied_images",
+      "observedOn": "2026-11-03",
+      "url": null,
+      "designatedBy": "supplying user",
+      "role": "Selected timetable sources for the review candidate",
+      "visualComparison": "Supplied posters visually agree with the previously retrieved operator weekday/Friday posters; no binary identity is claimed for chat-rendered images.",
+      "weekdayHeaderFa": "روزهای بهره برداری: شنبه تا پنجشنبه",
+      "weekdayHours": {
+        "start": "06:00",
+        "end": "22:00"
+      },
+      "fridayHeaderFa": "روزهای بهره برداری: جمعه ها",
+      "fridayHours": {
+        "start": "09:00",
+        "end": "22:00"
+      },
+      "holidayApplicability": "not specified in either poster; user suggested Friday applicability as a guess, not a confirmed rule",
+      "linkedOperatorReferenceId": "operator-timetable-1405-07-11"
     }
   ],
   "weekdayRule": {

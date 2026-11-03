@@ -31,6 +31,14 @@ Original uploads are retained locally under
 are local review evidence only. Their site asserts all rights reserved; images
 and video are referenced by URL/hash, not redistributed or labelled as OSM data.
 
+The user subsequently supplied both posters directly and selected them as the
+timetable sources. Their visible headers agree with the retrieved operator
+posters: Saturday–Thursday 06:00–22:00 and Friday 09:00–22:00. Neither header
+mentions public holidays. The user's suggestion that holidays might use Friday
+service remains a guess; it does not override the separate unconfirmed holiday
+rule. Chat-rendered images are not claimed to be byte-identical to the pinned
+operator originals. This source selection is recorded in the calendar evidence.
+
 ## Corrected candidate
 
 | Day group | Direction | Regular runs | Conditional extras | Printed station times | Terminal departures |
