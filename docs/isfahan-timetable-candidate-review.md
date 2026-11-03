@@ -188,3 +188,24 @@ Directions, station order, source date and the two complete final Friday rows ar
 resolved from the sources. No remaining printed cell needs the user to guess
 its direction or reconstruct a missing time. Existing production datasets and
 the Isfahan map-preview graph remain unchanged.
+
+## Owner-authorized public projection — 2026-11-03
+
+The owner has now authorized publication using the supplied posters, Friday
+no-boarding at the four black-column stations, and **provisional Friday service
+on official holidays**. Holiday equivalence is explicitly not operator verified.
+This supersedes the earlier decision to block all holiday times. Exact-date
+notices still take priority, and the historical Chamran/Kargar discrepancy stays
+recorded rather than being declared resolved.
+
+`sources/isfahan/passenger-release.json` records the bounded authorization.
+`data/releases/isfahan-line1.json` contains 278 regular runs (5,136 visible times),
+20 ordered station identities, pinned sources and calendar policy. The five
+conditional extras are excluded from passenger next-train results. The original
+review graph, pixel audit and candidate production flags remain historical
+review evidence; this separate release does not certify unknown amenities or
+activate construction extensions.
+
+Regenerate explicitly with `pnpm exec tsx scripts/build-isfahan-passenger-release.ts
+--write` after reproducing the source audits. The app imports and hashes this
+bounded artifact separately from its existing Tehran/Mashhad datasets.

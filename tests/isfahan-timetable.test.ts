@@ -109,7 +109,7 @@ describe("Isfahan-specific calendar precedence", () => {
   it("keeps Friday, non-Friday holidays and unknown classifications distinct", () => {
     expect(resolveIsfahanServiceDate("2026-11-06", "ordinary").serviceId).toBe("friday");
     expect(resolveIsfahanServiceDate("2026-11-06", "public_holiday")).toMatchObject({ isFriday: true, holidayStatus: "public_holiday", serviceId: "friday" });
-    expect(resolveIsfahanServiceDate("2026-11-05", "public_holiday")).toMatchObject({ category: "public_holiday", availability: "unconfirmed", provisionalExpectation: "no_service", serviceId: null, hours: null });
+    expect(resolveIsfahanServiceDate("2026-11-05", "public_holiday")).toMatchObject({ category: "public_holiday", availability: "assumed_pattern", provisionalExpectation: "friday_service", serviceId: "friday", hours: { start: "09:00", end: "22:00" } });
     expect(resolveIsfahanServiceDate("2026-11-05", "unknown").availability).toBe("unconfirmed");
     expect(resolveIsfahanServiceDate("2026-11-05", "ordinary")).toMatchObject({ category: "weekday", serviceId: "saturday_thursday", hours: { start: "06:00", end: "22:00" } });
   });

@@ -58,8 +58,11 @@ export function resolveIsfahanServiceDate(date: string, holidayStatus: HolidaySt
   }
   if (holidayStatus === "public_holiday") {
     const r = policy.nonFridayHolidayRule;
-    if (r.confirmedBlanketClosure || r.departuresAllowed || r.availability !== "unconfirmed") throw Error("Unconfirmed holiday rule cannot certify service or closure");
-    return result("public_holiday", "unconfirmed", null, null, [r.sourceReferenceId], "Current general non-Friday holiday rule needs operator confirmation", r.provisionalExpectation);
+    if (r.confirmedBlanketClosure || !r.departuresAllowed || r.availability !== "assumed_pattern" || r.provisionalExpectation !== "friday_service") throw Error("Invalid provisional holiday rule");
+    const friday = policy.fridayRule;
+    return result("public_holiday", "assumed_pattern", friday.serviceId,
+      { start: friday.firstTerminalDeparture, end: friday.lastTerminalDeparture },
+      [r.sourceReferenceId, friday.sourceReferenceId], "Owner-authorized Friday fallback on public holidays; not operator verified", r.provisionalExpectation);
   }
   if (holidayStatus === "unknown") return result("unconfirmed", "unconfirmed", null, null, [], "Holiday classification is required before selecting a weekday pattern");
   const r = policy.weekdayRule;

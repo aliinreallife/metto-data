@@ -86,6 +86,14 @@
       },
       "holidayApplicability": "not specified in either poster; user suggested Friday applicability as a guess, not a confirmed rule",
       "linkedOperatorReferenceId": "operator-timetable-1405-07-11"
+    },
+    {
+      "id": "owner-provisional-release-2026-11-03",
+      "type": "owner_release_instruction",
+      "url": null,
+      "observedOn": "2026-11-03",
+      "holidayRuleVerified": false,
+      "instruction": "Publish using Friday service on official holidays provisionally; owner explicitly says holiday equivalence is uncertain. Four newest-poster black stations do not board on Fridays."
     }
   ],
   "weekdayRule": {
@@ -113,7 +121,7 @@
       "isfahan:station:daneshgah",
       "isfahan:station:kargar"
     ],
-    "boardingRuleStatus": "provisional_newest_official_poster",
+    "boardingRuleStatus": "owner_adopted_newest_poster",
     "conflictResolved": false,
     "reportedOlderAlternative": "Dated 1402/11/07 operator video explicitly lists Kargar as active and omits Chamran; newest 1405/07/11 poster instead blacks Kargar and prints Chamran times. Current boarding interpretation remains provisional.",
     "conflictingSourceReferenceIds": [
@@ -123,18 +131,20 @@
   },
   "nonFridayHolidayRule": {
     "serviceCategory": "public_holiday",
-    "availability": "unconfirmed",
-    "provisionalExpectation": "no_service",
-    "sourceReferenceId": "user-holiday-and-friday-research-2026-10-31",
+    "availability": "assumed_pattern",
+    "provisionalExpectation": "friday_service",
+    "serviceId": "friday",
+    "sourceReferenceId": "owner-provisional-release-2026-11-03",
     "confirmedBlanketClosure": false,
-    "departuresAllowed": false
+    "departuresAllowed": true,
+    "operatorVerified": false
   },
   "dateOverrides": [],
   "priority": [
     "verified_official_date_override",
     "unverified_date_override_blocks_fallback",
     "friday",
-    "non_friday_public_holiday_unconfirmed",
+    "non_friday_public_holiday_assumed_friday",
     "ordinary_saturday_thursday",
     "unknown_holiday_status_blocks_fallback"
   ],
