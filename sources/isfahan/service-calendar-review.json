@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "timezone": "Asia/Tehran",
+  "reviewOnly": true,
+  "productionEtaApproved": false,
+  "sourceReferences": [
+    {
+      "id": "operator-timetable-1405-07-11",
+      "url": "https://metroisfahan.ir/post/9363/زمان-بندی-حرکت-قطارها",
+      "publishedJalali": "1405/07/11",
+      "verified": "page_and_poster_headers",
+      "imageHashes": [
+        "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+        "adabb8a3ded462e1e91c790caf17441caa0c501c2c14af4c379ba2c4925c378b"
+      ]
+    },
+    {
+      "id": "operator-friday-stations-1402-11-07",
+      "url": "https://metroisfahan.ir/post/3238/ایستگاه-های-فعال-مترو-در-روزهای-جمعه",
+      "publishedJalali": "1402/11/07",
+      "observedOn": "2026-11-03",
+      "pageSha256": "7d67a1d5070353e04c014cfcb5a3f6a7531c8efb0a7775e811dfff4f0098f39a",
+      "verified": "dated_operator_page_and_video_final_frame_visually_read",
+      "videoUrl": "https://metroisfahan.ir/Portal/upload/موشن گرافی روزهای جمعه2.mp4",
+      "videoSha256": "58c57b222603fe5648e8f4d0ee4b9fdd18c520e0398a7f45f8c49e57abca1556",
+      "videoBytes": 2923963,
+      "frameInspectedAtSeconds": 21.3,
+      "activeStationIds": [
+        "isfahan:station:qods",
+        "isfahan:station:shahid-mofatteh",
+        "isfahan:station:shahid-alikhani",
+        "isfahan:station:jaber",
+        "isfahan:station:kaveh",
+        "isfahan:station:shahid-bahonar",
+        "isfahan:station:shohada",
+        "isfahan:station:takhti",
+        "isfahan:station:imam-hossein",
+        "isfahan:station:enghelab",
+        "isfahan:station:si-o-se-pol",
+        "isfahan:station:shariati",
+        "isfahan:station:azadi",
+        "isfahan:station:kargar",
+        "isfahan:station:kooye-imam",
+        "isfahan:station:defa-e-moghaddas"
+      ],
+      "omittedStationIds": [
+        "isfahan:station:baharestan",
+        "isfahan:station:golestan",
+        "isfahan:station:shahid-chamran",
+        "isfahan:station:daneshgah"
+      ],
+      "historicalOnly": true,
+      "useForCurrentTimetable": false,
+      "redistributed": false,
+      "notes": "Video explicitly labels active Friday stations and 09:00–21:00 hours. Kargar is listed, Chamran omitted. This proves an older source differs; it does not explain the 1405 poster or establish current boarding."
+    },
+    {
+      "id": "user-holiday-and-friday-research-2026-10-31",
+      "url": null,
+      "type": "user_research_summary",
+      "verified": false,
+      "claims": [
+        "Black Friday columns provisionally indicate no boarding/alighting; older sources name Chamran rather than Kargar.",
+        "Non-Friday official holidays generally have no service; current blanket 1405 rule unconfirmed.",
+        "Nowruz has specific closures and modified hours; exact original announcements need independent retrieval."
+      ]
+    }
+  ],
+  "weekdayRule": {
+    "serviceId": "saturday_thursday",
+    "days": [
+      "saturday",
+      "sunday",
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday"
+    ],
+    "firstTerminalDeparture": "06:00",
+    "lastTerminalDeparture": "22:00",
+    "sourceReferenceId": "operator-timetable-1405-07-11"
+  },
+  "fridayRule": {
+    "serviceId": "friday",
+    "firstTerminalDeparture": "09:00",
+    "lastTerminalDeparture": "22:00",
+    "sourceReferenceId": "operator-timetable-1405-07-11",
+    "provisionallyNonBoardableStationIds": [
+      "isfahan:station:baharestan",
+      "isfahan:station:golestan",
+      "isfahan:station:daneshgah",
+      "isfahan:station:kargar"
+    ],
+    "boardingRuleStatus": "provisional_newest_official_poster",
+    "conflictResolved": false,
+    "reportedOlderAlternative": "Dated 1402/11/07 operator video explicitly lists Kargar as active and omits Chamran; newest 1405/07/11 poster instead blacks Kargar and prints Chamran times. Current boarding interpretation remains provisional.",
+    "conflictingSourceReferenceIds": [
+      "operator-timetable-1405-07-11",
+      "operator-friday-stations-1402-11-07"
+    ]
+  },
+  "nonFridayHolidayRule": {
+    "serviceCategory": "public_holiday",
+    "availability": "unconfirmed",
+    "provisionalExpectation": "no_service",
+    "sourceReferenceId": "user-holiday-and-friday-research-2026-10-31",
+    "confirmedBlanketClosure": false,
+    "departuresAllowed": false
+  },
+  "dateOverrides": [],
+  "priority": [
+    "verified_official_date_override",
+    "unverified_date_override_blocks_fallback",
+    "friday",
+    "non_friday_public_holiday_unconfirmed",
+    "ordinary_saturday_thursday",
+    "unknown_holiday_status_blocks_fallback"
+  ],
+  "unresolvedEvidence": [
+    {
+      "id": "current_non_friday_holiday_rule",
+      "needed": "A current 1405 dated operator announcement explicitly confirming a blanket rule, or specific dated exceptions/closures. Until then show unconfirmed, not an authoritative closure or promised departures."
+    },
+    {
+      "id": "friday_boarding_conflict",
+      "needed": "A dated operator explanation identifying boarding/alighting at each of the four black Friday columns and reconciling Chamran versus Kargar. Prefer a written notice or operator response with date; retain both source versions."
+    },
+    {
+      "id": "nowruz_date_ranges",
+      "needed": "Original dated 1405 Nowruz announcement(s) spelling out exact closed/open dates, hours and any Friday/holiday exceptions; do not infer a list from a summary."
+    }
+  ],
+  "regularPatternsNotBefore": "2026-10-03"
+}

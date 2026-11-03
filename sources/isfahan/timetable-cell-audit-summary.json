@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "productionEtaApproved": false,
+  "method": "Independent raster glyph templates from manually read source cells; uploaded clocks joined only after decoding; every disagreement/abstention visually read separately.",
+  "counts": {
+    "sourceCells": 5660,
+    "uploadedTimes": 5204,
+    "machineMatches": 5121,
+    "manualUploadedMatches": 83,
+    "addedFridayManualMatches": 32,
+    "blackCells": 424,
+    "decoderDisagreementsResolvedByManualRead": 30,
+    "decoderAbstentionsResolvedByManualRead": 53,
+    "remainingTimeDifferences": 0,
+    "remainingUnreadableTimes": 0
+  },
+  "inputSha256": "672ac1f7aa5d74f634902bf324f00a0fb150b316dea901f003b87b0607e0a08d",
+  "sourceImageHashes": [
+    "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+    "adabb8a3ded462e1e91c790caf17441caa0c501c2c14af4c379ba2c4925c378b"
+  ],
+  "reportSha256": "ff7c025a60a14d85d1e9c00f3c10493a3cf06f598766cbc70346748295514b77",
+  "manualReviewSha256": "ef3412099b1ebb510a3053b239d240585ee26c2f1c443c8616b44bfa8ab25237",
+  "scriptSha256": "47fd43f0ce5321fb1e44181a2ec30b83170b54df47c92782091012c66cb550fe",
+  "limitations": [
+    "Machine agreement is not a second manual review or operator confirmation.",
+    "One visual reviewer resolved 83 decoder exceptions and read 32 added Friday times.",
+    "All timings remain review-only; holiday and Friday boarding uncertainty is not resolved by pixel agreement."
+  ]
+}

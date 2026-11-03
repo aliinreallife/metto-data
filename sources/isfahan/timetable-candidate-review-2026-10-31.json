@@ -55,7 +55,7 @@
         "redistributed": false
       }
     ],
-    "inspectionScope": "Page title/date, image headers, direction endpoints, final Friday departure row, conditional weekday rows and footnote inspected visually. Full station-cell transcription not independently verified."
+    "inspectionScope": "Page title/date, image headers/directions, complete Friday final rows, weekday conditional rows/footnote visually inspected. All 5,204 uploaded times independently compared with source pixels; 5,121 machine agreements and 83 visually read decoder exceptions. The 32 added Friday times are manual source-cell transcriptions. Not an operator or second-person sign-off."
   },
   "structureChecks": {
     "csvRows": 5204,
@@ -275,7 +275,8 @@
         }
       ],
       "minimumMissingVisibleStationTimes": 32,
-      "correctionStatus": "identified; originals unchanged; no station times auto-filled"
+      "correctionStatus": "Added both full source row 53 trips from 32 manually read station cells; black cells stay null. Original uploads unchanged.",
+      "status": "corrected_in_review_candidate"
     },
     {
       "id": "conditional-extra-runs",
@@ -309,12 +310,13 @@
           "terminalDeparture": "13:19"
         }
       ],
-      "correctionStatus": "retain separately from guaranteed scheduled departures"
+      "correctionStatus": "Five runs are now in conditionalTrips, separate from scheduledTrips, with the original condition and footnote retained.",
+      "status": "separated_in_review_candidate"
     },
     {
       "id": "friday-black-stations",
       "severity": "unresolved",
-      "evidence": "Both Friday source panels black out Baharestan, Golestan, Daneshgah and Kargar. No explanation is printed in the inspected Friday image/page. The workbook explicitly leaves confirmed_skip_or_closed=False.",
+      "evidence": "Newest 1405/07/11 poster blacks Baharestan, Golestan, Daneshgah and Kargar. The dated 1402/11/07 operator video instead lists Kargar as active and omits Chamran. Newest poster is provisional no-boarding guidance; discrepancy remains unresolved.",
       "stationIds": [
         "isfahan:station:baharestan",
         "isfahan:station:golestan",
@@ -326,14 +328,22 @@
         "nonstop passage",
         "shorter interstation running time",
         "permanent nonboarding status"
-      ]
+      ],
+      "provisionalInterpretation": "no passenger boarding/alighting at the four newest-poster black columns; do not infer nonstop passage or permanent closure",
+      "conflictingSourceReferencesFile": "sources/isfahan/service-calendar-review.json"
     },
     {
       "id": "reconstructed-station-times",
       "severity": "release-blocker",
-      "evidence": "All 5,204 rows use terminal-departure-plus-first-run-offset reconstruction, not independent reading of every source cell. All trips have a reconstructed 39-minute terminal span.",
+      "evidence": "All uploaded records originally used fixed offsets. A separate raster-template read compared every printed cell; 5,121 uploaded times agreed automatically, and 83 exceptions were read visually. No differences remain. 32 omitted Friday times were read manually. This is not independent second-person or operator approval.",
       "individuallyVerifiedCells": false,
-      "highPriorityOcrTrips": 37
+      "highPriorityOcrTrips": 37,
+      "sourceCellComparisonComplete": true,
+      "manualSourceCellReads": 115,
+      "machineSourceCellAgreements": 5121,
+      "remainingTimeDifferences": 0,
+      "remainingUnreadableTimes": 0,
+      "status": "source_comparison_complete_production_approval_pending"
     },
     {
       "id": "arrival-departure-semantics",
@@ -347,7 +357,9 @@
     {
       "id": "holiday-calendar",
       "severity": "unresolved",
-      "evidence": "Two groups are explicitly supplied: Saturday–Thursday and Friday. Public-holiday exceptions are not established. Thursday can be adapted to Metto’s separate day type using the same source pattern, without inventing a different Thursday schedule."
+      "evidence": "City-specific resolver prioritizes evidenced exact-date exceptions over Friday and ordinary weekday patterns. Non-Friday holidays remain unconfirmed, provisionally no service, with no promised departures. Exact Nowruz notices/current blanket closure not independently retrieved; dateOverrides stays empty. The October poster is not applied to earlier dates.",
+      "implementation": "importers/isfahan-service-calendar.ts",
+      "policyFile": "sources/isfahan/service-calendar-review.json"
     }
   ],
   "publicationBoundary": {
@@ -355,5 +367,23 @@
     "currentBoardingStatusChanged": false,
     "passengerPlannerTimingEnabled": false,
     "sourceCalendarAndBlackCellMeaningNeedReview": true
+  },
+  "lastReviewedOn": "2026-11-03",
+  "productionEtaApproved": false,
+  "normalizedCandidate": {
+    "builder": "pnpm candidate:isfahan:timetable",
+    "output": ".quality-report/isfahan-timetable-candidate.json",
+    "counts": {
+      "trips": 283,
+      "scheduledTrips": 278,
+      "conditionalTrips": 5,
+      "stationTimes": 5236,
+      "blackSourceCells": 424
+    },
+    "reviewOnly": true,
+    "productionEtaApproved": false,
+    "correctionsFile": "sources/isfahan/timetable-reviewed-corrections.json",
+    "sourceCellAuditSummaryFile": "sources/isfahan/timetable-cell-audit-summary.json",
+    "calendarFile": "sources/isfahan/service-calendar-review.json"
   }
 }

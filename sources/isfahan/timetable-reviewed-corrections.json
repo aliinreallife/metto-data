@@ -1,0 +1,618 @@
+{
+  "schemaVersion": 1,
+  "cityId": "isfahan",
+  "reviewOnly": true,
+  "sourceTimeSemantics": "published station movement time; separate arrival/departure/dwell not supplied",
+  "addedTrips": [
+    {
+      "id": "isfahan:trip:friday:qods_to_defa:source-row-53",
+      "direction": "qods_to_defa",
+      "originId": "isfahan:station:qods",
+      "destinationId": "isfahan:station:defa-e-moghaddas",
+      "serviceId": "friday",
+      "sourceDataRow": 53,
+      "terminalDeparture": "22:00",
+      "dispatchKind": "regular",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%B1%D9%88%D8%B2%D9%87%D8%A7%DB%8C%20%D8%AC%D9%85%D8%B9%D9%87%201405.jpg",
+      "sourceImageSha256": "adabb8a3ded462e1e91c790caf17441caa0c501c2c14af4c379ba2c4925c378b",
+      "cells": [
+        {
+          "stationId": "isfahan:station:qods",
+          "stationOrder": 1,
+          "sourceCellValue": "22:00",
+          "sourceMark": "time",
+          "imageBbox": [
+            3190,
+            4372,
+            3269,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:baharestan",
+          "stationOrder": 2,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            3114,
+            4372,
+            3186,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:golestan",
+          "stationOrder": 3,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            3038,
+            4372,
+            3110,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:shahid-mofatteh",
+          "stationOrder": 4,
+          "sourceCellValue": "22:07",
+          "sourceMark": "time",
+          "imageBbox": [
+            2963,
+            4372,
+            3034,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-alikhani",
+          "stationOrder": 5,
+          "sourceCellValue": "22:09",
+          "sourceMark": "time",
+          "imageBbox": [
+            2887,
+            4372,
+            2959,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:jaber",
+          "stationOrder": 6,
+          "sourceCellValue": "22:11",
+          "sourceMark": "time",
+          "imageBbox": [
+            2812,
+            4372,
+            2883,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:kaveh",
+          "stationOrder": 7,
+          "sourceCellValue": "22:13",
+          "sourceMark": "time",
+          "imageBbox": [
+            2736,
+            4372,
+            2808,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-chamran",
+          "stationOrder": 8,
+          "sourceCellValue": "22:15",
+          "sourceMark": "time",
+          "imageBbox": [
+            2661,
+            4372,
+            2732,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-bahonar",
+          "stationOrder": 9,
+          "sourceCellValue": "22:17",
+          "sourceMark": "time",
+          "imageBbox": [
+            2585,
+            4372,
+            2657,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shohada",
+          "stationOrder": 10,
+          "sourceCellValue": "22:19",
+          "sourceMark": "time",
+          "imageBbox": [
+            2510,
+            4372,
+            2581,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:takhti",
+          "stationOrder": 11,
+          "sourceCellValue": "22:21",
+          "sourceMark": "time",
+          "imageBbox": [
+            2434,
+            4372,
+            2506,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:imam-hossein",
+          "stationOrder": 12,
+          "sourceCellValue": "22:23",
+          "sourceMark": "time",
+          "imageBbox": [
+            2359,
+            4372,
+            2430,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:enghelab",
+          "stationOrder": 13,
+          "sourceCellValue": "22:25",
+          "sourceMark": "time",
+          "imageBbox": [
+            2283,
+            4372,
+            2355,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:si-o-se-pol",
+          "stationOrder": 14,
+          "sourceCellValue": "22:27",
+          "sourceMark": "time",
+          "imageBbox": [
+            2208,
+            4372,
+            2279,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shariati",
+          "stationOrder": 15,
+          "sourceCellValue": "22:29",
+          "sourceMark": "time",
+          "imageBbox": [
+            2132,
+            4372,
+            2204,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:azadi",
+          "stationOrder": 16,
+          "sourceCellValue": "22:31",
+          "sourceMark": "time",
+          "imageBbox": [
+            2057,
+            4372,
+            2128,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:daneshgah",
+          "stationOrder": 17,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            1982,
+            4372,
+            2053,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:kargar",
+          "stationOrder": 18,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            1906,
+            4372,
+            1978,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:kooye-imam",
+          "stationOrder": 19,
+          "sourceCellValue": "22:37",
+          "sourceMark": "time",
+          "imageBbox": [
+            1830,
+            4372,
+            1902,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:defa-e-moghaddas",
+          "stationOrder": 20,
+          "sourceCellValue": "22:39",
+          "sourceMark": "time",
+          "imageBbox": [
+            1755,
+            4372,
+            1826,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        }
+      ],
+      "reviewOnly": true,
+      "productionEtaApproved": false
+    },
+    {
+      "id": "isfahan:trip:friday:defa_to_qods:source-row-53",
+      "direction": "defa_to_qods",
+      "originId": "isfahan:station:defa-e-moghaddas",
+      "destinationId": "isfahan:station:qods",
+      "serviceId": "friday",
+      "sourceDataRow": 53,
+      "terminalDeparture": "22:00",
+      "dispatchKind": "regular",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%B1%D9%88%D8%B2%D9%87%D8%A7%DB%8C%20%D8%AC%D9%85%D8%B9%D9%87%201405.jpg",
+      "sourceImageSha256": "adabb8a3ded462e1e91c790caf17441caa0c501c2c14af4c379ba2c4925c378b",
+      "cells": [
+        {
+          "stationId": "isfahan:station:defa-e-moghaddas",
+          "stationOrder": 1,
+          "sourceCellValue": "22:00",
+          "sourceMark": "time",
+          "imageBbox": [
+            179,
+            4372,
+            252,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:kooye-imam",
+          "stationOrder": 2,
+          "sourceCellValue": "22:02",
+          "sourceMark": "time",
+          "imageBbox": [
+            256,
+            4372,
+            328,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:kargar",
+          "stationOrder": 3,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            332,
+            4372,
+            404,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:daneshgah",
+          "stationOrder": 4,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            408,
+            4372,
+            479,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:azadi",
+          "stationOrder": 5,
+          "sourceCellValue": "22:08",
+          "sourceMark": "time",
+          "imageBbox": [
+            483,
+            4372,
+            555,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shariati",
+          "stationOrder": 6,
+          "sourceCellValue": "22:10",
+          "sourceMark": "time",
+          "imageBbox": [
+            559,
+            4372,
+            630,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:si-o-se-pol",
+          "stationOrder": 7,
+          "sourceCellValue": "22:12",
+          "sourceMark": "time",
+          "imageBbox": [
+            634,
+            4372,
+            706,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:enghelab",
+          "stationOrder": 8,
+          "sourceCellValue": "22:14",
+          "sourceMark": "time",
+          "imageBbox": [
+            710,
+            4372,
+            781,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:imam-hossein",
+          "stationOrder": 9,
+          "sourceCellValue": "22:16",
+          "sourceMark": "time",
+          "imageBbox": [
+            785,
+            4372,
+            857,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:takhti",
+          "stationOrder": 10,
+          "sourceCellValue": "22:18",
+          "sourceMark": "time",
+          "imageBbox": [
+            861,
+            4372,
+            932,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shohada",
+          "stationOrder": 11,
+          "sourceCellValue": "22:20",
+          "sourceMark": "time",
+          "imageBbox": [
+            936,
+            4372,
+            1008,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-bahonar",
+          "stationOrder": 12,
+          "sourceCellValue": "22:22",
+          "sourceMark": "time",
+          "imageBbox": [
+            1012,
+            4372,
+            1083,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-chamran",
+          "stationOrder": 13,
+          "sourceCellValue": "22:24",
+          "sourceMark": "time",
+          "imageBbox": [
+            1087,
+            4372,
+            1159,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:kaveh",
+          "stationOrder": 14,
+          "sourceCellValue": "22:26",
+          "sourceMark": "time",
+          "imageBbox": [
+            1163,
+            4372,
+            1234,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:jaber",
+          "stationOrder": 15,
+          "sourceCellValue": "22:28",
+          "sourceMark": "time",
+          "imageBbox": [
+            1238,
+            4372,
+            1310,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-alikhani",
+          "stationOrder": 16,
+          "sourceCellValue": "22:30",
+          "sourceMark": "time",
+          "imageBbox": [
+            1314,
+            4372,
+            1385,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:shahid-mofatteh",
+          "stationOrder": 17,
+          "sourceCellValue": "22:32",
+          "sourceMark": "time",
+          "imageBbox": [
+            1389,
+            4372,
+            1461,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        },
+        {
+          "stationId": "isfahan:station:golestan",
+          "stationOrder": 18,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            1465,
+            4372,
+            1537,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:baharestan",
+          "stationOrder": 19,
+          "sourceCellValue": null,
+          "sourceMark": "black",
+          "imageBbox": [
+            1541,
+            4372,
+            1612,
+            4429
+          ],
+          "verification": "visible_black_meaning_provisional"
+        },
+        {
+          "stationId": "isfahan:station:qods",
+          "stationOrder": 20,
+          "sourceCellValue": "22:39",
+          "sourceMark": "time",
+          "imageBbox": [
+            1616,
+            4372,
+            1688,
+            4429
+          ],
+          "verification": "manual_source_cell"
+        }
+      ],
+      "reviewOnly": true,
+      "productionEtaApproved": false
+    }
+  ],
+  "conditionalDispatches": [
+    {
+      "uploadedTripId": "isf_l1_saturday_thursday_qods_to_defa_005",
+      "direction": "qods_to_defa",
+      "terminalDeparture": "06:42",
+      "serviceId": "saturday_thursday",
+      "dispatchKind": "conditional",
+      "condition": "when_needed_and_possible",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+      "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد"
+    },
+    {
+      "uploadedTripId": "isf_l1_saturday_thursday_qods_to_defa_007",
+      "direction": "qods_to_defa",
+      "terminalDeparture": "06:53",
+      "serviceId": "saturday_thursday",
+      "dispatchKind": "conditional",
+      "condition": "when_needed_and_possible",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+      "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد"
+    },
+    {
+      "uploadedTripId": "isf_l1_saturday_thursday_qods_to_defa_009",
+      "direction": "qods_to_defa",
+      "terminalDeparture": "07:04",
+      "serviceId": "saturday_thursday",
+      "dispatchKind": "conditional",
+      "condition": "when_needed_and_possible",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+      "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد"
+    },
+    {
+      "uploadedTripId": "isf_l1_saturday_thursday_defa_to_qods_043",
+      "direction": "defa_to_qods",
+      "terminalDeparture": "13:07",
+      "serviceId": "saturday_thursday",
+      "dispatchKind": "conditional",
+      "condition": "when_needed_and_possible",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+      "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد"
+    },
+    {
+      "uploadedTripId": "isf_l1_saturday_thursday_defa_to_qods_045",
+      "direction": "defa_to_qods",
+      "terminalDeparture": "13:19",
+      "serviceId": "saturday_thursday",
+      "dispatchKind": "conditional",
+      "condition": "when_needed_and_possible",
+      "sourceImageUrl": "https://metroisfahan.ir/Portal/%D8%A8%D9%86%D8%B1%20%D8%A7%DB%8C%D8%A7%D9%85%20%D9%87%D9%81%D8%AA%D9%871405.jpg",
+      "sourceImageSha256": "521b414dfbd881c97fd046c6d0b882bea5945f6ce3d13340d0979e1a2383ecd9",
+      "sourceFootnoteFa": "قطارهای فوق العاده حسب نیاز و در صورت امکان، اعزام خواهند شد"
+    }
+  ],
+  "productionEtaApproved": false
+}
